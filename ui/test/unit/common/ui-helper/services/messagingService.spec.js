@@ -8,7 +8,7 @@ describe('MessagingService', function () {
         args = arguments;
     };
 
-    beforeEach(module('bahmni.registration'));
+    beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module(function ($provide) {
         rootScope = jasmine.createSpyObj("rootScope", ["$on"]);
         $provide.value('$rootScope', rootScope);
