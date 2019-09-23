@@ -27,20 +27,16 @@ module.exports = function (grunt) {
         'components/jquery/jquery.min.js',
         'components/lodash/dist/lodash.min.js',
         'components/jquery.cookie/jquery.cookie.js',
-        'components/keyboardjs/dist/keyboard.min.js',
         'components/angular/angular.min.js',
         'components/ng-tags-input/ng-tags-input.min.js',
         'components/angular-sanitize/angular-sanitize.min.js',
-        'components/angular-animate/angular-animate.min.js',
         'components/angular-bindonce/bindonce.min.js',
         'components/angular-recursion/angular-recursion.min.js',
         'components/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
         'components/moment/min/moment-with-locales.min.js',
-        'components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min.js',
         'components/select2/select2.min.js',
         'components/angular-ui-select2/src/select2.js',
         'components/angular-ui-router/release/angular-ui-router.min.js',
-        'components/fastclick/lib/fastclick.js',
         'components/ngDialog/js/ngDialog.min.js',
         'components/stacktrace-js/dist/stacktrace.min.js',
         'components/ng-clip/dest/ng-clip.min.js',
@@ -52,15 +48,8 @@ module.exports = function (grunt) {
         'components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js',
         'components/angular-translate-storage-local/angular-translate-storage-local.min.js',
         'components/angular-translate-handler-log/angular-translate-handler-log.min.js',
-        'components/angular-file-upload/dist/angular-file-upload.min.js',
         'components/angular-elastic/elastic.js',
-        'components/react/react.min.js',
-        'components/react/react-dom.min.js',
-        'components/bahmni-form-controls/helpers.js',
-        'components/bahmni-form-controls/bundle.js',
-        'components/purl/purl.js',
         'components/angular-route/angular-route.min.js',
-        'components/crypto-js/crypto-js.js',
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
         'components/angular-ivh-treeview/dist/ivh-treeview.min.js'
     ];
@@ -106,9 +95,6 @@ module.exports = function (grunt) {
                     removeCommands: true
                 },
                 files: {
-                    "dist/registration/index.html": "dist/registration/index.html",
-                    "dist/clinical/index.html": "dist/clinical/index.html",
-                    "dist/home/index.html": "dist/home/index.html"
                 }
             }
         },
@@ -138,8 +124,7 @@ module.exports = function (grunt) {
                 preprocessors: {
                     'app/common/displaycontrols/**/views/*.html': ['ng-html2js'],
                     'app/common/concept-set/views/*.html': ['ng-html2js'],
-                    'app/common/uicontrols/**/views/*.html': ['ng-html2js'],
-                    'app/clinical/**/**/*.html': ['ng-html2js']
+                    'app/common/uicontrols/**/views/*.html': ['ng-html2js']
                 }
             }
         },
@@ -187,19 +172,6 @@ module.exports = function (grunt) {
         },
         useminPrepare: {
             html: [
-                '<%= yeoman.app %>/patients/*.html',
-                '<%= yeoman.app %>/clinical/*.html',
-                '<%= yeoman.app %>/**/*.html',
-                '<%= yeoman.app %>/adt/**/*.html',
-                '<%= yeoman.app %>/common/**/*.html',
-                '<%= yeoman.app %>/orders/**/*.html',
-                '<%= yeoman.app %>/bedmanagement/**/*.html',
-                '<%= yeoman.app %>/home/**/*.html',
-                '<%= yeoman.app %>/admin/**/*.html',
-                '<%= yeoman.app %>/registration/**/*.html',
-                '<%= yeoman.app %>/ot/**/*.html',
-                '<%= yeoman.app %>/document-upload/**/*.html',
-                '<%= yeoman.app %>/reports/**/*.html',
                 '<%= yeoman.app %>/appointments/**/*.html'
             ],
             css: '<%= yeoman.app %>/styles/**/*.css',
@@ -219,8 +191,6 @@ module.exports = function (grunt) {
         usemin: {
             html: [
                 '<%= yeoman.dist %>/**/index.html',
-                '<%= yeoman.dist %>/clinical/common/views/visitTabPrint.html',
-                '<%= yeoman.dist %>/clinical/dashboard/views/dashboardPrint.html',
                 '<%= yeoman.dist %>/common/displaycontrols/prescription/views/prescription.html'
             ],
             css: '<%= yeoman.dist %>/styles/**/*.css',
@@ -262,18 +232,6 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: '<%= yeoman.app %>',
                         src: [
-                            'patients/**/*.html',
-                            'clinical/**/*.html',
-                            'adt/**/*.html',
-                            'common/**/*.html',
-                            'orders/**/*.html',
-                            'bedmanagement/**/*.html',
-                            'home/**/*.html',
-                            'ot/**/*.html',
-                            'admin/**/*.html',
-                            'reports/**/*.html',
-                            'registration/**/*.html',
-                            'document-upload/**/*.html',
                             'appointments/**/*.html'
                         ],
                         dest: '<%= yeoman.dist %>'
@@ -292,37 +250,13 @@ module.exports = function (grunt) {
                         src: [
                             libraryCSSFiles,
                             libraryJSFiles,
-                            'components/openmrs-uicommons/**/*',
                             '*.{ico,txt,html,js}',
                             '.htaccess',
                             'images/**/*.{gif,webp}',
                             'styles/**/*.css',
                             'styles/fonts/**/*',
-                            'clinical/config/*.json',
                             'i18n/**/*.json',
                             'lib/**/*'
-                        ]
-                    }
-                ]
-            },
-            nodeModules: {
-                files: [
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.nodeModules %>/bahmni-form-controls/dist',
-                        dest: '<%= yeoman.app %>/components/bahmni-form-controls/',
-                        src: [
-                            '*.*'
-                        ]
-                    },
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.nodeModules %>/bahmni-clinical-components/dist',
-                        dest: '<%= yeoman.app %>/components/bahmni-clinical-components/',
-                        src: [
-                            '*.*'
                         ]
                     }
                 ]
@@ -334,116 +268,9 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
-                        src: ['clinical.*.js'],
-                        dest: '<%= yeoman.dist %>/clinical/'
-                    },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.*.js'], dest: '<%= yeoman.dist %>/adt/'},
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['orders.*.js'],
-                        dest: '<%= yeoman.dist %>/orders/'
-                    },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['home.*.js'], dest: '<%= yeoman.dist %>/home/'},
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['bedmanagement.*.js'],
-                        dest: '<%= yeoman.dist %>/bedmanagement/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['admin.*.js'],
-                        dest: '<%= yeoman.dist %>/admin/'
-                    },
-                    {expand: true, cwd: '<%= yeoman.root %>', src: ['common.*.js'], dest: '<%= yeoman.dist %>/'},
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['reports.*.js'],
-                        dest: '<%= yeoman.dist %>/reports/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['registration.*.js'],
-                        dest: '<%= yeoman.dist %>/registration/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['document-upload.*.js'],
-                        dest: '<%= yeoman.dist %>/document-upload/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
                         src: ['appointments.*.js'],
                         dest: '<%= yeoman.dist %>/appointments/'
                     },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['patients.min.*.css'],
-                        dest: '<%= yeoman.dist %>/patients/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['clinical.*.css'],
-                        dest: '<%= yeoman.dist %>/clinical/'
-                    },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.*.css'], dest: '<%= yeoman.dist %>/adt/'},
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['bedmanagement.*.css'],
-                        dest: '<%= yeoman.dist %>/bedmanagement/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['orders.*.css'],
-                        dest: '<%= yeoman.dist %>/orders/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['home.*.css'],
-                        dest: '<%= yeoman.dist %>/home/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['admin.*.css'],
-                        dest: '<%= yeoman.dist %>/admin/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['ot.*.js'],
-                        dest: '<%= yeoman.dist %>/ot/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['reports.*.css'],
-                        dest: '<%= yeoman.dist %>/reports/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['registration.*.css'],
-                        dest: '<%= yeoman.dist %>/registration/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['document-upload.*.css'],
-                        dest: '<%= yeoman.dist %>/document-upload/'
-                    },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['ot.*.css'], dest: '<%= yeoman.dist %>/ot/'},
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
@@ -451,13 +278,6 @@ module.exports = function (grunt) {
                         dest: '<%= yeoman.dist %>/appointments/'
                     }
                 ]
-            }
-        },
-        hologram: {
-            generate: {
-                options: {
-                    config: 'hologram_config.yml'
-                }
             }
         },
         ngAnnotate: {
@@ -491,16 +311,6 @@ module.exports = function (grunt) {
             },
             multifile: {
                 files: {
-                    '<%= yeoman.dist %>/registration.min.js': '<%= yeoman.dist %>/registration.min.js',
-                    '<%= yeoman.dist %>/admin.min.js': '<%= yeoman.dist %>/admin.min.js',
-                    '<%= yeoman.dist %>/adt.min.js': '<%= yeoman.dist %>/adt.min.js',
-                    '<%= yeoman.dist %>/bedmanagement.min.js': '<%= yeoman.dist %>/bedmanagement.min.js',
-                    '<%= yeoman.dist %>/document-upload.min.js': '<%= yeoman.dist %>/document-upload.min.js',
-                    '<%= yeoman.dist %>/home.min.js': '<%= yeoman.dist %>/home.min.js',
-                    '<%= yeoman.dist %>/orders.min.js': '<%= yeoman.dist %>/orders.min.js',
-                    '<%= yeoman.dist %>/reports.min.js': '<%= yeoman.dist %>/reports.min.js',
-                    '<%= yeoman.dist %>/clinical.min.js': '<%= yeoman.dist %>/clinical.min.js',
-                    '<%= yeoman.dist %>/ot.min.js': '<%= yeoman.dist %>/ot.min.js',
                     '<%= yeoman.dist %>/appointments.min.js': '<%= yeoman.dist %>/appointments.min.js'
                 }
             },
@@ -522,7 +332,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('bundle', [
         'eslint',
-        'copy:nodeModules',
         'clean:dist',
         'compass:dist',
         'useminPrepare',
