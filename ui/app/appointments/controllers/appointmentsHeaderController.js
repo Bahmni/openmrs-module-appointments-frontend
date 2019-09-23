@@ -4,7 +4,7 @@ angular.module('bahmni.appointments')
     .controller('AppointmentsHeaderController', ['$scope', '$state', 'appService',
         function ($scope, $state, appService) {
             var setBackLinks = function () {
-                var backLinks = [{label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"}];
+                var backLinks = [{label: "Home", url: "../../home", accessKey: "h", icon: "fa-home"}];
 
                 // TODO:permissions for admin
                 backLinks.push({text: "APPOINTMENTS_MANAGE", state: "home.manage", accessKey: "M"});
