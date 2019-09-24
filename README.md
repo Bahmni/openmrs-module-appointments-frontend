@@ -1,13 +1,26 @@
-# Bahmni Apps
+# openmrs-module-appointment-frontend
 
-[![Build Status](https://travis-ci.org/Bahmni/openmrs-module-bahmniapps.svg?branch=master)](https://travis-ci.org/Bahmni/openmrs-module-bahmniapps)
-
-This repository acts as the front end for the **Bahmni EMR**. It is compeltely written in **AngularJS**.
+This repository acts as the front end for the **Bahmni Appointment Scheduling**. It is written in **AngularJS**.
 
 
 # Build
+```
+bower install
+npm install
+grunt
+```
 
-Please visit https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+OpenMRS+frontend for detailed instructions on **building** and **deploying** the front end
+# Test
+```
+grunt test
+```
+# Deploy
+* Create a folder called 'appointments' under '/var/www'.
+* Add an alias in httpd ssl.conf, like below:
+  ```
+  Alias /appointments-v2 /var/www/appointments
+  ```
+
 
 # Project structure
 
@@ -19,19 +32,13 @@ Please visit https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+Ope
 `-- ui
     |-- Gruntfile.js
     |-- app
-    |	|-- admin
-    |   |-- adt
-    |   |-- clinical
+    |	|-- appointment
     |   |-- common
-    |   |-- document-upload
-    |   |-- home
-    |	|-- i18n
     |   |-- images
-    |   |-- orders
-    |   |-- registration
-    |   |-- reports
-    |
-    |-- .jshint.rc
+    |   |-- i18n
+    |   |-- lib
+    |   |-- styles
+    |-- test
     |-- bower.json
     |-- package.json
 </pre>
