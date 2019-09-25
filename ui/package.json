@@ -46,7 +46,7 @@
     "react-dom": "^15.2.1"
   },
   "scripts": {
-    "test": "karma start test/config/karma.conf.js"
+    "test": "karma start ../karma.conf.js"
   },
   "repository": {
     "type": "git",
