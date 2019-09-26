@@ -15,7 +15,7 @@ describe('ServiceAvailability', function () {
         document = $document;
         httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>');
         httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>');
-        httpBackend.expectGET('../appointments/views/admin/colorPicker.html').respond('<div></div>');
+        // httpBackend.expectGET('../appointments/views/admin/colorPicker.html').respond('<div></div>');
     }));
 
     var createElement = function () {
@@ -27,7 +27,7 @@ describe('ServiceAvailability', function () {
         return element;
     };
 
-    it('Shold toggle the display of color picker on click the picker multiple times', function () {
+    it('Should toggle the display of color picker on click the picker multiple times', function () {
         scope.colorsForAppointmentService = ["#DC143C", "#00008B", "#008B8B"];
         scope.selectedColor = "#DC143C";
         scope.showColorPicker = false;

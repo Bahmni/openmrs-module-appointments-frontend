@@ -20,7 +20,7 @@ describe('ServiceTypes', function () {
         httpBackend = $httpBackend;
         httpBackend.expectGET('../i18n/appointments/locale_en.json').respond({});
         httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
-        httpBackend.expectGET('../appointments/views/admin/serviceTypes.html').respond('<div></div>');
+        // httpBackend.expectGET('../appointments/views/admin/serviceTypes.html').respond('<div></div>');
         scope.service = {
             name: 'Ortho',
             description: 'for Ortho appointments',
@@ -123,12 +123,13 @@ describe('ServiceTypes', function () {
 
         scope.deleteServiceType(serviceType);
 
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({
-            template: 'views/admin/serviceTypeDeleteConfirmation.html',
-            scope: scope,
-            data: {serviceType: serviceType},
-            closeByEscape: true
-        });
+        let args = ngDialog.openConfirm.calls.allArgs()[0][0];
+        expect(args.plain).toBeTruthy();
+        expect(args.template).toContain("<p>{{'APPOINTMENT_SERVICE_TYPE_CONFORMATION_POPUP_MESSAGE_FOR_DELETE' | translate}}: <b> {{ ngDialogData.serviceType.name }}? </b> </p>");
+        expect(args.scope).toEqual(scope);
+        expect(args.data).toEqual({serviceType: serviceType});
+        expect(args.closeByEscape).toBeTruthy();
+
         expect(appointmentsService.getAppointmentsForServiceType).not.toHaveBeenCalled();
         expect(messagingService.showMessage).not.toHaveBeenCalled();
     });
@@ -157,12 +158,13 @@ describe('ServiceTypes', function () {
 
         expect(appointmentsService.getAppointmentsForServiceType).toHaveBeenCalledWith(serviceTypeUuid);
         expect(messagingService.showMessage).not.toHaveBeenCalled();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({
-            template: 'views/admin/serviceTypeDeleteConfirmation.html',
-            scope: scope,
-            data: {serviceType: serviceType},
-            closeByEscape: true
-        });
+
+        let args = ngDialog.openConfirm.calls.allArgs()[0][0];
+        expect(args.plain).toBeTruthy();
+        expect(args.template).toContain("<p>{{'APPOINTMENT_SERVICE_TYPE_CONFORMATION_POPUP_MESSAGE_FOR_DELETE' | translate}}: <b> {{ ngDialogData.serviceType.name }}? </b> </p>");
+        expect(args.scope).toEqual(scope);
+        expect(args.data).toEqual({serviceType: serviceType});
+        expect(args.closeByEscape).toBeTruthy();
     });
 
     it('should close the dialog when delete transition is cancelled', function () {

@@ -52,6 +52,11 @@ describe("AllAppointmentServicesController", function () {
 
         scope.deleteAppointmentService(services[0]);
 
-        expect(ngDialog.open).toHaveBeenCalledWith({template: 'views/admin/deleteAppointmentService.html', className: 'ngdialog-theme-default', data: {service: services[0]}, controller: 'deleteAppointmentServiceController'});
+        let args = ngDialog.open.calls.allArgs()[0][0];
+        expect(args.plain).toBeTruthy();
+        expect(args.template).toContain("<p>{{'APPOINTMENT_SERVICE_CONFORMATION_POPUP_MESSAGE_FOR_DELETE' | translate}}: <b> {{ service.name }} </b>?</p>");
+        expect(args.className).toEqual('ngdialog-theme-default');
+        expect(args.data).toEqual({service: services[0]});
+        expect(args.controller).toEqual('deleteAppointmentServiceController');
     });
 });

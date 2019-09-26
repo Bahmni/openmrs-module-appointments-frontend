@@ -5,7 +5,7 @@ angular.module('bahmni.appointments')
         var link = function ($scope, element) {
             $scope.focusOnTheTest = function () {
                 var autoselectInput = $("input.input");
-                autoselectInput[0].focus();
+                autoselectInput[0] && autoselectInput[0].focus();
                 $scope.selectedValues = $scope.selectedValues || [];
             };
 

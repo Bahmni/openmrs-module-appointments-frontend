@@ -107,11 +107,13 @@ describe('CalendarViewPopUp', function () {
         ];
         var config = {scope: {appointments: appointments}};
         calendarViewPopUp(config);
-        expect(ngDialog.open).toHaveBeenCalledWith({
-            template: '../appointments/views/manage/calendar/popUp.html',
-            scope: popUpScope,
-            className: 'ngdialog-theme-default'
-        });
+
+        let args = ngDialog.open.calls.allArgs()[0][0];
+        expect(args.plain).toBeTruthy();
+        let expectedSubstring = "<b>{{::'APPOINTMENT_CREATE_PATIENT_NAME' |translate}}:</b> <span ng-if=\"scope.appointments.length === 1\">{{ appointment.patient.name }} ({{ appointment.patient.identifier }})</span>"
+        expect(args.template).toContain(expectedSubstring);
+        expect(args.scope).toEqual(popUpScope);
+        expect(args.className).toEqual('ngdialog-theme-default');
     });
 
     it('closePromise should reload current state if value false', function () {

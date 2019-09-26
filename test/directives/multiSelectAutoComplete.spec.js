@@ -15,7 +15,7 @@ describe('multiSelectAutocomplete', function () {
         document = $document;
         httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>');
         httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>');
-        httpBackend.expectGET('../appointments/views/manage/multiSelectAutocomplete.html').respond('<div></div>');
+        // httpBackend.expectGET('../appointments/views/manage/multiSelectAutocomplete.html').respond('<div></div>');
     }));
 
     var createElement = function () {

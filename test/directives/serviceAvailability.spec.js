@@ -42,7 +42,7 @@ describe('ServiceAvailability', function () {
         httpBackend = $httpBackend;
         httpBackend.expectGET('../i18n/appointments/locale_en.json').respond({});
         httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
-        httpBackend.expectGET('../appointments/views/admin/appointmentServiceAvailability.html').respond('<div></div>');
+        // httpBackend.expectGET('../appointments/views/admin/appointmentServiceAvailability.html').respond('<div></div>');
     }));
 
     var createElement = function () {
@@ -102,8 +102,8 @@ describe('ServiceAvailability', function () {
 
     describe('validateAvailability', function () {
         it('should return true if all fields are valid', function () {
-            var startDateTime = new Date("2015-10-01T09:30:00.000Z").toString();
-            var endDateTime = new Date("2015-10-01T10:30:00.000Z").toString();
+            var startDateTime = new Date("2015-10-01T09:30:00.000Z");
+            var endDateTime = new Date("2015-10-01T10:30:00.000Z");
             var avbdays = angular.copy(days);
             avbdays[0].isSelected = true;
             scope.availability = {
@@ -130,7 +130,7 @@ describe('ServiceAvailability', function () {
         it('should return false if startTime is not filled', function () {
             scope.availability = {
                 startTime: undefined,
-                endTime: new Date().toString(),
+                endTime: new Date(),
                 days: 2
             };
             scope.availabilityList = [];
@@ -142,7 +142,7 @@ describe('ServiceAvailability', function () {
 
         it('should return false if endTime is not filled', function () {
             scope.availability = {
-                startTime: new Date().toString(),
+                startTime: new Date(),
                 endTime: undefined,
                 days: 2
             };
@@ -155,8 +155,8 @@ describe('ServiceAvailability', function () {
 
         it('should return false if not even one day is selected', function () {
             scope.availability = {
-                startTime: new Date().toString(),
-                endTime: new Date().toString(),
+                startTime: new Date(),
+                endTime: new Date(),
                 days: 0
             };
             scope.availabilityList = [];
@@ -167,8 +167,8 @@ describe('ServiceAvailability', function () {
         });
 
         it('should return false if startTime is greater than endTime', function () {
-            var startDateTime = new Date("2015-10-01T11:30:00.000Z").toString();
-            var endDateTime = new Date("2015-10-01T10:30:00.000Z").toString();
+            var startDateTime = new Date("2015-10-01T11:30:00.000Z");
+            var endDateTime = new Date("2015-10-01T10:30:00.000Z");
             scope.availability = {
                 startTime: startDateTime,
                 endTime: endDateTime,
@@ -182,7 +182,7 @@ describe('ServiceAvailability', function () {
         });
 
         it('should return false if startTime is equal to endTime', function () {
-            var dateTime = new Date("2015-10-01T10:30:00.000Z").toString();
+            var dateTime = new Date("2015-10-01T10:30:00.000Z");
             scope.availability = {
                 startTime: dateTime,
                 endTime: dateTime,
@@ -199,8 +199,8 @@ describe('ServiceAvailability', function () {
     describe('addAvailability', function () {
         it('should add availability to weeklyAvailability list', function () {
             scope.availability = {
-                startTime: new Date().toString(),
-                endTime: new Date().toString(),
+                startTime: new Date(),
+                endTime: new Date(),
                 days: angular.copy(days)
             };
             scope.availability.days[1].isSelected = true;
@@ -217,15 +217,15 @@ describe('ServiceAvailability', function () {
 
         it('should not add availability if endTime is within existing duration', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[1].isSelected = true;
 
             var availability2 = {
-                startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T08:30:00.000Z"),
+                endTime: new Date("2015-10-01T10:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability2.days[1].isSelected = true;
@@ -243,13 +243,13 @@ describe('ServiceAvailability', function () {
 
         it('should add availability if endTime falls on existing duration startTime', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T09:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T08:30:00.000Z"),
+                endTime: new Date("2015-10-01T09:30:00.000Z"),
                 days: angular.copy(days)
             };
 
@@ -271,13 +271,13 @@ describe('ServiceAvailability', function () {
 
         it('should not add availability if startTime is within existing duration)', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T12:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T10:30:00.000Z"),
+                endTime: new Date("2015-10-01T12:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[1].isSelected = true;
@@ -296,13 +296,13 @@ describe('ServiceAvailability', function () {
 
         it('should add availability if startTime falls on existing duration endTime)', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T10:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T12:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T10:30:00.000Z"),
+                endTime: new Date("2015-10-01T12:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[1].isSelected = true;
@@ -322,13 +322,13 @@ describe('ServiceAvailability', function () {
 
         it('should not add availability if new duration is within existing duration)', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T09:45:00.000Z").toString(),
-                endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:45:00.000Z"),
+                endTime: new Date("2015-10-01T10:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[1].isSelected = true;
@@ -347,13 +347,13 @@ describe('ServiceAvailability', function () {
 
         it('should not add availability if duration equals existing duration )', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
 
@@ -372,13 +372,13 @@ describe('ServiceAvailability', function () {
 
         it('should add availability(duration matches but not days)', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
 
@@ -416,8 +416,8 @@ describe('ServiceAvailability', function () {
 
     it('should not delete availability if not confirmed', function () {
         var availability1 = {
-            startTime: new Date().toString(),
-            endTime: new Date().toString(),
+            startTime: new Date(),
+            endTime: new Date(),
             days: 2
         };
         scope.availabilityList = [availability1];
@@ -437,13 +437,13 @@ describe('ServiceAvailability', function () {
 
     it('should delete availability from weeklyAvailability list if confirmed', function () {
         var availability1 = {
-            startTime: new Date().toString(),
-            endTime: new Date().toString(),
+            startTime: new Date(),
+            endTime: new Date(),
             days: angular.copy(days)
         };
         var availability2 = {
-            startTime: new Date().toString(),
-            endTime: new Date().toString(),
+            startTime: new Date(),
+            endTime: new Date(),
             days: angular.copy(days)
         };
         availability1.days[1].isSelected = true;
@@ -469,8 +469,8 @@ describe('ServiceAvailability', function () {
     it('should change state to edit and take backup availability on enableEdit', function () {
         scope.state = 2;
         scope.availability = {
-            startTime: new Date().toString(),
-            endTime: new Date().toString(),
+            startTime: new Date(),
+            endTime: new Date(),
             days: angular.copy(days)
         };
         scope.availability.days[1].isSelected = true;
@@ -490,8 +490,8 @@ describe('ServiceAvailability', function () {
     it('should change state to readonly and restore availability on cancel', function () {
         scope.state = 1;
         scope.availability = {
-            startTime: new Date().toString(),
-            endTime: new Date().toString(),
+            startTime: new Date(),
+            endTime: new Date(),
             days: angular.copy(days)
         };
         scope.availability.days[1].isSelected = true;
@@ -510,13 +510,13 @@ describe('ServiceAvailability', function () {
     describe('updateAvailability', function () {
         it('should update availability on weeklyAvailability list and set its state to read only', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[3].isSelected = true;
@@ -531,8 +531,8 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
             compiledElementScope.backUpAvailability = availability1;
             compiledElementScope.availability = {
-                startTime: new Date("2015-10-01T04:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T08:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T04:30:00.000Z"),
+                endTime: new Date("2015-10-01T08:30:00.000Z"),
                 days: angular.copy(days)
             };
             compiledElementScope.availability.days[0].isSelected = true;
@@ -547,8 +547,8 @@ describe('ServiceAvailability', function () {
 
         it('should add availability even if it overlaps with availability in list at the same index', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[2].isSelected = true;
@@ -561,8 +561,8 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.availabilityList[0]).toEqual(availability1);
             compiledElementScope.backUpAvailability = availability1;
             compiledElementScope.availability = {
-                startTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:00:00.000Z").toString(),
+                startTime: new Date("2015-10-01T10:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:00:00.000Z"),
                 days: angular.copy(days)
             };
             compiledElementScope.availability.days[0].isSelected = true;
@@ -576,13 +576,13 @@ describe('ServiceAvailability', function () {
 
         it('should not update availability if endTime is within existing duration)', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T08:30:00.000Z"),
+                endTime: new Date("2015-10-01T10:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[2].isSelected = true;
@@ -597,8 +597,8 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
             compiledElementScope.backUpAvailability = availability1;
             compiledElementScope.availability = {
-                startTime: new Date("2015-10-01T07:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T09:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T07:30:00.000Z"),
+                endTime: new Date("2015-10-01T09:30:00.000Z"),
                 days: angular.copy(days)
             };
             compiledElementScope.availability.days[0].isSelected = true;
@@ -611,13 +611,13 @@ describe('ServiceAvailability', function () {
 
         it('should add availability if endTime falls on existing duration startTime)', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T10:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[2].isSelected = true;
@@ -632,8 +632,8 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
             compiledElementScope.backUpAvailability = availability2;
             compiledElementScope.availability = {
-                startTime: new Date("2015-10-01T07:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T09:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T07:30:00.000Z"),
+                endTime: new Date("2015-10-01T09:30:00.000Z"),
                 days: angular.copy(days)
             };
             compiledElementScope.availability.days[2].isSelected = true;
@@ -648,13 +648,13 @@ describe('ServiceAvailability', function () {
 
         it('should not add availability if startTime is within existing duration', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T08:30:00.000Z"),
+                endTime: new Date("2015-10-01T10:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[2].isSelected = true;
@@ -669,8 +669,8 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
             compiledElementScope.backUpAvailability = availability1;
             compiledElementScope.availability = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             compiledElementScope.availability.days[0].isSelected = true;
@@ -683,13 +683,13 @@ describe('ServiceAvailability', function () {
 
         it('should add availability if startTime falls on existing duration endTime)', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[2].isSelected = true;
@@ -704,8 +704,8 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
             compiledElementScope.backUpAvailability = availability1;
             compiledElementScope.availability = {
-                startTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T12:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T11:30:00.000Z"),
+                endTime: new Date("2015-10-01T12:30:00.000Z"),
                 days: angular.copy(days)
             };
             compiledElementScope.availability.days[2].isSelected = true;
@@ -720,13 +720,13 @@ describe('ServiceAvailability', function () {
 
         it('should not add availability if duration is within existing duration)', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T12:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T08:30:00.000Z"),
+                endTime: new Date("2015-10-01T12:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[2].isSelected = true;
@@ -741,8 +741,8 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
             compiledElementScope.backUpAvailability = availability1;
             compiledElementScope.availability = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             compiledElementScope.availability.days[2].isSelected = true;
@@ -755,13 +755,13 @@ describe('ServiceAvailability', function () {
 
         it('should not add availability if duration equals existing duration )', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T07:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T07:30:00.000Z"),
+                endTime: new Date("2015-10-01T10:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[2].isSelected = true;
@@ -776,8 +776,8 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
             compiledElementScope.backUpAvailability = availability1;
             compiledElementScope.availability = {
-                startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T09:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T08:30:00.000Z"),
+                endTime: new Date("2015-10-01T09:30:00.000Z"),
                 days: angular.copy(days)
             };
             compiledElementScope.availability.days[2].isSelected = true;
@@ -790,13 +790,13 @@ describe('ServiceAvailability', function () {
 
         it('should add availability if duration matches but not days)', function () {
             var availability1 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             var availability2 = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             availability1.days[2].isSelected = true;
@@ -811,8 +811,8 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
             compiledElementScope.backUpAvailability = availability1;
             compiledElementScope.availability = {
-                startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
+                startTime: new Date("2015-10-01T09:30:00.000Z"),
+                endTime: new Date("2015-10-01T11:30:00.000Z"),
                 days: angular.copy(days)
             };
             compiledElementScope.availability.days[0].isSelected = true;

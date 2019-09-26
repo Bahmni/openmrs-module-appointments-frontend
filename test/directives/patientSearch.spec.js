@@ -29,14 +29,13 @@ describe("Patient Search", function () {
         httpBackend = $httpBackend;
         httpBackend.expectGET('../i18n/appointments/locale_en.json').respond({});
         httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
-        httpBackend.expectGET('../appointments/views/manage/patientSearch.html').respond('<div></div>');
+        // httpBackend.expectGET('../appointments/views/manage/patientSearch.html').respond('<div></div>');
     }));
 
     var createElement = function () {
         var html = '<patient-search on-search="displaySearchedPatient"></patient-search>';
         scope.displaySearchedPatient = jasmine.createSpy('displaySearchedPatient');
         scope.displaySearchedPatient.and.returnValue({});
-
         var element = compile(angular.element(html))(scope);
         scope.$digest();
         httpBackend.flush();

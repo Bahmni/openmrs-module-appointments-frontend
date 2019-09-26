@@ -308,11 +308,12 @@ describe("AppointmentServiceController", function () {
 
         it('should open confirmation dialog if we change the state', function () {
             scope.$broadcast("$stateChangeStart");
-            expect(ngDialog.openConfirm).toHaveBeenCalledWith({
-                template: 'views/admin/appointmentServiceNavigationConfirmation.html',
-                scope: scope,
-                closeByEscape: true
-            });
+
+            let args = ngDialog.openConfirm.calls.allArgs()[0][0];
+            expect(args.plain).toBeTruthy();
+            expect(args.template).toContain("<p>{{'NAVIGATION_CONFIRMATION_DIALOG_MESSAGE_KEY' | translate}}</p>");
+            expect(args.scope).toEqual(scope);
+            expect(args.closeByEscape).toBeTruthy();
         });
 
         it('should stay in current state if Cancel is selected', function () {

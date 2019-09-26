@@ -28,11 +28,12 @@ describe('checkinPopUp', function () {
     it('should open ngDialog with properties', function () {
         var config = {scope: popUpScope};
         checkinPopUp(config);
-        expect(ngDialog.open).toHaveBeenCalledWith({
-            template: '../appointments/views/checkInPopUp.html',
-            scope: popUpScope,
-                className: 'ngdialog-theme-default'
-        });
+
+        let args = ngDialog.open.calls.allArgs()[0][0];
+        expect(args.plain).toBeTruthy();
+        expect(args.template).toContain("<b>{{::'APPOINTMENT_CHECKIN_TIME_KEY' | translate}}:</b><sup class=\"asterick\">*</sup>");
+        expect(args.scope).toEqual(popUpScope);
+        expect(args.className).toEqual('ngdialog-theme-default');
     });
 
     it('should call ngDialog close with two arguments on popUp close', function () {
