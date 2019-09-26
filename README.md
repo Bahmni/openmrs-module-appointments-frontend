@@ -34,3 +34,6 @@ Few libraries(angular, jquery) used in BahmniApps export themselves as global va
 * Take a backup of `/var/www/bahmniapps/appointments`.(vagrant)
 * Replace content of `/var/www/bahmniapps/appointments` with generated `dist` folder content.(Vagrant)
 * Go to bahmni Appointment scheduling UI. It should serve new appointments content.  
+
+## Running Tests
+* Run `npm run test`.
