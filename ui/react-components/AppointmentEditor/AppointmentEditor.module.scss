@@ -1,0 +1,19 @@
+.appointmenteditor {
+    width: 98%;
+    z-index: 20;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 12px;
+    background-color: #f2f2f2;
+}
+
+.overlay{
+   position: absolute;
+   width: 100%;
+   right: 0;
+   top: 0;
+   z-index: 19;
+   height: 100%;
+}
