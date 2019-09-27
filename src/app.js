@@ -97,7 +97,7 @@ angular
                 },
                 views: {
                     'content@appointment': {
-                        template: '<react-add-appointment-wrapper />'
+                        template: '<react-add-appointment/>'
                     }
                 },
                 resolve: {
