@@ -4,7 +4,6 @@ import {appointmenteditor, overlay} from './AppointmentEditor.module.scss';
 
 export const AppointmentEditor = () => {
     return (<Fragment>
-        <div data-testid="overlay" className={classNames(overlay)}></div>
         <div data-testid="appointment-editor"
              className={classNames(appointmenteditor)}>
         </div>
