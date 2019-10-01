@@ -9,4 +9,4 @@ export const AppointmentEditor = () => {
              className={classNames(appointmenteditor)}>
         </div>
     </Fragment>);
-}
+};
