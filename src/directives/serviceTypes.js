@@ -2,7 +2,7 @@
 
 angular.module('bahmni.appointments')
     .directive('serviceTypes', ['ngDialog', 'messagingService', 'appointmentsService', function (ngDialog, messagingService, appointmentsService) {
-        var controller = function ($scope) {
+        var controller = ['$scope', function ($scope) {
             $scope.serviceType = {};
 
             $scope.updateServiceTypeDuration = function () {
@@ -67,7 +67,7 @@ angular.module('bahmni.appointments')
             $scope.cancelTransition = function () {
                 ngDialog.close();
             };
-        };
+        }];
 
         return {
             restrict: 'E',

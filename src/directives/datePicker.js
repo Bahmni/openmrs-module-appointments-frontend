@@ -2,7 +2,7 @@
 
 angular.module('bahmni.appointments')
     .directive('datePicker', function () {
-        var controller = function ($scope) {
+        var controller = ['$scope', function ($scope) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var init = function () {
                 if (!$scope.viewDate) {
@@ -49,7 +49,8 @@ angular.module('bahmni.appointments')
                 viewDateChange();
             };
             init();
-        };
+        }];
+
         return {
             restrict: "E",
             scope: {

@@ -33,10 +33,10 @@ angular
                     backLinks: []
                 },
                 resolve: {
-                    initializeConfig: function (initialization, $stateParams) {
-                        return initialization($stateParams.appName);
-                    }
-                }
+                    initializeConfig: ['initialization', '$stateParams', function (initialization, $stateParams) {
+                            return initialization($stateParams.appName);
+                        }
+                    ]}
             }).state('home.manage', {
                 url: '/manage',
                 views: {
@@ -102,12 +102,12 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentContext: function (appointmentInitialization, $stateParams) {
+                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
                         return appointmentInitialization($stateParams);
-                    },
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                    }],
+                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
                         return appointmentConfigInitialization(appointmentContext);
-                    }
+                    }]
                 }
             }).state('home.manage.appointments.calendar.edit', {
                 url: '/:uuid',
@@ -118,12 +118,12 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentContext: function (appointmentInitialization, $stateParams) {
+                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
                         return appointmentInitialization($stateParams);
-                    },
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                    }],
+                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
                         return appointmentConfigInitialization(appointmentContext);
-                    }
+                    }]
                 }
             }).state('home.manage.appointments.list', {
                 url: '/list',
@@ -149,12 +149,12 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentContext: function (appointmentInitialization, $stateParams) {
+                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
                         return appointmentInitialization($stateParams);
-                    },
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                    }],
+                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
                         return appointmentConfigInitialization(appointmentContext);
-                    }
+                    }]
                 }
             }).state('home.manage.appointments.list.edit', {
                 url: '/:uuid',
@@ -165,12 +165,12 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentContext: function (appointmentInitialization, $stateParams) {
+                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
                         return appointmentInitialization($stateParams);
-                    },
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                    }],
+                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
                         return appointmentConfigInitialization(appointmentContext);
-                    }
+                    }]
                 }
             }).state('home.admin', {
                 url: '/admin',
@@ -197,10 +197,10 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentServiceContext: function (appointmentServiceInitialization, $stateParams) {
+                    appointmentServiceContext: ['appointmentServiceInitialization', '$stateParams', function (appointmentServiceInitialization, $stateParams) {
                         return appointmentServiceInitialization($stateParams.uuid);
                     }
-                }
+                    ]                }
             });
 
             $bahmniTranslateProvider.init({app: 'appointments', shouldMerge: true});

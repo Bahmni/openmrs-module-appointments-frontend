@@ -31,7 +31,6 @@ require("../lib/jquery/jquery.cookie.custom");
 require("ng-tags-input");
 
 require("angular-sanitize");
-require("moment/min/moment-with-locales.min.js");
 require("ng-infinite-scroll");
 require("angular-bindonce/bindonce");
 require("select2");
