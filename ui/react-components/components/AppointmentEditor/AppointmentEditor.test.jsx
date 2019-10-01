@@ -8,11 +8,6 @@ describe('Appointment Editor', () => {
         expect(container.hasChildNodes()).toBeTruthy();
     });
 
-    it('should have an overlay div', () => {
-        const {getByTestId} = render(<AppointmentEditor/>);
-        expect(getByTestId('overlay')).not.toBeNull();
-    });
-
     it('should have an appointment-editor div', () => {
         const {getByTestId} = render(<AppointmentEditor/>);
         expect(getByTestId('appointment-editor')).not.toBeNull();
