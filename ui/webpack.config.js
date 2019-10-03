@@ -61,7 +61,7 @@ module.exports = function (webpackEnv) {
     };
     return {
         entry: {
-            reactAngularAdaptor: rootDir + '/reactAngularAdaptor.js'
+            reactAngularAdaptor: ['babel-polyfill', rootDir + '/reactAngularAdaptor.js']
         },
         output: {
             path: rootDir + '/dist/components',
