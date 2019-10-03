@@ -1,10 +1,18 @@
 .appointmenteditor {
-    width: 100%;
-    z-index: 31;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    border-radius: 12px;
-    background-color: #f2f2f2;
+  width: 100%;
+  z-index: 31;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 12px;
+  background-color: #ffffff;
+
+  .patientSearch {
+    top: 50px;
+    position: relative;
+    width: 15%;
+    padding-left: 2%;
+    padding-top: 5%;
+  }
 }
