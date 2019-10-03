@@ -1,22 +1,59 @@
-import React, {Component} from 'react';
-import AysncSelect from "react-select/async";
+import React, {Component} from "react";
+import {components} from "react-select";
+import AsyncSelect from "react-select/async";
+import {searchIcon, resetSelectContainer} from './Dropdown.module.scss';
+import classNames from 'classnames';
 
-export default class Dropdown extends Component{
-    constructor(props) {
-        super(props);
-        this.state = { inputValue: ""};
-        this.handleInputChange = this.handleInputChange.bind(this);
-    };
-    handleInputChange(input){
-        const inputValue = input.replace(/\W/g, "");
-        this.setState({inputValue});
-        return inputValue;
-    }
+const valueContainerStyles = {
+    paddingLeft: '24px'
+}
 
-    render() {
-        const {loadOptions} = this.props;
-        return (<div data-testid="asyncSelect"> <AysncSelect
-            loadOption={loadOptions}
-            onInputChange={this.handleInputChange} /> </div> )
-    }
+const controlStyles = {
+    border: '0px',
+    borderBottom: '1px solid #979797'
+}
+
+const IndicatorSeparator = () => null;
+const ValueContainer = ({ children, ...props }) => {
+    return (
+        components.ValueContainer && (
+            <components.ValueContainer {...props}>
+                {!!children && (
+                    <i
+                        className={classNames("fa", "fa-search", searchIcon)}
+                        aria-hidden="true"
+                    />
+                )}
+                {children}
+            </components.ValueContainer>
+        )
+    );
+}
+
+const styles = {
+    valueContainer: base => ({
+        ...base,
+        ...valueContainerStyles
+    }),
+    control: (base, state) => ({
+        ...base,
+        ...controlStyles
+    })
 };
+
+const Dropdown = (props) => {
+    const {loadOptions} = props;
+
+    return (
+        <div data-testid="asyncSelect">
+            <AsyncSelect
+                loadOptions={loadOptions}
+                components={{IndicatorSeparator, ValueContainer}}
+                className={classNames(resetSelectContainer, 'reset-select-container')}
+                classNamePrefix="react-select"
+            />
+        </div>
+    );
+}
+
+export default Dropdown;
