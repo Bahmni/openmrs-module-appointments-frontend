@@ -29,11 +29,11 @@ const Dropdown = (props) => {
         <div data-testid="asyncSelect">
             <AsyncSelect
                 cacheOptions
-                className={classNames(resetSelectContainer, 'reset-select-container')}
+                className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"
                 components={{IndicatorSeparator, ValueContainer}}
                 loadOptions={loadOptions}
-                noOptionsMessage={({ inputValue }) => !inputValue && 'Type to search'}
+                noOptionsMessage={() => 'Type to search'}
                 placeholder={placeholder}
             />
         </div>

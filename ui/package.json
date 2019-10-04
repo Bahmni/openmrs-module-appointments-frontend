@@ -28,6 +28,7 @@
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@testing-library/jest-dom": "^4.1.0",
     "@testing-library/react": "^9.1.4",
     "babel-core": "^6.26.3",
     "babel-jest": "^24.9.0",
@@ -79,6 +80,7 @@
     "postcss-normalize": "^8.0.1",
     "postcss-preset-env": "^6.7.0",
     "react-dev-utils": "^9.0.4",
+    "react-select-event": "^2.1.1",
     "resolve-url-loader": "^3.1.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
@@ -129,6 +131,5 @@
       "json",
       "jsx"
     ]
-
   }
 }
