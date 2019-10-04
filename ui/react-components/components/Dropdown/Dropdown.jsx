@@ -3,15 +3,7 @@ import {components} from "react-select";
 import AsyncSelect from "react-select/async";
 import {searchIcon, resetSelectContainer} from './Dropdown.module.scss';
 import classNames from 'classnames';
-
-const valueContainerStyles = {
-    paddingLeft: '24px'
-}
-
-const controlStyles = {
-    border: '0px',
-    borderBottom: '1px solid #979797'
-}
+import {PropTypes} from 'prop-types';
 
 const IndicatorSeparator = () => null;
 const ValueContainer = ({ children, ...props }) => {
@@ -28,32 +20,29 @@ const ValueContainer = ({ children, ...props }) => {
             </components.ValueContainer>
         )
     );
-}
-
-const styles = {
-    valueContainer: base => ({
-        ...base,
-        ...valueContainerStyles
-    }),
-    control: (base, state) => ({
-        ...base,
-        ...controlStyles
-    })
 };
 
 const Dropdown = (props) => {
-    const {loadOptions} = props;
+    const {loadOptions, placeholder} = props;
 
     return (
         <div data-testid="asyncSelect">
             <AsyncSelect
-                loadOptions={loadOptions}
-                components={{IndicatorSeparator, ValueContainer}}
+                cacheOptions
                 className={classNames(resetSelectContainer, 'reset-select-container')}
                 classNamePrefix="react-select"
+                components={{IndicatorSeparator, ValueContainer}}
+                loadOptions={loadOptions}
+                noOptionsMessage={({ inputValue }) => !inputValue && 'Type to search'}
+                placeholder={placeholder}
             />
         </div>
     );
 }
 
 export default Dropdown;
+
+Dropdown.propTypes = {
+    loadOptions: PropTypes.func,
+    placeholder: PropTypes.string
+};
