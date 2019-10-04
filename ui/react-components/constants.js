@@ -4,4 +4,4 @@ const bahmniCore = `${restWestV1}/bahmnicore`;
 
 export const searchPatientUrl = `${bahmniCore}/search/patient`;
 
-
+export const appName = 'appointments';

@@ -12,7 +12,9 @@
   }
   div[class^='react-select__control']{
     border:0px;
+    border-radius: 0px;
     border-bottom: 1px solid $border-color;
+    box-shadow: none;
   }
 }
 

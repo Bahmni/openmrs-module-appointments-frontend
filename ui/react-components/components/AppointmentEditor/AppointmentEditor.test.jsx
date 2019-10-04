@@ -1,15 +1,15 @@
-import {render} from "@testing-library/react";
 import React from "react";
 import {AppointmentEditor} from './AppointmentEditor.jsx';
+import {renderWithReactIntl} from '../../utils/TestUtil';
 
 describe('Appointment Editor', () => {
     it('should render an editor', () => {
-        const {container} = render(<AppointmentEditor/>);
+        const {container} = renderWithReactIntl(<AppointmentEditor/>);
         expect(container.hasChildNodes()).toBeTruthy();
     });
 
     it('should have an appointment-editor div', () => {
-        const {getByTestId} = render(<AppointmentEditor/>);
+        const {getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
         expect(getByTestId('appointment-editor')).not.toBeNull();
     });
 });

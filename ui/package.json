@@ -1,0 +1,134 @@
+{
+  "name": "bahmni.apps",
+  "version": "0.0.1",
+  "description": "Bahmni Apps",
+  "main": "app/app.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "babel-polyfill": "^6.26.0",
+    "classnames": "^2.2.6",
+    "js-cookie": "^2.2.1",
+    "lodash": "^4.17.15",
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-intl": "^3.3.2",
+    "react-redux": "^7.1.1",
+    "react-select": "^3.0.6",
+    "react2angular": "^4.0.6",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@testing-library/react": "^9.1.4",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^3.2.0",
+    "eslint-config-angular": "^0.5.0",
+    "eslint-config-semistandard": "^7.0.0",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-angular": "^1.4.1",
+    "eslint-plugin-promise": "^3.3.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "grunt": "~0.4.5",
+    "grunt-comment-toggler": "^0.2.2",
+    "grunt-contrib-clean": "0.6.0",
+    "grunt-contrib-compass": "~0.8.0",
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-contrib-copy": "0.6.0",
+    "grunt-contrib-cssmin": "~0.10.0",
+    "grunt-contrib-htmlmin": "~0.3.0",
+    "grunt-contrib-imagemin": "~0.1.2",
+    "grunt-contrib-uglify": "~0.11.0",
+    "grunt-eslint": "^19.0.0",
+    "grunt-filerev": "^0.2.1",
+    "grunt-hologram": "0.0.4",
+    "grunt-istanbul-coverage": "0.0.5",
+    "grunt-karma": "^2.0.0",
+    "grunt-ng-annotate": "^1.0.1",
+    "grunt-preprocess": "^5.0.1",
+    "grunt-regarde": "~0.1.1",
+    "grunt-rename": "~0.1.3",
+    "grunt-usemin": "~2.2.0",
+    "identity-obj-proxy": "^3.0.0",
+    "intl": "^1.2.5",
+    "jest": "^24.9.0",
+    "jest-mock-axios": "^3.1.1",
+    "karma": "^0.13.00",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "~0.2.4",
+    "karma-firefox-launcher": "~0.1.7",
+    "karma-jasmine": "~0.2.0",
+    "karma-junit-reporter": "^0.2.2",
+    "karma-ng-html2js-preprocessor": "^0.1.2",
+    "matchdep": "^0.3.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
+    "postcss-flexbugs-fixes": "^4.1.0",
+    "postcss-loader": "^3.0.0",
+    "postcss-normalize": "^8.0.1",
+    "postcss-preset-env": "^6.7.0",
+    "react-dev-utils": "^9.0.4",
+    "resolve-url-loader": "^3.1.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "scripts": {
+    "test": "karma start test/config/karma.conf.js",
+    "test-react": "jest",
+    "test-react-watch": "jest --watch",
+    "build-react": "webpack --env=production",
+    "build-react-dev": "webpack --env=developemnt --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Bhamni/opd.git"
+  },
+  "author": "bahmni@thoughtworks.com",
+  "license": "Apache-2.0",
+  "gitHead": "d292a992ce359f79a807fd7d75505e45cb631b80",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/Bhamni/opd/issues"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/react-components"
+    ],
+    "collectCoverageFrom": [
+      "react-components/**/*.{js,jsx}"
+    ],
+    "testMatch": [
+      "<rootDir>/react-components/**/*.{spec,test}.{js,jsx}"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx"
+    ]
+
+  }
+}
