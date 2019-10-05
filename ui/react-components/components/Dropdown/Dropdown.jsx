@@ -23,7 +23,7 @@ const ValueContainer = ({ children, ...props }) => {
 };
 
 const Dropdown = (props) => {
-    const {loadOptions, placeholder} = props;
+    const {loadOptions, placeholder, onChange} = props;
 
     return (
         <div data-testid="asyncSelect">
@@ -34,6 +34,7 @@ const Dropdown = (props) => {
                 components={{IndicatorSeparator, ValueContainer}}
                 loadOptions={loadOptions}
                 noOptionsMessage={() => 'Type to search'}
+                onChange={onChange}
                 placeholder={placeholder}
             />
         </div>
@@ -44,5 +45,6 @@ export default Dropdown;
 
 Dropdown.propTypes = {
     loadOptions: PropTypes.func,
+    onChange: PropTypes.func,
     placeholder: PropTypes.string
 };
