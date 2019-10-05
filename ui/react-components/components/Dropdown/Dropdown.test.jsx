@@ -74,4 +74,18 @@ describe('Dropdown', () => {
         const searchIcon = container.querySelector('.fa-search');
         expect(searchIcon).toBeInTheDocument();
     });
+
+    it('should call onChange when option is selected', async () => {
+        const placeholder = 'placeholder';
+        const onChnageSpy = jest.fn();
+        const {container, getByText, queryByText} = render(
+            <Dropdown placeholder={placeholder}
+                      loadOptions={loadOptions}
+                      onChange={onChnageSpy} />);
+        const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.change(inputBox, { target: { value: "oc" } });
+        await waitForElement(() => getByText('Ocean'));
+        await selectEvent.select(inputBox, "Ocean");
+        expect(onChnageSpy).toHaveBeenCalledTimes(1);
+    });
 });
