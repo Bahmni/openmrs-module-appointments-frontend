@@ -61,7 +61,7 @@ module.exports = {
         new webpack.ProvidePlugin({
             'jQuery': path.join(__dirname, 'node_modules', 'jquery/jquery'),
             'angular': path.join(__dirname, 'node_modules', 'angular'),
-            'ZeroClipboard': path.join(__dirname, 'node_modules', 'ZeroClipboard'),
+            'ZeroClipboard': path.join(__dirname, 'node_modules', 'zeroclipboard'),
             'moment': path.join(__dirname, 'node_modules', 'moment/min/moment-with-locales')
         }),
         new HtmlWebpackPlugin({
