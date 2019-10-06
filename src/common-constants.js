@@ -98,7 +98,8 @@ Bahmni.Common = Bahmni.Common || {};
         appointmentServiceUrl: RESTWS_V1 + "/appointmentService",
         localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
         privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED",
-        defaultPossibleRelativeSearchLimit: 10
+        defaultPossibleRelativeSearchLimit: 10,
+        fetchLoginLocationURL: RESTWS_V1 + "/appui/session"
     };
 })();
 
