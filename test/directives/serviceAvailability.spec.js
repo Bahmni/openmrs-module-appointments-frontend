@@ -60,7 +60,7 @@ describe('ServiceAvailability', function () {
         var element = createElement();
         var compiledElementScope = element.isolateScope();
 
-        expect(scope.availability).toEqual({});
+        expect(scope.availability).toEqual({days: angular.copy(days)});
         expect(compiledElementScope.startOfWeek).toBe(3);
     });
 
@@ -123,7 +123,7 @@ describe('ServiceAvailability', function () {
             var element = createElement();
             var compiledElementScope = element.isolateScope();
 
-            expect(scope.availability).toEqual({});
+            expect(scope.availability).toEqual({days: angular.copy(days)});
             expect(compiledElementScope.isValid()).toBeFalsy();
         });
 
