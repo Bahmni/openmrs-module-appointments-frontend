@@ -3,7 +3,7 @@ import {components} from "react-select";
 import AsyncSelect from "react-select/async";
 import {searchIcon, resetSelectContainer} from './Dropdown.module.scss';
 import classNames from 'classnames';
-import {PropTypes} from 'prop-types';
+import PropTypes from 'prop-types';
 
 const IndicatorSeparator = () => null;
 const ValueContainer = ({ children, ...props }) => {
