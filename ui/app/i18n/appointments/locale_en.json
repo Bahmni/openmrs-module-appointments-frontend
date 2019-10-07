@@ -160,5 +160,6 @@
   "EDIT_LABEL": "Edit",
   "SELECT_APPOINTMENT_PROVIDER": "Select Provider",
   "INVITED_PROVIDERS": "Invitees",
-  "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Remove"
+  "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Remove",
+  "dropdown.no-options-message" : "Type to search"
 }
