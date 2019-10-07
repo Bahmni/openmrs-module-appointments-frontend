@@ -89,4 +89,17 @@ describe('Dropdown', () => {
         await selectEvent.select(inputBox, "Ocean");
         expect(onChnageSpy).toHaveBeenCalledTimes(1);
     });
+
+    it('should translate no option message if translation message is provided', async () => {
+        const placeholder = 'placeholder';
+        const noOptionMessage = 'no option message';
+        const {container, getByText, queryByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>,
+            {'dropdown.no-options-message': noOptionMessage});
+        const querySelector = container.querySelector('.react-select__control');
+        fireEvent.keyDown(querySelector, { key: 'ArrowDown', keyCode: 40 });
+        const noOption = await waitForElement(() => getByText(noOptionMessage));
+        expect(noOption).not.toBeNull();
+        const typeToSearchOption = await queryByText(typeToSearch);
+        expect(typeToSearchOption).toBeNull();
+    });
 });
