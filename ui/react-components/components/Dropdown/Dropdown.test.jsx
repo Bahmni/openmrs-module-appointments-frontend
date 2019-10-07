@@ -4,6 +4,7 @@ import Dropdown from "./Dropdown.jsx";
 import selectEvent from "react-select-event";
 import {toHaveTextContent} from '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
+import {renderWithReactIntl} from '../../utils/TestUtil';
 
 const loadOptions = (inputValue, callback) => {
     // eslint-disable-next-line angular/timeout-service
@@ -34,13 +35,13 @@ const typeToSearch = 'Type to search';
 describe('Dropdown', () => {
     it('should show the passed placeholder by default', () => {
         const placeholder = 'placeholder';
-        const {getByText} = render(<Dropdown placeholder={placeholder}/>);
+        const {getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>);
         getByText(placeholder);
     });
 
     it('should show Type to search when dropdown is empty and selected', async () => {
         const placeholder = 'placeholder';
-        const {container, getByText} = render(<Dropdown placeholder={placeholder}/>);
+        const {container, getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>);
         const querySelector = container.querySelector('.react-select__control');
         fireEvent.keyDown(querySelector, { key: 'ArrowDown', keyCode: 40 });
         const noOption = await waitForElement(() => getByText(typeToSearch));
@@ -49,7 +50,7 @@ describe('Dropdown', () => {
 
     it('should display options on search of available value', async () => {
         const placeholder = 'placeholder';
-        const {container, getByText, queryByText} = render(<Dropdown placeholder={placeholder} loadOptions={loadOptions}/>);
+        const {container, getByText, queryByText} = renderWithReactIntl(<Dropdown placeholder={placeholder} loadOptions={loadOptions}/>);
         const inputBox = container.querySelector('.react-select__input input');
         fireEvent.change(inputBox, { target: { value: "oc" } });
         await waitForElement(() => getByText('Ocean'));
@@ -61,7 +62,7 @@ describe('Dropdown', () => {
 
     it('should not display options on search of unavailable value', async () => {
         const placeholder = 'placeholder';
-        const {container, getByText} = render(<Dropdown placeholder={placeholder} loadOptions={loadOptions}/>);
+        const {container, getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder} loadOptions={loadOptions}/>);
         const inputBox = container.querySelector('.react-select__input input');
         fireEvent.change(inputBox, { target: { value: "ab" } });
         const noOption = await waitForElement(() => getByText(typeToSearch));
@@ -70,7 +71,7 @@ describe('Dropdown', () => {
 
     it('should display a search icon', () => {
         const placeholder = 'placeholder';
-        const {container} = render(<Dropdown placeholder={placeholder}/>);
+        const {container} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>);
         const searchIcon = container.querySelector('.fa-search');
         expect(searchIcon).toBeInTheDocument();
     });
@@ -78,7 +79,7 @@ describe('Dropdown', () => {
     it('should call onChange when option is selected', async () => {
         const placeholder = 'placeholder';
         const onChnageSpy = jest.fn();
-        const {container, getByText, queryByText} = render(
+        const {container, getByText, queryByText} = renderWithReactIntl(
             <Dropdown placeholder={placeholder}
                       loadOptions={loadOptions}
                       onChange={onChnageSpy} />);
