@@ -5,7 +5,6 @@ import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 
 export const AppointmentEditor = () => {
     const [patient, setPatient] = useState();
-    console.log(patient)
     return (<Fragment>
         <div data-testid="appointment-editor"
              className={classNames(appointmenteditor)}>
