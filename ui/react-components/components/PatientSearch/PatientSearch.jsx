@@ -28,7 +28,7 @@ const PatientSearch = (props) => {
     };
 
     const {intl, onChange} = props;
-    const placeholder = intl.formatMessage({id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT'});
+    const placeholder = intl.formatMessage({id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT', defaultMessage: 'Patient Name or ID'});
     return (
         <Dropdown
             loadOptions={loadPatients}
