@@ -12,4 +12,11 @@ describe('Appointment Editor', () => {
         const {getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
         expect(getByTestId('appointment-editor')).not.toBeNull();
     });
+
+    it('should display the paitent search', () => {
+        const {container, getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
+        expect(container.querySelector('.patientSearch')).not.toBeNull();
+        expect(getByTestId('asyncSelect')).not.toBeNull();
+    });
 });
+
