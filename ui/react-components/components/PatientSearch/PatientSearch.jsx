@@ -10,9 +10,11 @@ const PatientSearch = (props) => {
         return patients.map(patient => {
             const givenName = patient.givenName ? patient.givenName : '';
             const familyName = patient.familyName ? patient.familyName : '';
+            const {identifier, uuid} = patient;
+            const name = `${givenName} ${familyName}`;
             return {
-                value: patient,
-                label: `${givenName} ${familyName} (${patient.identifier})`};
+                value: {name, identifier, uuid},
+                label: `${name} (${patient.identifier})`};
         });
     };
 
@@ -25,17 +27,19 @@ const PatientSearch = (props) => {
         }
     };
 
-    const {intl} = props;
+    const {intl, onChange} = props;
     const placeholder = intl.formatMessage({id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT'});
     return (
         <Dropdown
             loadOptions={loadPatients}
+            onChange={onChange}
             placeholder={placeholder}
         />);
 };
 
 PatientSearch.propTypes = {
-    intl: PropTypes.object.isRequired
+    intl: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 
 export default injectIntl(PatientSearch);
