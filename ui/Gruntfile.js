@@ -172,7 +172,8 @@ module.exports = function (grunt) {
         },
         useminPrepare: {
             html: [
-                '<%= yeoman.app %>/appointments/**/*.html'
+                '<%= yeoman.app %>/appointments/**/*.html',
+                '<%= yeoman.app %>/common/**/*.html'
             ],
             css: '<%= yeoman.app %>/styles/**/*.css',
             options: {
@@ -232,7 +233,8 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: '<%= yeoman.app %>',
                         src: [
-                            'appointments/**/*.html'
+                            'appointments/**/*.html',
+                            'common/**/*.html'
                         ],
                         dest: '<%= yeoman.dist %>'
                     }
