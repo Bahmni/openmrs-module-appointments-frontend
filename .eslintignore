@@ -1,6 +1,7 @@
-app/lib/
-app/components/
+lib/
 dist/
 node_modules/
+coverage/
+output/
 test/
 **/*{.,-}min.js

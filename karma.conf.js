@@ -24,7 +24,6 @@ module.exports = (config) => {
         reporters: ['junit', 'progress', 'coverage'],
         preprocessors: {
             'dist/appointment.js': ['coverage'],
-            // 'test/**/*spec1.js': ['webpack'],
         },
         coverageReporter: {
             reporters: [

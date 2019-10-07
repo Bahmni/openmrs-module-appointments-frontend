@@ -9,6 +9,10 @@
         "dev": "webpack-dev-server --mode=development",
         "test": "npm run build && karma start"
     },
+    "repository": {
+        "type" : "git",
+        "url" : "https://github.com/Bahmni/openmrs-module-appointment-frontend"
+    },
     "author": "bahmni@thoughtworks.com",
     "devDependencies": {
         "angular-mocks": "1.4.9",
