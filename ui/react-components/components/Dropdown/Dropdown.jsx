@@ -43,7 +43,7 @@ const Dropdown = (props) => {
     );
 }
 
-export default Dropdown;
+export default injectIntl(Dropdown);
 
 Dropdown.propTypes = {
     loadOptions: PropTypes.func,
