@@ -5,10 +5,8 @@ set -e
 
 BASE_DIR=`dirname $0`
 ROOT_DIR=$BASE_DIR/..
-ZIP_FILE_NAME=bahmniapps
 
 mkdir -p $ROOT_DIR/target
-rm -rf $ROOT_DIR/target/${ZIP_FILE_NAME}*.zip
 
 npm install
 bower install
@@ -29,7 +27,6 @@ XVFB_PID=$!
 echo "Starting Xvfb process $XVFB_PID"
 
 grunt web
-cd dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
 
 
 echo "Killing Xvfb process $XVFB_PID"
