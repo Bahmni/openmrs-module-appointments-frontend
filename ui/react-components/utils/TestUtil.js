@@ -3,7 +3,7 @@ import {IntlProvider} from "react-intl";
 import React from "react";
 
 export const renderWithReactIntl = component => {
-    const messages = {'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT': ''};
+    const messages = {'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT': 'Patient ID'};
     return render(
         <IntlProvider locale="en" messages={messages}>{component}
         </IntlProvider>);
