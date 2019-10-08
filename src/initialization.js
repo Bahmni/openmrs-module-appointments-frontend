@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments').factory('initialization',
-    ['authenticator', 'appService', 'spinner', 'configurations', '$http', 'openMRSHelperService', 'openMRSAuthService',
-        function (authenticator, appService, spinner, configurations, $http, openMRSHelperService, openMRSAuthService) {
+    ['authenticator', 'appService', 'spinner', 'configurations', '$q', '$http', 'openMRSHelperService', 'openMRSAuthService',
+        function (authenticator, appService, spinner, configurations, $q, $http, openMRSHelperService, openMRSAuthService) {
             return function () {
                 var loadConfigPromise = function () {
                     return configurations.load([]);
@@ -14,9 +14,10 @@ angular.module('bahmni.appointments').factory('initialization',
                 var ensureLogin = function () {
                     return openMRSHelperService.isRunningOnOpenMRS().then(
                         (isRunningOnOpenMRS) => {
-                            return isRunningOnOpenMRS ?
-                                openMRSAuthService.populateLoginDetails() :
-                                authenticator.authenticateUser()
+                            if (!isRunningOnOpenMRS) {
+                                return authenticator.authenticateUser();
+                            }
+                            return $q.all([openMRSAuthService.populateLoginDetails(), openMRSHelperService.overrideConfigUrlForOpenMRS()]);
                         });
                 };
                 return spinner.forPromise(
