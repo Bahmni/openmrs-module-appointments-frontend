@@ -13,3 +13,6 @@ export const specialityUrl = `${restWestV1}/speciality/all`;
 
 export const appName = 'appointments';
 export const locationTagName = 'Appointment Location';
+
+export const BAHMNI_CONFIG_URL = `${hostUrl}/bahmni_config/openmrs/apps`;
+export const IMPLEMENTATION_CONFIG_URL = `${hostUrl}/implementation_config/openmrs/apps`;
