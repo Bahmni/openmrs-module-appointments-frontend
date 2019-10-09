@@ -23,7 +23,7 @@ const ValueContainer = ({ children, ...props }) => {
     );
 };
 
-const Dropdown = (props) => {
+const AsyncDropdown = (props) => {
     const [inputValue, setInputValue] = useState();
     const {loadOptions, placeholder, onChange, intl} = props;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'Type to search'});
@@ -49,9 +49,9 @@ const Dropdown = (props) => {
     );
 };
 
-export default injectIntl(Dropdown);
+export default injectIntl(AsyncDropdown);;
 
-Dropdown.propTypes = {
+AsyncDropdown.propTypes = {
     loadOptions: PropTypes.func,
     onChange: PropTypes.func,
     placeholder: PropTypes.string
