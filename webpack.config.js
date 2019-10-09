@@ -42,6 +42,10 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
+                test: /\.ico$/,
+                loader: 'file-loader?name=[name].[ext]',  // <-- retain original file name
+            },
+            {
                 test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
                 loader: 'url-loader',
                 options: {

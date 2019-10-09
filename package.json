@@ -10,8 +10,8 @@
         "test": "npm run build && karma start"
     },
     "repository": {
-        "type" : "git",
-        "url" : "https://github.com/Bahmni/openmrs-module-appointment-frontend"
+        "type": "git",
+        "url": "https://github.com/Bahmni/openmrs-module-appointment-frontend"
     },
     "author": "bahmni@thoughtworks.com",
     "devDependencies": {

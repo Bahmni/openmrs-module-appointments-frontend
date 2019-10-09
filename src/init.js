@@ -12,6 +12,7 @@ angular.module('bahmni.appointments', ['ui.router', 'bahmni.common.config', 'bah
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngSanitize', 'pascalprecht.translate',
     'ngCookies', 'bahmni.common.patient', 'bahmni.common.logging', 'ui.calendar', 'monospaced.elastic', 'ivh.treeview', 'ngTagsInput', 'ngDialog']);
 
+require("./favicon.ico");
 require("../lib/jquery/jquery-ui-1.10.4.custom.min.css");
 require("ng-dialog/css/ngDialog.min.css");
 require("ng-dialog/css/ngDialog-theme-default.min.css");
