@@ -21,7 +21,7 @@ angular.module('bahmni.appointments').factory('initialization',
                         });
                 };
                 return spinner.forPromise(
-                    ensureLogin().then(initApp).then(loadConfigPromise)
+                    ensureLogin().then(initApp).then(appService.overrideConstants).then(loadConfigPromise)
                 );
             };
         }
