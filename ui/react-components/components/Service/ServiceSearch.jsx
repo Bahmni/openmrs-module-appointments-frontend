@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const ServiceSearch = (props) => {
 
-    const [placeHolder] = useState("Select your service");
+    const [placeHolder] = useState("Select a service");
     const [services, setServices] = useState([]);
 
     useEffect(() => { setServices(loadServices()) },[]);
