@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import {appointmenteditor, patientSearch} from './AppointmentEditor.module.scss';
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
+import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
 
 export const AppointmentEditor = () => {
     const [patient, setPatient] = useState();
@@ -13,6 +14,7 @@ export const AppointmentEditor = () => {
             <div className={classNames(patientSearch)}>
                 <PatientSearch onChange={(optionSelected) => setPatient(optionSelected.value) }/>
                 <ServiceSearch onChange={(optionSelected) => setServiceUuid(optionSelected.value)}/>
+                <ServiceTypeSearch serviceUuid={serviceUuid} />
             </div>
         </div>
     </Fragment>);
