@@ -1,6 +1,6 @@
 import {render, fireEvent, waitForElement, wait} from "@testing-library/react";
 import React from "react";
-import Dropdown from "./Dropdown.jsx";
+import AsyncDropdown from "./AsyncDropdown.jsx";
 import selectEvent from "react-select-event";
 import {toHaveTextContent} from '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
@@ -32,16 +32,16 @@ export const colourOptions = [
 
 const typeToSearch = 'Type to search';
 
-describe('Dropdown', () => {
+describe('AsyncDropdown', () => {
     it('should show the passed placeholder by default', () => {
         const placeholder = 'placeholder';
-        const {getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>);
+        const {getByText} = renderWithReactIntl(<AsyncDropdown placeholder={placeholder}/>);
         getByText(placeholder);
     });
 
     it('should show Type to search when dropdown is empty and selected', async () => {
         const placeholder = 'placeholder';
-        const {container, getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>);
+        const {container, getByText} = renderWithReactIntl(<AsyncDropdown placeholder={placeholder}/>);
         const querySelector = container.querySelector('.react-select__control');
         fireEvent.keyDown(querySelector, { key: 'ArrowDown', keyCode: 40 });
         const noOption = await waitForElement(() => getByText(typeToSearch));
@@ -50,7 +50,7 @@ describe('Dropdown', () => {
 
     it('should display options on search of available value', async () => {
         const placeholder = 'placeholder';
-        const {container, getByText, queryByText} = renderWithReactIntl(<Dropdown placeholder={placeholder} loadOptions={loadOptions}/>);
+        const {container, getByText, queryByText} = renderWithReactIntl(<AsyncDropdown placeholder={placeholder} loadOptions={loadOptions}/>);
         const inputBox = container.querySelector('.react-select__input input');
         fireEvent.change(inputBox, { target: { value: "oc" } });
         await waitForElement(() => getByText('Ocean'));
@@ -62,7 +62,7 @@ describe('Dropdown', () => {
 
     it('should not display options on search of unavailable value', async () => {
         const placeholder = 'placeholder';
-        const {container, getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder} loadOptions={loadOptions}/>);
+        const {container, getByText} = renderWithReactIntl(<AsyncDropdown placeholder={placeholder} loadOptions={loadOptions}/>);
         const inputBox = container.querySelector('.react-select__input input');
         fireEvent.change(inputBox, { target: { value: "ab" } });
         const noOption = await waitForElement(() => getByText(typeToSearch));
@@ -71,7 +71,7 @@ describe('Dropdown', () => {
 
     it('should display a search icon', () => {
         const placeholder = 'placeholder';
-        const {container} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>);
+        const {container} = renderWithReactIntl(<AsyncDropdown placeholder={placeholder}/>);
         const searchIcon = container.querySelector('.fa-search');
         expect(searchIcon).toBeInTheDocument();
     });
@@ -80,7 +80,7 @@ describe('Dropdown', () => {
         const placeholder = 'placeholder';
         const onChnageSpy = jest.fn();
         const {container, getByText, queryByText} = renderWithReactIntl(
-            <Dropdown placeholder={placeholder}
+            <AsyncDropdown placeholder={placeholder}
                       loadOptions={loadOptions}
                       onChange={onChnageSpy} />);
         const inputBox = container.querySelector('.react-select__input input');
@@ -93,7 +93,7 @@ describe('Dropdown', () => {
     it('should translate no option message if translation message is provided', async () => {
         const placeholder = 'placeholder';
         const noOptionMessage = 'no option message';
-        const {container, getByText, queryByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>,
+        const {container, getByText, queryByText} = renderWithReactIntl(<AsyncDropdown placeholder={placeholder}/>,
             {'DROPDOWN_NO_OPTIONS_MESSAGE': noOptionMessage});
         const querySelector = container.querySelector('.react-select__control');
         fireEvent.keyDown(querySelector, { key: 'ArrowDown', keyCode: 40 });
@@ -107,7 +107,7 @@ describe('Dropdown', () => {
         const placeholder = 'placeholder';
         const onChnageSpy = jest.fn();
         const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
-            <Dropdown placeholder={placeholder}
+            <AsyncDropdown placeholder={placeholder}
                       loadOptions={loadOptions}
                       onChange={onChnageSpy} />);
         const inputBox = container.querySelector('.react-select__input input');
@@ -125,7 +125,7 @@ describe('Dropdown', () => {
             const placeholder = 'placeholder';
             const onChnageSpy = jest.fn();
             const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
-            <Dropdown placeholder={placeholder}
+            <AsyncDropdown placeholder={placeholder}
                       loadOptions={loadOptions}
                       onChange={onChnageSpy} />);
             const inputBox = container.querySelector('.react-select__input input');

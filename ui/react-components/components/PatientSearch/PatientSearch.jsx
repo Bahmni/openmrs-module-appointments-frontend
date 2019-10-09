@@ -1,7 +1,7 @@
 import React from 'react';
 import {getPatientsByLocation} from '../../api/patientApi';
 import {currentLocation} from '../../utils/CookieUtil';
-import Dropdown from "../Dropdown/Dropdown.jsx";
+import AsyncDropdown from "../Dropdown/AsyncDropdown.jsx";
 import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 
@@ -30,7 +30,7 @@ const PatientSearch = (props) => {
     const {intl, onChange} = props;
     const placeholder = intl.formatMessage({id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT', defaultMessage: 'Patient Name or ID'});
     return (
-        <Dropdown
+        <AsyncDropdown
             loadOptions={loadPatients}
             onChange={onChange}
             placeholder={placeholder}
