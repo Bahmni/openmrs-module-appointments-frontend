@@ -1,0 +1,46 @@
+@import '../../variables.scss';
+
+.tag {
+
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+
+  .tagHolder {
+    background-color: hsl(0, 0%, 90%);
+    border-radius: 2px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 2px;
+    min-width: 0;
+    box-sizing: border-box;
+    max-width: fit-content;
+
+    .tagLabel {
+      -webkit-align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      border-radius: 2px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      padding-left: 4px;
+      padding-right: 4px;
+      box-sizing: border-box;
+    }
+
+    .tagRemove {
+
+    }
+
+    .tagRemove:hover {
+      background-color: #FFBDAD;
+      color: #DE350B;
+    }
+  }
+}
+
