@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useState} from "react";
 import {components} from "react-select";
 import AsyncSelect from "react-select/async";
 import {searchIcon, resetSelectContainer} from './Dropdown.module.scss';
@@ -24,9 +24,12 @@ const ValueContainer = ({ children, ...props }) => {
 };
 
 const Dropdown = (props) => {
+    const [inputValue, setInputValue] = useState();
     const {loadOptions, placeholder, onChange, intl} = props;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'Type to search'});
 
+    const handleOnChange = (e) => { setInputValue(''); onChange && onChange(e); };
+    const handleOnInputChange = (e, {action}) => { if (action === 'input-change') setInputValue(e); };
     return (
         <div data-testid="asyncSelect">
             <AsyncSelect
@@ -36,12 +39,15 @@ const Dropdown = (props) => {
                 components={{IndicatorSeparator, ValueContainer}}
                 loadOptions={loadOptions}
                 noOptionsMessage={() => noOptionsMessage}
-                onChange={onChange}
+                onChange={handleOnChange}
                 placeholder={placeholder}
+                onInputChange={handleOnInputChange}
+                defaultInputValue={inputValue}
+                inputValue={inputValue}
             />
         </div>
     );
-}
+};
 
 export default injectIntl(Dropdown);
 
