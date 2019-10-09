@@ -25,7 +25,7 @@ const ValueContainer = ({ children, ...props }) => {
 
 const Dropdown = (props) => {
     const {loadOptions, placeholder, onChange, intl} = props;
-    const noOptionsMessage = intl.formatMessage({id: 'dropdown.no-options-message', defaultMessage: 'Type to search'});
+    const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'Type to search'});
 
     return (
         <div data-testid="asyncSelect">
