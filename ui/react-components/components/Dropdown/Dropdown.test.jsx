@@ -94,7 +94,7 @@ describe('Dropdown', () => {
         const placeholder = 'placeholder';
         const noOptionMessage = 'no option message';
         const {container, getByText, queryByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>,
-            {'dropdown.no-options-message': noOptionMessage});
+            {'DROPDOWN_NO_OPTIONS_MESSAGE': noOptionMessage});
         const querySelector = container.querySelector('.react-select__control');
         fireEvent.keyDown(querySelector, { key: 'ArrowDown', keyCode: 40 });
         const noOption = await waitForElement(() => getByText(noOptionMessage));
