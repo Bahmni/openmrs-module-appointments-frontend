@@ -8,11 +8,25 @@
   border-radius: 12px;
   background-color: #ffffff;
 
-  .patientSearch {
+  .firstRow {
     top: 50px;
     position: relative;
-    width: 15%;
-    padding-left: 2%;
-    padding-top: 5%;
+    padding: 5% 2%;
+    display: flex;
+    justify-content: space-between;
+
+    .patientServiceSearch {
+      width: 70%;
+      display: flex;
+      > div {
+        width: 30%;
+        padding-right: 20px;
+      }
+    }
+
+    .providerSearch {
+      width: 30%;
+    }
   }
+
 }

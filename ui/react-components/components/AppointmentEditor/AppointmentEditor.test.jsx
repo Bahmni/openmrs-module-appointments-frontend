@@ -15,7 +15,7 @@ describe('Appointment Editor', () => {
 
     it('should display the paitent search', () => {
         const {container, getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
-        expect(container.querySelector('.patientSearch')).not.toBeNull();
+        expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
         expect(getByTestId('asyncSelect')).not.toBeNull();
     });
 });

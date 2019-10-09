@@ -44,7 +44,6 @@ const ServiceTypeSearch = props => {
                 placeholder={placeHolder}
                 value={selectedOption}
                 onChange={setSelectedOption}
-                isMulti={true}
             />
         </div>
     );
