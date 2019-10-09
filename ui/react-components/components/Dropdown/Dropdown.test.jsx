@@ -1,4 +1,4 @@
-import {render, fireEvent, waitForElement} from "@testing-library/react";
+import {render, fireEvent, waitForElement, wait} from "@testing-library/react";
 import React from "react";
 import Dropdown from "./Dropdown.jsx";
 import selectEvent from "react-select-event";
@@ -102,4 +102,41 @@ describe('Dropdown', () => {
         const typeToSearchOption = await queryByText(typeToSearch);
         expect(typeToSearchOption).toBeNull();
     });
+
+    it('should retain the input value when the user clicks outside', async () => {
+        const placeholder = 'placeholder';
+        const onChnageSpy = jest.fn();
+        const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
+            <Dropdown placeholder={placeholder}
+                      loadOptions={loadOptions}
+                      onChange={onChnageSpy} />);
+        const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.change(inputBox, { target: { value: "oc" } });
+        await waitForElement(() => getByText('Ocean'));
+        fireEvent.blur(inputBox);
+        const noOption = await queryByText('Ocean');
+        expect(noOption).toBeNull();
+        const inputValue = await getByText('oc');
+        expect(inputValue).not.toBeNull();
+    });
+
+    it('should retain the input value when a value is selected and user enters a new input value and clicks outside',
+        async () => {
+            const placeholder = 'placeholder';
+            const onChnageSpy = jest.fn();
+            const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
+            <Dropdown placeholder={placeholder}
+                      loadOptions={loadOptions}
+                      onChange={onChnageSpy} />);
+            const inputBox = container.querySelector('.react-select__input input');
+            fireEvent.change(inputBox, { target: { value: "oc" } });
+            await waitForElement(() => getByText('Ocean'));
+            await selectEvent.select(inputBox, "Ocean");
+            fireEvent.change(inputBox, { target: { value: "ab" } });
+            fireEvent.blur(inputBox);
+            const noOption = await queryByText('Ocean');
+            expect(noOption).toBeNull();
+            const inputValue = await getByText('ab');
+            expect(inputValue).not.toBeNull();
+        });
 });
