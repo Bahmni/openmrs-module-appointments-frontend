@@ -88,7 +88,7 @@ describe('Service Api', () => {
                 "name": "Maxillo-facial dressing",
                 "uuid": "74d43c99-fee1-4097-904a-e2292711b27f"
             }]
-        }
+        };
         mockAxios.get.mockImplementationOnce(() =>
             Promise.resolve({
                 data: mockResponse
