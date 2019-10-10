@@ -23,11 +23,11 @@ describe('Appointment Editor', () => {
         const {container, getAllByTestId} = renderWithReactIntl(<AppointmentEditor/>);
         expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
 
-        expect(container.querySelector('.patientServiceSearch')).not.toBeNull();
-        expect(container.querySelector('.patientServiceSearch').children.length).toBe(3);
-        expect(container.querySelector('.providerSearch')).not.toBeNull();
-        expect(container.querySelector('.providerSearch').children.length).toBe(1);
-        expect(getAllByTestId('select').length).toBe(3);
+        expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
+        expect(container.querySelector('.searchFieldsContainerLeft').children.length).toBe(5);
+        expect(container.querySelector('.searchFieldsContainerRight')).not.toBeNull();
+        expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(1);
+        expect(getAllByTestId('select').length).toBe(5);
     });
 });
 
