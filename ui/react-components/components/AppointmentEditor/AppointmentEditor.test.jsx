@@ -13,10 +13,21 @@ describe('Appointment Editor', () => {
         expect(getByTestId('appointment-editor')).not.toBeNull();
     });
 
-    it('should display the paitent search', () => {
+    it('should display the patient search', () => {
         const {container, getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
         expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
         expect(getByTestId('asyncSelect')).not.toBeNull();
+    });
+
+    it('should display the service search', function () {
+        const {container, getAllByTestId} = renderWithReactIntl(<AppointmentEditor/>);
+        expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
+
+        expect(container.querySelector('.patientServiceSearch')).not.toBeNull();
+        expect(container.querySelector('.patientServiceSearch').children.length).toBe(3);
+        expect(container.querySelector('.providerSearch')).not.toBeNull();
+        expect(container.querySelector('.providerSearch').children.length).toBe(1);
+        expect(getAllByTestId('select').length).toBe(3);
     });
 });
 
