@@ -11,7 +11,7 @@ export const getAllServices = async () => {
     }
 };
 
-export const getService = async (serviceUuid) => {
+export const getService = async serviceUuid => {
     try {
         const response = await axios.get(`${appointmentService}?uuid=${serviceUuid}`);
         return response.data;
