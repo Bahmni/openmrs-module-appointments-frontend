@@ -2,12 +2,17 @@ import {getAllProviders} from "../../api/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, {useEffect, useState} from "react";
 import Tags from "./Tags.jsx";
+import {forEach, find, includes, filter} from 'lodash';
+import PropTypes from "prop-types";
+import {injectIntl} from "react-intl";
 
 
 const ProviderSearch = props => {
 
-    const {onChange} = props;
-    const [placeHolder] = useState("Choose Provider");
+    const {intl, onChange} = props;
+    const placeHolder = intl.formatMessage({
+        id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PROVIDER', defaultMessage: 'Choose Provider'
+    });
     const [selectedProviders, setSelectedProviders] = useState([]);
     const [providers, setProviders] = useState([]);
     const [selectedProvider, setSelectedProvider] = useState();
@@ -23,7 +28,7 @@ const ProviderSearch = props => {
 
     const createDropdownOptions = (results) => {
         const options = [];
-        _.forEach(results, function (provider, index) {
+        forEach(results, function (provider, index) {
             options.push({
                 id: (index + 1).toString(),
                 value: provider.uuid,
@@ -36,18 +41,17 @@ const ProviderSearch = props => {
     };
 
     const onProviderSelect = selectedProviderOption => {
-        const selectedProvider = _.find(providers, ["value", selectedProviderOption.value]);
-        const updatedProviders = _.includes(selectedProviders, selectedProvider)
+        const selectedProvider = find(providers, ["value", selectedProviderOption.value]);
+        const updatedProviders = includes(selectedProviders, selectedProvider)
             ? selectedProviders
             : [...selectedProviders, selectedProvider];
-
         setSelectedProviders(updatedProviders);
         onChange(selectedProviders);
         setSelectedProvider(null);
     };
 
     const onProviderRemove = selectedProviderIdentifier => {
-        setSelectedProviders(_.filter(selectedProviders, provider => provider.id !== selectedProviderIdentifier));
+        setSelectedProviders(filter(selectedProviders, provider => provider.id !== selectedProviderIdentifier));
     };
 
     return (
@@ -63,6 +67,10 @@ const ProviderSearch = props => {
     );
 };
 
+ProviderSearch.propTypes = {
+    intl: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
+};
 
-export default ProviderSearch;
+export default injectIntl(ProviderSearch);
 
