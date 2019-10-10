@@ -12,9 +12,7 @@ export const AppointmentEditor = () => {
     const [serviceUuid, setServiceUuid] = useState('');
 
     return (<Fragment>
-        <div data-testid="appointment-editor"
-             className={classNames(appointmenteditor)}>
-
+        <div data-testid="appointment-editor" className={classNames(appointmenteditor)}>
             <div className={classNames(searchFieldsContainer)}>
                 <div className={classNames(patientServiceSearch)}>
                     <PatientSearch onChange={(optionSelected) => setPatient(optionSelected.value) }/>
