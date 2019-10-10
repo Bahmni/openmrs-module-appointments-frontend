@@ -8,7 +8,7 @@ export const servicesDefaultUrl = `${appointmentService}/all/default`;
 export const providerUrl = `${restWestV1}/provider`;
 export const providerParams = `v=custom:(display,person,uuid,retired,attributes:(attributeType:(display),value,voided))`;
 export const availableForAppointments = "Available for appointments";
-
+export const locationUrl = `${restWestV1}/location`;
 
 export const appName = 'appointments';
 
