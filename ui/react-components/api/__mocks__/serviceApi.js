@@ -26,7 +26,8 @@ const services = [{
     "creatorName": null
 }];
 
-const service =  {"appointmentServiceId": 2,
+const service = {
+    "appointmentServiceId": 2,
     "name": "Dressing",
     "description": "Dressings for orthopedic, maxillo-facial, plastic, including tissue expander",
     "speciality": {},
@@ -63,7 +64,7 @@ export const getAllServices = () => {
 export const getService = (uuid) => {
     return new Promise((resolve, reject) => {
         process.nextTick(() =>
-            resolve(service)
+            uuid === "74d43c99-fee1-4097-904a-e2292711b27f" ? resolve(service) : resolve([])
         );
     });
 };
