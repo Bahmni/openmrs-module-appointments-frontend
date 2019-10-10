@@ -13,7 +13,8 @@ const SpecialitySearch = (props) => {
     }, []);
 
     const createDropdownOptions = (specialities) => {
-        const options = [];
+        const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SPECIALITY', defaultMessage: 'Select a speciality'});
+        const options = [{value: null, label: defaultOption}];
         forEach(specialities, function (speciality) {
             options.push({
                 value: speciality.uuid,

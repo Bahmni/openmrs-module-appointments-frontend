@@ -3,10 +3,11 @@ import {getService} from "../../api/serviceApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import PropTypes from "prop-types";
 import {forEach} from 'lodash';
+import {injectIntl} from "react-intl";
 
 const ServiceTypeSearch = props => {
 
-    const {serviceUuid, onChange} = props;
+    const {intl, serviceUuid, onChange} = props;
     const [placeHolder] = useState("Service App Type");
     const [disabled, setDisabled] = useState(true);
     const [serviceTypes, setServiceTypes] = useState([]);
@@ -27,7 +28,9 @@ const ServiceTypeSearch = props => {
     };
 
     const createDropdownOptions = (results) => {
-        const options = [];
+        const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SERVICE_APPOINTMENTS_TYPE',
+            defaultMessage: 'Select a service appointment type'});
+        const options = [{value: null, label: defaultOption}];
         forEach(results, function (serviceType) {
             options.push({
                 value: serviceType.uuid,
@@ -56,7 +59,9 @@ const ServiceTypeSearch = props => {
 };
 
 ServiceTypeSearch.propTypes = {
-    serviceUuid: PropTypes.string.isRequired
+    intl: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
+    serviceUuid: PropTypes.string
 };
 
-export default ServiceTypeSearch;
+export default injectIntl(ServiceTypeSearch);
