@@ -1,11 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {getAllServices} from "../../api/serviceApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import PropTypes from "prop-types";
+import {injectIntl} from "react-intl";
+import {forEach} from 'lodash';
 
 const ServiceSearch = (props) => {
 
-    const [placeHolder] = useState("Select a service");
+    const [placeHolder] = useState("Service");
     const [services, setServices] = useState([]);
 
     useEffect(() => { setServices(loadServices()) },[]);
@@ -18,7 +20,7 @@ const ServiceSearch = (props) => {
 
     const createDropdownOptions = (results) => {
         const options = [];
-        _.forEach(results, function (service) {
+        forEach(results, function (service) {
             options.push({
                 value: service.uuid,
                 label: service.name
@@ -40,4 +42,4 @@ ServiceSearch.propTypes = {
     onChange: PropTypes.func.isRequired
 };
 
-export default ServiceSearch;
+export default injectIntl(ServiceSearch);
