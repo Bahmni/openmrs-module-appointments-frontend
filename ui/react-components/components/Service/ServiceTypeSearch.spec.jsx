@@ -48,7 +48,7 @@ describe('Service Type Search', () => {
 
 
     it('should display placeholder as "Service App Type"', async () => {
-        const {getByText} = renderWithReactIntl(<ServiceTypeSearch onChange={jest.fn()}/>);
+        const {getByText} = renderWithReactIntl(<ServiceTypeSearch onChange={jest.fn()} serviceUuid={""}/>);
         getByText('Service App Type');
     });
 
