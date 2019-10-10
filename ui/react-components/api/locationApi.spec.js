@@ -40,7 +40,7 @@ describe('Location Api', () => {
         expect(mockAxios.get)
             .toHaveBeenCalledWith(
                 `${locationUrl}?operator=${operator}&s=byTags&tags=${tags}&v=default`);
-        expect(locationsByTag).toEqual(mockResponse);
+        expect(locationsByTag).toEqual(mockResponse.results);
     });
 
     it('should call location url with default operator value when operator is not passed', async () =>{
@@ -75,6 +75,6 @@ describe('Location Api', () => {
         expect(mockAxios.get)
             .toHaveBeenCalledWith(
                 `${locationUrl}?operator=ALL&s=byTags&tags=${tags}&v=default`);
-        expect(locationsByTag).toEqual(mockResponse);
+        expect(locationsByTag).toEqual(mockResponse.results);
     });
 });
