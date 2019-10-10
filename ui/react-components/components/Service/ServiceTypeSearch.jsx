@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {getService} from "../../api/serviceApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import PropTypes from "prop-types";
+import {forEach} from 'lodash';
 
 const ServiceTypeSearch = props => {
 
-    const {serviceUuid} = props;
+    const {serviceUuid, onChange} = props;
     const [placeHolder] = useState("Service App Type");
     const [disabled, setDisabled] = useState(true);
     const [serviceTypes, setServiceTypes] = useState([]);
@@ -27,7 +28,7 @@ const ServiceTypeSearch = props => {
 
     const createDropdownOptions = (results) => {
         const options = [];
-        _.forEach(results, function (serviceType) {
+        forEach(results, function (serviceType) {
             options.push({
                 value: serviceType.uuid,
                 label: serviceType.name
@@ -36,6 +37,11 @@ const ServiceTypeSearch = props => {
         return options;
     };
 
+    const updateSelection = option => {
+        setSelectedOption(option);
+        onChange(option.value);
+    }
+
     return (
         <div>
             <Dropdown
@@ -43,7 +49,7 @@ const ServiceTypeSearch = props => {
                 options={Object.values(serviceTypes)}
                 placeholder={placeHolder}
                 value={selectedOption}
-                onChange={setSelectedOption}
+                onChange={updateSelection}
             />
         </div>
     );
