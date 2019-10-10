@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 const ServiceTypeSearch = props => {
 
     const {serviceUuid} = props;
-    const [placeHolder] = useState("Select a service appointment type");
+    const [placeHolder] = useState("Service App Type");
     const [disabled, setDisabled] = useState(true);
     const [serviceTypes, setServiceTypes] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);

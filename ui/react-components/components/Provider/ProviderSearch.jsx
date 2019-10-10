@@ -7,7 +7,7 @@ import Tags from "./Tags.jsx";
 const ProviderSearch = props => {
 
     const {onChange} = props;
-    const [placeHolder] = useState("Select a provider");
+    const [placeHolder] = useState("Choose Provider");
     const [selectedProviders, setSelectedProviders] = useState([]);
     const [providers, setProviders] = useState([]);
     const [selectedProvider, setSelectedProvider] = useState();

@@ -36,7 +36,6 @@ describe('Dropdown', () => {
         const {container, getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}
                                                                      options={colourOptions}/>);
         const inputBox = container.querySelector('.react-select__input input');
-        console.log(inputBox);
         fireEvent.change(inputBox, {target: {value: "ab"}});
         const noOption = await waitForElement(() => getByText(noOptionText));
         expect(noOption).not.toBeNull();
