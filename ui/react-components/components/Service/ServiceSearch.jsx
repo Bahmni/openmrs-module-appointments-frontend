@@ -7,8 +7,10 @@ import {forEach} from 'lodash';
 
 const ServiceSearch = (props) => {
 
-    const {onChange} = props;
-    const [placeHolder] = useState("Service");
+    const {intl, onChange} = props;
+    const placeHolder = intl.formatMessage({
+        id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SERVICE', defaultMessage: 'Service'
+    });
     const [services, setServices] = useState([]);
 
     useEffect(() => { setServices(loadServices()) },[]);
