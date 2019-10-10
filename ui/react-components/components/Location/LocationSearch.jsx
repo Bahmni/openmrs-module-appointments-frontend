@@ -14,7 +14,8 @@ const LocationSearch = (props) => {
     }, []);
 
     const createDropdownOptions = (locations) => {
-        const options = [];
+        const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_LOCATION', defaultMessage: 'Select a location'});
+        const options = [{value: null, label: defaultOption}];
         forEach(locations, function (location) {
             options.push({
                 value: location.uuid,
