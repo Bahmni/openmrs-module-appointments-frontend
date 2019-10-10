@@ -6,7 +6,7 @@ const APP_FILE = 'app.json';
 
 const loadConfig = async (url) => {
     try {
-        return await axios.get(url, {withCredentials: false});
+        return await axios.get(url);
     } catch (e) {
         return;
     }
@@ -22,7 +22,7 @@ const loadImplementationConfigData = async ({appName}) => {
 
 export const getAppConfigs = async ({appName}) => {
     const bahmniConfig = await loadBahmniConfigData({appName});
-    if (bahmniConfig && bahmniConfig.shouldOverRideConfig) {
+    if (bahmniConfig && bahmniConfig.data.shouldOverRideConfig) {
         const implementationConfig = await loadImplementationConfigData({appName});
         if (implementationConfig) { return mergeObjects(bahmniConfig.data, implementationConfig.data); }
     }
