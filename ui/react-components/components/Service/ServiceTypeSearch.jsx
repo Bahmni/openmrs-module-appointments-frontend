@@ -8,7 +8,9 @@ import {injectIntl} from "react-intl";
 const ServiceTypeSearch = props => {
 
     const {intl, serviceUuid, onChange} = props;
-    const [placeHolder] = useState("Service App Type");
+    const placeHolder = intl.formatMessage({
+        id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SERVICE_APP_TYPE', defaultMessage: 'Service App Type'
+    });
     const [disabled, setDisabled] = useState(true);
     const [serviceTypes, setServiceTypes] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
@@ -43,7 +45,7 @@ const ServiceTypeSearch = props => {
     const updateSelection = option => {
         setSelectedOption(option);
         onChange(option.value);
-    }
+    };
 
     return (
         <div>
