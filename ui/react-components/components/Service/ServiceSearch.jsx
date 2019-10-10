@@ -7,15 +7,16 @@ import {forEach} from 'lodash';
 
 const ServiceSearch = (props) => {
 
+    const {onChange} = props;
     const [placeHolder] = useState("Service");
     const [services, setServices] = useState([]);
 
     useEffect(() => { setServices(loadServices()) },[]);
 
-
     const loadServices = async () => {
         const services = await getAllServices();
         setServices(createDropdownOptions(services));
+
     };
 
     const createDropdownOptions = (results) => {
@@ -33,12 +34,13 @@ const ServiceSearch = (props) => {
         <Dropdown
             options={Object.values(services)}
             placeholder={placeHolder}
-            onChange={props.onChange}
+            onChange={onChange}
         />
     );
 };
 
 ServiceSearch.propTypes = {
+    intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
 };
 
