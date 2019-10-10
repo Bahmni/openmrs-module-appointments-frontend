@@ -32,8 +32,7 @@ const LocationSearch = (props) => {
 
     const {intl, onChange} = props;
     const placeholder = intl.formatMessage({
-        id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_LOCATION',
-        defaultMessage: 'Location'
+        id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_LOCATION', defaultMessage: 'Location'
     });
     return (
         <Dropdown

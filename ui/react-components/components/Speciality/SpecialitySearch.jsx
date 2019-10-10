@@ -31,8 +31,7 @@ const SpecialitySearch = (props) => {
 
     const {intl, onChange} = props;
     const placeholder = intl.formatMessage({
-        id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SPECIALITY',
-        defaultMessage: 'Speciality'
+        id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SPECIALITY', defaultMessage: 'Speciality'
     });
 
     return (
