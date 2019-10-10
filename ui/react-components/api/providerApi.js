@@ -12,8 +12,7 @@ export const getAllProviders = async () => {
                     && attribute.attributeType.display === availableForAppointments;
             });
         });
-    }
-    catch(error) {
+    } catch(error) {
         console.error(error);
     }
 }
