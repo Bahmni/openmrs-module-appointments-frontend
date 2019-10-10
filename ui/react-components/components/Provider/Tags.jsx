@@ -3,18 +3,16 @@ import classNames from "classnames";
 import {tag, tagHolder, tagLabel, tagRemove} from './Tags.module.scss'
 
 import {map} from 'lodash';
-
+import PropTypes from "prop-types";
 
 const Tags = (props) => {
 
     const {selectedTags, onChange} = props;
 
-    const removeTag = tagElement => {
-        onChange(tagElement.target.parentElement.attributes['data-attr'].value);
-    };
+    const removeTag = tagElement => onChange(tagElement.target.parentElement.attributes['data-attr'].value);
 
     return (
-        selectedTags ? (<div className={classNames(tag)}>
+        selectedTags && selectedTags.length > 0 ? (<div className={classNames(tag)}>
             {
                 map(selectedTags, (tag, index) => (
                     <div className={classNames(tagHolder)} data-attr={tag.id} key={index}>
@@ -23,6 +21,11 @@ const Tags = (props) => {
                     </div>))
             }
         </div>) : null)
+};
+
+Tags.propTypes = {
+    onChange: PropTypes.func.isRequired,
+    selectedTags: PropTypes.array
 };
 
 export default Tags;
