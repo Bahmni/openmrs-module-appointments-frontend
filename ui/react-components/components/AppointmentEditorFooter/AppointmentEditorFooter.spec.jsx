@@ -4,10 +4,9 @@ import React from "react";
 
 describe('Appointment editor Footer Search', () => {
     it('should render Check and Save and Cancel buttons', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter/>);
+        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter checkAndSave={() => jest.fn()}/>);
         getByText('Cancel');
         getByText('Check and Save');
-        console.log(container.outerHTML);
         expect(container.querySelectorAll('.button').length).toBe(2);
     });
 });
