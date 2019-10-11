@@ -14,15 +14,23 @@ import LocationSearch from "../Location/LocationSearch.jsx";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
+import PropTypes from "prop-types";
 
-export const AppointmentEditor = () => {
+
+export const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
     const [providers, setProviders] = useState([]);
     const [service, setService] = useState('');
     const [serviceType, setServiceType] = useState('');
     const [location, setLocation] = useState('');
     const [speciality, setSpeciality] = useState('');
+    const {appConfig} = props;
 
+    const isSpecialitiesEnabled = () => {
+        if (appConfig)
+            return appConfig.enableSpecialities;
+        return false;
+    };
 
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmenteditor)}>
@@ -39,9 +47,11 @@ export const AppointmentEditor = () => {
                         <ServiceTypeSearch onChange={(optionSelected) => setServiceType(optionSelected.value)}
                                            serviceUuid={service}/>
                     </div>
-                    <div>
-                        <SpecialitySearch onChange={(optionSelected) => setSpeciality(optionSelected.value)}/>
-                    </div>
+                    {isSpecialitiesEnabled() ?
+                        <div>
+                            <SpecialitySearch onChange={(optionSelected) => setSpeciality(optionSelected.value)}/>
+                        </div> : null
+                    }
                     <div>
                         <LocationSearch onChange={(optionSelected) => setLocation(optionSelected.value)}/>
                     </div>
@@ -53,4 +63,8 @@ export const AppointmentEditor = () => {
             <AppointmentEditorFooter/>
         </div>
     </Fragment>);
+};
+
+AppointmentEditor.propTypes = {
+    appConfigs: PropTypes.object
 };
