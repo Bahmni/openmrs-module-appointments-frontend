@@ -19,10 +19,23 @@ describe('Appointment Editor', () => {
         expect(getByTestId('asyncSelect')).not.toBeNull();
     });
 
-    it('should display the service search', function () {
+    it('should display the all components search except speciality', function () {
         const {container, getAllByTestId} = renderWithReactIntl(<AppointmentEditor/>);
         expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
 
+        expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
+        expect(container.querySelector('.searchFieldsContainerLeft').children.length).toBe(4);
+        expect(container.querySelector('.searchFieldsContainerRight')).not.toBeNull();
+        expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(1);
+        expect(getAllByTestId('select').length).toBe(4);
+    });
+
+    it('should display the all components search', function () {
+        const config = {
+            "enableSpecialities": "true"
+        };
+        const {container, getAllByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
         expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
         expect(container.querySelector('.searchFieldsContainerLeft').children.length).toBe(5);
         expect(container.querySelector('.searchFieldsContainerRight')).not.toBeNull();
