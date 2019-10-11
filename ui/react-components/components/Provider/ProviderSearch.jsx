@@ -28,15 +28,14 @@ const ProviderSearch = props => {
 
     const createDropdownOptions = (results) => {
         const options = [];
-        forEach(results, function (provider, index) {
+        forEach(results, provider =>
             options.push({
-                id: (index + 1).toString(),
                 value: provider.uuid,
                 label: provider.person.display,
                 comments: null,
                 response: "ACCEPTED"
             })
-        });
+        );
         return options;
     };
 
@@ -46,12 +45,14 @@ const ProviderSearch = props => {
             ? selectedProviders
             : [...selectedProviders, selectedProvider];
         setSelectedProviders(updatedProviders);
-        onChange(selectedProviders);
+        onChange(updatedProviders);
         setSelectedProvider(null);
     };
 
     const onProviderRemove = selectedProviderIdentifier => {
-        setSelectedProviders(filter(selectedProviders, provider => provider.id !== selectedProviderIdentifier));
+        const updatedProviders = filter(selectedProviders, provider => provider.value !== selectedProviderIdentifier);
+        setSelectedProviders(updatedProviders);
+        onChange(updatedProviders);
     };
 
     return (
