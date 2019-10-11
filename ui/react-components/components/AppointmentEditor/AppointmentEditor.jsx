@@ -14,6 +14,7 @@ import LocationSearch from "../Location/LocationSearch.jsx";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
+import {saveAppointment} from "../../api/appointmentsApi";
 import PropTypes from "prop-types";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 
@@ -34,6 +35,32 @@ export const AppointmentEditor = props => {
         return false;
     };
 
+    const getPayload = () => {
+        return {
+            patientUuid: patient.uuid,
+            serviceUuid: service,
+            serviceTypeUuid: serviceType,
+            startDateTime: "2019-10-11T04:30:00.000Z",
+            endDateTime: "2019-10-10T05:00:00.000Z",
+            providers: getFormattedProviders(providers),
+            locationUuid: location,
+            appointmentKind: "Scheduled"
+        };
+    };
+
+    const getFormattedProviders = providers => providers.map(provider => {
+        provider.name = provider.label;
+        provider.uuid = provider.value;
+        delete provider.label;
+        delete provider.value;
+        return provider;
+    });
+
+    const checkAndSave = async () => {
+        const payload = getPayload();
+        await saveAppointment(payload);
+    };
+
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmenteditor)}>
             <div className={classNames(searchFieldsContainer)}>
@@ -42,7 +69,9 @@ export const AppointmentEditor = props => {
                         <PatientSearch onChange={(optionSelected) => setPatient(optionSelected.value)}/>
                     </div>
                     <div>
-                        <ServiceSearch onChange={(optionSelected) => setService(optionSelected.value)}/>
+                        <ServiceSearch onChange={(optionSelected) => setService(optionSelected.value)}
+                                       specialityUuid={speciality}
+                        />
                         <ErrorMessage/>
                     </div>
                     <div>
@@ -68,7 +97,7 @@ export const AppointmentEditor = props => {
                         defaultValue='Appointment date'/>
                 </div>
             </div>
-            <AppointmentEditorFooter/>
+            <AppointmentEditorFooter checkAndSave={checkAndSave}/>
         </div>
     </Fragment>);
 };

@@ -11,7 +11,7 @@ import {injectIntl} from "react-intl";
 
 const AppointmentEditorFooter = props => {
 
-    const {intl} = props;
+    const {intl, checkAndSave} = props;
     const saveButtonText = intl.formatMessage({
         id: 'APPOINTMENT_CREATE_CHECK_AND_SAVE', defaultMessage: 'Check and Save'
     });
@@ -26,7 +26,7 @@ const AppointmentEditorFooter = props => {
                     <i className={classNames("fa", "fa-times")}/>
                     <span>{cancelButtonText}</span>
                 </button>
-                <button className={classNames(button, save)}>
+                <button className={classNames(button, save)} onClick={checkAndSave}>
                     <i className={classNames("fa", "fa-check")}/>
                     <span>{saveButtonText}</span>
                 </button>
@@ -37,6 +37,7 @@ const AppointmentEditorFooter = props => {
 
 AppointmentEditorFooter.propTypes = {
     intl: PropTypes.object.isRequired,
+    checkAndSave: PropTypes.func.isRequired
 };
 
 export default injectIntl(AppointmentEditorFooter);

@@ -20,7 +20,7 @@ describe('Tags', () => {
     });
 
     it('should render the list of strings as individual tags', () => {
-        const tags = [{label: 'One', id: '1'}, {label: 'Two', id: '2'}, {label: 'Three', id: '3'}];
+        const tags = [{label: 'One', value: '1'}, {label: 'Two', value: '2'}, {label: 'Three', value: '3'}];
         const onChangeSpy = jest.fn();
         const {container} = render(<Tags selectedTags={tags} onChange={onChangeSpy}/>);
         expect(container.querySelector('.tag').children.length).toBe(3);
@@ -28,7 +28,7 @@ describe('Tags', () => {
     })
 
     it('should trigger onChange function on click of remove icon', () => {
-        const tags = [{label: 'One', id: '1'}, {label: 'Two', id: '2'}, {label: 'Three', id: '3'}];
+        const tags = [{label: 'One', value: '1'}, {label: 'Two', value: '2'}, {label: 'Three', value: '3'}];
         const onChangeSpy = jest.fn();
         const {getByText} = render(<Tags selectedTags={tags} onChange={onChangeSpy}/>);
         fireEvent.click(getByText('One').nextSibling);

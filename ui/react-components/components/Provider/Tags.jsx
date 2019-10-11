@@ -15,7 +15,7 @@ const Tags = (props) => {
         selectedTags && selectedTags.length > 0 ? (<div className={classNames(tag)}>
             {
                 map(selectedTags, (tag, index) => (
-                    <div className={classNames(tagHolder)} data-attr={tag.id} key={index}>
+                    <div className={classNames(tagHolder)} data-attr={tag.value} key={index}>
                         <div className={classNames(tagLabel)}>{tag.label}</div>
                         <i onClick={removeTag} className={classNames("fa", "fa-times", tagRemove)}/>
                     </div>))

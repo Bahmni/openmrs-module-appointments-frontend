@@ -10,6 +10,7 @@ export const providerParams = `v=custom:(display,person,uuid,retired,attributes:
 export const availableForAppointments = "Available for appointments";
 export const locationUrl = `${restWestV1}/location`;
 export const specialityUrl = `${restWestV1}/speciality/all`;
+export const appointmentsSaveUrl = `${restWestV1}/appointments`;
 
 export const appName = 'appointments';
 
