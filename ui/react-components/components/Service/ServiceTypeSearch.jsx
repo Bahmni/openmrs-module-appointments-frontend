@@ -44,7 +44,7 @@ const ServiceTypeSearch = props => {
 
     const updateSelection = option => {
         setSelectedOption(option);
-        onChange(option.value);
+        onChange(option);
     };
 
     return (
