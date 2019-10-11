@@ -38,7 +38,7 @@ class AddAppointmentContainer extends Component {
         const {locale, messages, appConfigs} = this.state;
         return (
             <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
-                <AppointmentEditor/>
+                <AppointmentEditor appConfig={appConfigs}/>
             </IntlProvider>);
     }
 }
