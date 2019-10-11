@@ -5,10 +5,10 @@ import React from "react";
 
 jest.mock('../../utils/CookieUtil');
 
-describe.only('ErrorMessage', () => {
+describe('ErrorMessage', () => {
 
     it('should render the component without prop', () => {
-        const {container} = render(<ErrorMessage />);
+        const {container} = render(<ErrorMessage/>);
         expect(container.querySelector('.messageHolder')).not.toBeNull();
     });
 
