@@ -15,6 +15,7 @@ import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
 import PropTypes from "prop-types";
+import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 
 
 export const AppointmentEditor = props => {
@@ -24,6 +25,7 @@ export const AppointmentEditor = props => {
     const [serviceType, setServiceType] = useState('');
     const [location, setLocation] = useState('');
     const [speciality, setSpeciality] = useState('');
+    const [startDate, setStartDate] = useState();
     const {appConfig} = props;
 
     const isSpecialitiesEnabled = () => {
@@ -58,6 +60,12 @@ export const AppointmentEditor = props => {
                 </div>
                 <div className={classNames(searchFieldsContainerRight)}>
                     <ProviderSearch onChange={selectedProviders => setProviders(selectedProviders)}/>
+                </div>
+            </div>
+            <div className={classNames(searchFieldsContainer)}>
+                <div className={classNames(searchFieldsContainerLeft)}>
+                    <AppointmentDatePicker onChange={date => setStartDate(date)} translationKey='APPOINTMENT_DATE_LABEL'
+                        defaultValue='Appointment date'/>
                 </div>
             </div>
             <AppointmentEditorFooter/>
