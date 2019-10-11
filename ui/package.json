@@ -125,7 +125,8 @@
     ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "\\.(css|less)$": "<rootDir>/react-components/__mocks__/styleMock.js"
     },
     "moduleFileExtensions": [
       "js",
