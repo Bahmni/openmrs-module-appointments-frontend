@@ -2,9 +2,9 @@ import React, {Fragment, useState} from "react";
 import classNames from 'classnames';
 import {
     appointmenteditor,
-    searchFieldsContainerRight,
+    searchFieldsContainer,
     searchFieldsContainerLeft,
-    searchFieldsContainer
+    searchFieldsContainerRight
 } from './AppointmentEditor.module.scss';
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
@@ -13,6 +13,7 @@ import ProviderSearch from "../Provider/ProviderSearch.jsx";
 import LocationSearch from "../Location/LocationSearch.jsx";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
+import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
 
 export const AppointmentEditor = () => {
     const [patient, setPatient] = useState();
@@ -32,7 +33,7 @@ export const AppointmentEditor = () => {
                     </div>
                     <div>
                         <ServiceSearch onChange={(optionSelected) => setService(optionSelected.value)}/>
-                        <ErrorMessage />
+                        <ErrorMessage/>
                     </div>
                     <div>
                         <ServiceTypeSearch onChange={(optionSelected) => setServiceType(optionSelected.value)}
@@ -49,6 +50,7 @@ export const AppointmentEditor = () => {
                     <ProviderSearch onChange={selectedProviders => setProviders(selectedProviders)}/>
                 </div>
             </div>
+            <AppointmentEditorFooter/>
         </div>
     </Fragment>);
 };
