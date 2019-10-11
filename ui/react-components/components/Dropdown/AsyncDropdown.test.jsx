@@ -1,8 +1,7 @@
-import {render, fireEvent, waitForElement, wait} from "@testing-library/react";
+import {fireEvent, waitForElement} from "@testing-library/react";
 import React from "react";
 import AsyncDropdown from "./AsyncDropdown.jsx";
 import selectEvent from "react-select-event";
-import {toHaveTextContent} from '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 import {renderWithReactIntl} from '../../utils/TestUtil';
 
