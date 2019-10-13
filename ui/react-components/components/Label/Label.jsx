@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 
 const Label = props => {
     const { intl, translationKey, defaultValue } = props;
-    const appointmentDateLabel = intl.formatMessage({
+    const labelValue = intl.formatMessage({
         id: translationKey, defaultMessage: defaultValue
     });
     return (
-        <label><b>{appointmentDateLabel}</b></label>
+        <label><b>{labelValue}</b></label>
     )
 }
 
