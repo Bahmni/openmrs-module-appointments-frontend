@@ -42,5 +42,18 @@ describe('Appointment Editor', () => {
         expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(1);
         expect(getAllByTestId('select').length).toBe(5);
     });
+
+    it('should render AppointmentEditorFooter', function() {
+       const {getByTestId, container} = renderWithReactIntl(<AppointmentEditor/>);
+        expect(container.querySelector('.footer')).not.toBeNull();
+        expect(container.querySelector('.footerElements')).not.toBeNull();
+        expect(container.querySelector('.footer').children.length).toBe(1);
+        expect(container.querySelector('.footerElements').children.length).toBe(2);
+    });
+
+    it('should render AppointmentDatePicker', function () {
+        const {getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
+        expect(getByTestId('datePicker')).not.toBeNull()
+    })
 });
 
