@@ -17,6 +17,7 @@ import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEdito
 import {saveAppointment} from "../../api/appointmentsApi";
 import PropTypes from "prop-types";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
+import Label from '../Label/Label.jsx';
 
 
 export const AppointmentEditor = props => {
@@ -93,8 +94,10 @@ export const AppointmentEditor = props => {
             </div>
             <div className={classNames(searchFieldsContainer)}>
                 <div className={classNames(searchFieldsContainerLeft)}>
-                    <AppointmentDatePicker onChange={date => setStartDate(date)} translationKey='APPOINTMENT_DATE_LABEL'
-                        defaultValue='Appointment date'/>
+                    <div>
+                        <Label translationKey='APPOINTMENT_DATE_LABEL' defaultValue='Appointment date' /> 
+                        <AppointmentDatePicker onChange={date => setStartDate(date)} />
+                    </div>
                 </div>
             </div>
             <AppointmentEditorFooter checkAndSave={checkAndSave}/>
