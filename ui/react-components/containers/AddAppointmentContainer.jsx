@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { AppointmentEditor } from "../components/AppointmentEditor/AppointmentEditor.jsx";
+import AppointmentEditor from "../components/AppointmentEditor/AppointmentEditor.jsx";
 import {IntlProvider} from "react-intl";
 import {getLocale} from "../utils/LocalStorageUtil";
 import {getTranslations} from "../api/translationsApi";
