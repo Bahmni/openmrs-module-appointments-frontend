@@ -14,17 +14,19 @@ import LocationSearch from "../Location/LocationSearch.jsx";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
-import {saveAppointment} from "../../api/appointmentsApi";
+import {injectIntl} from "react-intl";
 import PropTypes from "prop-types";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
+import {saveAppointment} from "./AppointmentEditorService";
 import Label from '../Label/Label.jsx';
 import AppointmentTimePicker from "../TimePicker/TimePicker.jsx";
 import { Textarea } from 'react-inputs-validation';
 import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 
-
-export const AppointmentEditor = props => {
+const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
+    const [patientError, setPatientError] = useState(false);
+    const [serviceError, setServiceError] = useState(false);
     const [providers, setProviders] = useState([]);
     const [service, setService] = useState('');
     const [serviceType, setServiceType] = useState('');
@@ -36,36 +38,48 @@ export const AppointmentEditor = props => {
     const {appConfig} = props;
     const [notes, setNotes] = useState();
 
+    const {intl} = props;
+
     const isSpecialitiesEnabled = () => {
         if (appConfig)
             return appConfig.enableSpecialities;
         return false;
     };
 
-    const getPayload = () => {
+    const patientErrorMessage = intl.formatMessage({
+        id: 'PATIENT_ERROR_MESSAGE', defaultMessage: 'Please select patient'
+    });
+
+    const serviceErrorMessage = intl.formatMessage({
+        id: 'SERVICE_ERROR_MESSAGE', defaultMessage: 'Please select service'
+    });
+
+    const getAppointment = () => {
         return {
-            patientUuid: patient.uuid,
+            patientUuid: patient && patient.uuid,
             serviceUuid: service,
             serviceTypeUuid: serviceType,
             startDateTime: "2019-10-11T04:30:00.000Z",
             endDateTime: "2019-10-10T05:00:00.000Z",
-            providers: getFormattedProviders(providers),
+            providers: providers,
             locationUuid: location,
             appointmentKind: "Scheduled"
         };
     };
 
-    const getFormattedProviders = providers => providers.map(provider => {
-        provider.name = provider.label;
-        provider.uuid = provider.value;
-        delete provider.label;
-        delete provider.value;
-        return provider;
-    });
+    const isValidAppointment = () => {
+        const isValidPatient = patient && patient.uuid;
+        const isValidService = !!service;
+        setPatientError(!isValidPatient);
+        setServiceError(!isValidService);
+        return isValidPatient && isValidService;
+    };
 
     const checkAndSave = async () => {
-        const payload = getPayload();
-        await saveAppointment(payload);
+        const appointment = getAppointment();
+        if (isValidAppointment()) {
+            await saveAppointment(appointment);
+        }
     };
 
     return (<Fragment>
@@ -73,13 +87,19 @@ export const AppointmentEditor = props => {
             <div className={classNames(searchFieldsContainer)}>
                 <div className={classNames(searchFieldsContainerLeft)}>
                     <div>
-                        <PatientSearch onChange={(optionSelected) => setPatient(optionSelected.value)}/>
+                        <PatientSearch onChange={(optionSelected) => {
+                            setPatient(optionSelected.value);
+                            setPatientError(!optionSelected.value);
+                        }}/>
+                        <ErrorMessage message={patientError ? patientErrorMessage : undefined}/>
                     </div>
                     <div>
-                        <ServiceSearch onChange={(optionSelected) => setService(optionSelected.value)}
-                                       specialityUuid={speciality}
-                        />
-                        <ErrorMessage/>
+                        <ServiceSearch onChange={(optionSelected) => {
+                            setService(optionSelected.value);
+                            setServiceError(!optionSelected.value)
+                        }}
+                                       specialityUuid={speciality}/>
+                        <ErrorMessage message={serviceError ? serviceErrorMessage : undefined}/>
                     </div>
                     <div>
                         <ServiceTypeSearch onChange={(optionSelected) => setServiceType(optionSelected.value)}
@@ -101,7 +121,7 @@ export const AppointmentEditor = props => {
             <div className={classNames(searchFieldsContainer)}>
                 <div className={classNames(searchFieldsContainerLeft)}>
                     <div>
-                        <Label translationKey='APPOINTMENT_DATE_LABEL' defaultValue='Appointment date' /> 
+                        <Label translationKey='APPOINTMENT_DATE_LABEL' defaultValue='Appointment date' />
                         <div style={{marginTop:'20px'}}>
                             <AppointmentDatePicker onChange={date => setStartDate(date)} />
                         </div>
@@ -121,7 +141,7 @@ export const AppointmentEditor = props => {
                             <div style={{width:'42%', float:'left'}}>
                                 <Label translationKey='APPOINTMENT_TIME_TO_LABEL' defaultValue='To' />
                             </div>
-                            <AppointmentTimePicker onChange={time => setEndTime(time)} 
+                            <AppointmentTimePicker onChange={time => setEndTime(time)}
                                 placeHolderTranslationKey='CHOOSE_TIME_PLACE_HOLDER' defaultValue="Click to select time" />
                         </div>
                     </div>
@@ -139,5 +159,8 @@ export const AppointmentEditor = props => {
 };
 
 AppointmentEditor.propTypes = {
+    intl: PropTypes.object.isRequired,
     appConfigs: PropTypes.object
 };
+
+export default injectIntl(AppointmentEditor);

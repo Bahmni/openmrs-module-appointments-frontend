@@ -34,7 +34,7 @@ const appointment = {
     "recurring": false
 };
 
-export const saveAppointment = () => {
+export const saveOrUpdateAppointment = () => {
     return new Promise((resolve, reject) => {
         process.nextTick(() =>
             resolve(appointment)

@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios";
 import {appointmentsSaveUrl} from "../constants";
-import {saveAppointment} from "./appointmentsApi";
+import {saveOrUpdateAppointment} from "./appointmentsApi";
 
 describe('Appointments Api', () => {
     it('should save appointment and get saved appointment as response', async () => {
@@ -56,7 +56,7 @@ describe('Appointments Api', () => {
             })
         );
 
-        let appointment = await saveAppointment(payload);
+        let appointment = await saveOrUpdateAppointment(payload);
 
         expect(mockAxios.post).toHaveBeenCalledWith(appointmentsSaveUrl, payload);
 
