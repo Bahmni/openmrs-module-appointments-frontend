@@ -9,7 +9,7 @@ import {injectIntl} from "react-intl";
 
 const ProviderSearch = props => {
 
-    const {intl, onChange} = props;
+    const {intl, onChange, maxAppointmentProvidersAllowed} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PROVIDER', defaultMessage: 'Choose Provider'
     });
@@ -40,12 +40,14 @@ const ProviderSearch = props => {
     };
 
     const onProviderSelect = selectedProviderOption => {
-        const selectedProvider = find(providers, ["value", selectedProviderOption.value]);
-        const updatedProviders = includes(selectedProviders, selectedProvider)
-            ? selectedProviders
-            : [...selectedProviders, selectedProvider];
-        setSelectedProviders(updatedProviders);
-        onChange(updatedProviders);
+        if (selectedProviders.length < maxAppointmentProvidersAllowed) {
+            const selectedProvider = find(providers, ["value", selectedProviderOption.value]);
+            const updatedProviders = includes(selectedProviders, selectedProvider)
+                ? selectedProviders
+                : [...selectedProviders, selectedProvider];
+            setSelectedProviders(updatedProviders);
+            onChange(updatedProviders);
+        }
         setSelectedProvider(null);
     };
 
@@ -70,7 +72,8 @@ const ProviderSearch = props => {
 
 ProviderSearch.propTypes = {
     intl: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    maxAppointmentProvidersAllowed: PropTypes.number.isRequired
 };
 
 export default injectIntl(ProviderSearch);

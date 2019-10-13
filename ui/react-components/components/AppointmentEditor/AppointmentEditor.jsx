@@ -46,6 +46,12 @@ const AppointmentEditor = props => {
         return false;
     };
 
+    const maxAppointmentProvidersAllowed = () => {
+        if (appConfig && appConfig.maxAppointmentProviders)
+            return appConfig.maxAppointmentProviders;
+        return 1;
+    };
+
     const patientErrorMessage = intl.formatMessage({
         id: 'PATIENT_ERROR_MESSAGE', defaultMessage: 'Please select patient'
     });
@@ -115,7 +121,8 @@ const AppointmentEditor = props => {
                     </div>
                 </div>
                 <div className={classNames(searchFieldsContainerRight)}>
-                    <ProviderSearch onChange={selectedProviders => setProviders(selectedProviders)}/>
+                    <ProviderSearch onChange={selectedProviders => setProviders(selectedProviders)}
+                                    maxAppointmentProvidersAllowed={maxAppointmentProvidersAllowed()}/>
                 </div>
             </div>
             <div className={classNames(searchFieldsContainer)}>

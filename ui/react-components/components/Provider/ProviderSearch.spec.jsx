@@ -19,7 +19,8 @@ describe('Provider Search', () => {
 
     it('should allow user to search and select a provider', async () => {
         const selectedProvider = 'Provider One';
-        const {container, getByText, getAllByText } = renderWithReactIntl(<ProviderSearch onChange={jest.fn()}/>);
+        const {container, getByText, getAllByText } = renderWithReactIntl(
+            <ProviderSearch onChange={jest.fn()} maxAppointmentProvidersAllowed = {1}/>);
         const inputBox = container.querySelector('.react-select__input input');
         fireEvent.change(inputBox, {target: {value: "One"}});
         await waitForElement(() => (container.querySelector('.react-select__menu')));
@@ -35,7 +36,8 @@ describe('Provider Search', () => {
     it('should maintain unique provider names even same provider is selected multiple times', async () => {
         const providerOne = 'Provider One';
         const providerTwo = 'Provider Two';
-        const {container, getByText, getAllByText } = renderWithReactIntl(<ProviderSearch onChange={jest.fn()}/>);
+        const {container, getByText, getAllByText } = renderWithReactIntl(
+            <ProviderSearch onChange={jest.fn()} maxAppointmentProvidersAllowed = {2}/>);
         const inputBox = container.querySelector('.react-select__input input');
 
         fireEvent.change(inputBox, {target: {value: "One"}});
@@ -65,7 +67,8 @@ describe('Provider Search', () => {
     it('should call onChange when option is selected', async () => {
         const selectedProvider = 'Provider One';
         const onChangeSpy = jest.fn();
-        const {container, getByText, getAllByText } = renderWithReactIntl(<ProviderSearch onChange={onChangeSpy}/>);
+        const {container, getByText, getAllByText } = renderWithReactIntl(
+            <ProviderSearch onChange={onChangeSpy} maxAppointmentProvidersAllowed = {1}/>);
         const inputBox = container.querySelector('.react-select__input input');
         fireEvent.change(inputBox, {target: {value: "One"}});
         await waitForElement(() => (container.querySelector('.react-select__menu')));
@@ -76,6 +79,30 @@ describe('Provider Search', () => {
         expect(tag.length).toBe(1);
         expect(tag).not.toBeNull();
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should display only one provider when maxAppointmentProvidersAllowed is 1 and 2 providers are selected',
+        async () => {
+        const providerOne = 'Provider One';
+        const providerTwo = 'Provider Two';
+        const {container, getByText, getAllByText, queryByText } = renderWithReactIntl(
+            <ProviderSearch onChange={jest.fn()} maxAppointmentProvidersAllowed = {1}/>);
+        const inputBox = container.querySelector('.react-select__input input');
+
+        fireEvent.change(inputBox, {target: {value: "One"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        let option = getByText(providerOne);
+        fireEvent.click(option);
+
+        fireEvent.change(inputBox, {target: {value: "Two"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        option = getByText(providerTwo);
+        fireEvent.click(option);
+
+        expect(getAllProviders).toHaveBeenCalled();
+        getAllByText(providerOne);
+        const tagTwo = queryByText(providerTwo);
+        expect(tagTwo).toBeNull();
     });
 });
 
