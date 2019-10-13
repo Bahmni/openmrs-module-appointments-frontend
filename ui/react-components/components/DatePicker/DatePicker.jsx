@@ -1,7 +1,6 @@
 import React, { Text } from 'react';
 import Calendar from 'rc-calendar';
 import 'rc-calendar/assets/index.css';
-import Label from '../Label/Label.jsx';
 import { appointmentDatePicker } from './DatePicker.module.scss';
 import PropTypes from 'prop-types';
 
@@ -20,7 +19,6 @@ const AppointmentDatePicker = (props) => {
 
     return (
         <div>
-            <Label translationKey={props.translationKey} defaultValue={props.defaultValue} />
             <Calendar
                 showToday={false}
                 showOk={false}
@@ -33,8 +31,7 @@ const AppointmentDatePicker = (props) => {
 };
 
 AppointmentDatePicker.propTypes = {
-    translationKey: PropTypes.string.isRequired,
-    defaultValue: PropTypes.string.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 export default AppointmentDatePicker;
