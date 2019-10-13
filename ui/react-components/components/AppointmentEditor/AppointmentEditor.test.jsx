@@ -1,5 +1,5 @@
 import React from "react";
-import {AppointmentEditor} from './AppointmentEditor.jsx';
+import AppointmentEditor from './AppointmentEditor.jsx';
 import {renderWithReactIntl} from '../../utils/TestUtil';
 
 describe('Appointment Editor', () => {
@@ -42,6 +42,8 @@ describe('Appointment Editor', () => {
         expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(1);
         expect(getAllByTestId('select').length).toBe(5);
     });
+
+    //TODO : Need to write tests for checkAndSave
 
     it('should render AppointmentEditorFooter', function() {
        const {getByTestId, container} = renderWithReactIntl(<AppointmentEditor/>);
