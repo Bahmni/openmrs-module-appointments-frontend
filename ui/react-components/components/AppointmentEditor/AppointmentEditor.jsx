@@ -18,6 +18,7 @@ import {saveAppointment} from "../../api/appointmentsApi";
 import PropTypes from "prop-types";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import Label from '../Label/Label.jsx';
+import AppointmentTimePicker from "../TimePicker/TimePicker.jsx";
 
 
 export const AppointmentEditor = props => {
@@ -28,6 +29,8 @@ export const AppointmentEditor = props => {
     const [location, setLocation] = useState('');
     const [speciality, setSpeciality] = useState('');
     const [startDate, setStartDate] = useState();
+    const [startTime, setStartTime] = useState();
+    const [endTime, setEndTime] = useState();
     const {appConfig} = props;
 
     const isSpecialitiesEnabled = () => {
@@ -96,7 +99,28 @@ export const AppointmentEditor = props => {
                 <div className={classNames(searchFieldsContainerLeft)}>
                     <div>
                         <Label translationKey='APPOINTMENT_DATE_LABEL' defaultValue='Appointment date' /> 
-                        <AppointmentDatePicker onChange={date => setStartDate(date)} />
+                        <div style={{marginTop:'20px'}}>
+                            <AppointmentDatePicker onChange={date => setStartDate(date)} />
+                        </div>
+                    </div>
+                    <div>
+                        <Label translationKey='APPOINTMENT_TIME_LABEL' defaultValue='Choose a time slot' />
+                        <div style={{marginTop: '20px'}}>
+                            <div style={{width:'42%', float:'left'}}>
+                                <Label translationKey='APPOINTMENT_TIME_FROM_LABEL' defaultValue='From' />
+                            </div>
+                            <div>
+                                <AppointmentTimePicker onChange={time => setStartTime(time)}
+                                placeHolderTranslationKey='CHOOSE_TIME_PLACE_HOLDER' defaultValue="Click to select time" />
+                            </div>
+                        </div>
+                        <div style={{marginTop: '20px'}}>
+                            <div style={{width:'42%', float:'left'}}>
+                                <Label translationKey='APPOINTMENT_TIME_TO_LABEL' defaultValue='To' />
+                            </div>
+                            <AppointmentTimePicker onChange={time => setEndTime(time)} 
+                                placeHolderTranslationKey='CHOOSE_TIME_PLACE_HOLDER' defaultValue="Click to select time" />
+                        </div>
                     </div>
                 </div>
             </div>
