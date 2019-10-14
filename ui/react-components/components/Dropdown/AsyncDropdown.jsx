@@ -25,15 +25,39 @@ const ValueContainer = ({ children, ...props }) => {
 
 const AsyncDropdown = (props) => {
     const [inputValue, setInputValue] = useState();
+    const [value, setValue] = useState('');
     const {loadOptions, placeholder, onChange, intl} = props;
+    let select;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'Type to search'});
 
-    const handleOnChange = (e) => { setInputValue(''); onChange && onChange(e); };
-    const handleOnInputChange = (e, {action}) => { if (action === 'input-change') setInputValue(e); };
+    const handleOnChange = (event) => {
+        setInputValue('');
+        setValue(event);
+        if (event) {
+        } else {
+            setValue('');
+        }
+        onChange && onChange(event);
+    };
+    const handleOnInputChange = (event, {action}) => {
+        if (action === 'input-change') {
+            setInputValue(event);
+            if (!event) {
+                setValue(event);
+            }
+        }
+    };
+    const handleFocus = () => {
+        value && setInputValue(value.label);
+    };
     return (
         <div data-testid="asyncSelect">
             <AsyncSelect
+                ref={ref => {
+                    select = ref;
+                }}
                 cacheOptions
+                defaultOptions
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"
                 components={{IndicatorSeparator, ValueContainer}}
@@ -44,12 +68,16 @@ const AsyncDropdown = (props) => {
                 onInputChange={handleOnInputChange}
                 defaultInputValue={inputValue}
                 inputValue={inputValue}
+                onFocus={handleFocus}
+                isClearable
+                blurInputOnSelect={true}
+                value={value}
             />
         </div>
     );
 };
 
-export default injectIntl(AsyncDropdown);;
+export default injectIntl(AsyncDropdown);
 
 AsyncDropdown.propTypes = {
     loadOptions: PropTypes.func,
