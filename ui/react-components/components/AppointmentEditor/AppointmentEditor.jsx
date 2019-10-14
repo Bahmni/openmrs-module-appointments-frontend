@@ -22,6 +22,7 @@ import Label from '../Label/Label.jsx';
 import AppointmentTimePicker from "../TimePicker/TimePicker.jsx";
 import { Textarea } from 'react-inputs-validation';
 import 'react-inputs-validation/lib/react-inputs-validation.min.css';
+import { getDateTime } from '../../utils/DateUtil.js'
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -65,8 +66,8 @@ const AppointmentEditor = props => {
             patientUuid: patient && patient.uuid,
             serviceUuid: service,
             serviceTypeUuid: serviceType,
-            startDateTime: "2019-10-11T04:30:00.000Z",
-            endDateTime: "2019-10-10T05:00:00.000Z",
+            startDateTime: getDateTime(startDate, startTime),
+            endDateTime: getDateTime(startDate, endTime),
             providers: providers,
             locationUuid: location,
             appointmentKind: "Scheduled"
@@ -82,6 +83,7 @@ const AppointmentEditor = props => {
     };
 
     const checkAndSave = async () => {
+        //todo get appointments after validation
         const appointment = getAppointment();
         if (isValidAppointment()) {
             await saveAppointment(appointment);
