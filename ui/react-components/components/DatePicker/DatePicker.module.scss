@@ -3,61 +3,68 @@
 .appointmentDatePicker {
   width: 100%;
 
-}
-
-.rc-calendar-input-wrap {
-  color: red;
-  input {
-    border-radius: 3px;
+  div[class*='calendar-body'] {
+    padding: 0;
+    height: auto;
   }
-}
 
-.rc-calendar-selected-date .rc-calendar-date {
-  background: $primary-color-cyan;
-  color: $secondary-color-white;
-}
+  td[class*='rc-calendar-selected'] {
+    > div {
+      &:hover {
+        background: $primary-color-cyan;
+      }
+      background: $primary-color-cyan;
+      color: $secondary-color-white;
+    }
+  }
 
-.rc-calendar-selected-date .rc-calendar-date:hover {
-  background: #3fc7fa;
-}
+  td[class*='rc-calendar-disabled'] {
+    > div {
+      cursor: not-allowed;
+      color: #bcbcbc;
+      background: #f3f3f3;
+      border-radius: 0;
+      width: auto;
+    }
+  }
 
-.rc-calendar-header > a:hover {
-  color: $primary-color-cyan;
-}
+  td[class*='rc-calendar-today'] {
+    > div {
+      border: 1px solid $primary-color-cyan;
+    }
+  }
 
-.rc-calendar-day-select:hover {
-  color: $primary-color-cyan;
-}
+  div[class*='rc-calendar-header'] {
+    a {
+      &:hover {
+        color: $primary-color-cyan;
+      }
+    }
+  }
 
-.rc-calendar-next-year-btn:hover {
-  color: $primary-color-cyan;
-}
+  div[class*='panel-header'] {
+    a {
+      color: $primary-color-cyan;
+      &:hover {
+        color: $primary-color-cyan;
+      }
+    }
+  }
 
-.rc-calendar-time-picker-btn:hover {
-  color: $primary-color-cyan;
-}
+  div[class*='panel-body'] {
+    padding: 0;
+    tbody[class*='panel-tbody'] {
+      td[class*='panel-selected-cell'] {
+        a {
+          background: $primary-color-cyan;
+          color: $secondary-color-white;
+          &:hover {
+            background: $primary-color-cyan;
+            color: $secondary-color-white;
+          }
+        }
+      }
+    }
+  }
 
-.rc-calendar-time-input:hover {
-  border-color: $primary-color-cyan;
-}
-
-.rc-calendar-time-input:focus {
-  border-color: $primary-color-cyan;
-  box-shadow: 0 0 3px $primary-color-cyan;
-}
-
-.rc-calendar-month-panel-header > a:hover {
-  color: $primary-color-cyan;
-}
-
-.rc-calendar-year-panel-header > a:hover {
-  color: $primary-color-cyan;
-}
-
-.rc-calendar-decade-panel-header > a:hover {
-  color: $primary-color-cyan;
-}
-
-.rc-calendar-full-header-switcher-normal:hover {
-  border-color: $primary-color-cyan;
 }
