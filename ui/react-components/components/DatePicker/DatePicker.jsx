@@ -18,7 +18,7 @@ const AppointmentDatePicker = (props) => {
     }
 
     return (
-        <div>
+        <div data-testid="datePicker">
             <Calendar
                 showToday={false}
                 showOk={false}
@@ -31,7 +31,7 @@ const AppointmentDatePicker = (props) => {
 };
 
 AppointmentDatePicker.propTypes = {
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func
 };
 
 export default AppointmentDatePicker;
