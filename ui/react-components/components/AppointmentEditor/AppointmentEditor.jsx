@@ -19,6 +19,8 @@ import PropTypes from "prop-types";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import Label from '../Label/Label.jsx';
 import AppointmentTimePicker from "../TimePicker/TimePicker.jsx";
+import { Textarea } from 'react-inputs-validation';
+import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 
 
 export const AppointmentEditor = props => {
@@ -32,6 +34,7 @@ export const AppointmentEditor = props => {
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
     const {appConfig} = props;
+    const [notes, setNotes] = useState();
 
     const isSpecialitiesEnabled = () => {
         if (appConfig)
@@ -122,6 +125,12 @@ export const AppointmentEditor = props => {
                                 placeHolderTranslationKey='CHOOSE_TIME_PLACE_HOLDER' defaultValue="Click to select time" />
                         </div>
                     </div>
+                </div>
+                <div className={classNames(searchFieldsContainerRight)}>
+                    <div style={{ marginBottom:'15px'}}>
+                    <Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/>
+                    </div>
+                    <Textarea  style={{ height:'500%'}} onChange={(notes) => setNotes(notes)}/>
                 </div>
             </div>
             <AppointmentEditorFooter checkAndSave={checkAndSave}/>

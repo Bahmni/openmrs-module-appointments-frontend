@@ -17,6 +17,7 @@
     "rc-time-picker": "^3.7.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-inputs-validation": "^4.1.1",
     "react-intl": "^3.3.2",
     "react-redux": "^7.1.1",
     "react-select": "^3.0.6",
