@@ -78,8 +78,6 @@ const AppointmentEditor = props => {
     });
 
 
-
-
     const getAppointment = () => {
         let appointment = {
             patientUuid: patient && patient.uuid,
@@ -89,7 +87,8 @@ const AppointmentEditor = props => {
             endDateTime: getDateTime(startDate, endTime),
             providers: providers,
             locationUuid: location,
-            appointmentKind: "Scheduled"
+            appointmentKind: "Scheduled",
+            comments: notes
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
@@ -209,7 +208,7 @@ const AppointmentEditor = props => {
                 </div>
                 <div className={classNames(searchFieldsContainerRight)}>
                     <AppointmentNotes translationKey="APPOINTMENT_NOTES" defaultValue="Notes"
-                                      onChange={(notes) => setNotes(notes)}/>
+                                      onChange={(event) => setNotes(event.target.value)}/>
                 </div>
             </div>
             <AppointmentEditorFooter checkAndSave={checkAndSave}/>
