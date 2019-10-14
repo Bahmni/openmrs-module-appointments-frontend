@@ -1,6 +1,6 @@
 @import '../../variables.scss';
 
-.appointmenteditor {
+.appointmentEditor {
   width: 100%;
   z-index: 31;
   position: absolute;
@@ -13,9 +13,13 @@
   .searchFieldsContainer {
     top: 50px;
     position: relative;
-    padding: 5% 2% 0% 2%;
+    padding: 4% 2% 0% 2%;
     display: flex;
     justify-content: space-between;
+
+    &:nth-child(2) {
+      padding-top: 0;
+    }
 
     .searchFieldsContainerLeft {
       width: 70%;
