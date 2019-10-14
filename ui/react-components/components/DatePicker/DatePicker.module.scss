@@ -11,10 +11,10 @@
   td[class*='rc-calendar-selected'] {
     > div {
       &:hover {
-        background: $primary-color-cyan;
+        background: $primary-color-1;
       }
-      background: $primary-color-cyan;
-      color: $secondary-color-white;
+      background: $primary-color-1;
+      color: $secondary-color-1;
     }
   }
 
@@ -30,23 +30,23 @@
 
   td[class*='rc-calendar-today'] {
     > div {
-      border: 1px solid $primary-color-cyan;
+      border: 1px solid $primary-color-1;
     }
   }
 
   div[class*='rc-calendar-header'] {
     a {
       &:hover {
-        color: $primary-color-cyan;
+        color: $primary-color-1;
       }
     }
   }
 
   div[class*='panel-header'] {
     a {
-      color: $primary-color-cyan;
+      color: $primary-color-1;
       &:hover {
-        color: $primary-color-cyan;
+        color: $primary-color-1;
       }
     }
   }
@@ -56,11 +56,11 @@
     tbody[class*='panel-tbody'] {
       td[class*='panel-selected-cell'] {
         a {
-          background: $primary-color-cyan;
-          color: $secondary-color-white;
+          background: $primary-color-1;
+          color: $secondary-color-1;
           &:hover {
-            background: $primary-color-cyan;
-            color: $secondary-color-white;
+            background: $primary-color-1;
+            color: $secondary-color-1;
           }
         }
       }
