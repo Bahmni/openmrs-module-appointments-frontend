@@ -1,3 +1,63 @@
+@import '../../variables.scss';
+
 .appointmentDatePicker {
-    width: 100%;
+  width: 100%;
+
+}
+
+.rc-calendar-input-wrap {
+  color: red;
+  input {
+    border-radius: 3px;
+  }
+}
+
+.rc-calendar-selected-date .rc-calendar-date {
+  background: $primary-color-cyan;
+  color: $secondary-color-white;
+}
+
+.rc-calendar-selected-date .rc-calendar-date:hover {
+  background: #3fc7fa;
+}
+
+.rc-calendar-header > a:hover {
+  color: $primary-color-cyan;
+}
+
+.rc-calendar-day-select:hover {
+  color: $primary-color-cyan;
+}
+
+.rc-calendar-next-year-btn:hover {
+  color: $primary-color-cyan;
+}
+
+.rc-calendar-time-picker-btn:hover {
+  color: $primary-color-cyan;
+}
+
+.rc-calendar-time-input:hover {
+  border-color: $primary-color-cyan;
+}
+
+.rc-calendar-time-input:focus {
+  border-color: $primary-color-cyan;
+  box-shadow: 0 0 3px $primary-color-cyan;
+}
+
+.rc-calendar-month-panel-header > a:hover {
+  color: $primary-color-cyan;
+}
+
+.rc-calendar-year-panel-header > a:hover {
+  color: $primary-color-cyan;
+}
+
+.rc-calendar-decade-panel-header > a:hover {
+  color: $primary-color-cyan;
+}
+
+.rc-calendar-full-header-switcher-normal:hover {
+  border-color: $primary-color-cyan;
 }
