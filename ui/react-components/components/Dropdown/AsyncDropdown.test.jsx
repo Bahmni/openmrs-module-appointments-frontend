@@ -119,7 +119,7 @@ describe('AsyncDropdown', () => {
         expect(inputValue).not.toBeNull();
     });
 
-    it('should retain the input value when a value is selected and user enters a new input value and clicks outside',
+    it('should retain the input value when a value is selected and user clears and enters new value',
         async () => {
             const placeholder = 'placeholder';
             const onChnageSpy = jest.fn();
@@ -131,10 +131,12 @@ describe('AsyncDropdown', () => {
             fireEvent.change(inputBox, { target: { value: "oc" } });
             await waitForElement(() => getByText('Ocean'));
             await selectEvent.select(inputBox, "Ocean");
+            const clearIndicator = container.querySelector('.react-select__clear-indicator');
+            fireEvent.mouseDown(clearIndicator);
+            const deletedValue = await queryByText('Ocean');
+            expect(deletedValue).toBeNull();
+            fireEvent.focus(inputBox);
             fireEvent.change(inputBox, { target: { value: "ab" } });
-            fireEvent.blur(inputBox);
-            const noOption = await queryByText('Ocean');
-            expect(noOption).toBeNull();
             const inputValue = await getByText('ab');
             expect(inputValue).not.toBeNull();
         });
