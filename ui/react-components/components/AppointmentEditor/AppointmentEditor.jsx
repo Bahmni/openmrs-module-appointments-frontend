@@ -19,10 +19,10 @@ import PropTypes from "prop-types";
 import {saveAppointment} from "./AppointmentEditorService";
 import Label from '../Label/Label.jsx';
 import 'react-inputs-validation/lib/react-inputs-validation.min.css';
+import { getDateTime, isStartTimeBeforeEndTime } from '../../utils/DateUtil.js'
 import DateSelector from "../DateSelector/DateSelector.jsx";
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
-import {getDateTime} from '../../utils/DateUtil.js';
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -31,6 +31,7 @@ const AppointmentEditor = props => {
     const [dateError, setDateError] = useState(false);
     const [startTimeError, setStartTimeError] = useState(false);
     const [endTimeError, setEndTimeError] = useState(false);
+    const [startTimeBeforeEndTimeError, setStartTimeBeforeEndTimeError] = useState(false);
     const [providers, setProviders] = useState([]);
     const [service, setService] = useState('');
     const [serviceType, setServiceType] = useState('');
@@ -72,6 +73,13 @@ const AppointmentEditor = props => {
         id: 'TIME_ERROR_MESSAGE', defaultMessage: 'Please select time'
     });
 
+    const startTimeLessThanEndTimeMessage = intl.formatMessage({
+        id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'Start time should be less than end time '
+    });
+
+
+
+
     const getAppointment = () => {
         return {
             patientUuid: patient && patient.uuid,
@@ -87,16 +95,14 @@ const AppointmentEditor = props => {
 
     const isValidAppointment = () => {
         const isValidPatient = patient && patient.uuid;
-        const isValidService = !!service;
-        const isValidDate = startDate;
-        const isValidStartTime = startTime;
-        const isValidEndTime = endTime;
+        const startTimeBeforeEndTime = isStartTimeBeforeEndTime(startTime, endTime);
         setPatientError(!isValidPatient);
-        setServiceError(!isValidService);
-        setDateError(!isValidDate);
-        setStartTimeError(!isValidStartTime);
-        setEndTimeError(!isValidEndTime);
-        return isValidPatient && isValidService && isValidDate && isValidStartTime && isValidEndTime;
+        setServiceError(!service);
+        setDateError(!startDate);
+        setStartTimeError(!startTime);
+        setEndTimeError(!endTime);
+        setStartTimeBeforeEndTimeError(!startTimeBeforeEndTime);
+        return isValidPatient && service && startDate && startTime && endTime ;
     };
 
     const checkAndSave = async () => {
@@ -179,7 +185,9 @@ const AppointmentEditor = props => {
                             <TimeSelector {...appointmentStartTimeProps}
                                           onChange={time => {
                                               setStartTime(time);
-                                              setStartTimeError(!time)
+                                              setStartTimeError(!time);
+                                              setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
+
                                           }}
                             />
                             <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
@@ -188,10 +196,12 @@ const AppointmentEditor = props => {
                             <TimeSelector {...appointmentEndTimeProps}
                                           onChange={time => {
                                               setEndTime(time);
-                                              setEndTimeError(!time)
+                                              setEndTimeError(!time);
+                                              setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
                                           }}/>
                             <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
                         </div>
+                        <ErrorMessage message={startTime && endTime && startTimeBeforeEndTimeError ? startTimeLessThanEndTimeMessage : undefined}/>
                     </div>
                 </div>
                 <div className={classNames(searchFieldsContainerRight)}>
