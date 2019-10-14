@@ -26,6 +26,7 @@ const AppointmentDatePicker = (props) => {
                 onChange={props.onChange}
                 disabledDate={disablePastDates}
                 className={classNames(appointmentDatePicker)}
+                onClear={props.onClear}
             />
         </div>
     );

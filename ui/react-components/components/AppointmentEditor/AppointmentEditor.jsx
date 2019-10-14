@@ -167,6 +167,9 @@ const AppointmentEditor = props => {
                         <DateSelector {...appointmentDateProps} onChange={date => {
                             setStartDate(date);
                             setDateError(!date)
+                        }} onClear={() => {
+                            setStartDate(undefined);
+                            setDateError(true);
                         }}/>
                         <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
                     </div>
