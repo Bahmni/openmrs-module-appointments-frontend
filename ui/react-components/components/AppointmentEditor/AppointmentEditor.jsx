@@ -81,7 +81,7 @@ const AppointmentEditor = props => {
 
 
     const getAppointment = () => {
-        return {
+        let appointment = {
             patientUuid: patient && patient.uuid,
             serviceUuid: service,
             serviceTypeUuid: serviceType,
@@ -91,6 +91,9 @@ const AppointmentEditor = props => {
             locationUuid: location,
             appointmentKind: "Scheduled"
         };
+        if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
+            delete appointment.serviceTypeUuid;
+        return appointment;
     };
 
     const isValidAppointment = () => {
