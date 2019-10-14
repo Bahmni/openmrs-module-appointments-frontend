@@ -3,6 +3,7 @@ import Calendar from 'rc-calendar';
 import 'rc-calendar/assets/index.css';
 import { appointmentDatePicker } from './DatePicker.module.scss';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 const AppointmentDatePicker = (props) => {
 
@@ -24,7 +25,7 @@ const AppointmentDatePicker = (props) => {
                 showOk={false}
                 onChange={props.onChange}
                 disabledDate={disablePastDates}
-                className={appointmentDatePicker}
+                className={classNames(appointmentDatePicker)}
             />
         </div>
     );
