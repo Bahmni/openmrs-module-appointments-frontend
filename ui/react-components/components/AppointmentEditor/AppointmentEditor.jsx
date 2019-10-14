@@ -28,6 +28,9 @@ const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
     const [patientError, setPatientError] = useState(false);
     const [serviceError, setServiceError] = useState(false);
+    const [dateError, setDateError] = useState(false);
+    const [startTimeError, setStartTimeError] = useState(false);
+    const [endTimeError, setEndTimeError] = useState(false);
     const [providers, setProviders] = useState([]);
     const [service, setService] = useState('');
     const [serviceType, setServiceType] = useState('');
@@ -61,6 +64,17 @@ const AppointmentEditor = props => {
         id: 'SERVICE_ERROR_MESSAGE', defaultMessage: 'Please select service'
     });
 
+    const dateErrorMessage = intl.formatMessage({
+        id: 'DATE_ERROR_MESSAGE', defaultMessage: 'Please select date'
+    });
+
+    const timeErrorMessage = intl.formatMessage({
+        id: 'TIME_ERROR_MESSAGE', defaultMessage: 'Please select time'
+    });
+
+
+
+
     const getAppointment = () => {
         return {
             patientUuid: patient && patient.uuid,
@@ -77,9 +91,15 @@ const AppointmentEditor = props => {
     const isValidAppointment = () => {
         const isValidPatient = patient && patient.uuid;
         const isValidService = !!service;
+        const isValidDate = startDate;
+        const isValidStartTime = startTime;
+        const isValidEndTime = endTime;
         setPatientError(!isValidPatient);
         setServiceError(!isValidService);
-        return isValidPatient && isValidService;
+        setDateError(!isValidDate);
+        setStartTimeError(!isValidStartTime);
+        setEndTimeError(!isValidEndTime);
+        return isValidPatient && isValidService && isValidDate && isValidStartTime && isValidEndTime;
     };
 
     const checkAndSave = async () => {
@@ -132,7 +152,11 @@ const AppointmentEditor = props => {
                     <div>
                         <Label translationKey='APPOINTMENT_DATE_LABEL' defaultValue='Appointment date' />
                         <div style={{marginTop:'20px'}}>
-                            <AppointmentDatePicker onChange={date => setStartDate(date)} />
+                            <AppointmentDatePicker onChange={date => {
+                                setStartDate(date);
+                                setDateError(!date)}} />
+                            <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
+
                         </div>
                     </div>
                     <div>
@@ -142,16 +166,22 @@ const AppointmentEditor = props => {
                                 <Label translationKey='APPOINTMENT_TIME_FROM_LABEL' defaultValue='From' />
                             </div>
                             <div>
-                                <AppointmentTimePicker onChange={time => setStartTime(time)}
-                                placeHolderTranslationKey='CHOOSE_TIME_PLACE_HOLDER' defaultValue="Click to select time" />
+                                <AppointmentTimePicker onChange={time => {
+                                    setStartTime(time);
+                                    setStartTimeError(!time)
+                                }} placeHolderTranslationKey='CHOOSE_TIME_PLACE_HOLDER' defaultValue="Click to select time"/>
+                                <ErrorMessage message={startTimeError ? timeErrorMessage : undefined }/>
                             </div>
                         </div>
                         <div style={{marginTop: '20px'}}>
-                            <div style={{width:'42%', float:'left'}}>
-                                <Label translationKey='APPOINTMENT_TIME_TO_LABEL' defaultValue='To' />
+                            <div style={{width: '42%', float: 'left'}}>
+                                <Label translationKey='APPOINTMENT_TIME_TO_LABEL' defaultValue='To'/>
                             </div>
-                            <AppointmentTimePicker onChange={time => setEndTime(time)}
-                                placeHolderTranslationKey='CHOOSE_TIME_PLACE_HOLDER' defaultValue="Click to select time" />
+                            <AppointmentTimePicker onChange={time => {
+                                setEndTime(time);
+                                setEndTimeError(!time)
+                            }} placeHolderTranslationKey='CHOOSE_TIME_PLACE_HOLDER' defaultValue="Click to select time"/>
+                            <ErrorMessage message={endTimeError ? timeErrorMessage : undefined }/>
                         </div>
                     </div>
                 </div>
