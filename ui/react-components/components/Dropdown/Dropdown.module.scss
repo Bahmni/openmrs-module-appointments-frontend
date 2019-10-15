@@ -21,5 +21,8 @@
     border-bottom: 1px solid $border-color;
     box-shadow: none;
   }
+  div[class^='react-select__single-value'] {
+    line-height: normal;
+  }
 }
 
