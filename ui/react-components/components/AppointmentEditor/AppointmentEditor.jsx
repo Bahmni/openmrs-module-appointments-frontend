@@ -207,8 +207,8 @@ const AppointmentEditor = props => {
                     </div>
                 </div>
                 <div className={classNames(searchFieldsContainerRight)}>
-                    <AppointmentNotes translationKey="APPOINTMENT_NOTES" defaultValue="Notes"
-                                      onChange={(event) => setNotes(event.target.value)}/>
+                    <Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/>
+                    <AppointmentNotes onChange={(event) => setNotes(event.target.value)}/>
                 </div>
             </div>
             <AppointmentEditorFooter checkAndSave={checkAndSave}/>
