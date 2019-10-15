@@ -31,6 +31,7 @@
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@storybook/react": "^5.2.4",
     "@testing-library/jest-dom": "^4.1.0",
     "@testing-library/react": "^9.1.4",
     "babel-core": "^6.26.3",
@@ -95,7 +96,8 @@
     "test-react": "jest",
     "test-react-watch": "jest --watch",
     "build-react": "webpack --env=production",
-    "build-react-dev": "webpack --env=developemnt --watch"
+    "build-react-dev": "webpack --env=developemnt --watch",
+    "storybook": "start-storybook"
   },
   "repository": {
     "type": "git",
