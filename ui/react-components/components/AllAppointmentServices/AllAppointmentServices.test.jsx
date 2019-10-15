@@ -13,7 +13,7 @@ describe('Services', ()=>{
         
       },{
       "Service Name": "Chemotherapy",
-      "Location":"",
+      "Location":"25 min",
       "Speciality":"Unkown location",
       "Duration":"45 min",
       "Description":"ok"
