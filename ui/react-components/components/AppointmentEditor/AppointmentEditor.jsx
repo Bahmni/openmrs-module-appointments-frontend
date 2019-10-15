@@ -108,9 +108,8 @@ const AppointmentEditor = props => {
     };
 
     const checkAndSave = async () => {
-        //todo get appointments after validation
-        const appointment = getAppointment();
         if (isValidAppointment()) {
+            const appointment = getAppointment();
             await saveAppointment(appointment);
         }
     };
