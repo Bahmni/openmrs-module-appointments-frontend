@@ -74,7 +74,7 @@ const AppointmentEditor = props => {
     });
 
     const startTimeLessThanEndTimeMessage = intl.formatMessage({
-        id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'Start time should be less than end time'
+        id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'From time should be before to time'
     });
 
 
@@ -121,12 +121,12 @@ const AppointmentEditor = props => {
 
     const appointmentStartTimeProps = {
         translationKey: 'APPOINTMENT_TIME_FROM_LABEL', defaultValue: 'From',
-        timeSelectionTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', timeSelectionDefaultValue: 'Click to select time',
+        timeSelectionTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', timeSelectionDefaultValue: 'Enter time as hh:mm am/pm',
     };
 
     const appointmentEndTimeProps = {
         translationKey: 'APPOINTMENT_TIME_TO_LABEL', defaultValue: 'To',
-        timeSelectionTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', timeSelectionDefaultValue: 'Click to select time',
+        timeSelectionTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', timeSelectionDefaultValue: 'Enter time as hh:mm am/pm',
     };
 
 
@@ -176,7 +176,6 @@ const AppointmentEditor = props => {
                             setDateError(!date)
                         }} onClear={() => {
                             setStartDate(undefined);
-                            setDateError(true);
                         }}/>
                         <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
                     </div>
@@ -186,9 +185,7 @@ const AppointmentEditor = props => {
                             <TimeSelector {...appointmentStartTimeProps}
                                           onChange={time => {
                                               setStartTime(time);
-                                              setStartTimeError(!time);
                                               setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
-
                                           }}
                             />
                             <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
@@ -197,7 +194,6 @@ const AppointmentEditor = props => {
                             <TimeSelector {...appointmentEndTimeProps}
                                           onChange={time => {
                                               setEndTime(time);
-                                              setEndTimeError(!time);
                                               setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
                                           }}/>
                             <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
