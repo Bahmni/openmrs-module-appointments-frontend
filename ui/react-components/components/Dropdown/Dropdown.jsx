@@ -1,5 +1,5 @@
 import Select, {components} from "react-select";
-import {resetSelectContainer, searchIcon} from './Dropdown.module.scss';
+import {dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
 import classNames from 'classnames';
 import {PropTypes} from 'prop-types';
 import React from "react";
@@ -21,6 +21,9 @@ const ValueContainer = ({children, ...props}) => {
     );
 };
 
+const DropdownIndicator = () => {
+    return <i className={classNames("fa", "fa-angle-down", "fa-lg", dropdownIndicator)} />;
+};
 const Dropdown = (props) => {
     const {options, placeholder, onChange, isDisabled, value} = props;
     return (
@@ -28,7 +31,7 @@ const Dropdown = (props) => {
             <Select
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"
-                components={{IndicatorSeparator, ValueContainer}}
+                components={{IndicatorSeparator, ValueContainer, DropdownIndicator}}
                 options={options}
                 noOptionsMessage={() => 'No Options'}
                 placeholder={placeholder}
