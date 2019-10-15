@@ -6,6 +6,11 @@
   color: $primary-color-1;
 }
 
+.dropdownIndicator{
+  color: hsl(0,0%,80%);
+  font-weight: 800;
+}
+
 .resetSelectContainer {
   div[class^='react-select__value-container'] {
       padding-left: 24px;

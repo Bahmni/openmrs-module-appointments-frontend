@@ -1,7 +1,7 @@
 import React, {Component, useState} from "react";
 import {components} from "react-select";
 import AsyncSelect from "react-select/async";
-import {searchIcon, resetSelectContainer} from './Dropdown.module.scss';
+import {searchIcon, resetSelectContainer, dropdownIndicator} from './Dropdown.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {injectIntl} from "react-intl";
@@ -21,6 +21,10 @@ const ValueContainer = ({ children, ...props }) => {
             </components.ValueContainer>
         )
     );
+};
+
+const DropdownIndicator = () => {
+    return <i className={classNames("fa", "fa-angle-down", "fa-lg", dropdownIndicator)} />;
 };
 
 const AsyncDropdown = (props) => {
@@ -61,7 +65,7 @@ const AsyncDropdown = (props) => {
                 defaultOptions
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"
-                components={{IndicatorSeparator, ValueContainer}}
+                components={{IndicatorSeparator, ValueContainer, DropdownIndicator}}
                 loadOptions={loadOptions}
                 noOptionsMessage={() => noOptionsMessage}
                 onChange={handleOnChange}
@@ -74,6 +78,8 @@ const AsyncDropdown = (props) => {
                 blurInputOnSelect={true}
                 value={value}
                 loadingMessage={() => loadingMessage}
+                onMenuOpen={() => undefined}
+                openMenuOnClick={false}
             />
         </div>
     );
