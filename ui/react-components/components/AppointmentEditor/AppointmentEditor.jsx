@@ -18,7 +18,6 @@ import {injectIntl} from "react-intl";
 import PropTypes from "prop-types";
 import {saveAppointment} from "./AppointmentEditorService";
 import Label from '../Label/Label.jsx';
-import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 import { getDateTime, isStartTimeBeforeEndTime } from '../../utils/DateUtil.js'
 import DateSelector from "../DateSelector/DateSelector.jsx";
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
