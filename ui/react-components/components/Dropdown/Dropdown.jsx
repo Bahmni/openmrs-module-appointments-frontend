@@ -1,30 +1,13 @@
-import Select, {components} from "react-select";
+import Select from "react-select";
 import {dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
+import React from "react";
 import classNames from 'classnames';
 import {PropTypes} from 'prop-types';
-import React from "react";
+import {DropdownIndicator} from "./DropdownIndicator.jsx";
+import {ValueContainer} from "./ValueContainer.jsx";
+import {IndicatorSeparator} from "./IndicatorSeparator.jsx";
 
-const IndicatorSeparator = () => null;
-const ValueContainer = ({children, ...props}) => {
-    return (
-        components.ValueContainer && (
-            <components.ValueContainer {...props}>
-                {!!children && (
-                    <i
-                        className={classNames("fa", "fa-search", searchIcon)}
-                        aria-hidden="true"
-                    />
-                )}
-                {children}{/**/}
-            </components.ValueContainer>
-        )
-    );
-};
-
-const DropdownIndicator = () => {
-    return <i className={classNames("fa", "fa-angle-down", "fa-lg", dropdownIndicator)} />;
-};
-const Dropdown = (props) => {
+const Dropdown = props => {
     const {options, placeholder, onChange, isDisabled, value} = props;
     return (
         <div data-testid="select">
