@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const AppointmentTimePicker = (props) => {
-    const { intl, placeHolderTranslationKey, defaultValue } = props;
+    const { intl, placeHolderTranslationKey, defaultValue, onChange } = props;
 
     const placeholder = intl.formatMessage({
         id: placeHolderTranslationKey, defaultMessage: defaultValue
@@ -15,7 +15,7 @@ const AppointmentTimePicker = (props) => {
 
     return (
         <TimePicker
-            onChange={props.onChange}
+            onChange={onChange}
             showSecond={false}
             use12Hours
             placeholder={placeholder}
