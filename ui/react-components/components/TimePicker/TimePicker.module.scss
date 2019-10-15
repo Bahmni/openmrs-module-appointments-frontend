@@ -1,12 +1,8 @@
 .appointmentTimePicker {
     width: 58%;
 
-    .rc-time-picker-input{
-        border-radius: 4px;
-    }
+  input[class^='rc-time-picker-input'] {
+    border-radius: 4px;
+    padding: 5px 3px;
+  }
 }
-
-
-
-
-

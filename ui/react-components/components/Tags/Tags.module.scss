@@ -34,7 +34,7 @@
     }
 
     .tagRemove {
-      color: white;
+      color: $secondary-color-1;
       padding: 0 6px;
       display: flex;
       align-items: center;
@@ -43,8 +43,7 @@
     }
 
     .tagRemove:hover {
-      background-color: #FFBDAD;
-      color: #DE350B;
+      background-color: #0000004d;
     }
   }
 }

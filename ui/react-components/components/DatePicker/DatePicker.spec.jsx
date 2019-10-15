@@ -18,6 +18,11 @@ describe('DatePicker', () => {
         expect(container.querySelector('.appointmentDatePicker')).not.toBeNull();
     });
 
+    it('should display place holder for calendar component', () => {
+        const {getByPlaceholderText} = render(<AppointmentDatePicker/>);
+        getByPlaceholderText('mm/dd/yyyy');
+    });
+
     it('should call onChange when future date is selected', async () => {
         const onChangeSpy = jest.fn();
         const { getAllByTitle } = render(<AppointmentDatePicker onChange={onChangeSpy} />);

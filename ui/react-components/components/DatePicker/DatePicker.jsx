@@ -4,6 +4,7 @@ import 'rc-calendar/assets/index.css';
 import { appointmentDatePicker } from './DatePicker.module.scss';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import moment from 'moment';
 
 const AppointmentDatePicker = (props) => {
 
@@ -11,12 +12,9 @@ const AppointmentDatePicker = (props) => {
         if (!current) {
             return false;
         }
-        const date = new Date();
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        return current.valueOf() < date.valueOf();
-    }
+        const date = moment().subtract('1','days').endOf('day');
+        return current.isBefore(date);
+    };
 
     return (
         <div data-testid="datePicker">
@@ -27,6 +25,7 @@ const AppointmentDatePicker = (props) => {
                 disabledDate={disablePastDates}
                 className={classNames(appointmentDatePicker)}
                 onClear={props.onClear}
+                dateInputPlaceholder="mm/dd/yyyy"
             />
         </div>
     );

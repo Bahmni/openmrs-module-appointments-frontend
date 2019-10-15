@@ -4,6 +4,8 @@ import Dropdown from "../Dropdown/Dropdown.jsx";
 import PropTypes from "prop-types";
 import {forEach} from 'lodash';
 import {injectIntl} from "react-intl";
+import classNames from 'classnames';
+import {disable} from './ServiceTypeSearch.module.scss';
 
 const ServiceTypeSearch = props => {
 
@@ -48,7 +50,7 @@ const ServiceTypeSearch = props => {
     };
 
     return (
-        <div>
+        <div className={classNames(disabled ? disable : '')}>
             <Dropdown
                 isDisabled={disabled}
                 options={Object.values(serviceTypes)}
