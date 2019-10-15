@@ -74,7 +74,7 @@ const AppointmentEditor = props => {
     });
 
     const startTimeLessThanEndTimeMessage = intl.formatMessage({
-        id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'Start time should be less than end time '
+        id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'Start time should be less than end time'
     });
 
 
@@ -104,7 +104,7 @@ const AppointmentEditor = props => {
         setStartTimeError(!startTime);
         setEndTimeError(!endTime);
         setStartTimeBeforeEndTimeError(!startTimeBeforeEndTime);
-        return isValidPatient && service && startDate && startTime && endTime ;
+        return isValidPatient && service && startDate && startTime && endTime && startTimeBeforeEndTime;
     };
 
     const checkAndSave = async () => {
