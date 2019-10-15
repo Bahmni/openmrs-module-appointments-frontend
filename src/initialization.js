@@ -14,14 +14,13 @@ angular.module('bahmni.appointments').factory('initialization',
                 var ensureLogin = function () {
                     return openMRSHelperService.isRunningOnOpenMRS().then(
                         (isRunningOnOpenMRS) => {
-                            if (!isRunningOnOpenMRS) {
-                                return authenticator.authenticateUser();
-                            }
-                            return $q.all([openMRSAuthService.populateLoginDetails(), openMRSHelperService.overrideConfigUrlForOpenMRS()]);
+                            return isRunningOnOpenMRS ?
+                                openMRSAuthService.populateLoginDetails() :
+                                authenticator.authenticateUser();
                         });
                 };
                 return spinner.forPromise(
-                    ensureLogin().then(initApp).then(appService.overrideConstants).then(loadConfigPromise)
+                    ensureLogin().then(initApp).then(loadConfigPromise)
                 );
             };
         }
