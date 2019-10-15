@@ -29,6 +29,7 @@ const AsyncDropdown = (props) => {
     const {loadOptions, placeholder, onChange, intl} = props;
     let select;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'Type to search'});
+    const loadingMessage = intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'});
 
     const handleOnChange = (event) => {
         setInputValue('');
@@ -72,6 +73,7 @@ const AsyncDropdown = (props) => {
                 isClearable
                 blurInputOnSelect={true}
                 value={value}
+                loadingMessage={() => loadingMessage}
             />
         </div>
     );
