@@ -1,31 +1,12 @@
-import React, {Component, useState} from "react";
-import {components} from "react-select";
+import React, {useState} from "react";
 import AsyncSelect from "react-select/async";
-import {searchIcon, resetSelectContainer, dropdownIndicator} from './Dropdown.module.scss';
+import {dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {injectIntl} from "react-intl";
-
-const IndicatorSeparator = () => null;
-const ValueContainer = ({ children, ...props }) => {
-    return (
-        components.ValueContainer && (
-            <components.ValueContainer {...props}>
-                {!!children && (
-                    <i
-                        className={classNames("fa", "fa-search", searchIcon)}
-                        aria-hidden="true"
-                    />
-                )}
-                {children}
-            </components.ValueContainer>
-        )
-    );
-};
-
-const DropdownIndicator = () => {
-    return <i className={classNames("fa", "fa-angle-down", "fa-lg", dropdownIndicator)} />;
-};
+import {DropdownIndicator} from "./DropdownIndicator.jsx";
+import {IndicatorSeparator} from "./IndicatorSeparator.jsx";
+import {ValueContainer} from "./ValueContainer.jsx";
 
 const AsyncDropdown = (props) => {
     const [inputValue, setInputValue] = useState();
