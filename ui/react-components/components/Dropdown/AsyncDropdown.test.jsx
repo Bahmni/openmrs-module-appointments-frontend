@@ -140,4 +140,32 @@ describe('AsyncDropdown', () => {
             const inputValue = await getByText('ab');
             expect(inputValue).not.toBeNull();
         });
+
+    it('should show loading when value is being searched for',
+        async () => {
+            const placeholder = 'placeholder';
+            const onChnageSpy = jest.fn();
+            const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
+                <AsyncDropdown placeholder={placeholder}
+                               loadOptions={loadOptions}
+                               onChange={onChnageSpy} />, {'DROPDOWN_LOADING_MESSAGE': 'Loading...'});
+            const inputBox = container.querySelector('.react-select__input input');
+            fireEvent.change(inputBox, { target: { value: "oc" } });
+            const loadingTest = getByText('Loading...');
+            expect(loadingTest).not.toBeNull();
+        });
+
+    it('should show translated loading text',
+        async () => {
+            const placeholder = 'placeholder';
+            const onChnageSpy = jest.fn();
+            const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
+                <AsyncDropdown placeholder={placeholder}
+                               loadOptions={loadOptions}
+                               onChange={onChnageSpy} />, {'DROPDOWN_LOADING_MESSAGE': 'Test...'});
+            const inputBox = container.querySelector('.react-select__input input');
+            fireEvent.change(inputBox, { target: { value: "oc" } });
+            const loadingTest = getByText('Test...');
+            expect(loadingTest).not.toBeNull();
+        });
 });
