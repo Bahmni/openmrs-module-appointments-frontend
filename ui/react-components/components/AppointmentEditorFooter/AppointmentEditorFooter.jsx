@@ -1,34 +1,27 @@
 import classNames from "classnames";
-import {
-    button,
-    footer,
-    footerElements,
-    save
-} from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
+import {button, footer, footerElements, save} from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
 import React from "react";
 import PropTypes from "prop-types";
-import {injectIntl} from "react-intl";
+import {FormattedMessage} from "react-intl";
 
 const AppointmentEditorFooter = props => {
 
-    const {intl, checkAndSave} = props;
-    const saveButtonText = intl.formatMessage({
-        id: 'APPOINTMENT_CREATE_CHECK_AND_SAVE', defaultMessage: 'Check and Save'
-    });
-    const cancelButtonText = intl.formatMessage({
-        id: 'APPOINTMENT_CREATE_CANCEL', defaultMessage: 'Cancel'
-    });
+    const {checkAndSave} = props;
 
     return (
         <div className={classNames(footer)}>
             <div className={classNames(footerElements)}>
                 <button className={classNames(button)}>
                     <i className={classNames("fa", "fa-times")}/>
-                    <span>{cancelButtonText}</span>
+                    <span>
+                        <FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/>
+                    </span>
                 </button>
                 <button className={classNames(button, save)} onClick={checkAndSave}>
                     <i className={classNames("fa", "fa-check")}/>
-                    <span>{saveButtonText}</span>
+                    <span>
+                        <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
+                    </span>
                 </button>
             </div>
         </div>
@@ -36,8 +29,7 @@ const AppointmentEditorFooter = props => {
 };
 
 AppointmentEditorFooter.propTypes = {
-    intl: PropTypes.object.isRequired,
     checkAndSave: PropTypes.func.isRequired
 };
 
-export default injectIntl(AppointmentEditorFooter);
+export default AppointmentEditorFooter;
