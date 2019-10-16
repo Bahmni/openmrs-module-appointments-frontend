@@ -28,3 +28,27 @@ node_modules
 *.tern-port
 **/.idea/*
 ui/common.background.min.js
+
+# dependencies
+react-appointment-components/node_modules
+react-appointment-components/.pnp
+react-appointment-components/.pnp.js
+
+# testing
+react-appointment-components/coverage
+
+# production
+react-appointment-components/build
+react-appointment-components/demo
+
+# misc
+react-appointment-components/.env.local
+react-appointment-components/.env.development.local
+react-appointment-components/.env.test.local
+react-appointment-components/.env.production.local
+
+react-appointment-components/npm-debug.log*
+react-appointment-components/yarn-debug.log*
+react-appointment-components/yarn-error.log*
+
+
