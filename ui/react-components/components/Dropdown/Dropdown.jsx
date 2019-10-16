@@ -1,13 +1,11 @@
-import React, {Component, useState} from "react";
-import {components} from "react-select";
-import AsyncSelect from "react-select/async";
-import {searchIcon, resetSelectContainer} from './Dropdown.module.scss';
+import Select, {components} from "react-select";
+import {dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import {injectIntl} from "react-intl";
+import {PropTypes} from 'prop-types';
+import React from "react";
 
 const IndicatorSeparator = () => null;
-const ValueContainer = ({ children, ...props }) => {
+const ValueContainer = ({children, ...props}) => {
     return (
         components.ValueContainer && (
             <components.ValueContainer {...props}>
@@ -17,42 +15,38 @@ const ValueContainer = ({ children, ...props }) => {
                         aria-hidden="true"
                     />
                 )}
-                {children}
+                {children}{/**/}
             </components.ValueContainer>
         )
     );
 };
 
+const DropdownIndicator = () => {
+    return <i className={classNames("fa", "fa-angle-down", "fa-lg", dropdownIndicator)} />;
+};
 const Dropdown = (props) => {
-    const [inputValue, setInputValue] = useState();
-    const {loadOptions, placeholder, onChange, intl} = props;
-    const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'Type to search'});
-
-    const handleOnChange = (e) => { setInputValue(''); onChange && onChange(e); };
-    const handleOnInputChange = (e, {action}) => { if (action === 'input-change') setInputValue(e); };
+    const {options, placeholder, onChange, isDisabled, value} = props;
     return (
-        <div data-testid="asyncSelect">
-            <AsyncSelect
-                cacheOptions
+        <div data-testid="select">
+            <Select
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"
-                components={{IndicatorSeparator, ValueContainer}}
-                loadOptions={loadOptions}
-                noOptionsMessage={() => noOptionsMessage}
-                onChange={handleOnChange}
+                components={{IndicatorSeparator, ValueContainer, DropdownIndicator}}
+                options={options}
+                noOptionsMessage={() => 'No Options'}
                 placeholder={placeholder}
-                onInputChange={handleOnInputChange}
-                defaultInputValue={inputValue}
-                inputValue={inputValue}
+                onChange={onChange}
+                isDisabled={isDisabled}
+                value={value}
             />
         </div>
     );
 };
 
-export default injectIntl(Dropdown);
+export default Dropdown;
 
 Dropdown.propTypes = {
-    loadOptions: PropTypes.func,
-    onChange: PropTypes.func,
-    placeholder: PropTypes.string
+    options: PropTypes.array,
+    placeholder: PropTypes.string,
+    onChange: PropTypes.func
 };

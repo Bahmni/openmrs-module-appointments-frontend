@@ -3,7 +3,12 @@
 .searchIcon {
   position: absolute;
   left: 6px;
-  color: $primary-color;
+  color: $primary-color-1;
+}
+
+.dropdownIndicator{
+  color: hsl(0,0%,80%);
+  font-weight: 800;
 }
 
 .resetSelectContainer {
