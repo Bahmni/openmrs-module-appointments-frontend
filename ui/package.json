@@ -22,6 +22,7 @@
     "react-redux": "^7.1.1",
     "react-select": "^3.0.6",
     "react2angular": "^4.0.6",
+    "reactjs-popup": "^1.5.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "request": "^2.88.0"
