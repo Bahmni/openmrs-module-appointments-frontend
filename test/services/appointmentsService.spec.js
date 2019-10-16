@@ -9,7 +9,7 @@ describe('AppointmentsService', function () {
 
     beforeEach(module(function ($provide) {
         mockHttp = jasmine.createSpyObj('$http', ['get', 'post']);
-        mockHttp.get.and.returnValue(specUtil.simplePromise({}));
+        mockHttp.get.and.returnValue(specUtil.simplePromise({data:{results: []}}));
         mockHttp.post.and.returnValue(specUtil.simplePromise({}));
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['formatUrl']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -38,7 +38,7 @@ describe('AppointmentsService', function () {
     });
 
     it('should search for appointments with given start date and end date', function () {
-        var data = {startDate:"2018-09-07T18:30:00.000Z" , endDate:"2018-09-13T18:30:00.000Z"};
+        var data = {startDate: "2018-09-07T18:30:00.000Z", endDate: "2018-09-13T18:30:00.000Z"};
         appointmentsService.searchAppointments(data);
         var headers = {"Accept": "application/json", "Content-Type": "application/json"};
         var params = {withCredentials: true, headers: headers};
@@ -82,7 +82,7 @@ describe('AppointmentsService', function () {
         appointmentsService.changeStatus(appointment, toStatus, onDate);
         var headers = {"Accept": "application/json", "Content-Type": "application/json"};
         var params = {withCredentials: true, headers: headers};
-        expect(mockHttp.post).toHaveBeenCalledWith(changeStatusUrl, {'toStatus': toStatus, 'onDate': onDate},  params);
+        expect(mockHttp.post).toHaveBeenCalledWith(changeStatusUrl, {'toStatus': toStatus, 'onDate': onDate}, params);
     });
 });
 

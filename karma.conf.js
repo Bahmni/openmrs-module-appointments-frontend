@@ -40,5 +40,8 @@ module.exports = (config) => {
         webpackMiddleware: {
             stats: 'errors-only',
         },
+        client: {
+            captureConsole: false
+        }
     });
 };

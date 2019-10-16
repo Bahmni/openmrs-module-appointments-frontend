@@ -13,6 +13,8 @@ describe('ServiceAvailability', function () {
         scope = $rootScope.$new();
         httpBackend = $httpBackend;
         document = $document;
+        httpBackend.expectGET('/openmrs/ws/rest/v1/systemsetting/?q=bahmni.config.baseUrlForUIConfigs&v=custom:(property,value)').respond({results:[]});
+        httpBackend.expectGET('/bahmni_config/openmrs/apps/overridden-constants.json').respond({});
         httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>');
         httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>');
         // httpBackend.expectGET('../appointments/views/admin/colorPicker.html').respond('<div></div>');
