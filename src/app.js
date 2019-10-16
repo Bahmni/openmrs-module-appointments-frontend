@@ -143,8 +143,7 @@ angular
                 url: '/new',
                 views: {
                     'content@appointment': {
-                        template: require('./views/manage/newAppointment.html'),
-                        controller: 'AppointmentsCreateController'
+                        template: '<react-add-appointment/>'
                     }
                 },
                 resolve: {
