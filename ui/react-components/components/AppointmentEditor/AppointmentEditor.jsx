@@ -22,6 +22,7 @@ import { getDateTime, isStartTimeBeforeEndTime } from '../../utils/DateUtil.js'
 import DateSelector from "../DateSelector/DateSelector.jsx";
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
+import RecurringPlan from "../RecurringPlan/RecurringPlan.jsx";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -39,6 +40,7 @@ const AppointmentEditor = props => {
     const [startDate, setStartDate] = useState();
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
+    const [isRecurring, setIsRecurring] = useState(false);
     const {appConfig} = props;
     const [notes, setNotes] = useState();
 
@@ -170,10 +172,15 @@ const AppointmentEditor = props => {
             </div>
             <div className={classNames(searchFieldsContainer)}>
                 <div className={classNames(searchFieldsContainerLeft)}>
+                    <RecurringPlan onChange={ event => setIsRecurring(!event.target.checked)} />
+                </div>
+            </div>
+            <div className={classNames(searchFieldsContainer)}>
+                <div className={classNames(searchFieldsContainerLeft)}>
                     <div data-testid="date-selector">
                         <DateSelector {...appointmentDateProps} onChange={date => {
                             setStartDate(date);
-                            setDateError(!date)
+                            setDateError(!date);
                         }} onClear={() => {
                             setStartDate(undefined);
                         }}/>
