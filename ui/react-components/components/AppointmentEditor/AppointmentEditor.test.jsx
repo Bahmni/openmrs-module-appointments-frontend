@@ -1,9 +1,10 @@
 import React from "react";
-import AppointmentEditor from './AppointmentEditor.jsx';
-import {renderWithReactIntl} from '../../utils/TestUtil';
+import AppointmentEditor from "./AppointmentEditor.jsx";
+import {renderWithReactIntl} from "../../utils/TestUtil";
 import {fireEvent, waitForElement} from "@testing-library/react";
-import * as save from './AppointmentEditorService.js';
+import * as save from "./AppointmentEditorService.js";
 import moment from "moment";
+import {spyOn} from "jest-mock";
 
 jest.mock('../../api/patientApi');
 jest.mock('../../api/serviceApi');
@@ -184,6 +185,20 @@ describe('Appointment Editor', () => {
         getByTestId('notes');
         expect(getAllByTestId('error-message').length).toBe(7);
     });
+
+    it('should display recurring plan', () => {
+        const {container, getByText} = renderWithReactIntl(<AppointmentEditor/>);
+        expect(getByText('Plan')).not.toBeNull();
+        expect(container.querySelector('.planLabel')).not.toBeNull();
+    });
+
+    it('should set isRecurring state variable on click of checkbox', () => {
+        const {container, getByText} = renderWithReactIntl(<AppointmentEditor/>);
+
+        const checkBoxService = container.querySelector('.checkbox');
+        fireEvent.click(checkBoxService);
+        expect(container.querySelector('.checkbox')).toBeChecked;
+    })
 
     //TODO need to add test to check the status of response on click of checkAndSave
     //TODO Not able to do because onChange of time picket is not getting called. Need to fix that

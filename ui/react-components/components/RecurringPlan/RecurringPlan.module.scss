@@ -1,0 +1,22 @@
+@import '../../variables.scss';
+
+.checkboxContainer {
+  float: right;
+  padding-right: 23px;
+  font-size: 14px;
+  .checkbox {
+    margin-right: 8px;
+    height: 16px;
+    width: 16px;
+    background-color: $primary-color-1;
+  }
+}
+
+.planLabel {
+  color: $primary-color-1;
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+}
