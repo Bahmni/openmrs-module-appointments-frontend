@@ -14,6 +14,6 @@ const colourOptions = [
     {value: 'silver', label: 'Silver'}
 ];
 
-export const withLabel = () => <Dropdown placeholder="Sample placeholder"></Dropdown>;
+export const withPlaceholder = () => <Dropdown placeholder="Sample placeholder"></Dropdown>;
 
 export const withOptions = () => <Dropdown placeholder="Select color" options={colourOptions}></Dropdown>;
