@@ -9,14 +9,18 @@ import {
     button,
     no
 } from "../CancelConfirmation/CancelConfirmation.module.scss";
+import PropTypes from "prop-types";
 
-const CancelConfirmation = () => {
+
+const CancelConfirmation = (props) => {
+
+    const {close} = props;
 
     return (
         <div className={classNames(cancelModal)}>
             <div className={classNames(cancelModalCloseIcon)}>
                 <a>
-                    <i className={classNames("fa", "fa-times")}/>
+                    <i className={classNames("fa", "fa-times")} onClick={close}/>
                 </a>
             </div>
             <div>
@@ -28,7 +32,7 @@ const CancelConfirmation = () => {
                                       defaultMessage={'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'}/>
                 </div>
                 <div>
-                    <button className={classNames(button, no)}>
+                    <button className={classNames(button, no)} onClick={close}>
                         <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_NO'} defaultMessage={'No'}/>
                     </button>
                     <button className={classNames(button)}>
@@ -39,6 +43,8 @@ const CancelConfirmation = () => {
         </div>
     );
 };
-
+CancelConfirmation.propTypes = {
+    close: PropTypes.func
+}
 export default CancelConfirmation;
 
