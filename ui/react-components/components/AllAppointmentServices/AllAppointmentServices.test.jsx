@@ -1,49 +1,59 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import {AllAppointmentServices} from './AllAppointmentServices';
+import {render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 
-describe('Services', ()=>{
+import AllAppointmentServices from './AllAppointmentServices';
 
-    let service = [{
-        "Service Name": "Cardiology",
-        "Location":"",
-        "Speciality":"Cardiology",
-        "Duration":"45 min",
-        "Description":"ok"
+
+describe('AllAppointmentServices', ()=>{
+
+        let service = [{
+                "Service Name": "Cardiology",
+                "Location":"",
+                "Speciality":"Cardiology",
+                "Duration":"45 min",
+                "Description":"ok"
+                
+              },{
+              "Service Name": "Chemotherapy",
+              "Location":"25 min",
+              "Speciality":"Unkown location",
+              "Duration":"45 min",
+              "Description":"ok"
+              }]
         
-      },{
-      "Service Name": "Chemotherapy",
-      "Location":"25 min",
-      "Speciality":"Unkown location",
-      "Duration":"45 min",
-      "Description":"ok"
-      }]
 
-    let mockEditService= jest.fn();
-    let mockDeleteService= jest.fn();
-    let mountedApp = shallow(<AllAppointmentServices services={service} editService={mockEditService} removeService={mockDeleteService} />);
-  
+     
+    
+        it('should render a <table />', () => {   
+            const {container} = render(<AllAppointmentServices services={service}  />);     
+            expect(container.querySelectorAll('table').length).toBe(1);
+          
+        });
 
-    it('should render a <table />', () => {
-        expect(mountedApp.find('table').length).toEqual(1);
-    });
+        it('should render a <thead />',()=>{
+            const {container} = render(<AllAppointmentServices services={service}  />);
+            expect(container.querySelectorAll('thead').length).toBe(1);
+        });
 
-    it('should edit service in allServices', () => {
-        mountedApp.find('#editservice').first().simulate('click', mockEditService);
-        expect(mockEditService).toBeCalledTimes(1);
-    });
-  
-    it('should delete service in allServices', () => {
-        mountedApp.find('#deleteservice').first().simulate('click', mockDeleteService);
-        expect(mockDeleteService).toBeCalledTimes(1);
-    });
+        it('should render a <tbody />',()=>{
+            const {container} = render(<AllAppointmentServices services={service} />);
+            expect(container.querySelectorAll('tbody').length).toBe(1);
+        });
 
-    it('should render a <thead />',()=>{
-        expect(mountedApp.find('thead').length).toEqual(1);
-    });
-
-    it('should render a <tbody />',()=>{
-        expect(mountedApp.find('tbody').length).toEqual(1);
-    });
-
+        it('should edit service in allServices', () => {
+            let mockEditService= jest.fn();
+            const {container, getAllByText} = render(<AllAppointmentServices services={service} editService={mockEditService}  />);
+            const editLink = getAllByText('Edit');
+            fireEvent.click(container, editLink);
+            expect(mockEditService).toHaveBeenCalledTimes(1);
+        });
+      
+        it('should delete service in allServices', () => {      
+            let mockDeleteService= jest.fn();
+            const {container, getAllByTestId} = render(<AllAppointmentServices services={service} removeService={mockDeleteService} />);
+            const deleteLink = getAllByTestId('deleteservice');
+            fireEvent.click(container, deleteLink);
+            expect(mockDeleteService).toHaveBeenCalledTimes(1);;
+        });
 });

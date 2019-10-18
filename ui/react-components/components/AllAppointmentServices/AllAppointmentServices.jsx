@@ -1,29 +1,22 @@
 import React from 'react'
-import './AllAppointmentServices.scss'
+import './AllAppointmentServices.module.scss'
 
-export class AllAppointmentServices extends React.Component{
-    constructor(props){
-        super(props);
-        this.getKeys =this.getKeys.bind(this);
-        this.getHeader =this.getHeader.bind(this);
-        this.getRowsData =this.getRowsData.bind(this);
+
+const AllAppointmentServices = (props) => { 
+    
+    const getKeys = ()=> {
+    let keys = Object.keys(props.services[0]);
+    return [...keys, 'Actions']
     }
 
-    getKeys = function () {
-        let keys = Object.keys(this.props.services[0]);
-        keys.push("Actions");
-        return keys;
-    }
-
-    getHeader = function () {
-        var keys = this.getKeys();
-        return keys.map((key,index)=>{
-                return <th key ={index}>{key}</th>
+    const getHeader = ()=>  {
+        let keys = getKeys();
+        keys.map((key,index)=>{
+              return <th key ={index}>{key}</th>
         })
     }
 
-    getService = function(keys,data) {
-        var self = this;
+    const getService = (keys,data) => {
         return  keys.map((key,index)=>{
             if(key === "Description")
             {
@@ -32,37 +25,33 @@ export class AllAppointmentServices extends React.Component{
             else if(key === "Actions")
             {
                 return <td key={index}>
-                    <a id="editservice" onClick={self.props.editService}>Edit</a>
-                    <a id="deleteservice" onClick={self.props.removeService}>Delete</a>
+                    <a data-testid="editservice" onClick={props.editService}>Edit</a>
+                    <a data-testid="deleteservice" onClick={props.removeService}>Delete</a>
                     </td>
             }
             return <td key={index} >{data[key]}</td>})
     }
 
-    getRowsData = function(){
-        var keys = this.getKeys(); 
-        var self = this;
-        return this.props.services.map((row,index)=>{
-
-            return <tr key={index}>
-                {this.getService(keys,row)}
-                </tr>
-
+    const getRowsData = ()=>{
+        let keys = getKeys();
+        return props.services.map((row,index)=>{
+            return <tr key={index}>{getService(keys,row)}</tr>
         });
     }
 
-    render(){ 
-        return <div>
+   
+        return (<div>
             <table>
                 <thead>
                 <tr>
-                    {this.getHeader()}
-                    </tr>  
+                    {getHeader()}
+                </tr>  
                 </thead>
                 <tbody>
-                    {this.getRowsData()}
+                    {getRowsData()}
                 </tbody>
             </table>
-        </div>
-    }
+        </div>)
+    
 };
+export default AllAppointmentServices;
