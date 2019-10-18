@@ -36,7 +36,7 @@ upload_asset() {
 main(){
   # Assign global variables to local variables
     local repo_owner=${args[0]}
-    local token="10cc9976a6cb994cca61370da75c26cb84f58988";
+    local token=$GH_AUTH_TOKEN;
     local name="openmrs-module-appointment-frontend.zip";
     local file="$(pwd)/$name";
     local release_name=$(read_version)
