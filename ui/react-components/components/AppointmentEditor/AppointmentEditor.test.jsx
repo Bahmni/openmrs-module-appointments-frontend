@@ -3,7 +3,6 @@ import AppointmentEditor from './AppointmentEditor.jsx';
 import {renderWithReactIntl} from '../../utils/TestUtil';
 import {fireEvent, waitForElement} from "@testing-library/react";
 import * as save from './AppointmentEditorService.js';
-import ServiceSearch from "../Service/ServiceSearch";
 import moment from "moment";
 
 jest.mock('../../api/patientApi');
@@ -141,6 +140,25 @@ describe('Appointment Editor', () => {
         expect(queryByText('Please select service')).toBeNull();
         expect(queryByText('Please select date')).toBeNull();
         expect(getAllByText('Please select time').length).toBe(2);
-    })
+    });
+
+    it('should display all the child components', () => {
+        const config = {
+            "enableSpecialities": "true"
+        };
+        const {getByText, getByTestId, getAllByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        const checkAndSaveButton = getByText('Check and Save');
+        fireEvent.click(checkAndSaveButton);
+        getByTestId('patient-search');
+        getByTestId('service-search');
+        getByTestId('service-type-search');
+        getByTestId('speciality-search');
+        getByTestId('location-search');
+        getByTestId('date-selector');
+        getByTestId('start-time-selector');
+        getByTestId('end-time-selector');
+        getByTestId('notes');
+        expect(getAllByTestId('error-message').length).toBe(7);
+    });
 });
 

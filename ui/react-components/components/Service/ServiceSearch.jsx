@@ -34,7 +34,7 @@ const ServiceSearch = (props) => {
     };
 
     return (
-        <Dropdown
+        <Dropdown data-testid="service-search"
             options={Object.values(services)}
             placeholder={placeHolder}
             onChange={onChange}
