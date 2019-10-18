@@ -14,7 +14,7 @@ const AppointmentTimePicker = (props) => {
     });
 
     return (
-        <TimePicker
+        <TimePicker data-testid="time-selector"
             onChange={onChange}
             showSecond={false}
             use12Hours

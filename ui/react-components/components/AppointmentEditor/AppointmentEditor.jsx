@@ -137,34 +137,39 @@ const AppointmentEditor = props => {
                         <PatientSearch onChange={(optionSelected) => {
                             setPatient(optionSelected.value);
                             setPatientError(!optionSelected.value);
-                        }}/>
-                        <ErrorMessage message={patientError ? patientErrorMessage : undefined}/>
+                        }} data-testid="patient-search"/>
+                        <ErrorMessage message={patientError ? patientErrorMessage : undefined}
+                                      data-testid="patient-error-message"/>
                     </div>
                     <div>
                         <ServiceSearch onChange={(optionSelected) => {
                             setService(optionSelected.value);
                             setServiceError(!optionSelected.value)
                         }}
-                                       specialityUuid={speciality}/>
-                        <ErrorMessage message={serviceError ? serviceErrorMessage : undefined}/>
+                                       specialityUuid={speciality} data-testid="service-search"/>
+                        <ErrorMessage message={serviceError ? serviceErrorMessage : undefined}
+                                      data-testid="service-error-message"/>
                     </div>
                     <div>
                         <ServiceTypeSearch onChange={(optionSelected) => setServiceType(optionSelected.value)}
-                                           serviceUuid={service}/>
+                                           serviceUuid={service} data-testid="service-type-search"/>
                     </div>
                     {isSpecialitiesEnabled() ?
                         <div>
-                            <SpecialitySearch onChange={(optionSelected) => setSpeciality(optionSelected.value)}/>
+                            <SpecialitySearch onChange={(optionSelected) => setSpeciality(optionSelected.value)}
+                                              data-testid="speciality-search"/>
                         </div> : null
                     }
                     <div>
-                        <LocationSearch onChange={(optionSelected) => setLocation(optionSelected.value)}/>
+                        <LocationSearch onChange={(optionSelected) => setLocation(optionSelected.value)}
+                                        data-testid="location-search"/>
                         <ErrorMessage message={undefined}/>
                     </div>
                 </div>
                 <div className={classNames(searchFieldsContainerRight)}>
                     <ProviderSearch onChange={selectedProviders => setProviders(selectedProviders)}
-                                    maxAppointmentProvidersAllowed={maxAppointmentProvidersAllowed()}/>
+                                    maxAppointmentProvidersAllowed={maxAppointmentProvidersAllowed()}
+                                    data-testid="provider-search"/>
                 </div>
             </div>
             <div className={classNames(searchFieldsContainer)}>
@@ -176,7 +181,7 @@ const AppointmentEditor = props => {
                         }} onClear={() => {
                             setStartDate(undefined);
                         }}/>
-                        <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
+                        <ErrorMessage message={dateError ? dateErrorMessage : undefined} data-testid="date-error-message"/>
                     </div>
                     <div>
                         <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
@@ -185,9 +190,8 @@ const AppointmentEditor = props => {
                                           onChange={time => {
                                               setStartTime(time);
                                               setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
-                                          }}
-                            />
-                            <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
+                                          }}/>
+                            <ErrorMessage message={startTimeError ? timeErrorMessage : undefined} data-testid="start-time-error-message"/>
                         </div>
                         <div>
                             <TimeSelector {...appointmentEndTimeProps}
@@ -195,9 +199,10 @@ const AppointmentEditor = props => {
                                               setEndTime(time);
                                               setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
                                           }}/>
-                            <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
+                            <ErrorMessage message={endTimeError ? timeErrorMessage : undefined} data-testid="end-time-error-message"/>
                         </div>
-                        <ErrorMessage message={startTime && endTime && startTimeBeforeEndTimeError ? startTimeLessThanEndTimeMessage : undefined}/>
+                        <ErrorMessage message={startTime && endTime && startTimeBeforeEndTimeError ? startTimeLessThanEndTimeMessage : undefined}
+                                      data-testid="start-time-after-end-time-error-message"/>
                     </div>
                 </div>
                 <div className={classNames(searchFieldsContainerRight)}>
