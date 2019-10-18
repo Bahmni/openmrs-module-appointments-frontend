@@ -1,0 +1,19 @@
+@import '../../variables.scss';
+
+.radioGroup {
+  body {
+    background: #0d0d0d;
+    color: white;
+    margin-right: 10px;
+    height: 12px;
+    width: 12px;
+  }
+
+  .radioButton {
+    display: flex;
+    margin-bottom: 3%;
+    input, label {
+      margin: 3% 3% 0 0;
+    }
+  }
+}
