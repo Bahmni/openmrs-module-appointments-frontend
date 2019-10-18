@@ -1,10 +1,15 @@
 import React, {Fragment, useState} from "react";
 import classNames from 'classnames';
 import {
+    appointmentDatePicker,
     appointmentEditor,
+    recurringContainer,
+    recurringContainerLeft,
+    recurringContainerRight,
     searchFieldsContainer,
     searchFieldsContainerLeft,
-    searchFieldsContainerRight
+    searchFieldsContainerRight,
+    dateHeading
 } from './AppointmentEditor.module.scss';
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
@@ -26,6 +31,8 @@ import RecurringPlan from "../RecurringPlan/RecurringPlan.jsx";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
 import {AppContext} from "../AppContext/AppContext";
+import RadioGroup from "../RadioGroup/RadioGroup.jsx";
+import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -41,11 +48,16 @@ const AppointmentEditor = props => {
     const [location, setLocation] = useState('');
     const [speciality, setSpeciality] = useState('');
     const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
-    const [isRecurring, setIsRecurring] = useState(false);
+    const [isRecurring, setIsRecurring] = useState();
     const {appConfig} = props;
     const [notes, setNotes] = useState();
+    const [startDateType, setStartDateType] = useState();
+    const [endDateType, setEndDateType] = useState();
+    const [recurrenceType, setRecurrenceType] = useState();
+
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     const {intl} = props;
@@ -183,42 +195,111 @@ const AppointmentEditor = props => {
             </div>
             <div className={classNames(searchFieldsContainer)}>
                 <div className={classNames(searchFieldsContainerLeft)}>
-                    <RecurringPlan onChange={ event => setIsRecurring(!event.target.checked)} />
+                    <RecurringPlan onChange={event => setIsRecurring(event.target.checked)}/>
                 </div>
             </div>
-            <div className={classNames(searchFieldsContainer)}>
-                <div className={classNames(searchFieldsContainerLeft)}>
-                    <div data-testid="date-selector">
-                        <DateSelector {...appointmentDateProps} onChange={date => {
-                            setStartDate(date);
-                            setDateError(!date);
-                        }} onClear={() => {
-                            setStartDate(undefined);
-                        }}/>
-                        <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
-                    </div>
-                    <div>
-                        <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
-                        <div data-testid="start-time-selector">
-                            <TimeSelector {...appointmentStartTimeProps}
-                                          onChange={time => {
-                                              setStartTime(time);
-                                              setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
-                                          }}/>
-                            <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
+            <div className={classNames(recurringContainer)}>
+                {isRecurring ?
+                    <div className={classNames(recurringContainerLeft)}>
+                        <div>
+                            <div className={classNames(dateHeading)}><Label translationKey="STARTS_LABEL" defaultValue="Starts"/></div>
+                            <RadioGroup firstTranslationKey="TODAY_LABEL"
+                                        firstDefaultValue="Today"
+                                        secondTranslationKey="FROM_LABEL" secondDefaultValue="From"
+                                        groupName="startDateType"
+                                        onChange={event => {
+                                            setStartDateType(event.currentTarget.value);
+                                        }}/>
+                            <AppointmentDatePicker onChange={date => {
+                                setStartDate(date);
+                                setDateError(!date);
+                            }} onClear={() => {
+                                setStartDate(undefined);
+                            }}/>
+                            <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
                         </div>
-                        <div data-testid="end-time-selector">
-                            <TimeSelector {...appointmentEndTimeProps}
-                                          onChange={time => {
-                                              setEndTime(time);
-                                              setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
-                                          }}/>
-                            <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
+                        <div>
+                            <div className={classNames(dateHeading)}><Label translationKey="ENDS_LABEL" defaultValue="Ends"/></div>
+                            <RadioGroup firstTranslationKey="AFTER_LABEL"
+                                        firstDefaultValue="After"
+                                        secondTranslationKey="ON_LABEL" secondDefaultValue="On"
+                                        groupName="endDateType"
+                                        onChange={event => {
+                                            setEndDateType(event.currentTarget.value);
+                                        }}/>
+                            <AppointmentDatePicker onChange={date => {
+                                setEndDate(date);
+                                setDateError(!date);
+                            }} onClear={() => {
+                                setEndDate(undefined);
+                            }}/>
+                            <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
                         </div>
-                        <ErrorMessage message={startTime && endTime && startTimeBeforeEndTimeError ? startTimeLessThanEndTimeMessage : undefined}/>
-                    </div>
-                </div>
-                <div className={classNames(searchFieldsContainerRight)}>
+                        <div>
+                            <div className={classNames(dateHeading)}><Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/></div>
+                            <RadioGroup firstTranslationKey="DAY_LABEL" firstDefaultValue="Day"
+                                        secondTranslationKey="WEEK_LABEL" secondDefaultValue="Week"
+                                        groupName="recurrenceType"
+                                        onChange={event => {
+                                            setRecurrenceType(event.currentTarget.value);
+                                        }}/>
+                            <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
+                            <div>
+                                <TimeSelector {...appointmentStartTimeProps}
+                                              onChange={time => {
+                                                  setStartTime(time);
+                                                  setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
+                                              }}
+                                />
+                                <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
+                            </div>
+                            <div>
+                                <TimeSelector {...appointmentEndTimeProps}
+                                              onChange={time => {
+                                                  setEndTime(time);
+                                                  setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
+                                              }}/>
+                                <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
+                            </div>
+                            <ErrorMessage
+                                message={startTime && endTime && startTimeBeforeEndTimeError ? startTimeLessThanEndTimeMessage : undefined}/>
+                        </div>
+                    </div> :
+                    <div className={classNames(recurringContainerLeft)}>
+                        <div data-testid="date-selector">
+                            <DateSelector {...appointmentDateProps} onChange={date => {
+                                setStartDate(date);
+                                setDateError(!date);
+                            }} onClear={() => {
+                                setStartDate(undefined);
+                            }}/>
+                            <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
+                        </div>
+                        <div>
+                            <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
+                            <div data-testid="start-time-selector">
+                                <TimeSelector {...appointmentStartTimeProps}
+                                              onChange={time => {
+                                                  setStartTime(time);
+                                                  setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
+                                              }}
+                                />
+                                <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
+                            </div>
+                            <div data-testid="end-time-selector">
+                                <TimeSelector {...appointmentEndTimeProps}
+                                              onChange={time => {
+                                                  setEndTime(time);
+                                                  setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
+                                              }}/>
+                                <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
+                            </div>
+                            <ErrorMessage
+                                message={startTime && endTime && startTimeBeforeEndTimeError ? startTimeLessThanEndTimeMessage : undefined}/>
+                        </div>
+                    </div>}
+
+                <div className={classNames(recurringContainerRight)}>
                     <Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/>
                     <AppointmentNotes onChange={(event) => setNotes(event.target.value)}/>
                 </div>
