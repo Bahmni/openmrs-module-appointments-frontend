@@ -11,13 +11,13 @@ const AppointmentEditorFooter = props => {
     return (
         <div className={classNames(footer)}>
             <div className={classNames(footerElements)}>
-                <button className={classNames(button)}>
+                <button className={classNames(button)} data-testid="cancel">
                     <i className={classNames("fa", "fa-times")}/>
                     <span>
                         <FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/>
                     </span>
                 </button>
-                <button className={classNames(button, save)} onClick={checkAndSave}>
+                <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
                     <i className={classNames("fa", "fa-check")}/>
                     <span>
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
