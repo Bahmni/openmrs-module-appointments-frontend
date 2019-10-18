@@ -9,12 +9,13 @@ read_version(){
 create_release() {
     local token="$1";
     local tag_name="$2";
-    local repo_owner="$3";
+    local commit_sha="$3";
+    local repo_owner="$4";
 
     curl -s -S -X POST "https://api.github.com/repos/$repo_owner/openmrs-module-appointment-frontend/releases" \
 	 -H "Authorization: token $token" \
 	 -H "Content-Type: application/json" \
-	 -d '{"tag_name": "'"$tag_name"'", "name" : "'"$tag_name"'" }';
+	 -d '{"tag_name": "'"$tag_name"'", "name" : "'"$tag_name"'", "target_commitish":"'"$commit_sha"'" }';
 }
 
 upload_asset() {
@@ -40,8 +41,9 @@ main(){
     local name="openmrs-module-appointment-frontend.zip";
     local file="$(pwd)/$name";
     local release_name=$(read_version)
+    local commit_sha=$(git rev-parse HEAD)
 
-    CREATE_RESPONSE=$(create_release "$token" "$release_name" "$repo_owner");
+    CREATE_RESPONSE=$(create_release "$token" "$release_name" "$commit_sha" "$repo_owner");
     local release_id=$(echo $CREATE_RESPONSE | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]');
     echo "Created a release with id $release_id"
     echo "Created Response ******************************"
