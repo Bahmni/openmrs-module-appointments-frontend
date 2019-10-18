@@ -5,7 +5,7 @@ import {notes} from './AppointmentNotes.module.scss'
 
 const AppointmentNotes = (props) => (
         <div>
-            <textarea className={classNames(notes)} onChange={props.onChange}/>
+            <textarea className={classNames(notes)} onChange={props.onChange} data-testid="notes"/>
         </div>
 );
 
