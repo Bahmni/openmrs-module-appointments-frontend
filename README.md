@@ -1,6 +1,7 @@
 Openmrs Module Appointment Dashboard
-=
+
 This repository is extracted appointments module from [openmrs-module-bahmniapps](https://github.com/bahmni/openmrs-module-bahmniapps).
+This repository acts as the front end for the **Bahmni Appointment Scheduling**. It is written in **React** and **Angular JS**.
 
 ## Differences with OpenMRS-Module-bahmniapps
 We have moved away from bower and installing dependencies from NPM.
@@ -37,3 +38,79 @@ Few libraries(angular, jquery) used in BahmniApps export themselves as global va
 
 ## Running Tests
 * Run `npm run test`.
+
+
+
+# **React**
+
+## Build
+
+```
+npm run build-react
+```
+
+## Development
+
+### Build with watch
+
+```
+npm run build-react-dev
+```
+
+### Run storybook
+
+```
+npm run storybook
+```
+
+## Test
+
+```
+npm run test-react
+```
+
+### Test with watch
+
+```
+npm run test-react-watch
+```
+
+***
+
+```
+## Deploy
+* Create a folder called 'appointments' under '/var/www'.
+* Add an alias in httpd ssl.conf, like below:
+  ```
+  Alias /appointments-v2 /var/www/appointments
+  ```
+# Project Structure
+<pre>
+|-- .tx
+|   
+|-- scripts
+|	
+`-- ui
+    |-- Gruntfile.js
+    |-- app
+    |	|-- appointment
+    |   |-- common
+    |   |-- images
+    |   |-- i18n
+    |   |-- lib
+    |   |-- styles
+    |-- react-components
+    |	|-- __mocks__
+    |	|-- api
+    |	|-- components
+    |	|-- containers
+    |	|-- stories
+    |	|-- utils
+    |	|-- bahmni-theme.css
+    |	|-- constants.js
+    |	|-- jest.config.js
+    |	|-- variable.scss
+    |-- test
+    |-- bower.json
+    |-- package.json
+</pre>
