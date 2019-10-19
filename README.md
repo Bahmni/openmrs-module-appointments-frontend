@@ -1,7 +1,7 @@
 Openmrs Module Appointment Dashboard
 =
 This repository is extracted appointments module from [openmrs-module-bahmniapps](https://github.com/bahmni/openmrs-module-bahmniapps).
-
+This repository acts as the front end for the **Bahmni Appointment Scheduling**. It is written in **React** and **Angular**.
 ## Differences with OpenMRS-Module-bahmniapps
 We have moved away from bower and installing dependencies from NPM.
 Below has been the changes in libraries from `OpenMRS-Module-bahmniapps`
