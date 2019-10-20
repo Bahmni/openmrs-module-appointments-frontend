@@ -2,6 +2,7 @@ import CancelConfirmation from "../CancelConfirmation/CancelConfirmation";
 import React from "react";
 import {fireEvent} from '@testing-library/react'
 import {renderWithReactIntl} from "../../utils/TestUtil";
+import {AppContext} from "../AppContext/AppContext";
 
 describe('CancelConfirmation ', () => {
     it('should render cancel modal closeIcon, title, body, yes and no buttons', () => {
@@ -29,4 +30,16 @@ describe('CancelConfirmation ', () => {
         fireEvent.click(closeIcon);
         expect(closeSpy).toHaveBeenCalledTimes(1);
     });
+
+    it('should call onBack function provided from context on click of yes button', () => {
+        const closeSpy = jest.fn();
+        const onBackSpy = jest.fn();
+        const{getByText} = renderWithReactIntl(
+            <AppContext.Provider value={{onBack: onBackSpy}}>
+                <CancelConfirmation close={closeSpy}/>
+            </AppContext.Provider>
+        );
+        fireEvent.click(getByText('Yes'));
+        expect(onBackSpy).toHaveBeenCalledTimes(1);
+    })
 });
