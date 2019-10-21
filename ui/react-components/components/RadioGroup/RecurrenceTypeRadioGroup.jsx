@@ -5,39 +5,34 @@ import InputNumber from "../InputNumber/InputNumber.jsx";
 import {injectIntl} from "react-intl";
 import classNames from 'classnames';
 import {
-    frequencyInput,
-    inputNumber,
-    radioButton,
-    radioGroup,
-    recurrenceType
+    recurrenceType,
+    recurrenceTypeDiv
 } from "./RecurrenceTypeRadioGroup.module.scss"
 
 const RecurrenceTypeRadioGroup = props => {
     const {onChange, onFrequencyChange, frequency} = props;
     const groupName = "recurrenceType";
     return (<div className={classNames(recurrenceType)}>
-        <div className={classNames(inputNumber)}>
+        <div className={classNames(recurrenceTypeDiv)}>
             <InputNumber onInputChange={onFrequencyChange} defaultValue={frequency}/>
         </div>
-        <div className={classNames(radioGroup)}>
-            <div className={classNames(radioButton)}>
-                <input
-                    type="radio"
-                    value="Day"
-                    name={groupName}
-                    onChange={onChange}
-                />
-                <Label translationKey="DAY_LABEL" defaultValue="Day"/>
-            </div>
-            <div>
-                <input
-                    type="radio"
-                    value="week"
-                    name={groupName}
-                    onChange={onChange}
-                />
-                <Label translationKey="WEEK_LABEL" defaultValue="Week"/>
-            </div>
+        <div className={classNames(recurrenceTypeDiv)}>
+            <input
+                type="radio"
+                value="Day"
+                name={groupName}
+                onChange={onChange}
+            />
+            <Label translationKey="DAY_LABEL" defaultValue="Day"/>
+        </div>
+        <div className={classNames(recurrenceTypeDiv)}>
+            <input
+                type="radio"
+                value="week"
+                name={groupName}
+                onChange={onChange}
+            />
+            <Label translationKey="WEEK_LABEL" defaultValue="Week"/>
         </div>
 
     </div>)
