@@ -2,13 +2,13 @@ import React, {Fragment, useState} from "react";
 import classNames from 'classnames';
 import {
     appointmentEditor,
+    dateHeading,
     recurringContainer,
     recurringContainerLeft,
     recurringContainerRight,
     searchFieldsContainer,
     searchFieldsContainerLeft,
-    searchFieldsContainerRight,
-    dateHeading
+    searchFieldsContainerRight
 } from './AppointmentEditor.module.scss';
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
@@ -33,6 +33,7 @@ import {AppContext} from "../AppContext/AppContext";
 import RadioGroup from "../RadioGroup/RadioGroup.jsx";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import StartDateRadioGroup from "../RadioGroup/StartDateRadioGroup.jsx";
+import EndDateRadioGroup from "../RadioGroup/EndDateRadioGroup.jsx";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -57,6 +58,7 @@ const AppointmentEditor = props => {
     const [startDateType, setStartDateType] = useState();
     const [endDateType, setEndDateType] = useState();
     const [recurrenceType, setRecurrenceType] = useState();
+    const [occurences, setOccurences] = useState(10);
 
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
@@ -202,7 +204,8 @@ const AppointmentEditor = props => {
                 {isRecurring ?
                     <div className={classNames(recurringContainerLeft)}>
                         <div>
-                            <div className={classNames(dateHeading)}><Label translationKey="STARTS_LABEL" defaultValue="Starts"/></div>
+                            <div className={classNames(dateHeading)}><Label translationKey="STARTS_LABEL"
+                                                                            defaultValue="Starts"/></div>
                             <StartDateRadioGroup onChange={event =>
                                 setStartDateType(event.currentTarget.value)}/>
                             <AppointmentDatePicker onChange={date => {
@@ -214,14 +217,14 @@ const AppointmentEditor = props => {
                             <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
-                            <div className={classNames(dateHeading)}><Label translationKey="ENDS_LABEL" defaultValue="Ends"/></div>
-                            <RadioGroup firstTranslationKey="AFTER_LABEL"
-                                        firstDefaultValue="After"
-                                        secondTranslationKey="ON_LABEL" secondDefaultValue="On"
-                                        groupName="endDateType"
-                                        onChange={event => {
-                                            setEndDateType(event.currentTarget.value);
-                                        }}/>
+                            <div className={classNames(dateHeading)}><Label translationKey="ENDS_LABEL"
+                                                                            defaultValue="Ends"/></div>
+                            <EndDateRadioGroup
+                                onChange={event => {
+                                    (event.currentTarget.value);
+                                }}
+                                onOccurencesChange={value => setOccurences(value)}
+                                occurences={occurences}/>
                             <AppointmentDatePicker onChange={date => {
                                 setEndDate(date);
                                 setDateError(!date);
@@ -231,7 +234,8 @@ const AppointmentEditor = props => {
                             <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
-                            <div className={classNames(dateHeading)}><Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/></div>
+                            <div className={classNames(dateHeading)}><Label translationKey="REPEATS_EVERY_LABEL"
+                                                                            defaultValue="Repeats Every"/></div>
                             <RadioGroup firstTranslationKey="DAY_LABEL" firstDefaultValue="Day"
                                         secondTranslationKey="WEEK_LABEL" secondDefaultValue="Week"
                                         groupName="recurrenceType"
