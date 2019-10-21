@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import classNames from 'classnames';
 import {
     appointmentEditor,
@@ -8,7 +8,8 @@ import {
     recurringContainerRight,
     searchFieldsContainer,
     searchFieldsContainerLeft,
-    searchFieldsContainerRight
+    searchFieldsContainerRight,
+    timeSelector
 } from './AppointmentEditor.module.scss';
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
@@ -58,8 +59,11 @@ const AppointmentEditor = props => {
     const [startDateType, setStartDateType] = useState();
     const [endDateType, setEndDateType] = useState();
     const [recurrenceType, setRecurrenceType] = useState();
-    const [occurences, setOccurences] = useState(10);
+    const [occurences, setOccurences] = useState();
     const [frequency, setFrequency] = useState();
+    useEffect(() => {
+        setOccurences(getDefaultOccurences)
+    });
 
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
@@ -69,6 +73,11 @@ const AppointmentEditor = props => {
         if (appConfig)
             return appConfig.enableSpecialities;
         return false;
+    };
+
+    const getDefaultOccurences = () => {
+        if (appConfig)
+            return appConfig.recurrence.defaultNumberOfOccurrences;
     };
 
     const maxAppointmentProvidersAllowed = () => {
@@ -238,31 +247,33 @@ const AppointmentEditor = props => {
                             <div className={classNames(dateHeading)}><Label translationKey="REPEATS_EVERY_LABEL"
                                                                             defaultValue="Repeats Every"/></div>
                             <RecurrenceTypeRadioGroup
-                                        onChange={event => {
-                                            setRecurrenceType(event.currentTarget.value);
-                                        }}
-                                        onFrequencyChange={value => setFrequency(value)}
-                                        frequency={frequency} />
-                            <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
-                            <div>
-                                <TimeSelector {...appointmentStartTimeProps}
-                                              onChange={time => {
-                                                  setStartTime(time);
-                                                  setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
-                                              }}
-                                />
-                                <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
+                                onChange={event => {
+                                    setRecurrenceType(event.currentTarget.value);
+                                }}
+                                onFrequencyChange={value => setFrequency(value)}
+                                frequency={frequency}/>
+                            <div className={classNames(timeSelector)}>
+                                <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
+                                <div>
+                                    <TimeSelector {...appointmentStartTimeProps}
+                                                  onChange={time => {
+                                                      setStartTime(time);
+                                                      setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
+                                                  }}
+                                    />
+                                    <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
+                                </div>
+                                <div>
+                                    <TimeSelector {...appointmentEndTimeProps}
+                                                  onChange={time => {
+                                                      setEndTime(time);
+                                                      setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
+                                                  }}/>
+                                    <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
+                                </div>
+                                <ErrorMessage
+                                    message={startTime && endTime && startTimeBeforeEndTimeError ? startTimeLessThanEndTimeMessage : undefined}/>
                             </div>
-                            <div>
-                                <TimeSelector {...appointmentEndTimeProps}
-                                              onChange={time => {
-                                                  setEndTime(time);
-                                                  setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
-                                              }}/>
-                                <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
-                            </div>
-                            <ErrorMessage
-                                message={startTime && endTime && startTimeBeforeEndTimeError ? startTimeLessThanEndTimeMessage : undefined}/>
                         </div>
                     </div> :
                     <div className={classNames(recurringContainerLeft)}>
