@@ -27,10 +27,10 @@ import DateSelector from "../DateSelector/DateSelector.jsx";
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import RecurringPlan from "../RecurringPlan/RecurringPlan.jsx";
-import RadioGroup from "../RadioGroup/RadioGroup.jsx";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import StartDateRadioGroup from "../RadioGroup/StartDateRadioGroup.jsx";
 import EndDateRadioGroup from "../RadioGroup/EndDateRadioGroup.jsx";
+import RecurrenceTypeRadioGroup from "../RadioGroup/RecurrenceTypeRadioGroup.jsx";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -56,6 +56,7 @@ const AppointmentEditor = props => {
     const [endDateType, setEndDateType] = useState();
     const [recurrenceType, setRecurrenceType] = useState();
     const [occurences, setOccurences] = useState(10);
+    const [frequency, setFrequency] = useState();
 
 
     const {intl} = props;
@@ -225,12 +226,12 @@ const AppointmentEditor = props => {
                         <div>
                             <div className={classNames(dateHeading)}><Label translationKey="REPEATS_EVERY_LABEL"
                                                                             defaultValue="Repeats Every"/></div>
-                            <RadioGroup firstTranslationKey="DAY_LABEL" firstDefaultValue="Day"
-                                        secondTranslationKey="WEEK_LABEL" secondDefaultValue="Week"
-                                        groupName="recurrenceType"
+                            <RecurrenceTypeRadioGroup
                                         onChange={event => {
                                             setRecurrenceType(event.currentTarget.value);
-                                        }}/>
+                                        }}
+                                        onFrequencyChange={value => setFrequency(value)}
+                                        frequency={frequency} />
                             <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
                             <div>
                                 <TimeSelector {...appointmentStartTimeProps}
