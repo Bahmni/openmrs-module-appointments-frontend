@@ -1,29 +1,24 @@
 import React from 'react'
-import './AllAppointmentServices.module.scss'
+import './AllAppointmentServices.module.css'
 
 
-const AllAppointmentServices = (props) => { 
+const AllAppointmentServices = props => { 
     
-    const getKeys = ()=> {
+    const getKeys = () => {
     let keys = Object.keys(props.services[0]);
     return [...keys, 'Actions']
     }
 
     const getHeader = ()=>  {
         let keys = getKeys();
-        keys.map((key,index)=>{
-              return <th key ={index}>{key}</th>
-        })
+        return keys.map((key,index)=> <th key ={index}>{key}</th>);
     }
 
     const getService = (keys,data) => {
-        return  keys.map((key,index)=>{
-            if(key === "Description")
-            {
+        return  keys.map((key,index)=> {
+            if (key === "Description") {
                 return <td key={index} className="service-disc-tablecell">{data[key]}</td>
-            }
-            else if(key === "Actions")
-            {
+            } else if (key === "Actions") {
                 return <td key={index}>
                     <a data-testid="editservice" onClick={props.editService}>Edit</a>
                     <a data-testid="deleteservice" onClick={props.removeService}>Delete</a>
@@ -34,18 +29,14 @@ const AllAppointmentServices = (props) => {
 
     const getRowsData = ()=>{
         let keys = getKeys();
-        return props.services.map((row,index)=>{
-            return <tr key={index}>{getService(keys,row)}</tr>
-        });
+        return props.services.map((row,index)=> <tr key={index}>{getService(keys,row)}</tr> )
     }
 
    
         return (<div>
             <table>
                 <thead>
-                <tr>
-                    {getHeader()}
-                </tr>  
+                    <tr>{getHeader()}</tr>  
                 </thead>
                 <tbody>
                     {getRowsData()}
