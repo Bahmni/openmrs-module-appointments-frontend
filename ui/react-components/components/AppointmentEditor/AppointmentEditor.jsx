@@ -135,8 +135,9 @@ const AppointmentEditor = props => {
                 <div className={classNames(searchFieldsContainerLeft)}>
                     <div data-testid="patient-search">
                         <PatientSearch onChange={(optionSelected) => {
-                            setPatient(optionSelected.value);
-                            setPatientError(!optionSelected.value);
+                            const newValue = optionSelected ? optionSelected.value : undefined;
+                            setPatient(newValue);
+                            setPatientError(!newValue);
                         }}/>
                         <ErrorMessage message={patientError ? patientErrorMessage : undefined}/>
                     </div>
