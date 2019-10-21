@@ -64,8 +64,8 @@ describe('Appointment Editor', () => {
         expect(getAllByTestId('select').length).toBe(5);
     });
 
-    it('should render AppointmentEditorFooter', function() {
-       const {getByTestId, container} = renderWithReactIntl(<AppointmentEditor/>);
+    it('should render AppointmentEditorFooter', function () {
+        const {getByTestId, container} = renderWithReactIntl(<AppointmentEditor/>);
         expect(container.querySelector('.footer')).not.toBeNull();
         expect(container.querySelector('.footerElements')).not.toBeNull();
         expect(container.querySelector('.footer').children.length).toBe(1);
@@ -74,7 +74,31 @@ describe('Appointment Editor', () => {
 
     it('should render AppointmentDatePicker', function () {
         const {getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
-        expect(getByTestId('datePicker')).not.toBeNull()
+        expect(getByTestId('datePicker')).not.toBeNull();
+    });
+
+    it('should display error message when patient search value is changed and no new value selected', async () => {
+        const placeholder = 'placeholder';
+        const onChnageSpy = jest.fn();
+        const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
+        const {container, getByText, querySelector} = renderWithReactIntl(
+            <AppointmentEditor />);
+        const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.change(inputBox, { target: { value: "abc" } });
+        await waitForElement(
+            () => (container.querySelector('.react-select__menu'))
+        );
+        const option = getByText(targetPatient);
+        fireEvent.click(option);
+        let singleValue;
+        await waitForElement(
+            () =>
+                (singleValue = container.querySelector(
+                    '.react-select__single-value'
+                ))
+        );
+        fireEvent.change(inputBox, { target: { value: "def" } });
+        getByText('Please select patient');
     });
 
     it('should display error messages when checkAndSave is clicked and required fields are not selected', () => {
