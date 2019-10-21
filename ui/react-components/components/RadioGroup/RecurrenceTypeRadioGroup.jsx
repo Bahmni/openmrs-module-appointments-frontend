@@ -1,10 +1,8 @@
 import React from "react";
-import {radioButton} from "./RadioGroup.module.scss";
-import classNames from "classnames";
 import PropTypes from "prop-types";
 import Label from '../Label/Label.jsx';
 import InputNumber from "../InputNumber/InputNumber.jsx";
-
+import {injectIntl} from "react-intl";
 
 const RecurrenceTypeRadioGroup = props => {
     const {onChange, onFrequencyChange, frequency} = props;
@@ -35,4 +33,4 @@ RecurrenceTypeRadioGroup.propTypes = {
     onFrequencyChange: PropTypes.func
 };
 
-export default RecurrenceTypeRadioGroup;
+export default injectIntl(RecurrenceTypeRadioGroup);
