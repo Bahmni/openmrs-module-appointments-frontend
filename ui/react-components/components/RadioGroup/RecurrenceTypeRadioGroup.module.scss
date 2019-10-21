@@ -5,15 +5,12 @@
     padding: 0;
     display: inline;
   }
-  .inputNumber {
-    margin: 0 4% 10% 0;
+  .recurrenceTypeDiv {
+    margin: 0 8% 10% 0;
     display: inline;
   }
-  .radioButton {
-    display: inline;
-    margin: 5% 8% 5% 8%;
-  }
-  .radioGroup {
-    display: inline;
+
+  input[disabled] {
+    cursor: not-allowed;
   }
 }

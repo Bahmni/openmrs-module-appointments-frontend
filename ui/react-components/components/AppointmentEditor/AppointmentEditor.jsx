@@ -59,7 +59,8 @@ const AppointmentEditor = props => {
     const [occurences, setOccurences] = useState();
     const [frequency, setFrequency] = useState();
     useEffect(() => {
-        setOccurences(getDefaultOccurences)
+        if (occurences === undefined)
+            setOccurences(getDefaultOccurences)
     });
 
 
@@ -72,8 +73,8 @@ const AppointmentEditor = props => {
     };
 
     const getDefaultOccurences = () => {
-        if (appConfig)
-            return appConfig.recurrence.defaultNumberOfOccurrences;
+        if (appConfig && appConfig.recurrence)
+            return Number(appConfig.recurrence.defaultNumberOfOccurrences);
     };
 
     const maxAppointmentProvidersAllowed = () => {
@@ -219,9 +220,7 @@ const AppointmentEditor = props => {
                             <div className={classNames(dateHeading)}><Label translationKey="ENDS_LABEL"
                                                                             defaultValue="Ends"/></div>
                             <EndDateRadioGroup
-                                onChange={event => {
-                                    (event.currentTarget.value);
-                                }}
+                                onChange={event => setEndDateType(event.currentTarget.value)}
                                 onOccurencesChange={value => setOccurences(value)}
                                 occurences={occurences}/>
                             <AppointmentDatePicker onChange={date => {
