@@ -11,6 +11,7 @@ import {ValueContainer} from "./ValueContainer.jsx";
 const AsyncDropdown = (props) => {
     const [inputValue, setInputValue] = useState();
     const [value, setValue] = useState('');
+    const [lastSelectedValue, setLastSelectedValue] = useState('');
     const {loadOptions, placeholder, onChange, intl} = props;
     let select;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'Type to search'});
@@ -19,6 +20,7 @@ const AsyncDropdown = (props) => {
     const handleOnChange = (event) => {
         setInputValue('');
         setValue(event);
+        setLastSelectedValue(event);
         if (event) {
         } else {
             setValue('');
@@ -31,10 +33,13 @@ const AsyncDropdown = (props) => {
             if (!event) {
                 setValue(event);
             }
+            if (lastSelectedValue && onChange) {
+                lastSelectedValue.label === event ? onChange(lastSelectedValue) : onChange(undefined);
+            }
         }
     };
     const handleFocus = () => {
-        value && setInputValue(value.label);
+        value && setInputValue(inputValue !== '' ? inputValue : value.label);
     };
     return (
         <div data-testid="asyncSelect">
@@ -42,7 +47,7 @@ const AsyncDropdown = (props) => {
                 ref={ref => {
                     select = ref;
                 }}
-                cacheOptions
+                cacheOptions={true}
                 defaultOptions
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"

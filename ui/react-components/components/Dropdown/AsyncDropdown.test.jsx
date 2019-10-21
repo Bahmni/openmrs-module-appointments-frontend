@@ -168,4 +168,42 @@ describe('AsyncDropdown', () => {
             const loadingTest = getByText('Test...');
             expect(loadingTest).not.toBeNull();
         });
+
+    it('should call onChange with no value when input value is changed and no new option selected',
+        async () => {
+            const placeholder = 'placeholder';
+            const onChnageSpy = jest.fn();
+            const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
+                <AsyncDropdown placeholder={placeholder}
+                               loadOptions={loadOptions}
+                               onChange={onChnageSpy} />);
+            const inputBox = container.querySelector('.react-select__input input');
+            fireEvent.change(inputBox, { target: { value: "oc" } });
+            await waitForElement(() => getByText('Ocean'));
+            await selectEvent.select(inputBox, "Ocean");
+            fireEvent.change(inputBox, { target: { value: "abc" } });
+            expect(onChnageSpy).toHaveBeenCalledTimes(2);
+            expect(onChnageSpy.mock.calls[1][0]).toBeUndefined();
+        });
+
+    it('should retain the value when value is selected and then few characters removed and added again',
+        async () => {
+            const placeholder = 'placeholder';
+            const onChnageSpy = jest.fn();
+            const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
+                <AsyncDropdown placeholder={placeholder}
+                               loadOptions={loadOptions}
+                               onChange={onChnageSpy} />);
+            const inputBox = container.querySelector('.react-select__input input');
+            fireEvent.change(inputBox, { target: { value: "oc" } });
+            await waitForElement(() => getByText('Ocean'));
+            await selectEvent.select(inputBox, "Ocean");
+            fireEvent.change(inputBox, { target: { value: "Ocean2" } });
+            await waitForElement(() => getByText('Ocean2'));
+            fireEvent.change(inputBox, { target: { value: "Ocean" } });
+            await waitForElement(() => getByText('Ocean'));
+            expect(onChnageSpy).toHaveBeenCalledTimes(3);
+            expect(onChnageSpy.mock.calls[1][0]).toBeUndefined();
+            expect(onChnageSpy.mock.calls[2][0]).toBe(onChnageSpy.mock.calls[0][0]);
+        });
 });
