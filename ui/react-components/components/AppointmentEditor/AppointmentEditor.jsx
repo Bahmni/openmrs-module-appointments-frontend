@@ -1,7 +1,6 @@
 import React, {Fragment, useState} from "react";
 import classNames from 'classnames';
 import {
-    appointmentDatePicker,
     appointmentEditor,
     recurringContainer,
     recurringContainerLeft,
@@ -33,6 +32,7 @@ import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
 import {AppContext} from "../AppContext/AppContext";
 import RadioGroup from "../RadioGroup/RadioGroup.jsx";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
+import StartDateRadioGroup from "../RadioGroup/StartDateRadioGroup.jsx";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -203,13 +203,8 @@ const AppointmentEditor = props => {
                     <div className={classNames(recurringContainerLeft)}>
                         <div>
                             <div className={classNames(dateHeading)}><Label translationKey="STARTS_LABEL" defaultValue="Starts"/></div>
-                            <RadioGroup firstTranslationKey="TODAY_LABEL"
-                                        firstDefaultValue="Today"
-                                        secondTranslationKey="FROM_LABEL" secondDefaultValue="From"
-                                        groupName="startDateType"
-                                        onChange={event => {
-                                            setStartDateType(event.currentTarget.value);
-                                        }}/>
+                            <StartDateRadioGroup onChange={event =>
+                                setStartDateType(event.currentTarget.value)}/>
                             <AppointmentDatePicker onChange={date => {
                                 setStartDate(date);
                                 setDateError(!date);
