@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 
 const InputNumber = props => {
     const {defaultValue, onInputChange} = props;
+    const onIncrease = () => {
+        defaultValue === undefined ?
+            onInputChange(1) :
+            onInputChange(Number(defaultValue) + 1);
+    };
 
     return (
         <div className={classNames(inputNumberContainer)}>
@@ -14,7 +19,7 @@ const InputNumber = props => {
             <input type="number" value={defaultValue}
                    onChange={event => onInputChange(event.target.value)}/>
             <button className={classNames('fa fa-chevron-right', tagRemove)}
-                    onClick={() => onInputChange(Number(defaultValue) + 1)}/>
+                    onClick={onIncrease}/>
         </div>
     );
 };
