@@ -4,14 +4,16 @@ import classNames from 'classnames';
 import './ToggleButton.module.scss';
 
 const ToggleButton = (props) => {
-    const {disabled} = props;
+    const {disabled, checked, handleToggle} = props;
 
     return (
         <Fragment>
             <input
                 className={classNames("toggle-btn-checkbox")}
                 type="checkbox"
+                checked={checked}
                 id='toggle-btn-checkbox'
+                onChange={handleToggle}
                 disabled={disabled}/>
             <label className={classNames("toggle-btn-label")} htmlFor='toggle-btn-checkbox'>
                 <span className={classNames("toggle-btn-slider")}>
@@ -24,5 +26,7 @@ const ToggleButton = (props) => {
 export default ToggleButton;
 
 ToggleButton.propTypes = {
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    checked: PropTypes.bool,
+    handleToggle: PropTypes.func
 };
