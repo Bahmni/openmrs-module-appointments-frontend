@@ -1,32 +1,41 @@
-import React from "react";
+import React, {useState} from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import Label from '../Label/Label.jsx';
-import {radioButton} from './RadioGroup.module.scss';
+import {grayOut, radioButton} from './RadioGroup.module.scss';
 import InputNumber from "../InputNumber/InputNumber.jsx";
 import {injectIntl} from "react-intl";
 
 const EndDateRadioGroup = props => {
     const {onChange, onOccurencesChange, occurences} = props;
     const groupName = "endDateType";
+    const [currentSelection, setCurrentSelection] = useState();
+    const handleChange = event => {
+        setCurrentSelection(event.currentTarget.value);
+        onChange(event);
+    };
     return (<div>
-        <div className={classNames(radioButton)}>
+        <div
+            className={(currentSelection === "After" || currentSelection === undefined)
+                ? classNames(radioButton) : classNames(grayOut)}>
             <input
                 type="radio"
                 value="After"
                 name={groupName}
-                onChange={onChange}
+                onChange={handleChange}
             />
             <Label translationKey="AFTER_LABEL" defaultValue="After"/>
             <InputNumber onInputChange={onOccurencesChange} defaultValue={occurences}/>
             <Label translationKey="OCCURENCES_LABEL" defaultValue="Occurences"/>
         </div>
-        <div className={classNames(radioButton)}>
+        <div
+            className={(currentSelection === "On" || currentSelection === undefined)
+                ? classNames(radioButton) : classNames(grayOut)}>
             <input
                 type="radio"
                 value="On"
                 name={groupName}
-                onChange={onChange}
+                onChange={handleChange}
             />
             <Label translationKey="ON_LABEL" defaultValue="On"/>
         </div>
