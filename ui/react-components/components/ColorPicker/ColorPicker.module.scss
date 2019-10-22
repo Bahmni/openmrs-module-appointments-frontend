@@ -4,7 +4,12 @@
   vertical-align: middle;
   margin: 0;
   .colorBoxTrigger {
-    span {
+    margin: 0;
+    overflow: hidden;
+    padding: 3px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    .selectedColorBox {
       height: 17px;
       width: 17px;
       display: inline-block;
@@ -18,11 +23,6 @@
       font-size: 17px;
       color: #1a1a1a;
     }
-    margin: 0;
-    overflow: hidden;
-    padding: 3px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
   }
   .colorBox {
     background: #fff;
@@ -34,7 +34,7 @@
     padding: 1px;
     top: 100%;
     left: 0;
-    p {
+    .colorTile {
       display: inline-block;
       padding: 0;
       float: left;

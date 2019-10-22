@@ -3,7 +3,9 @@ import classNames from "classnames";
 import {
   colorPickerWrapper,
   colorBoxTrigger,
-  colorBox
+  selectedColorBox,
+  colorBox,
+  colorTile
 } from "./ColorPicker.module.scss";
 import PropTypes from "prop-types";
 
@@ -25,9 +27,7 @@ function ColorPicker(props) {
     };
   }, []);
 
-  const toggleColorPicker = () => {
-    setShowColorPicker(!showColorPicker);
-  };
+  const toggleColorPicker = () => setShowColorPicker(!showColorPicker);
 
   const setColor = color => {
     setSelectedColor(color);
@@ -37,8 +37,9 @@ function ColorPicker(props) {
 
   return (
     <div ref={ref} className={classNames(colorPickerWrapper)}>
-      <p className={classNames(colorBoxTrigger)} onClick={toggleColorPicker}>
+      <div className={classNames(colorBoxTrigger)} onClick={toggleColorPicker}>
         <span
+          className={classNames(selectedColorBox)}
           data-testid="selected-color"
           style={{
             backgroundColor: selectedColor,
@@ -46,11 +47,11 @@ function ColorPicker(props) {
           }}
         ></span>
         <i
-          className="fa fa-caret-down"
+          className={classNames("fa", "fa-caret-down")}
           aria-hidden="true"
           data-testid="picker-button"
         ></i>
-      </p>
+      </div>
 
       {showColorPicker ? (
         <div
@@ -59,12 +60,13 @@ function ColorPicker(props) {
           }
         >
           {props.colors.map(color => (
-            <p
+            <div
+              className={classNames(colorTile)}
               data-testid={color}
               key={color}
               style={{ backgroundColor: color }}
               onClick={() => setColor(color)}
-            ></p>
+            ></div>
           ))}
         </div>
       ) : null}
@@ -75,7 +77,7 @@ function ColorPicker(props) {
 export default ColorPicker;
 
 ColorPicker.propTypes = {
-  colors: PropTypes.array,
-  selectedColor: PropTypes.string,
-  onSelect: PropTypes.func
+  colors: PropTypes.array.isRequired,
+  selectedColor: PropTypes.string.isRequired,
+  onSelect: PropTypes.func.isRequired
 };

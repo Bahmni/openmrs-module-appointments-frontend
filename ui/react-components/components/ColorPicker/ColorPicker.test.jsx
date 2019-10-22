@@ -1,25 +1,22 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import ColorPicker from "./ColorPicker";
-import {
-  getByLabelText,
-  getByText,
-  getByTestId,
-  queryByTestId,
-  wait
-} from "@testing-library/dom";
+import { getByTestId, queryByTestId } from "@testing-library/dom";
 import "@testing-library/jest-dom/extend-expect";
-import ReactTestUtils from "react-dom/test-utils";
 
 describe("<ColorPicker />", () => {
   it("should render ColorPicker component ", () => {
-    const { container } = render(<ColorPicker />);
+    const { container } = render(
+      <ColorPicker colors={[]} selectedColor={""} onSelect={() => {}} />
+    );
     expect(container.querySelector(".colorPickerWrapper")).not.toBeNull();
   });
 
-  it("Should toggle the display of color picker on click the picker", () => {
+  it("Should toggle the color picker palette's visibility on click of color picker", () => {
     const colors = ["#DC143C", "#00008B", "#008B8B"];
-    const { container } = render(<ColorPicker colors={colors} />);
+    const { container } = render(
+      <ColorPicker colors={colors} selectedColor={""} onSelect={() => {}} />
+    );
     expect(container.querySelector(".colorBox")).toBeNull();
     queryByTestId(container, "picker-button").click();
     expect(container.querySelector(".colorBox")).not.toBeNull();
@@ -30,7 +27,7 @@ describe("<ColorPicker />", () => {
   it("setColor should set the selectedColor field and close the color picker", () => {
     const colors = ["#DC143C", "#00008B", "#008B8B"];
     const { container } = render(
-      <ColorPicker colors={colors} onSelect={() => {}} />
+      <ColorPicker colors={colors} selectedColor={""} onSelect={() => {}} />
     );
     queryByTestId(container, "picker-button").click();
     queryByTestId(container, "#00008B").click();
@@ -44,7 +41,11 @@ describe("<ColorPicker />", () => {
     const colors = ["#DC143C", "#00008B", "#008B8B"];
     const onColorSelect = jest.fn();
     const { container } = render(
-      <ColorPicker colors={colors} onSelect={onColorSelect} />
+      <ColorPicker
+        colors={colors}
+        selectedColor={""}
+        onSelect={onColorSelect}
+      />
     );
     queryByTestId(container, "picker-button").click();
     queryByTestId(container, "#00008B").click();
