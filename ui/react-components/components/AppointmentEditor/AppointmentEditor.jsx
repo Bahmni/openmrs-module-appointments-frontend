@@ -217,8 +217,7 @@ const AppointmentEditor = props => {
                         <div>
                             <div className={classNames(dateHeading)}><Label translationKey="STARTS_LABEL"
                                                                             defaultValue="Starts"/></div>
-                            <StartDateRadioGroup onChange={event =>
-                                setStartDateType(event.currentTarget.value)}/>
+                            <StartDateRadioGroup onChange={event => setStartDateType(event.currentTarget.value)}/>
                             <AppointmentDatePicker onChange={date => {
                                 setStartDate(date);
                                 setDateError(!date);
@@ -246,9 +245,7 @@ const AppointmentEditor = props => {
                             <div className={classNames(dateHeading)}><Label translationKey="REPEATS_EVERY_LABEL"
                                                                             defaultValue="Repeats Every"/></div>
                             <RecurrenceTypeRadioGroup
-                                onChange={event => {
-                                    setRecurrenceType(event.currentTarget.value);
-                                }}
+                                onChange={event => setRecurrenceType(event.currentTarget.value)}
                                 onFrequencyChange={value => setFrequency(value)}
                                 frequency={frequency}/>
                             <div className={classNames(timeSelector)}>

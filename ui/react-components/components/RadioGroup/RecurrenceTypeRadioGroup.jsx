@@ -23,7 +23,7 @@ const RecurrenceTypeRadioGroup = props => {
             <InputNumber onInputChange={onFrequencyChange} defaultValue={frequency}/>
         </div>
         <div
-            className={(currentSelection === "Day" || currentSelection === undefined)
+            className={(!currentSelection || currentSelection === "Day")
                 ? classNames(recurrenceTypeDiv) : classNames(grayOut)}>
             <input
                 type="radio"
@@ -34,7 +34,7 @@ const RecurrenceTypeRadioGroup = props => {
             <Label translationKey="DAY_LABEL" defaultValue="Day"/>
         </div>
         <div
-            className={(currentSelection === "Week" || currentSelection === undefined)
+            className={(!currentSelection || currentSelection === "Week")
                 ? classNames(recurrenceTypeDiv) : classNames(grayOut)}>
             <input
                 type="radio"

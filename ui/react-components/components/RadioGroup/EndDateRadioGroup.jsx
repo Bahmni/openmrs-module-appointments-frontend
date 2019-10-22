@@ -16,7 +16,7 @@ const EndDateRadioGroup = props => {
     };
     return (<div>
         <div
-            className={(currentSelection === "After" || currentSelection === undefined)
+            className={(!currentSelection || currentSelection === "After")
                 ? classNames(radioButton) : classNames(grayOut)}>
             <input
                 type="radio"
@@ -29,7 +29,7 @@ const EndDateRadioGroup = props => {
             <Label translationKey="OCCURENCES_LABEL" defaultValue="Occurences"/>
         </div>
         <div
-            className={(currentSelection === "On" || currentSelection === undefined)
+            className={(!currentSelection || currentSelection === "On")
                 ? classNames(radioButton) : classNames(grayOut)}>
             <input
                 type="radio"
