@@ -217,7 +217,9 @@ const AppointmentEditor = props => {
                         <div>
                             <div className={classNames(dateHeading)}><Label translationKey="STARTS_LABEL"
                                                                             defaultValue="Starts"/></div>
-                            <StartDateRadioGroup onChange={event => setStartDateType(event.currentTarget.value)}/>
+                            <StartDateRadioGroup
+                                onChange={event => setStartDateType(event.currentTarget.value)}
+                                startDateType={startDateType}/>
                             <AppointmentDatePicker onChange={date => {
                                 setStartDate(date);
                                 setDateError(!date);
@@ -232,7 +234,8 @@ const AppointmentEditor = props => {
                             <EndDateRadioGroup
                                 onChange={event => setEndDateType(event.currentTarget.value)}
                                 onOccurencesChange={value => setOccurences(value)}
-                                occurences={occurences}/>
+                                occurences={occurences}
+                                endDateType={endDateType}/>
                             <AppointmentDatePicker onChange={date => {
                                 setEndDate(date);
                                 setDateError(!date);
@@ -247,7 +250,8 @@ const AppointmentEditor = props => {
                             <RecurrenceTypeRadioGroup
                                 onChange={event => setRecurrenceType(event.currentTarget.value)}
                                 onFrequencyChange={value => setFrequency(value)}
-                                frequency={frequency}/>
+                                frequency={frequency}
+                                recurrenceType={recurrenceType}/>
                             <div className={classNames(timeSelector)}>
                                 <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
                                 <div>

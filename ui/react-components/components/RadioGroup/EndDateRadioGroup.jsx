@@ -7,35 +7,32 @@ import InputNumber from "../InputNumber/InputNumber.jsx";
 import {injectIntl} from "react-intl";
 
 const EndDateRadioGroup = props => {
-    const {onChange, onOccurencesChange, occurences} = props;
+    const {onChange, onOccurencesChange, occurences, endDateType} = props;
     const groupName = "endDateType";
-    const [currentSelection, setCurrentSelection] = useState();
-    const handleChange = event => {
-        setCurrentSelection(event.currentTarget.value);
-        onChange(event);
-    };
     return (<div>
         <div
-            className={(!currentSelection || currentSelection === "After")
+            className={(!endDateType || endDateType === "After")
                 ? classNames(radioButton) : classNames(grayOut)}>
             <input
                 type="radio"
                 value="After"
                 name={groupName}
-                onChange={handleChange}
+                onChange={onChange}
+                checked={endDateType === "After"}
             />
             <Label translationKey="AFTER_LABEL" defaultValue="After"/>
             <InputNumber onInputChange={onOccurencesChange} defaultValue={occurences}/>
             <Label translationKey="OCCURENCES_LABEL" defaultValue="Occurences"/>
         </div>
         <div
-            className={(!currentSelection || currentSelection === "On")
+            className={(!endDateType || endDateType === "On")
                 ? classNames(radioButton) : classNames(grayOut)}>
             <input
                 type="radio"
                 value="On"
                 name={groupName}
-                onChange={handleChange}
+                onChange={onChange}
+                checked={endDateType === "On"}
             />
             <Label translationKey="ON_LABEL" defaultValue="On"/>
         </div>
