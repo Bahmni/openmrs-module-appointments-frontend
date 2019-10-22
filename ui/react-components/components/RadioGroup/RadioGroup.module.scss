@@ -27,3 +27,11 @@ input[type="radio"] {
   display: flex;
   margin: 5% 4% 4% 0;
 }
+
+.grayOut {
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+  display: flex;
+  margin: 5% 4% 4% 0;
+}
+
