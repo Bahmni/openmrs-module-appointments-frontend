@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const AppointmentTimePicker = (props) => {
-    const { intl, placeHolderTranslationKey, defaultValue, onChange } = props;
+    const { intl, placeHolderTranslationKey, defaultValue, onChange, defaultTime } = props;
 
     const placeholder = intl.formatMessage({
         id: placeHolderTranslationKey, defaultMessage: defaultValue
@@ -15,6 +15,7 @@ const AppointmentTimePicker = (props) => {
 
     return (
         <TimePicker data-testid="time-selector"
+            value={defaultTime}
             onChange={onChange}
             showSecond={false}
             use12Hours
@@ -27,7 +28,8 @@ AppointmentTimePicker.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     placeHolderTranslationKey: PropTypes.string.isRequired,
-    defaultValue: PropTypes.string.isRequired
-}
+    defaultValue: PropTypes.string.isRequired,
+    defaultTime: PropTypes.object
+};
 
 export default injectIntl(AppointmentTimePicker);
