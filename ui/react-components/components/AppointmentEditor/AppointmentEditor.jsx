@@ -32,6 +32,8 @@ import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import StartDateRadioGroup from "../RadioGroup/StartDateRadioGroup.jsx";
 import EndDateRadioGroup from "../RadioGroup/EndDateRadioGroup.jsx";
 import RecurrenceTypeRadioGroup from "../RadioGroup/RecurrenceTypeRadioGroup.jsx";
+import {minDurationForAppointment} from "../../constants";
+import moment from "moment";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -107,8 +109,8 @@ const AppointmentEditor = props => {
     const getAppointment = () => {
         let appointment = {
             patientUuid: patient && patient.uuid,
-            serviceUuid: service,
-            serviceTypeUuid: serviceType,
+            serviceUuid: service && service.uuid,
+            serviceTypeUuid: serviceType && serviceType.uuid,
             startDateTime: getDateTime(startDate, startTime),
             endDateTime: getDateTime(startDate, endTime),
             providers: providers,
@@ -155,7 +157,19 @@ const AppointmentEditor = props => {
         timeSelectionTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', timeSelectionDefaultValue: 'Enter time as hh:mm am/pm',
     };
 
+    const endTimeBasedOnService = (startTime, service) => {
+        const currentTime = moment(startTime);
+        const duration = getDuration(service);
+        currentTime.add(duration, 'minutes');
+        if (startTime) {
+            setEndTime(currentTime);
+        }
 
+    };
+
+    const getDuration = (service) => {
+        return service ? service.durationMins : minDurationForAppointment;
+    };
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor)}>
             <div className={classNames(searchFieldsContainer)}>
@@ -171,14 +185,16 @@ const AppointmentEditor = props => {
                     <div data-testid="service-search">
                         <ServiceSearch onChange={(optionSelected) => {
                             setService(optionSelected.value);
-                            setServiceError(!optionSelected.value)
+                            setServiceError(!optionSelected.value);
+                            endTimeBasedOnService(startTime, optionSelected.value);
+
                         }}
                                        specialityUuid={speciality}/>
                         <ErrorMessage message={serviceError ? serviceErrorMessage : undefined}/>
                     </div>
                     <div data-testid="service-type-search">
                         <ServiceTypeSearch onChange={(optionSelected) => setServiceType(optionSelected.value)}
-                                           serviceUuid={service}/>
+                                           serviceUuid={service.uuid}/>
                     </div>
                     {isSpecialitiesEnabled() ?
                         <div data-testid="speciality-search">
@@ -244,16 +260,15 @@ const AppointmentEditor = props => {
                             <div className={classNames(timeSelector)}>
                                 <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
                                 <div>
-                                    <TimeSelector {...appointmentStartTimeProps}
+                                    <TimeSelector {...appointmentStartTimeProps} defaultTime={startTime}
                                                   onChange={time => {
                                                       setStartTime(time);
-                                                      setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
-                                                  }}
-                                    />
+                                                      endTimeBasedOnService(time, undefined);
+                                                  }}/>
                                     <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
                                 </div>
                                 <div>
-                                    <TimeSelector {...appointmentEndTimeProps}
+                                    <TimeSelector {...appointmentEndTimeProps} defaultTime={endTime}
                                                   onChange={time => {
                                                       setEndTime(time);
                                                       setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
@@ -279,13 +294,16 @@ const AppointmentEditor = props => {
                             <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
                             <div data-testid="start-time-selector">
                                 <TimeSelector {...appointmentStartTimeProps}
+                            <div>
+                                <TimeSelector {...appointmentStartTimeProps} defaultTime={startTime}
                                               onChange={time => {
                                                   setStartTime(time);
-                                                  setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(time, endTime));
-                                              }}
-                                />
+                                                  endTimeBasedOnService(time, undefined);
+                                              }}/>
                                 <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
                             </div>
+                            <div>
+                                <TimeSelector {...appointmentEndTimeProps} defaultTime={endTime}
                             <div data-testid="end-time-selector">
                                 <TimeSelector {...appointmentEndTimeProps}
                                               onChange={time => {
