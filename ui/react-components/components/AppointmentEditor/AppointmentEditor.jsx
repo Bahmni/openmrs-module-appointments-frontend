@@ -157,9 +157,9 @@ const AppointmentEditor = props => {
         timeSelectionTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', timeSelectionDefaultValue: 'Enter time as hh:mm am/pm',
     };
 
-    const endTimeBasedOnService = (startTime, service) => {
+    const endTimeBasedOnService = (startTime, service, serviceType) => {
         const currentTime = moment(startTime);
-        const duration = getDuration(service);
+        const duration = getDuration(service, serviceType);
         currentTime.add(duration, 'minutes');
         if (startTime) {
             setEndTime(currentTime);
@@ -167,8 +167,12 @@ const AppointmentEditor = props => {
 
     };
 
-    const getDuration = (service) => {
-        return service ? service.durationMins : minDurationForAppointment;
+    const getDuration = (service, serviceType) => {
+        if (serviceType && serviceType.duration)
+            return serviceType.duration;
+        if (service && service.durationMins)
+            return service.durationMins;
+        return minDurationForAppointment;
     };
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor)}>
@@ -186,14 +190,17 @@ const AppointmentEditor = props => {
                         <ServiceSearch onChange={(optionSelected) => {
                             setService(optionSelected.value);
                             setServiceError(!optionSelected.value);
-                            endTimeBasedOnService(startTime, optionSelected.value);
+                            endTimeBasedOnService(startTime, optionSelected.value, undefined);
 
                         }}
                                        specialityUuid={speciality}/>
                         <ErrorMessage message={serviceError ? serviceErrorMessage : undefined}/>
                     </div>
                     <div data-testid="service-type-search">
-                        <ServiceTypeSearch onChange={(optionSelected) => setServiceType(optionSelected.value)}
+                        <ServiceTypeSearch onChange={(optionSelected) => {
+                            setServiceType(optionSelected.value);
+                            endTimeBasedOnService(startTime, undefined, optionSelected.value);
+                        }}
                                            serviceUuid={service.uuid}/>
                     </div>
                     {isSpecialitiesEnabled() ?
@@ -263,7 +270,7 @@ const AppointmentEditor = props => {
                                     <TimeSelector {...appointmentStartTimeProps} defaultTime={startTime}
                                                   onChange={time => {
                                                       setStartTime(time);
-                                                      endTimeBasedOnService(time, undefined);
+                                                      endTimeBasedOnService(time, service, serviceType);
                                                   }}/>
                                     <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
                                 </div>
@@ -298,7 +305,7 @@ const AppointmentEditor = props => {
                                 <TimeSelector {...appointmentStartTimeProps} defaultTime={startTime}
                                               onChange={time => {
                                                   setStartTime(time);
-                                                  endTimeBasedOnService(time, undefined);
+                                                  endTimeBasedOnService(time, service, serviceType);
                                               }}/>
                                 <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
                             </div>
