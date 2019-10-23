@@ -11,4 +11,16 @@ describe('Custom popup', () => {
         fireEvent.click(getByText('Button'));
         getByText('Text');
     });
+
+    it('should display content when open is true without ', () => {
+        const {getByText} = render(<CustomPopup popupContent={React.cloneElement(<TestUtil/>, {close: jest.fn()})}
+                                                open={true}/>);
+        getByText('Text');
+    });
+
+    it('should not display content when open is false', () => {
+        const {queryByText} = render(<CustomPopup popupContent={React.cloneElement(<TestUtil/>, {close: jest.fn()})}
+                                                  open={false}/>);
+        expect(queryByText('Text')).toBeNull();
+    });
 });

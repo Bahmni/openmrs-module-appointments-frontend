@@ -10,5 +10,5 @@ const getFormattedProviders = providers => providers.map(provider => {
 
 export const saveAppointment = async (appointment) => {
     getFormattedProviders(appointment.providers);
-    await saveOrUpdateAppointment(appointment);
+    return await saveOrUpdateAppointment(appointment);
 };
