@@ -241,7 +241,7 @@ const AppointmentEditor = props => {
                                 setDateError(!date);
                             }} onClear={() => {
                                 setEndDate(undefined);
-                            }}/>
+                            }} isRecurring={isRecurring} startDate={startDate}/>
                             <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
