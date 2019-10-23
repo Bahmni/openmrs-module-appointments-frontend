@@ -37,7 +37,7 @@ const ServiceTypeSearch = props => {
         const options = [{value: null, label: defaultOption}];
         forEach(results, function (serviceType) {
             options.push({
-                value: serviceType.uuid,
+                value: serviceType,
                 label: serviceType.name
             })
         });
