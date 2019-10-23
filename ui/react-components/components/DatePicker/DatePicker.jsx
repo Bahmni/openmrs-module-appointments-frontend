@@ -8,12 +8,14 @@ import moment from 'moment';
 
 const AppointmentDatePicker = (props) => {
     const [value, setValue] = useState(null);
+    const { isRecurring, startDate } = props;
     const disablePastDates = (current) => {
         if (!current) {
             return false;
         }
         const date = moment().subtract('1', 'days').endOf('day');
         return current.isBefore(date);
+        return (isRecurring && startDate !== undefined) ? current.isBefore(startDate) : current.isBefore(date);
     };
     const onChange = (date) => { setValue(date); props.onChange(date); };
     const onClear = () => { setValue(null); props.onClear(); };
@@ -38,7 +40,9 @@ const AppointmentDatePicker = (props) => {
 };
 
 AppointmentDatePicker.propTypes = {
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    startDate: PropTypes.string,
+    isRecurring: PropTypes.string
 };
 
 export default AppointmentDatePicker;
