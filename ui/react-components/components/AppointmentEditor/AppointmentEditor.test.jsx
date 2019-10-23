@@ -184,5 +184,8 @@ describe('Appointment Editor', () => {
         getByTestId('notes');
         expect(getAllByTestId('error-message').length).toBe(7);
     });
+
+    //TODO need to add test to check the status of response on click of checkAndSave
+    //TODO Not able to do because onChange of time picket is not getting called. Need to fix that
 });
 

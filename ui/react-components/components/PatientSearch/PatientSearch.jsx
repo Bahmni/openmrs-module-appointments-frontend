@@ -1,4 +1,5 @@
 import React from 'react';
+import {getPatientName} from "../../mapper/patientMapper";
 import {getPatientsByLocation} from '../../api/patientApi';
 import {currentLocation} from '../../utils/CookieUtil';
 import AsyncDropdown from "../Dropdown/AsyncDropdown.jsx";
@@ -8,10 +9,8 @@ import PropTypes from 'prop-types';
 const PatientSearch = (props) => {
     const createDropdownOptions = (patients) => {
         return patients.map(patient => {
-            const givenName = patient.givenName ? patient.givenName : '';
-            const familyName = patient.familyName ? patient.familyName : '';
             const {identifier, uuid} = patient;
-            const name = `${givenName} ${familyName}`;
+            const name = getPatientName(patient);
             return {
                 value: {name, identifier, uuid},
                 label: `${name} (${patient.identifier})`};

@@ -22,6 +22,8 @@ import { getDateTime, isStartTimeBeforeEndTime } from '../../utils/DateUtil.js'
 import DateSelector from "../DateSelector/DateSelector.jsx";
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
+import CustomPopup from "../CustomPopup/CustomPopup.jsx";
+import SuccessConfirmation from "../SuccessConfirmation/SuccessConfirmation.jsx";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -41,6 +43,7 @@ const AppointmentEditor = props => {
     const [endTime, setEndTime] = useState();
     const {appConfig} = props;
     const [notes, setNotes] = useState();
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     const {intl} = props;
 
@@ -109,10 +112,14 @@ const AppointmentEditor = props => {
     const checkAndSave = async () => {
         if (isValidAppointment()) {
             const appointment = getAppointment();
-            await saveAppointment(appointment);
+            const response = await saveAppointment(appointment);
+            if (response.status === 200) {
+                setShowSuccessPopup(true);
+            }
         }
     };
 
+    const savePopup = <CustomPopup popupContent={<SuccessConfirmation patientDetails={patient && `${patient.name} (${patient.identifier})`}/>} />;
 
     const appointmentDateProps = {
         translationKey: 'APPOINTMENT_DATE_LABEL', defaultValue: 'Appointment date'
@@ -206,6 +213,7 @@ const AppointmentEditor = props => {
                 </div>
             </div>
             <AppointmentEditorFooter checkAndSave={checkAndSave}/>
+            {showSuccessPopup ? React.cloneElement(savePopup, {open: true, closeOnDocumentClick: false, closeOnEscape: false}) : undefined}
         </div>
     </Fragment>);
 };
@@ -213,6 +221,6 @@ const AppointmentEditor = props => {
 AppointmentEditor.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object
-}
+};
 
 export default injectIntl(AppointmentEditor);

@@ -6,13 +6,14 @@ import {customPopup} from './CustomPopup.module.scss';
 
 const CustomPopup = props => {
 
-    const {triggerComponent, popupContent} = props;
+    const {triggerComponent, popupContent, closeOnDocumentClick, closeOnEscape, open} = props;
 
     return (
         <Popup className={classNames(customPopup, 'popup-overlay')}
             trigger={triggerComponent}
-            closeOnDocumentClick
-            closeOnEscape
+            closeOnDocumentClick={closeOnDocumentClick && closeOnDocumentClick}
+            closeOnEscape={closeOnEscape && closeOnEscape}
+            open={open}
             modal>
             {
                 close => (React.cloneElement(popupContent, {close: close}))
@@ -22,8 +23,11 @@ const CustomPopup = props => {
 };
 
 CustomPopup.propTypes = {
-    triggerComponent: PropTypes.object.isRequired,
-    popupContent: PropTypes.object.isRequired
+    closeOnDocumentClick: PropTypes.bool,
+    closeOnEscape: PropTypes.bool,
+    open:PropTypes.bool,
+    popupContent: PropTypes.object.isRequired,
+    triggerComponent: PropTypes.object
 };
 
 export default CustomPopup;
