@@ -26,7 +26,7 @@ const ServiceSearch = (props) => {
         forEach(results, function (service) {
             if (!specialityUuid || specialityUuid === service.speciality.uuid)
                 options.push({
-                    value: service.uuid,
+                    value: service,
                     label: service.name
                 })
         });
