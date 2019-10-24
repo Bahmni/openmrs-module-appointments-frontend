@@ -45,6 +45,7 @@ const AppointmentEditor = props => {
     const [dateError, setDateError] = useState(false);
     const [startTimeError, setStartTimeError] = useState(false);
     const [endTimeError, setEndTimeError] = useState(false);
+    const [recurrencePeriodError, setRecurrencePeriodError] = useState(false);
     const [startTimeBeforeEndTimeError, setStartTimeBeforeEndTimeError] = useState(false);
     const [providers, setProviders] = useState([]);
     const [service, setService] = useState('');
@@ -105,6 +106,10 @@ const AppointmentEditor = props => {
         id: 'TIME_ERROR_MESSAGE', defaultMessage: 'Please select time'
     });
 
+    const recurrencePeriodErrorMessage = intl.formatMessage({
+        id: 'RECURRENCE_PERIOD_ERROR_MESSAGE', defaultMessage: 'Please select recurrence period'
+    });
+
     const startTimeLessThanEndTimeMessage = intl.formatMessage({
         id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'From time should be before to time'
     });
@@ -149,23 +154,26 @@ const AppointmentEditor = props => {
 
     const {angularState} = React.useContext(AppContext);
 
+    const isValidRecurringPattern = () => {
+      setRecurrencePeriodError(!period);
+      return recurrenceType && period && (occurences || endDate);
+    };
+
     const checkAndSave = async () => {
         const appointment = isValidAppointment() && getAppointment();
-        if (appointment) {
-            if (isRecurring) {
-                const recurringPattern = getRecurringPattern();
-                const recurringRequest = {
-                    appointmentRequest: appointment,
-                    recurringPattern: recurringPattern
-                };
-                await saveRecurring(recurringRequest);
-            }
-            else {
-                const response = await saveAppointment(appointment);
-                if (response.status === 200) {
-                    angularState.params.viewDate = startDate.startOf('day').toDate();
-                    setShowSuccessPopup(true);
-                }
+        const recurringPattern = isRecurring && isValidRecurringPattern() && getRecurringPattern();
+        if (appointment && recurringPattern) {
+            const recurringRequest = {
+                appointmentRequest: appointment,
+                recurringPattern: recurringPattern
+            };
+           return await saveRecurring(recurringRequest);
+        }
+        else if(appointment) {
+            const response = await saveAppointment(appointment);
+            if (response.status === 200) {
+                angularState.params.viewDate = startDate.startOf('day').toDate();
+                setShowSuccessPopup(true);
             }
         }
     };
@@ -290,11 +298,14 @@ const AppointmentEditor = props => {
                             <div className={classNames(dateHeading)}>
                                 <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/>
                             </div>
-                            <RecurrenceTypeRadioGroup
-                                onChange={event => setRecurrenceType(event.currentTarget.value)}
-                                onPeriodChange={value => setPeriod(value)}
-                                period={period}
-                                recurrenceType={recurrenceType}/>
+                            <div>
+                                <RecurrenceTypeRadioGroup
+                                    onChange={event => setRecurrenceType(event.currentTarget.value)}
+                                    onPeriodChange={value => setPeriod(value)}
+                                    period={period}
+                                    recurrenceType={recurrenceType}/>
+                                <ErrorMessage message= {recurrencePeriodError ? recurrencePeriodErrorMessage : undefined}/>
+                            </div>
                             <div className={classNames(timeSelector)}>
                                 <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
                                 <div data-testid="start-time-selector">
