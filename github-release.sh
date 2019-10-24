@@ -43,6 +43,11 @@ main(){
     local release_name=$(read_version)
     local commit_sha=$(git rev-parse HEAD)
 
+    local branchname=$(git rev-parse --abbrev-ref HEAD)
+    if [ $branchname != "master" ]; then
+      release_name="${branchname}-${release_name}"
+    fi
+
     CREATE_RESPONSE=$(create_release "$token" "$release_name" "$commit_sha" "$repo_owner");
     local release_id=$(echo $CREATE_RESPONSE | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["id"]');
     echo "Created a release with id $release_id"
