@@ -23,7 +23,7 @@ import {injectIntl} from "react-intl";
 import PropTypes from "prop-types";
 import {saveAppointment, saveRecurring} from "./AppointmentEditorService";
 import Label from '../Label/Label.jsx';
-import { getDateTime, isStartTimeBeforeEndTime } from '../../utils/DateUtil.js'
+import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
 import DateSelector from "../DateSelector/DateSelector.jsx";
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
@@ -195,7 +195,9 @@ const AppointmentEditor = props => {
         }
     };
 
-    const getDuration = (service, serviceType) => (serviceType && serviceType.duration) || (service && service.durationMins) || minDurationForAppointment;
+    const getDuration = (service, serviceType) => (serviceType && serviceType.duration)
+                                                    || (service && service.durationMins)
+                                                    || minDurationForAppointment;
 
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor)}>
@@ -250,8 +252,9 @@ const AppointmentEditor = props => {
                 {isRecurring ?
                     <div className={classNames(recurringContainerLeft)}>
                         <div>
-                            <div className={classNames(dateHeading)}><Label translationKey="STARTS_LABEL"
-                                                                            defaultValue="Starts"/></div>
+                            <div className={classNames(dateHeading)}>
+                                <Label translationKey="STARTS_LABEL" defaultValue="Starts"/>
+                            </div>
                             <StartDateRadioGroup
                                 onChange={event => {
                                     setStartDateType(event.currentTarget.value);
@@ -267,8 +270,9 @@ const AppointmentEditor = props => {
                             <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
-                            <div className={classNames(dateHeading)}><Label translationKey="ENDS_LABEL"
-                                                                            defaultValue="Ends"/></div>
+                            <div className={classNames(dateHeading)}>
+                                <Label translationKey="ENDS_LABEL" defaultValue="Ends"/>
+                            </div>
                             <EndDateRadioGroup
                                 onChange={event => setEndDateType(event.currentTarget.value)}
                                 onOccurencesChange={value => setOccurences(value)}
@@ -283,8 +287,9 @@ const AppointmentEditor = props => {
                             <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
-                            <div className={classNames(dateHeading)}><Label translationKey="REPEATS_EVERY_LABEL"
-                                                                            defaultValue="Repeats Every"/></div>
+                            <div className={classNames(dateHeading)}>
+                                <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/>
+                            </div>
                             <RecurrenceTypeRadioGroup
                                 onChange={event => setRecurrenceType(event.currentTarget.value)}
                                 onPeriodChange={value => setPeriod(value)}
@@ -292,7 +297,7 @@ const AppointmentEditor = props => {
                                 recurrenceType={recurrenceType}/>
                             <div className={classNames(timeSelector)}>
                                 <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
-                                <div>
+                                <div data-testid="start-time-selector">
                                     <TimeSelector {...appointmentStartTimeProps} defaultTime={startTime}
                                                   onChange={time => {
                                                       setStartTime(time);
@@ -300,7 +305,7 @@ const AppointmentEditor = props => {
                                                   }}/>
                                     <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
                                 </div>
-                                <div>
+                                <div data-testid="end-time-selector">
                                     <TimeSelector {...appointmentEndTimeProps} defaultTime={endTime}
                                                   onChange={time => {
                                                       setEndTime(time);
@@ -346,7 +351,6 @@ const AppointmentEditor = props => {
                                 message={startTime && endTime && startTimeBeforeEndTimeError ? startTimeLessThanEndTimeMessage : undefined}/>
                         </div>
                     </div>}
-
                 <div className={classNames(recurringContainerRight)}>
                     <Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/>
                     <AppointmentNotes onChange={(event) => setNotes(event.target.value)}/>
