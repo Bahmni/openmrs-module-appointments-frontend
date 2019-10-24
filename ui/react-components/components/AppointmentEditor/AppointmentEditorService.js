@@ -1,4 +1,4 @@
-import {saveOrUpdateAppointment} from '../../api/appointmentsApi';
+import {saveOrUpdateAppointment, saveRecurringAppointments} from '../../api/appointmentsApi';
 
 const getFormattedProviders = providers => providers.map(provider => {
     provider.name = provider.label;
@@ -11,4 +11,9 @@ const getFormattedProviders = providers => providers.map(provider => {
 export const saveAppointment = async (appointment) => {
     getFormattedProviders(appointment.providers);
     return await saveOrUpdateAppointment(appointment);
+};
+
+export const saveRecurring = async recurringRequest => {
+    getFormattedProviders(recurringRequest.appointmentRequest.providers);
+    await saveRecurringAppointments(recurringRequest);
 };

@@ -10,7 +10,7 @@ const InputNumber = props => {
             onInputChange(1) : onInputChange(Number(defaultValue) + 1);
     };
 
-    const onDecrease = () => onInputChange(Number(defaultValue) - 1);
+    const onDecrease = () => defaultValue !== undefined && onInputChange(Number(defaultValue) - 1);
     return (
         <div className={classNames(inputNumberContainer)}>
             <button className={classNames('fa fa-chevron-left', tagRemove)}
