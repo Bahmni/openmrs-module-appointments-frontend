@@ -11,6 +11,7 @@ export const availableForAppointments = "Available for appointments";
 export const locationUrl = `${restWestV1}/location`;
 export const specialityUrl = `${restWestV1}/speciality/all`;
 export const appointmentsSaveUrl = `${restWestV1}/appointments`;
+export const recurringAppointmentsSaveUrl = `${restWestV1}/recurring-appointments`;
 
 export const appName = 'appointments';
 
