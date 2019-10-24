@@ -8,14 +8,9 @@ const CustomPopup = props => {
 
     const {triggerComponent, popupContent} = props;
 
-    const contentStyle = {
-        width: "470px",
-    };
-
     return (
         <Popup className={classNames(customPopup, 'popup-overlay')}
             trigger={triggerComponent}
-            contentStyle={contentStyle}
             closeOnDocumentClick
             closeOnEscape
             modal>
