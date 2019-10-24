@@ -35,7 +35,7 @@ import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import StartDateRadioGroup from "../RadioGroup/StartDateRadioGroup.jsx";
 import EndDateRadioGroup from "../RadioGroup/EndDateRadioGroup.jsx";
 import RecurrenceTypeRadioGroup from "../RadioGroup/RecurrenceTypeRadioGroup.jsx";
-import {dayRecurrenceType, minDurationForAppointment} from "../../constants";
+import {dayRecurrenceType, minDurationForAppointment, MINUTES, TODAY} from "../../constants";
 import moment from "moment";
 
 const AppointmentEditor = props => {
@@ -197,7 +197,7 @@ const AppointmentEditor = props => {
     const endTimeBasedOnService = (time, service, serviceType) => {
         const currentTime = moment(time);
         const duration = getDuration(service, serviceType);
-        currentTime.add(duration, 'minutes');
+        currentTime.add(duration, MINUTES);
         if (time) {
             setEndTime(currentTime);
         }
@@ -267,7 +267,7 @@ const AppointmentEditor = props => {
                             <StartDateRadioGroup
                                 onChange={event => {
                                     setStartDateType(event.currentTarget.value);
-                                    event.currentTarget.value === "Today" && setStartDate(new Date());
+                                    event.currentTarget.value === TODAY && setStartDate(new Date());
                                 }}
                                 startDateType={startDateType}/>
                             <AppointmentDatePicker onChange={date => {
