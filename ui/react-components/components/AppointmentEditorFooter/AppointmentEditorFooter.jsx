@@ -19,7 +19,7 @@ const AppointmentEditorFooter = props => {
 
     const popupContent = <CancelConfirmation/>;
 
-    const cancelButton = <button className={classNames(button)}>
+    const cancelButton = <button className={classNames(button)} data-testid="cancel">
                             <i className={classNames("fa", "fa-times")}/>
                             <span><FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/></span>
                         </button>;
@@ -28,7 +28,7 @@ const AppointmentEditorFooter = props => {
         <div className={classNames(footer)}>
             <div className={classNames(footerElements)}>
                 <CustomPopup triggerComponent={cancelButton} popupContent={popupContent}/>
-                <button className={classNames(button, save)} onClick={checkAndSave}>
+                <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
                     <i className={classNames("fa", "fa-check")}/>
                     <span>
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
