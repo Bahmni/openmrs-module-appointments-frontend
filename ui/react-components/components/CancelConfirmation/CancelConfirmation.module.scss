@@ -1,0 +1,52 @@
+@import '../../variables.scss';
+
+.cancelModal {
+  .cancelModalCloseIcon {
+    text-align: right;
+    a{
+      color: $secondary-color-2;
+    }
+  }
+  > div:nth-child(2) {
+    padding: 0 20px 20px;
+
+    .cancelModalTitle {
+      margin: 0 0 12px;
+      font-size: 30px;
+      line-height: normal;
+      color: $secondary-color-2;
+    }
+    .cancelModalBody {
+      margin: 0 0 24px;
+      line-height: normal;
+    }
+
+    .button {
+      background: #f2f2f2;
+      height: 35px;
+      border: 0;
+      border-radius: 4px;
+      padding: 0 20px;
+      width: 85px;
+
+      &:hover {
+        background: darkgrey;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .no {
+      color: $secondary-color-1;
+      background: $primary-color-2;
+      margin-right: 24px;
+
+      &:hover {
+        background: $primary-color-2;
+        opacity: 1;
+      }
+    }
+  }
+}

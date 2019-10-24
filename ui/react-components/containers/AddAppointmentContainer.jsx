@@ -6,6 +6,9 @@ import {getTranslations} from "../api/translationsApi";
 import {getAppConfigs} from "../api/configApi";
 import translations from '../../app/i18n/appointments';
 import {appName} from '../constants';
+import PropTypes from "prop-types";
+import {AppContext} from "../components/AppContext/AppContext";
+
 // TODO : need to add connection to redux
 
 class AddAppointmentContainer extends Component {
@@ -37,10 +40,16 @@ class AddAppointmentContainer extends Component {
     render () {
         const {locale, messages, appConfigs} = this.state;
         return (
-            <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
-                <AppointmentEditor appConfig={appConfigs}/>
-            </IntlProvider>);
+            <AppContext.Provider value={{onBack: this.props.onBack}}>
+                <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
+                    <AppointmentEditor appConfig={appConfigs}/>
+                </IntlProvider>
+            </AppContext.Provider>);
     }
 }
+
+AddAppointmentContainer .propTypes = {
+    onBack: PropTypes.func.isRequired
+};
 
 export default AddAppointmentContainer;
