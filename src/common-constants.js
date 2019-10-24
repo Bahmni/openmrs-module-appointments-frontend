@@ -11,7 +11,7 @@ Bahmni.Common = Bahmni.Common || {};
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
-    var baseLocaleURL = '../i18n/';
+    var baseLocaleURL = './i18n/';
     var customLocaleURL = rootDir + '/bahmni_config/openmrs/i18n/';
 
     var representation = "custom:(uuid,name,names,conceptClass," +

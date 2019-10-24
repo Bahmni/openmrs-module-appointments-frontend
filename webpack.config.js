@@ -73,6 +73,9 @@ module.exports = {
             output: __dirname + '/dist',
             inject: 'head'
         }),
-        new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/)
+        new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/),
+        new CopyPlugin([
+            {from: __dirname + '/i18n/', to: distDirPath + '/i18n'},
+        ])
     ]
 }
