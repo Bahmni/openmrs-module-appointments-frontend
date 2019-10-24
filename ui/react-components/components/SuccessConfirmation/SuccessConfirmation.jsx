@@ -11,10 +11,13 @@ import {
     saveModalTitle
 } from "./SuccessConfirmation.module.scss";
 import PropTypes from "prop-types";
+import {AppContext} from "../AppContext/AppContext";
 
 const SuccessConfirmation = (props) => {
 
     const {intl, patientDetails} = props;
+    const {onBack} = React.useContext(AppContext);
+
     const saveConfirmationTextPartOne = intl.formatMessage({
         id: 'APPOINTMENT_SAVE_CONFIRMATION_TEXT_PART_1', defaultMessage: 'The new appointment for the patient'
     });
@@ -27,7 +30,7 @@ const SuccessConfirmation = (props) => {
         <div className={classNames(saveModal)}>
             <div className={classNames(saveModalCloseIcon)}>
                 <a>
-                    <i className={classNames("fa", "fa-times")}/>
+                    <i className={classNames("fa", "fa-times")} onClick={onBack}/>
                 </a>
             </div>
             <div>
@@ -41,11 +44,11 @@ const SuccessConfirmation = (props) => {
                                       defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
                 </div>
                 <div className={classNames(saveConfirmationFooter)}>
-                    <button className={classNames(button)}>
+                    <button className={classNames(button)} onClick={onBack}>
                         <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_CLOSE'} defaultMessage={'Close'}/>
                     </button>
                     <span className={classNames(newAppointmentLink)}>
-                        <a href="">
+                        <a onClick={() => window.location.reload()}>
                          <FormattedMessage id={'ADD_NEW_APPOINTMENT'} defaultMessage={'Add New Appointment'}/>
                         </a>
                     </span>
