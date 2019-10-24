@@ -10,7 +10,7 @@ describe('AppointmentsDayCalendarController', function () {
             $compile = _$compile_;
             httpBackend = _$httpBackend_;
             httpBackend.expectGET('/openmrs/ws/rest/v1/systemsetting/?q=bahmni.config.baseUrlForUIConfigs&v=custom:(property,value)').respond({results:[]});
-            httpBackend.expectGET('../i18n/appointments/locale_en.json').respond({});
+            httpBackend.expectGET('./i18n/appointments/locale_en.json').respond({});
             httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
             scope = $rootScope.$new();
             rootScope = $rootScope;
