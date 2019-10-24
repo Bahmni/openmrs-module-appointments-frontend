@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import './ToggleButton.module.scss';
 
 const ToggleButton = (props) => {
-    const {disabled, checked, handleToggle} = props;
+    const {disabled, checked, handleToggle, checkedColor} = props;
 
     return (
         <Fragment>
@@ -15,9 +15,12 @@ const ToggleButton = (props) => {
                 id='toggle-btn-checkbox'
                 onChange={handleToggle}
                 disabled={disabled}/>
-            <label className={classNames("toggle-btn-label")} htmlFor='toggle-btn-checkbox'>
-                <span className={classNames("toggle-btn-slider")}>
-                </span>
+            <label
+                className={classNames("toggle-btn-label")}
+                style={{background: checked && checkedColor}}
+                htmlFor='toggle-btn-checkbox'>
+                    <span className={classNames("toggle-btn-slider")}>
+                    </span>
             </label>
         </Fragment>
     );
@@ -28,5 +31,10 @@ export default ToggleButton;
 ToggleButton.propTypes = {
     disabled: PropTypes.bool,
     checked: PropTypes.bool,
-    handleToggle: PropTypes.func
+    handleToggle: PropTypes.func,
+    checkedColor: PropTypes.string
+};
+
+ToggleButton.defaultProps = {
+    checkedColor: "#06D6A0"
 };
