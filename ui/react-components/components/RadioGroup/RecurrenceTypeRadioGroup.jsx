@@ -9,6 +9,7 @@ import {
     recurrenceTypeDiv,
     grayOut
 } from "./RecurrenceTypeRadioGroup.module.scss"
+import {dayRecurrenceType, weekRecurrenceType} from "../../constants";
 
 const RecurrenceTypeRadioGroup = props => {
     const {onChange, onPeriodChange, period, recurrenceType} = props;
@@ -19,30 +20,29 @@ const RecurrenceTypeRadioGroup = props => {
             <InputNumber onInputChange={onPeriodChange} defaultValue={period}/>
         </div>
         <div
-            className={(!recurrenceType || recurrenceType === "Day")
+            className={(!recurrenceType || recurrenceType === dayRecurrenceType)
                 ? classNames(recurrenceTypeDiv) : classNames(grayOut)}>
             <input
                 type="radio"
-                value="Day"
+                value={dayRecurrenceType}
                 name={groupName}
                 onChange={onChange}
-                checked={recurrenceType === "Day"}
+                checked={recurrenceType === dayRecurrenceType}
             />
             <Label translationKey="DAY_LABEL" defaultValue="Day"/>
         </div>
         <div
-            className={(!recurrenceType || recurrenceType === "Week")
+            className={(!recurrenceType || recurrenceType === weekRecurrenceType)
                 ? classNames(recurrenceTypeDiv) : classNames(grayOut)}>
             <input
                 type="radio"
-                value="Week"
+                value={weekRecurrenceType}
                 name={groupName}
                 onChange={onChange}
-                checked={recurrenceType === "Week"}
+                checked={recurrenceType === weekRecurrenceType}
             />
             <Label translationKey="WEEK_LABEL" defaultValue="Week"/>
         </div>
-
     </div>)
 };
 
