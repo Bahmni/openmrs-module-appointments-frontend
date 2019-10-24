@@ -4,6 +4,7 @@ import AddAppointmentContainer from './react-components/containers/AddAppointmen
 angular.module('bahmni.appointments')
 .component('reactAddAppointment', react2angular(AddAppointmentContainer));
 
+// Used this component to pass a callback function to react component
 angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
     template: '<react-add-appointment on-back="onBack">',
     controller: reactAddAppointmentController
