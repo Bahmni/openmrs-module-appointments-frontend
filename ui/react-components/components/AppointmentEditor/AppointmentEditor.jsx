@@ -42,7 +42,8 @@ const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
     const [patientError, setPatientError] = useState(false);
     const [serviceError, setServiceError] = useState(false);
-    const [dateError, setDateError] = useState(false);
+    const [startDateError, setStartDateError] = useState(false);
+    const [endDateError, setEndDateError] = useState(false);
     const [startTimeError, setStartTimeError] = useState(false);
     const [endTimeError, setEndTimeError] = useState(false);
     const [recurrencePeriodError, setRecurrencePeriodError] = useState(false);
@@ -145,7 +146,7 @@ const AppointmentEditor = props => {
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(startTime, endTime);
         setPatientError(!isValidPatient);
         setServiceError(!service);
-        setDateError(!startDate);
+        setStartDateError(!startDate);
         setStartTimeError(!startTime);
         setEndTimeError(!endTime);
         setStartTimeBeforeEndTimeError(!startTimeBeforeEndTime);
@@ -156,6 +157,8 @@ const AppointmentEditor = props => {
 
     const isValidRecurringPattern = () => {
       setRecurrencePeriodError(!period);
+      setEndDateError(!endDateType);
+      setStartDateError(!startDateType);
       return recurrenceType && period && (occurences || endDate);
     };
 
@@ -205,7 +208,6 @@ const AppointmentEditor = props => {
 
     const getDuration = (service, serviceType) => (serviceType && serviceType.duration)
                                                     || (service && service.durationMins)
-
                                                     || minDurationForAppointment;
 
     return (<Fragment>
@@ -272,11 +274,11 @@ const AppointmentEditor = props => {
                                 startDateType={startDateType}/>
                             <AppointmentDatePicker onChange={date => {
                                 setStartDate(date);
-                                setDateError(!date);
+                                setStartDateError(!date);
                             }} onClear={() => {
                                 setStartDate(undefined);
                             }}/>
-                            <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
+                            <ErrorMessage message={startDateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
                             <div className={classNames(dateHeading)}>
@@ -289,11 +291,11 @@ const AppointmentEditor = props => {
                                 endDateType={endDateType}/>
                             <AppointmentDatePicker onChange={date => {
                                 setEndDate(date);
-                                setDateError(!date);
+                                setEndDateError(!date);
                             }} onClear={() => {
                                 setEndDate(undefined);
                             }} isRecurring={isRecurring} startDate={startDate}/>
-                            <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
+                            <ErrorMessage message={endDateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
                             <div className={classNames(dateHeading)}>
@@ -334,11 +336,11 @@ const AppointmentEditor = props => {
                         <div data-testid="date-selector">
                             <DateSelector {...appointmentDateProps} onChange={date => {
                                 setStartDate(date);
-                                setDateError(!date);
+                                setStartDateError(!date);
                             }} onClear={() => {
                                 setStartDate(undefined);
                             }}/>
-                            <ErrorMessage message={dateError ? dateErrorMessage : undefined}/>
+                            <ErrorMessage message={startDateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
                             <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
