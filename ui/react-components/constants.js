@@ -21,3 +21,7 @@ export const locationTagName = 'Appointment Location';
 export const minDurationForAppointment = 30;
 export const dayRecurrenceType = "DAY";
 export const weekRecurrenceType = "WEEK";
+export const TODAY = "TODAY";
+export const FROM = "FROM";
+export const MINUTES = "minutes";
+

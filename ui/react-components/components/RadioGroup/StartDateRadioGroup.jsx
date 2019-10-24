@@ -5,32 +5,33 @@ import Label from '../Label/Label.jsx';
 import {radioButton, grayOut} from './RadioGroup.module.scss';
 import moment from 'moment';
 import {injectIntl} from "react-intl";
+import {FROM, TODAY} from "../../constants";
 
 const StartDateRadioGroup = props => {
     const {onChange, startDateType} = props;
     const groupName = "startDateType";
     const date = moment().format("Do MMMM YYYY");
     return (<div>
-        <div className={(!startDateType || startDateType === "Today")
+        <div className={(!startDateType || startDateType === TODAY)
             ? classNames(radioButton) : classNames(grayOut)}>
             <input
                 type="radio"
-                value="Today"
+                value={TODAY}
                 name={groupName}
                 onChange={onChange}
-                checked={startDateType === "Today"}
+                checked={startDateType === TODAY}
             />
             <Label translationKey="TODAY_LABEL" defaultValue="Today"/>&nbsp;|
             &nbsp;{date}
         </div>
-        <div className={(!startDateType || startDateType === "From")
+        <div className={(!startDateType || startDateType === FROM)
             ? classNames(radioButton) : classNames(grayOut)}>
             <input
                 type="radio"
-                value="From"
+                value={FROM}
                 name={groupName}
                 onChange={onChange}
-                checked={startDateType === "From"}
+                checked={startDateType === FROM}
             />
             <Label translationKey="FROM_LABEL" defaultValue="From"/>
         </div>
