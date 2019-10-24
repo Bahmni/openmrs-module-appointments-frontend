@@ -41,7 +41,7 @@ const AppointmentDatePicker = (props) => {
 
 AppointmentDatePicker.propTypes = {
     onChange: PropTypes.func,
-    startDate: PropTypes.string,
+    startDate: PropTypes.object,
     isRecurring: PropTypes.bool
 };
 
