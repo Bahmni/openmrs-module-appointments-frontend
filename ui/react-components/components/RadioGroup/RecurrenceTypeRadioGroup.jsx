@@ -11,12 +11,12 @@ import {
 } from "./RecurrenceTypeRadioGroup.module.scss"
 
 const RecurrenceTypeRadioGroup = props => {
-    const {onChange, onFrequencyChange, frequency, recurrenceType} = props;
+    const {onChange, onPeriodChange, period, recurrenceType} = props;
     const groupName = "recurrenceType";
 
     return (<div className={classNames(recurrenceTypeContainer)}>
         <div className={classNames(recurrenceTypeDiv)}>
-            <InputNumber onInputChange={onFrequencyChange} defaultValue={frequency}/>
+            <InputNumber onInputChange={onPeriodChange} defaultValue={period}/>
         </div>
         <div
             className={(!recurrenceType || recurrenceType === "Day")
@@ -48,9 +48,9 @@ const RecurrenceTypeRadioGroup = props => {
 
 RecurrenceTypeRadioGroup.propTypes = {
     intl: PropTypes.object.isRequired,
-    frequency: PropTypes.number,
+    period: PropTypes.number,
     onChange: PropTypes.func,
-    onFrequencyChange: PropTypes.func,
+    onPeriodChange: PropTypes.func,
     recurrenceType: PropTypes.string,
 };
 
