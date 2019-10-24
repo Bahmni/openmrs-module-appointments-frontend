@@ -14,7 +14,6 @@ const AppointmentDatePicker = (props) => {
             return false;
         }
         const date = moment().subtract('1', 'days').endOf('day');
-        return current.isBefore(date);
         return (isRecurring && startDate !== undefined) ? current.isBefore(startDate) : current.isBefore(date);
     };
     const onChange = (date) => { setValue(date); props.onChange(date); };
