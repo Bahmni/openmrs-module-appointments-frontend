@@ -35,7 +35,7 @@ import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import StartDateRadioGroup from "../RadioGroup/StartDateRadioGroup.jsx";
 import EndDateRadioGroup from "../RadioGroup/EndDateRadioGroup.jsx";
 import RecurrenceTypeRadioGroup from "../RadioGroup/RecurrenceTypeRadioGroup.jsx";
-import {minDurationForAppointment} from "../../constants";
+import {dayRecurrenceType, minDurationForAppointment} from "../../constants";
 import moment from "moment";
 
 const AppointmentEditor = props => {
@@ -61,7 +61,7 @@ const AppointmentEditor = props => {
     const [notes, setNotes] = useState();
     const [startDateType, setStartDateType] = useState();
     const [endDateType, setEndDateType] = useState();
-    const [recurrenceType, setRecurrenceType] = useState();
+    const [recurrenceType, setRecurrenceType] = useState(dayRecurrenceType);
     const [occurences, setOccurences] = useState();
     const [period, setPeriod] = useState();
     useEffect(() => {
@@ -194,17 +194,18 @@ const AppointmentEditor = props => {
         timeSelectionTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', timeSelectionDefaultValue: 'Enter time as hh:mm am/pm',
     };
 
-    const endTimeBasedOnService = (startTime, service, serviceType) => {
-        const currentTime = moment(startTime);
+    const endTimeBasedOnService = (time, service, serviceType) => {
+        const currentTime = moment(time);
         const duration = getDuration(service, serviceType);
         currentTime.add(duration, 'minutes');
-        if (startTime) {
+        if (time) {
             setEndTime(currentTime);
         }
     };
 
     const getDuration = (service, serviceType) => (serviceType && serviceType.duration)
                                                     || (service && service.durationMins)
+
                                                     || minDurationForAppointment;
 
     return (<Fragment>
