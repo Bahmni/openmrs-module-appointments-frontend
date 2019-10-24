@@ -29,7 +29,7 @@ const SuccessConfirmation = (props) => {
     return (
         <div className={classNames(saveModal)}>
             <div className={classNames(saveModalCloseIcon)}>
-                <a>
+                <a data-testid="save-close-icon">
                     <i className={classNames("fa", "fa-times")} onClick={onBack}/>
                 </a>
             </div>
@@ -44,11 +44,11 @@ const SuccessConfirmation = (props) => {
                                       defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
                 </div>
                 <div className={classNames(saveConfirmationFooter)}>
-                    <button className={classNames(button)} onClick={onBack}>
+                    <button className={classNames(button)} data-testid="save-close-button" onClick={onBack}>
                         <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_CLOSE'} defaultMessage={'Close'}/>
                     </button>
                     <span className={classNames(newAppointmentLink)}>
-                        <a onClick={() => window.location.reload()}>
+                        <a  data-testid="save-new-appointment-link" onClick={() => window.location.reload()}>
                          <FormattedMessage id={'ADD_NEW_APPOINTMENT'} defaultMessage={'Add New Appointment'}/>
                         </a>
                     </span>
