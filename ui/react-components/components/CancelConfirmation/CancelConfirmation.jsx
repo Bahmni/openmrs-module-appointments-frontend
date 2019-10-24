@@ -20,7 +20,7 @@ const CancelConfirmation = (props) => {
     return (
         <div className={classNames(cancelModal)}>
             <div className={classNames(cancelModalCloseIcon)}>
-                <a>
+                <a data-testid="cancel-close-icon">
                     <i className={classNames("fa", "fa-times")} onClick={close}/>
                 </a>
             </div>
@@ -33,10 +33,10 @@ const CancelConfirmation = (props) => {
                                       defaultMessage={'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'}/>
                 </div>
                 <div>
-                    <button className={classNames(button, no)} onClick={close}>
+                    <button className={classNames(button, no)} data-testid="cancel-no" onClick={close} >
                         <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_NO'} defaultMessage={'No'}/>
                     </button>
-                    <button className={classNames(button)} onClick={onBack}>
+                    <button className={classNames(button)} data-testid="cancel-yes" onClick={onBack}>
                         <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_YES'} defaultMessage={'Yes'}/>
                     </button>
                 </div>
