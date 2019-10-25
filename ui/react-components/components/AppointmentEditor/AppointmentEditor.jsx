@@ -269,7 +269,7 @@ const AppointmentEditor = props => {
                                     maxAppointmentProvidersAllowed={maxAppointmentProvidersAllowed()}/>
                 </div>
             </div>
-            <div className={classNames(searchFieldsContainer)}>
+            <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(searchFieldsContainerLeft)}>
                     <RecurringPlan onChange={event => setIsRecurring(event.target.checked)}/>
                 </div>
