@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import Label from '../Label/Label.jsx';
-import {radioButton, grayOut} from './RadioGroup.module.scss';
+import {radioButton, grayOut, dateText} from './RadioGroup.module.scss';
 import moment from 'moment';
 import {injectIntl} from "react-intl";
 import {FROM, TODAY} from "../../constants";
@@ -22,8 +22,8 @@ const StartDateRadioGroup = props => {
                 onChange={onChange}
                 checked={startDateType === TODAY}
             />
-            <Label translationKey="TODAY_LABEL" defaultValue="Today" forInput="today"/>&nbsp;|
-            &nbsp;{date}
+            <Label translationKey="TODAY_LABEL" defaultValue="Today" forInput="today"/>
+            <span className={classNames(dateText)}>{date}</span>
         </div>
         <div className={(!startDateType || startDateType === FROM)
             ? classNames(radioButton) : classNames(grayOut)}>
