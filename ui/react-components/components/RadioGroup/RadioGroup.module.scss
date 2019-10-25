@@ -48,3 +48,10 @@ div[disabled] {
   display: flex;
 }
 
+
+.dateText {
+  &:before {
+    content: "|";
+    padding: 3px;
+  }
+}
