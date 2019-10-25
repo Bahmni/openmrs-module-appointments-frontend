@@ -74,12 +74,15 @@ require("./appointmentServiceInitialization.js");
 require("./appointmentInitialization.js");
 require("./appointmentConfigInitialization.js");
 require("./constants.js");
+
 require("./models/appointment.js");
 require("./models/appointmentService.js");
 require("./models/appointmentServiceViewModel.js");
 require("./models/appointmentViewModel.js");
+
 require("./directives/timeValidator.js");
 require("./directives/dayCalendar.js");
+require("./directives/weekCalendar.js");
 require("./directives/weekdaySelector.js");
 require("./directives/serviceAvailability.js");
 require("./directives/serviceTypes.js");
@@ -88,12 +91,14 @@ require("./directives/datePicker.js");
 require("./directives/weekPicker.js");
 require("./directives/multiSelectAutocomplete.js");
 require("./directives/patientSearch.js");
+
 require("./services/appointmentsServiceService.js");
 require("./services/specialityService.js");
 require("./services/appointmentsService.js");
 require("./services/calendarViewPopUp.js");
 require("./services/appointmentCommonService.js");
 require("./services/checkinPopUp.js");
+
 require("./controllers/admin/deleteAppointmentServiceController.js" );
 require("./controllers/appointmentsHeaderController.js");
 require("./controllers/manage/appointmentsManageController.js");
@@ -103,7 +108,6 @@ require("./controllers/admin/appointmentServiceController.js");
 require("./controllers/manage/calendar/appointmentsCalendarViewController.js" );
 require("./controllers/manage/calendar/appointmentsDayCalendarController.js");
 require("./controllers/manage/calendar/appointmentsWeekCalendarController");
-require("./controllers/admin/allAppointmentServicesController.js");
 require("./controllers/manage/allAppointmentsController.js" );
 require("./controllers/manage/list/appointmentsListViewController.js" );
 require("./controllers/manage/appointmentsSummaryController.js" );
