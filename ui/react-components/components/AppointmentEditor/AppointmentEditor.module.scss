@@ -1,6 +1,7 @@
 @import '../../variables.scss';
 
 .appointmentEditor {
+  min-width: 1200px;
   width: 100%;
   z-index: 31;
   position: absolute;
@@ -13,7 +14,7 @@
   .searchFieldsContainer {
     top: 50px;
     position: relative;
-    padding: 4% 2% 0% 2%;
+    padding: 4% 2% 0 2%;
     display: flex;
     justify-content: space-between;
 
@@ -55,7 +56,7 @@
         margin-right: 30px;
       }
 
-      .timeSelector{
+      .timeSelector {
         margin-top: 15%;
       }
     }
