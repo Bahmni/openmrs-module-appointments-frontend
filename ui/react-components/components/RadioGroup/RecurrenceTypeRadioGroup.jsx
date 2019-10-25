@@ -18,7 +18,7 @@ const RecurrenceTypeRadioGroup = props => {
 
     return (<div className={classNames(recurrenceTypeContainer)}>
         <div className={classNames(recurrenceTypeDiv)}>
-            <InputNumber onInputChange={onPeriodChange} defaultValue={period}/>
+            <InputNumber data-testid="recurrence-period" onChange={onPeriodChange} defaultValue={period}/>
         </div>
         <div className={(!recurrenceType || recurrenceType === dayRecurrenceType)
             ? classNames(recurrenceTypeDiv) : classNames(grayOut)}>
