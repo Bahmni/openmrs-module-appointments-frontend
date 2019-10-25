@@ -23,6 +23,7 @@ const RecurrenceTypeRadioGroup = props => {
         <div className={(!recurrenceType || recurrenceType === dayRecurrenceType)
             ? classNames(recurrenceTypeDiv) : classNames(grayOut)}>
             <input
+                data-testid="day-type"
                 type="radio"
                 value={dayRecurrenceType}
                 name={groupName}
@@ -35,6 +36,7 @@ const RecurrenceTypeRadioGroup = props => {
             className={(!recurrenceType || recurrenceType === weekRecurrenceType)
                 ? classNames(recurrenceTypeDiv) : classNames(grayOut)}>
             <input
+                data-testid="week-type"
                 type="radio"
                 value={weekRecurrenceType}
                 name={groupName}
