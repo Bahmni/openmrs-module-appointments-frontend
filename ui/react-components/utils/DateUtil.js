@@ -5,9 +5,7 @@ export const getDateTime = (appointmentDate, appointmentTime) => {
 };
 
 export const isStartTimeBeforeEndTime = (startDateTime, endDateTime) => {
-    if(!startDateTime || !endDateTime)
-        return true;
-    return startDateTime && endDateTime && moment(startDateTime).isBefore(moment(endDateTime));
+    return (!startDateTime || !endDateTime) || moment(startDateTime).isBefore(moment(endDateTime));
 };
 
 const getDateWithoutTime = (datetime) => {
