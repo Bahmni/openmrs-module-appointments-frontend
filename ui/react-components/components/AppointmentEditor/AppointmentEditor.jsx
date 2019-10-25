@@ -23,7 +23,8 @@ import DateSelector from "../DateSelector/DateSelector.jsx";
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
-import SuccessConfirmation from "../SuccessConfirmation/SuccessConfirmation.jsx";
+import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
+import {AppContext} from "../AppContext/AppContext";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -109,11 +110,14 @@ const AppointmentEditor = props => {
         return isValidPatient && service && startDate && startTime && endTime && startTimeBeforeEndTime;
     };
 
+    const {angularState} = React.useContext(AppContext);
+
     const checkAndSave = async () => {
         if (isValidAppointment()) {
             const appointment = getAppointment();
             const response = await saveAppointment(appointment);
             if (response.status === 200) {
+                angularState.params.viewDate = startDate.startOf('day').toDate();
                 setShowSuccessPopup(true);
             }
         }

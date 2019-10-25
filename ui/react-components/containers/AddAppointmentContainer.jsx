@@ -40,7 +40,7 @@ class AddAppointmentContainer extends Component {
     render () {
         const {locale, messages, appConfigs} = this.state;
         return (
-            <AppContext.Provider value={{onBack: this.props.onBack}}>
+            <AppContext.Provider value={{onBack: this.props.onBack, angularState: this.props.state}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
                     <AppointmentEditor appConfig={appConfigs}/>
                 </IntlProvider>
@@ -49,7 +49,8 @@ class AddAppointmentContainer extends Component {
 }
 
 AddAppointmentContainer .propTypes = {
-    onBack: PropTypes.func.isRequired
+    onBack: PropTypes.func.isRequired,
+    state: PropTypes.object.isRequired
 };
 
 export default AddAppointmentContainer;
