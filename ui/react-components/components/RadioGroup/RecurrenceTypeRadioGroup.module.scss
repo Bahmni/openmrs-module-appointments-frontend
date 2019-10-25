@@ -1,25 +1,31 @@
 .recurrenceTypeContainer {
-  padding: 2px;
-
+  margin: 5% 4% 4% 0;
+  align-items: center;
   div {
     margin: 0;
-    padding: 0;
     display: inline;
   }
 
   .recurrenceTypeDiv {
-    margin: 0 8% 10% 0;
+    margin: 0 5.5% 10% 0;
     display: inline;
+    align-items: center;
+    input[type=radio] {
+      margin-right: 3%;
+    }
   }
 
   .grayOut {
     opacity: 0.6;
-    filter: alpha(opacity=60);
-    margin: 0 8% 10% 0;
+    margin: 0 5.5% 10% 0;
+    align-items: center;
     display: inline;
-  }
-
-  input[disabled] {
-    cursor: not-allowed;
+    input[type=radio] {
+      margin-right: 3%;
+    }
+    input[disabled] {
+      margin-right: 3%;
+      cursor: not-allowed;
+    }
   }
 }
