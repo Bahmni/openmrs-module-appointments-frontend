@@ -226,7 +226,6 @@ const AppointmentEditor = props => {
                             setService(optionSelected.value);
                             setServiceError(!optionSelected.value);
                             endTimeBasedOnService(startTime, optionSelected.value, undefined);
-
                         }}
                                        specialityUuid={speciality}/>
                         <ErrorMessage message={serviceError ? serviceErrorMessage : undefined}/>
@@ -261,7 +260,7 @@ const AppointmentEditor = props => {
             <div className={classNames(recurringContainer)}>
                 {isRecurring ?
                     <div className={classNames(recurringContainerLeft)}>
-                        <div>
+                        <div data-testid="start-date-group">
                             <div className={classNames(dateHeading)}>
                                 <Label translationKey="STARTS_LABEL" defaultValue="Starts"/>
                             </div>
@@ -285,7 +284,7 @@ const AppointmentEditor = props => {
                                 isRecurring={isRecurring}/>
                             <ErrorMessage message={startDateError ? dateErrorMessage : undefined}/>
                         </div>
-                        <div>
+                        <div data-testid="end-date-group">
                             <div className={classNames(dateHeading)}>
                                 <Label translationKey="ENDS_LABEL" defaultValue="Ends"/>
                             </div>
@@ -310,7 +309,7 @@ const AppointmentEditor = props => {
                                 dateType="endDate"/>
                             <ErrorMessage message={endDateError ? dateErrorMessage : undefined}/>
                         </div>
-                        <div>
+                        <div data-testid="recurrence-type-group">
                             <div className={classNames(dateHeading)}>
                                 <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/>
                             </div>
