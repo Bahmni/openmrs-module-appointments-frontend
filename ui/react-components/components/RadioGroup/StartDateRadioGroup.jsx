@@ -15,6 +15,7 @@ const StartDateRadioGroup = props => {
         <div className={(!startDateType || startDateType === TODAY)
             ? classNames(radioButton) : classNames(grayOut)}>
             <input
+                data-testid="today-radio-button"
                 id="today"
                 type="radio"
                 value={TODAY}
@@ -28,6 +29,7 @@ const StartDateRadioGroup = props => {
         <div className={(!startDateType || startDateType === FROM)
             ? classNames(radioButton) : classNames(grayOut)}>
             <input
+                data-testid="from-radio-button"
                 id="from"
                 type="radio"
                 value={FROM}

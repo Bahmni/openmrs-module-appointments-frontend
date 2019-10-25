@@ -15,6 +15,7 @@ const EndDateRadioGroup = props => {
     return (<div>
         <div className={classNames(radioButton)}>
             <input
+                data-testid="after-radio-button"
                 id="after"
                 type="radio"
                 value="After"
@@ -32,6 +33,7 @@ const EndDateRadioGroup = props => {
         <div className={(!endDateType || endDateType === "On")
             ? classNames(radioButton) : classNames(grayOut)}>
             <input
+                data-testid="on-radio-button"
                 id="on"
                 type="radio"
                 value="On"

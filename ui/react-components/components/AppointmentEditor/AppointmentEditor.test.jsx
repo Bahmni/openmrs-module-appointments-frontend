@@ -192,13 +192,62 @@ describe('Appointment Editor', () => {
         expect(container.querySelector('.planLabel')).not.toBeNull();
     });
 
-    it('should set isRecurring state variable on click of checkbox', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditor/>);
-
+    it('should render all recurring components on click of recurring appointments checkbox', () => {
+        const {container, getByTestId, getByText, getAllByText} = renderWithReactIntl(<AppointmentEditor/>);
         const checkBoxService = container.querySelector('.checkbox');
         fireEvent.click(checkBoxService);
         expect(container.querySelector('.checkbox')).toBeChecked;
-    })
+        getByTestId('start-date-group');
+        getByTestId('end-date-group');
+        getByTestId('recurrence-type-group');
+        expect(getByText('Starts')).not.toBeNull();
+        expect(getByText('Today')).not.toBeNull();
+        expect(getAllByText('From')).not.toBeNull();
+        expect(getAllByText('From').length).toBe(2);
+        expect(getByText('To')).not.toBeNull();
+        expect(getByText('Ends')).not.toBeNull();
+        expect(getByText('After')).not.toBeNull();
+        expect(getByText('On')).not.toBeNull();
+        expect(getByText('Occurences')).not.toBeNull();
+        expect(getByText('Repeats Every')).not.toBeNull();
+        expect(getByText('Day')).not.toBeNull();
+        expect(getByText('Week')).not.toBeNull();
+        expect(getByText('Choose a time slot')).not.toBeNull();
+    });
+
+    it('should display error messages when checkAndSave is clicked and required recurring fields are not selected', () => {
+        const {getByText, queryByText, getAllByTestId, getAllByText, container} = renderWithReactIntl(
+            <AppointmentEditor/>);
+        const checkBox = container.querySelector('.checkbox');
+        fireEvent.click(checkBox);
+        const checkAndSaveButton = getByText('Check and Save');
+        fireEvent.click(checkAndSaveButton);
+        expect(queryByText('Please select patient')).not.toBeNull();
+        expect(queryByText('Please select service')).not.toBeNull();
+        expect(queryByText('Please select valid recurrence period')).not.toBeNull();
+        expect(getAllByText('Please select time').length).toBe(2);
+        expect(getAllByText('Please select date').length).toBe(2);
+        expect(getAllByTestId('error-message').length).toBe(9);
+    });
+
+    it('should not display error message for start date & end date when today and after radio buttons are clicked', function () {
+        const config = {
+            "recurrence": {
+                "defaultNumberOfOccurrences": 10
+            }
+        };
+        const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AppointmentEditor
+            appConfig={config}/>);
+        const checkBox = container.querySelector('.checkbox');
+        fireEvent.click(checkBox);
+        const todayButton = getByTestId("today-radio-button");
+        fireEvent.click(todayButton);
+        const afterButton = getByTestId("after-radio-button");
+        fireEvent.click(afterButton);
+        const checkAndSaveButton = getByText('Check and Save');
+        fireEvent.click(checkAndSaveButton);
+        expect(queryAllByText('Please select date').length).toBe(0);
+    });
 
     //TODO need to add test to check the status of response on click of checkAndSave
     //TODO Not able to do because onChange of time picket is not getting called. Need to fix that
