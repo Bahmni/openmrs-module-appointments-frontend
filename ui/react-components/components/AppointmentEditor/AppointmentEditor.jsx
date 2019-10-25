@@ -24,7 +24,6 @@ import PropTypes from "prop-types";
 import {saveAppointment, saveRecurring} from "./AppointmentEditorService";
 import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
-import DateSelector from "../DateSelector/DateSelector.jsx";
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import RecurringPlan from "../RecurringPlan/RecurringPlan.jsx";
@@ -39,6 +38,7 @@ const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
     const [patientError, setPatientError] = useState(false);
     const [serviceError, setServiceError] = useState(false);
+    const [appointmentDateError, setAppointmentDateError] = useState(false);
     const [startDateError, setStartDateError] = useState(false);
     const [endDateError, setEndDateError] = useState(false);
     const [startTimeError, setStartTimeError] = useState(false);
@@ -50,8 +50,9 @@ const AppointmentEditor = props => {
     const [serviceType, setServiceType] = useState('');
     const [location, setLocation] = useState('');
     const [speciality, setSpeciality] = useState('');
-    const [startDate, setStartDate] = useState();
-    const [endDate, setEndDate] = useState();
+    const [appointmentDate, setAppointmentDate] = useState();
+    const [recurringStartDate, setRecurringStartDate] = useState();
+    const [recurringEndDate, setRecurringEndDate] = useState();
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
     const [isRecurring, setIsRecurring] = useState();
@@ -115,7 +116,7 @@ const AppointmentEditor = props => {
             type: recurrenceType,
             period: period
         };
-        endDateType === "After" ? recurringPattern.frequency = occurences : recurringPattern.endDate = endDate;
+        endDateType === "After" ? recurringPattern.frequency = occurences : recurringPattern.endDate = recurringEndDate;
         return recurringPattern;
     };
 
@@ -124,8 +125,8 @@ const AppointmentEditor = props => {
             patientUuid: patient && patient.uuid,
             serviceUuid: service && service.uuid,
             serviceTypeUuid: serviceType && serviceType.uuid,
-            startDateTime: getDateTime(startDate, startTime),
-            endDateTime: getDateTime(startDate, endTime),
+            startDateTime: isRecurring? getDateTime(recurringStartDate, startTime) : getDateTime(appointmentDate, startTime),
+            endDateTime: isRecurring? getDateTime(recurringStartDate, endTime) : getDateTime(appointmentDate, endTime),
             providers: providers,
             locationUuid: location,
             appointmentKind: "Scheduled",
@@ -141,36 +142,48 @@ const AppointmentEditor = props => {
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(startTime, endTime);
         setPatientError(!isValidPatient);
         setServiceError(!service);
-        setStartDateError(!startDate);
+        setAppointmentDateError(!appointmentDate);
         setStartTimeError(!startTime);
         setEndTimeError(!endTime);
         setStartTimeBeforeEndTimeError(!startTimeBeforeEndTime);
-        return isValidPatient && service && startDate && startTime && endTime && startTimeBeforeEndTime;
+        return isValidPatient && service && appointmentDate && startTime && endTime && startTimeBeforeEndTime;
+    };
+
+    const isValidRecurringAppointment = () => {
+        const isValidPatient = patient && patient.uuid;
+        const startTimeBeforeEndTime = isStartTimeBeforeEndTime(startTime, endTime);
+        setPatientError(!isValidPatient);
+        setServiceError(!service);
+        setStartTimeError(!startTime);
+        setEndTimeError(!endTime);
+        setStartTimeBeforeEndTimeError(!startTimeBeforeEndTime);
+        setRecurrencePeriodError(!period || period < 0);
+        setEndDateError(isInValidEndDate);
+        setStartDateError(!startDateType || !recurringStartDate);
+        return isValidPatient && service && startTime && endTime && startTimeBeforeEndTime &&
+            recurrenceType && period && period > 0 && recurringStartDate &&
+            ((endDateType === "On" && recurringEndDate) || (endDateType === "After" && occurences));
     };
 
     const isInValidEndDate = () => {
-        return !endDateType || (endDateType === "On" && !endDate) || (endDateType === "After" && !occurences);
-    };
-
-    const isValidRecurringPattern = () => {
-        setRecurrencePeriodError(!period || period < 0);
-        setEndDateError(isInValidEndDate);
-        setStartDateError(!startDateType || !startDate);
-        return recurrenceType && period && period > 0 && startDate &&
-            ((endDateType === "On" && endDate) || (endDateType === "After" && occurences));
+        return !endDateType || (endDateType === "On" && !recurringEndDate) || (endDateType === "After" && !occurences);
     };
 
     const checkAndSave = async () => {
-        const appointment = isValidAppointment() && getAppointment();
-        const recurringPattern = isRecurring && isValidRecurringPattern() && getRecurringPattern();
-        if (appointment && recurringPattern) {
+        if (isValidAppointment()) {
+            const appointment = getAppointment();
+            await saveAppointment(appointment);
+        }
+    };
+
+    const checkAndSaveRecurring = async () => {
+        if (isValidRecurringAppointment()) {
             const recurringRequest = {
-                appointmentRequest: appointment,
-                recurringPattern: recurringPattern
+                appointmentRequest: getAppointment(),
+                recurringPattern: getRecurringPattern()
             };
             return await saveRecurring(recurringRequest);
         }
-        !isRecurring && appointment && await saveAppointment(appointment);
     };
 
     const appointmentStartTimeProps = {
@@ -255,21 +268,21 @@ const AppointmentEditor = props => {
                             <StartDateRadioGroup
                                 onChange={event => {
                                     setStartDateType(event.currentTarget.value);
-                                    event.currentTarget.value === TODAY ? setStartDate(new Date()) :
-                                        setStartDate(undefined);
+                                    event.currentTarget.value === TODAY ? setRecurringStartDate(new Date()) :
+                                        setRecurringStartDate(undefined);
                                 }}
                                 startDateType={startDateType}/>
-                            <AppointmentDatePicker onChange={date => {
-                                setStartDate(date);
-                                setStartDateError(!date);
-                            }} onClear={() => {
-                                setStartDate(undefined);
-                            }}
-                                                   startDateType={startDateType}
-                                                   endDateType={endDateType}
-                                                   dateType="startDate"
-                                                   startDate={startDate}
-                                                   isRecurring={isRecurring}/>
+                            <AppointmentDatePicker
+                                onChange={date => {
+                                    setRecurringStartDate(date);
+                                    setStartDateError(!date);
+                                }}
+                                onClear={() => setRecurringStartDate(undefined)}
+                                startDateType={startDateType}
+                                endDateType={endDateType}
+                                dateType="startDate"
+                                startDate={recurringStartDate}
+                                isRecurring={isRecurring}/>
                             <ErrorMessage message={startDateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
@@ -279,22 +292,22 @@ const AppointmentEditor = props => {
                             <EndDateRadioGroup
                                 onChange={event => {
                                     setEndDateType(event.currentTarget.value)
-                                    event.currentTarget.value === "After" && setEndDate(undefined);
-                                    event.currentTarget.value === "On" && setOccurences(undefined);
+                                    event.currentTarget.value === "After" && setRecurringEndDate(undefined);
                                 }}
-
                                 onOccurencesChange={value => setOccurences(value)}
                                 occurences={occurences}
                                 endDateType={endDateType}/>
-                            <AppointmentDatePicker onChange={date => {
-                                setEndDate(date);
-                                setEndDateError(!date);
-                            }} onClear={() => {
-                                setEndDate(undefined);
-                            }} isRecurring={isRecurring} startDate={startDate}
-                                                   startDateType={startDateType}
-                                                   endDateType={endDateType}
-                                                   dateType="endDate"/>
+                            <AppointmentDatePicker
+                                onChange={date => {
+                                    setRecurringEndDate(date);
+                                    setEndDateError(!date);
+                                }}
+                                onClear={() => setRecurringEndDate(undefined)}
+                                isRecurring={isRecurring}
+                                startDate={recurringStartDate}
+                                startDateType={startDateType}
+                                endDateType={endDateType}
+                                dateType="endDate"/>
                             <ErrorMessage message={endDateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
@@ -336,13 +349,14 @@ const AppointmentEditor = props => {
                     <div className={classNames(recurringContainerLeft)}>
                         <div data-testid="date-selector">
                             <Label translationKey="APPOINTMENT_DATE_LABEL" defaultValue="Appointment date"/>
-                            <AppointmentDatePicker isRecurring={isRecurring} onChange={date => {
-                                setStartDate(date);
-                                setStartDateError(!date);
-                            }} onClear={() => {
-                                setStartDate(undefined);
-                            }}/>
-                            <ErrorMessage message={startDateError ? dateErrorMessage : undefined}/>
+                            <AppointmentDatePicker
+                                isRecurring={isRecurring}
+                                onChange={date => {
+                                    setAppointmentDate(date);
+                                    setAppointmentDateError(!date);
+                                }}
+                                onClear={() => setAppointmentDate(undefined)}/>
+                            <ErrorMessage message={appointmentDateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
                             <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
@@ -371,7 +385,7 @@ const AppointmentEditor = props => {
                     <AppointmentNotes onChange={(event) => setNotes(event.target.value)}/>
                 </div>
             </div>
-            <AppointmentEditorFooter checkAndSave={checkAndSave}/>
+            <AppointmentEditorFooter checkAndSave={isRecurring ? checkAndSaveRecurring : checkAndSave}/>
         </div>
     </Fragment>);
 };
@@ -379,6 +393,6 @@ const AppointmentEditor = props => {
 AppointmentEditor.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object
-}
+};
 
 export default injectIntl(AppointmentEditor);

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const Label = props => {
     const {translationKey, defaultValue, forInput} = props;
     return (
-        <label for={forInput}><b><FormattedMessage id={translationKey} defaultMessage={defaultValue}/></b></label>
+        <label htmlFor={forInput}><b><FormattedMessage id={translationKey} defaultMessage={defaultValue}/></b></label>
     )
 }
 
