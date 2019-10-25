@@ -1,14 +1,14 @@
 @import '../../variables.scss';
 
-.saveModal{
+.saveModal {
   .saveModalCloseIcon {
     text-align: right;
-    a{
+    a {
       color: $secondary-color-2;
     }
   }
   > div:nth-child(2) {
-    padding: 0 31px 33px 32px;
+    padding: 0 30px 30px 30px;
 
     .saveModalTitle {
       margin: 0 0 12px;
@@ -29,14 +29,11 @@
 
       .button {
         background: #f2f2f2;
-        height: 35px;
         border: 0;
         border-radius: 4px;
-        padding: 0 20px;
-        width: 100px;
+        padding: 10px 40px;
         color: $secondary-color-1;
         background: $primary-color-2;
-        margin-right: 24px;
 
         &:hover {
           background: darkgrey;
@@ -48,8 +45,9 @@
       }
 
       .newAppointmentLink {
-        float: right;
-        text-decoration-line: underline;
+        a {
+          text-decoration-line: underline;
+        }
       }
     }
   }

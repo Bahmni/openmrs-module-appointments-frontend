@@ -9,28 +9,28 @@ import {
     saveModalBody,
     saveModalCloseIcon,
     saveModalTitle
-} from "./SuccessConfirmation.module.scss";
+} from "./SuccessModal.module.scss";
 import PropTypes from "prop-types";
 import {AppContext} from "../AppContext/AppContext";
 
-const SuccessConfirmation = (props) => {
+const SuccessModal = (props) => {
 
     const {intl, patientDetails} = props;
-    const {onBack} = React.useContext(AppContext);
+    const {onBack, angularState} = React.useContext(AppContext);
 
     const saveConfirmationTextPartOne = intl.formatMessage({
         id: 'APPOINTMENT_SAVE_CONFIRMATION_TEXT_PART_1', defaultMessage: 'The new appointment for the patient'
     });
 
     const saveConfirmationTextPartTwo = intl.formatMessage({
-        id: 'APPOINTMENT_SAVE_CONFIRMATION_TEXT_PART_3', defaultMessage: 'has been saved.'
+        id: 'APPOINTMENT_SAVE_CONFIRMATION_TEXT_PART_2', defaultMessage: 'has been saved.'
     });
 
     return (
         <div className={classNames(saveModal)}>
             <div className={classNames(saveModalCloseIcon)}>
                 <a data-testid="save-close-icon">
-                    <i className={classNames("fa", "fa-times")} onClick={onBack}/>
+                    <i className={classNames("fa", "fa-times")} onClick={() => onBack(angularState)}/>
                 </a>
             </div>
             <div>
@@ -44,7 +44,7 @@ const SuccessConfirmation = (props) => {
                                       defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
                 </div>
                 <div className={classNames(saveConfirmationFooter)}>
-                    <button className={classNames(button)} data-testid="save-close-button" onClick={onBack}>
+                    <button className={classNames(button)} data-testid="save-close-button" onClick={() => onBack(angularState)}>
                         <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_CLOSE'} defaultMessage={'Close'}/>
                     </button>
                     <span className={classNames(newAppointmentLink)}>
@@ -58,8 +58,8 @@ const SuccessConfirmation = (props) => {
     );
 };
 
-SuccessConfirmation.propTypes = {
+SuccessModal.propTypes = {
     patientDetails: PropTypes.string.isRequired
 };
 
-export default injectIntl(SuccessConfirmation);
+export default injectIntl(SuccessModal);
