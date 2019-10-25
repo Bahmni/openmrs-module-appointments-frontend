@@ -15,25 +15,27 @@ const StartDateRadioGroup = props => {
         <div className={(!startDateType || startDateType === TODAY)
             ? classNames(radioButton) : classNames(grayOut)}>
             <input
+                id="today"
                 type="radio"
                 value={TODAY}
                 name={groupName}
                 onChange={onChange}
                 checked={startDateType === TODAY}
             />
-            <Label translationKey="TODAY_LABEL" defaultValue="Today"/>&nbsp;|
+            <Label translationKey="TODAY_LABEL" defaultValue="Today" forInput="today"/>&nbsp;|
             &nbsp;{date}
         </div>
         <div className={(!startDateType || startDateType === FROM)
             ? classNames(radioButton) : classNames(grayOut)}>
             <input
+                id="from"
                 type="radio"
                 value={FROM}
                 name={groupName}
                 onChange={onChange}
                 checked={startDateType === FROM}
             />
-            <Label translationKey="FROM_LABEL" defaultValue="From"/>
+            <Label translationKey="FROM_LABEL" defaultValue="From" forInput="from"/>
         </div>
     </div>)
 };
