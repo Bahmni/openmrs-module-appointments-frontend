@@ -14,8 +14,8 @@ const InputNumber = props => {
     return (
         <div className={classNames(inputNumberContainer)}>
             <button className={classNames('fa fa-chevron-left', tagRemove)}
-                    onClick={onDecrease} disabled={defaultValue <= 1}/>
-            <input type="number" value={defaultValue}
+                    onClick={onDecrease} disabled={() => defaultValue <= 1}/>
+            <input type="number" value={defaultValue} min={1}
                    onChange={event => onInputChange(event.target.value)}/>
             <button className={classNames('fa fa-chevron-right', tagRemove)}
                     onClick={onIncrease}/>
