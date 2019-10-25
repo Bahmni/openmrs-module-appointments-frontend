@@ -26,9 +26,14 @@ input[type="radio"] {
 .radioButton {
   display: flex;
   margin: 5% 4% 4% 0;
-  div{
+  align-items: center;
+  div {
     display: flex;
   }
+  input {
+    min-width: 12px;
+  }
+
 }
 
 .grayOut {
@@ -36,8 +41,8 @@ input[type="radio"] {
   display: flex;
   margin: 5% 4% 4% 0;
 }
-div[disabled]
-{
+
+div[disabled] {
   pointer-events: none;
   opacity: 0.7;
   display: flex;
