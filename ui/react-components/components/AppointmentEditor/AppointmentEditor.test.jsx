@@ -218,6 +218,7 @@ describe('Appointment Editor', () => {
     it('should display error messages when checkAndSave is clicked and required recurring fields are not selected', () => {
         const {getByText, queryByText, getAllByTestId, getAllByText, container} = renderWithReactIntl(
             <AppointmentEditor/>);
+        const saveAppointmentSpy = jest.spyOn(save, 'saveRecurring');
         const checkBox = container.querySelector('.checkbox');
         fireEvent.click(checkBox);
         const checkAndSaveButton = getByText('Check and Save');
@@ -228,6 +229,8 @@ describe('Appointment Editor', () => {
         expect(getAllByText('Please select time').length).toBe(2);
         expect(getAllByText('Please select date').length).toBe(2);
         expect(getAllByTestId('error-message').length).toBe(9);
+        expect(saveAppointmentSpy).not.toHaveBeenCalled();
+
     });
 
     it('should not display error message for start date & end date when today and after radio buttons are clicked', function () {
@@ -238,6 +241,7 @@ describe('Appointment Editor', () => {
         };
         const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AppointmentEditor
             appConfig={config}/>);
+        const saveAppointmentSpy = jest.spyOn(save, 'saveRecurring');
         const checkBox = container.querySelector('.checkbox');
         fireEvent.click(checkBox);
         const todayButton = getByTestId("today-radio-button");
@@ -247,6 +251,7 @@ describe('Appointment Editor', () => {
         const checkAndSaveButton = getByText('Check and Save');
         fireEvent.click(checkAndSaveButton);
         expect(queryAllByText('Please select date').length).toBe(0);
+        expect(saveAppointmentSpy).not.toHaveBeenCalled();
     });
 
     //TODO need to add test to check the status of response on click of checkAndSave
