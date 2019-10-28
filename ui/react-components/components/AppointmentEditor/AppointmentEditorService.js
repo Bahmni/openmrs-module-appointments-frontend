@@ -1,4 +1,5 @@
-import {saveOrUpdateAppointment, saveRecurringAppointments} from '../../api/appointmentsApi';
+import {saveOrUpdateAppointment} from '../../api/appointmentsApi';
+import {saveRecurringAppointments} from "../../api/recurringAppointmentsApi";
 
 const getFormattedProviders = providers => providers.map(provider => {
     provider.name = provider.label;
