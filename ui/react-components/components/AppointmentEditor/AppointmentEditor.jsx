@@ -191,7 +191,7 @@ const AppointmentEditor = props => {
             const appointment = getAppointment();
             const response = await saveAppointment(appointment);
             if (response.status === 200) {
-                angularState.params.viewDate = startDate.startOf('day').toDate();
+                angularState.params.viewDate = appointmentDate.startOf('day').toDate();
                 setShowSuccessPopup(true);
             }
         }
@@ -203,7 +203,11 @@ const AppointmentEditor = props => {
                 appointmentRequest: getAppointment(),
                 recurringPattern: getRecurringPattern()
             };
-            return await saveRecurring(recurringRequest);
+            const response = await saveRecurring(recurringRequest);
+            if (response.status === 200) {
+                angularState.params.viewDate = recurringStartDate.startOf('day').toDate();
+                setShowSuccessPopup(true);
+            }
         }
     };
 
