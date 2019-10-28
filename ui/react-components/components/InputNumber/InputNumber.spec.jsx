@@ -5,7 +5,7 @@ import {fireEvent, render} from "@testing-library/react";
 
 describe('Input Number', () => {
     it('should render an input number', () => {
-        const {container, getByTestId} = render(<InputNumber onChange={jest.fn()}/>);
+        const {container} = render(<InputNumber onChange={jest.fn()}/>);
         expect(container.querySelector('.inputNumberContainer')).not.toBeNull();
         expect(container.querySelectorAll('.inputButton').length).toBe(2);
     });

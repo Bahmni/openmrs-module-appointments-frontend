@@ -48,7 +48,7 @@ const AppointmentDatePicker = (props) => {
                 showToday={false}
                 onClear={onClear}
                 disabledDate={disablePastDates}
-                selectedValue={value}
+                value={value}
                 className={classNames(styles)}
                 dateInputPlaceholder="mm/dd/yyyy"
                 onSelect={onChange}

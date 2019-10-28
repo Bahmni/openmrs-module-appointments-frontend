@@ -25,7 +25,7 @@ const EndDateRadioGroup = props => {
             />
 
             <Label translationKey="AFTER_LABEL" defaultValue="After" forInput="after"/>
-            <div disabled={disableInput()} data-testid="enddate-after-fiv">
+            <div disabled={disableInput()} data-testid="occurences">
                 <InputNumber onChange={onOccurencesChange} defaultValue={occurences}/>
                 <Label translationKey="OCCURENCES_LABEL" defaultValue="Occurences"/>
             </div>
