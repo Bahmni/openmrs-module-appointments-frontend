@@ -227,7 +227,8 @@ describe('Appointment Editor', () => {
         expect(queryByText('Please select service')).not.toBeNull();
         expect(queryByText('Please select valid recurrence period')).not.toBeNull();
         expect(getAllByText('Please select time').length).toBe(2);
-        expect(getAllByText('Please select date').length).toBe(2);
+        expect(getAllByText('Please select date').length).toBe(1);
+        expect(getAllByText('Please select recurrence end type').length).toBe(1);
         expect(getAllByTestId('error-message').length).toBe(9);
         expect(saveAppointmentSpy).not.toHaveBeenCalled();
 
