@@ -12,8 +12,8 @@ import moment from 'moment';
 import {FROM} from "../../constants";
 
 const AppointmentDatePicker = (props) => {
-    const [value, setValue] = useState(null);
-    const {isRecurring, startDate, startDateType, endDateType, dateType} = props;
+    const {isRecurring, startDate, startDateType, endDateType, dateType, defaultValue} = props;
+    const [value, setValue] = useState(defaultValue);
     const disablePastDates = (current) => {
         if (!current) {
             return false;
@@ -65,6 +65,7 @@ AppointmentDatePicker.propTypes = {
     startDateType: PropTypes.string,
     endDateType: PropTypes.string,
     dateType: PropTypes.string,
+    defaultValue: PropTypes.object
 };
 
 export default AppointmentDatePicker;
