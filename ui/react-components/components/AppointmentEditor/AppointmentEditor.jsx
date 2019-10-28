@@ -298,7 +298,8 @@ const AppointmentEditor = props => {
                                 endDateType={endDateType}
                                 dateType="startDate"
                                 startDate={recurringStartDate}
-                                isRecurring={isRecurring}/>
+                                isRecurring={isRecurring}
+                                defaultValue={recurringStartDate}/>
                             <ErrorMessage message={startDateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div data-testid="end-date-group">
@@ -323,7 +324,8 @@ const AppointmentEditor = props => {
                                 startDate={recurringStartDate}
                                 startDateType={startDateType}
                                 endDateType={endDateType}
-                                dateType="endDate"/>
+                                dateType="endDate"
+                                defaultValue={recurringEndDate}/>
                             <ErrorMessage message={endDateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div data-testid="recurrence-type-group">
@@ -371,7 +373,8 @@ const AppointmentEditor = props => {
                                     setAppointmentDate(date);
                                     setAppointmentDateError(!date);
                                 }}
-                                onClear={() => setAppointmentDate(undefined)}/>
+                                onClear={() => setAppointmentDate(undefined)}
+                                defaultValue={appointmentDate}/>
                             <ErrorMessage message={appointmentDateError ? dateErrorMessage : undefined}/>
                         </div>
                         <div>
