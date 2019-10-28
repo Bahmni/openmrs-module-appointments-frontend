@@ -44,6 +44,8 @@ const AppointmentEditor = props => {
     const [appointmentDateError, setAppointmentDateError] = useState(false);
     const [startDateError, setStartDateError] = useState(false);
     const [endDateError, setEndDateError] = useState(false);
+    const [endDateTypeError, setEndDateTypeError] = useState(false);
+    const [occurencesError, setOccurencesError] = useState(false);
     const [startTimeError, setStartTimeError] = useState(false);
     const [endTimeError, setEndTimeError] = useState(false);
     const [recurrencePeriodError, setRecurrencePeriodError] = useState(false);
@@ -102,6 +104,14 @@ const AppointmentEditor = props => {
 
     const dateErrorMessage = intl.formatMessage({
         id: 'DATE_ERROR_MESSAGE', defaultMessage: 'Please select date'
+    });
+
+    const occurencesErrorMessage = intl.formatMessage({
+        id: 'OCCURENCE_ERROR_MESSAGE', defaultMessage: 'Please select valid occurences'
+    });
+
+    const endDateTypeErrorMessage = intl.formatMessage({
+        id: 'ENDDATE_TYPE_ERROR_MESSAGE', defaultMessage: 'Please select recurrence end type'
     });
 
     const timeErrorMessage = intl.formatMessage({
@@ -164,16 +174,16 @@ const AppointmentEditor = props => {
         setStartTimeError(!startTime);
         setEndTimeError(!endTime);
         setStartTimeBeforeEndTimeError(!startTimeBeforeEndTime);
-        setRecurrencePeriodError(!period || period < 0);
-        setEndDateError(isInValidEndDate);
+        setRecurrencePeriodError(!period || period < 1);
+        setEndDateTypeError(!endDateType);
+        if(endDateType) {
+            setEndDateError(endDateType === "On" && !recurringEndDate);
+            setOccurencesError(endDateType === "After" && (!occurences || occurences < 1));
+        }
         setStartDateError(!startDateType || !recurringStartDate);
         return isValidPatient && service && startTime && endTime && startTimeBeforeEndTime &&
             recurrenceType && period && period > 0 && recurringStartDate &&
-            ((endDateType === "On" && recurringEndDate) || (endDateType === "After" && occurences));
-    };
-
-    const isInValidEndDate = () => {
-        return !endDateType || (endDateType === "On" && !recurringEndDate) || (endDateType === "After" && !occurences);
+            ((endDateType === "On" && recurringEndDate) || (endDateType === "After" && occurences && occurences > 0));
     };
 
     const checkAndSave = async () => {
@@ -326,7 +336,10 @@ const AppointmentEditor = props => {
                                 endDateType={endDateType}
                                 dateType="endDate"
                                 defaultValue={recurringEndDate}/>
-                            <ErrorMessage message={endDateError ? dateErrorMessage : undefined}/>
+
+                            <ErrorMessage message={(endDateTypeError && endDateTypeErrorMessage) || (endDateError && dateErrorMessage)
+                            || (occurencesError && occurencesErrorMessage)}/>
+
                         </div>
                         <div data-testid="recurrence-type-group">
                             <div className={classNames(dateHeading)}>
