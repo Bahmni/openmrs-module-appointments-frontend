@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {appointmentsSaveUrl, recurringAppointmentsSaveUrl} from "../constants";
+import {appointmentsSaveUrl} from "../constants";
 
 export const saveOrUpdateAppointment = async (data) => {
     try {
@@ -10,10 +10,3 @@ export const saveOrUpdateAppointment = async (data) => {
     }
 };
 
-export const saveRecurringAppointments = async data => {
-    try {
-        return await axios.post(`${recurringAppointmentsSaveUrl}`, data);
-    } catch (error) {
-        console.error(error);
-    }
-};
