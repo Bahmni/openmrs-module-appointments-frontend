@@ -10,7 +10,6 @@ describe('EndDateRadioGroup', () => {
         const {container, getByText, debug} = renderWithReactIntl(<RecurrenceTypeRadioGroup
             onChange={jest.fn()}
             onPeriodChange={jest.fn()}/>);
-        debug();
         expect(getByText('Day')).not.toBeNull();
         expect(getByText('Week')).not.toBeNull();
         expect(container.querySelector('.recurrenceTypeContainer')).not.toBeNull();
