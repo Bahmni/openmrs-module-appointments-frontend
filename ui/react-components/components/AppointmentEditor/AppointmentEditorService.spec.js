@@ -1,7 +1,9 @@
 import {saveAppointment, saveRecurring} from "./AppointmentEditorService";
 
 jest.mock('../../api/appointmentsApi');
+jest.mock('../../api/recurringAppointmentsApi');
 const appointmentsApi = require('../../api/appointmentsApi');
+const recurringAppointmentsApi = require('../../api/recurringAppointmentsApi');
 let appointmentsApiSpy;
 let recurringAppointmentsApiSpy;
 
@@ -9,7 +11,7 @@ let recurringAppointmentsApiSpy;
 describe('Appointment Editor Service', () => {
     beforeEach(() => {
         appointmentsApiSpy = jest.spyOn(appointmentsApi, 'saveOrUpdateAppointment');
-        recurringAppointmentsApiSpy = jest.spyOn(appointmentsApi, 'saveRecurringAppointments');
+        recurringAppointmentsApiSpy = jest.spyOn(recurringAppointmentsApi, 'saveRecurringAppointments');
     });
     afterEach(() => {
         appointmentsApiSpy.mockRestore();
