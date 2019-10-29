@@ -7,7 +7,7 @@ import InputNumber from "../InputNumber/InputNumber.jsx";
 import {injectIntl} from "react-intl";
 
 const EndDateRadioGroup = props => {
-    const {onChange, onOccurencesChange, occurences, endDateType} = props;
+    const {onChange, onOccurrencesChange, occurrences, endDateType} = props;
     const groupName = "endDateType";
     const disableInput = () => {
         return endDateType === "On"
@@ -25,9 +25,9 @@ const EndDateRadioGroup = props => {
             />
 
             <Label translationKey="AFTER_LABEL" defaultValue="After" forInput="after"/>
-            <div disabled={disableInput()} data-testid="occurences">
-                <InputNumber onChange={onOccurencesChange} defaultValue={occurences}/>
-                <Label translationKey="OCCURENCES_LABEL" defaultValue="Occurences"/>
+            <div disabled={disableInput()} data-testid="occurrences">
+                <InputNumber onChange={onOccurrencesChange} defaultValue={occurrences}/>
+                <Label translationKey="OCCURRENCES_LABEL" defaultValue="Occurrences"/>
             </div>
         </div>
         <div className={(!endDateType || endDateType === "On")
@@ -48,9 +48,9 @@ const EndDateRadioGroup = props => {
 
 EndDateRadioGroup.propTypes = {
     intl: PropTypes.object.isRequired,
-    occurences: PropTypes.number,
+    occurrences: PropTypes.number,
     onChange: PropTypes.func,
-    onOccurencesChange: PropTypes.func,
+    onOccurrencesChange: PropTypes.func,
     endDateType: PropTypes.string
 };
 

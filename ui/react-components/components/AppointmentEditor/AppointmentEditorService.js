@@ -1,7 +1,7 @@
 import {saveOrUpdateAppointment} from '../../api/appointmentsApi';
 import {saveRecurringAppointments} from "../../api/recurringAppointmentsApi";
 
-const getFormattedProviders = providers => providers.map(provider => {
+const getFormattedProviders = providers => providers.forEach(provider => {
     provider.name = provider.label;
     provider.uuid = provider.value;
     delete provider.label;

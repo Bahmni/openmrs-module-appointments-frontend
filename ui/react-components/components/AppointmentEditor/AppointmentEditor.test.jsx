@@ -208,7 +208,7 @@ describe('Appointment Editor', () => {
         expect(getByText('Ends')).not.toBeNull();
         expect(getByText('After')).not.toBeNull();
         expect(getByText('On')).not.toBeNull();
-        expect(getByText('Occurences')).not.toBeNull();
+        expect(getByText('Occurrences')).not.toBeNull();
         expect(getByText('Repeats Every')).not.toBeNull();
         expect(getByText('Day')).not.toBeNull();
         expect(getByText('Week')).not.toBeNull();
