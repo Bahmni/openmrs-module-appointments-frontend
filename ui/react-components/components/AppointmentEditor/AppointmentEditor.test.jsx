@@ -194,7 +194,7 @@ describe('Appointment Editor', () => {
 
     it('should render all recurring components on click of recurring appointments checkbox', () => {
         const {container, getByTestId, getByText, getAllByText} = renderWithReactIntl(<AppointmentEditor/>);
-        const checkBoxService = container.querySelector('.checkbox');
+        const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
         expect(container.querySelector('.checkbox')).toBeChecked;
         getByTestId('start-date-group');
@@ -219,7 +219,7 @@ describe('Appointment Editor', () => {
         const {getByText, queryByText, getAllByTestId, getAllByText, container} = renderWithReactIntl(
             <AppointmentEditor/>);
         const saveAppointmentSpy = jest.spyOn(save, 'saveRecurring');
-        const checkBox = container.querySelector('.checkbox');
+        const checkBox = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBox);
         const checkAndSaveButton = getByText('Check and Save');
         fireEvent.click(checkAndSaveButton);
@@ -243,7 +243,7 @@ describe('Appointment Editor', () => {
         const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AppointmentEditor
             appConfig={config}/>);
         const saveAppointmentSpy = jest.spyOn(save, 'saveRecurring');
-        const checkBox = container.querySelector('.checkbox');
+        const checkBox = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBox);
         const todayButton = getByTestId("today-radio-button");
         fireEvent.click(todayButton);
