@@ -1,0 +1,86 @@
+@import '../../variables.scss';
+
+.appointmentDatePicker {
+  width: 100%;
+
+  div[class*='calendar-body'] {
+    padding: 0;
+    height: auto;
+  }
+
+  td[class*='rc-calendar-disabled'] {
+    > div {
+      cursor: not-allowed;
+      color: #bcbcbc;
+      background: #f3f3f3;
+      border-radius: 0;
+      width: auto;
+    }
+  }
+
+  div[class*='rc-calendar-header'] {
+    a {
+      &:hover {
+        color: $primary-color-1;
+      }
+    }
+  }
+
+  div[class*='panel-header'] {
+    a {
+      color: $primary-color-1;
+      &:hover {
+        color: $primary-color-1;
+      }
+    }
+  }
+
+  div[class*='panel-body'] {
+    padding: 0;
+    tbody[class*='panel-tbody'] {
+      td[class*='panel-selected-cell'] {
+        a {
+          background: $primary-color-1;
+          color: $secondary-color-1;
+          &:hover {
+            background: $primary-color-1;
+            color: $secondary-color-1;
+          }
+        }
+      }
+    }
+  }
+}
+
+.appointmentDatePickerSelected {
+  td[class*='rc-calendar-selected'] {
+    > div {
+      &:hover {
+        background: $primary-color-1;
+      }
+      background: $primary-color-1;
+      color: $secondary-color-1;
+    }
+  }
+  td[class*='rc-calendar-today'] {
+    > div {
+      border: 1px solid $primary-color-1;
+    }
+  }
+}
+
+.appointmentDatePickerNotSelected {
+  td[class*='rc-calendar-today'] {
+    > div {
+      border: 1px solid $primary-color-1;
+    }
+  }
+  td[class*='rc-calendar-selected'] {
+    > div {
+      &:hover {
+        background: #ebfaff;
+      }
+      background: transparent;
+    }
+  }
+}

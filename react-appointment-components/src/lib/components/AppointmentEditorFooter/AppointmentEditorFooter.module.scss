@@ -1,0 +1,39 @@
+@import '../../variables.scss';
+
+.footer {
+  background: #f2f2f2;
+  height: 50px;
+  padding: 0 32px;
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 64px);
+
+  .footerElements {
+    float: right;
+
+    .button {
+      background: #f2f2f2;
+      height: 50px;
+      border: 0;
+      border-radius: 0;
+      padding: 0 21px;
+
+      span {
+        margin-left: 5px;
+      }
+
+      &:hover {
+        background: darkgrey;
+      }
+
+    }
+    .save {
+      color: $secondary-color-1;
+      background: $primary-color-2;
+      &:hover {
+        background: $primary-color-2;
+        opacity: 1;
+      }
+    }
+  }
+}
