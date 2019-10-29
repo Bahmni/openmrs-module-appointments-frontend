@@ -14,7 +14,7 @@ const AsyncDropdown = (props) => {
     const [lastSelectedValue, setLastSelectedValue] = useState('');
     const {loadOptions, placeholder, onChange, intl} = props;
     let select;
-    const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'Type to search'});
+    const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_TYPE_TO_SEARCH_MESSAGE', defaultMessage: 'Type to search'});
     const loadingMessage = intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'});
 
     const handleOnChange = (event) => {
