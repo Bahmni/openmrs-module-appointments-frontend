@@ -11,11 +11,11 @@ const InputNumber = props => {
     const onDecrease = () => defaultValue && onChange(Number(defaultValue) - 1);
     return (
         <div className={classNames(inputNumberContainer)}>
-            <button className={classNames('fa fa-chevron-left', inputButton)}
+            <button className={classNames('fa fa-chevron-left', inputButton)} data-testid="left-arrow"
                     onClick={onDecrease} disabled={defaultValue <= 1}/>
             <input type="number" value={defaultValue} min={1} data-testid="input-box"
                    onChange={event => onChange(event.target.value)}/>
-            <button className={classNames('fa fa-chevron-right', inputButton)}
+            <button className={classNames('fa fa-chevron-right', inputButton)} data-testid="right-arrow"
                     onClick={onIncrease}/>
         </div>
     );

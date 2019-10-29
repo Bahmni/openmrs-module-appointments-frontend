@@ -25,7 +25,7 @@ describe('DatePicker', () => {
 
     it('should call onChange when future date is selected', async () => {
         const onChangeSpy = jest.fn();
-        const { getAllByTitle } = render(<AppointmentDatePicker onChange={onChangeSpy} />);
+        const { getAllByTitle } = render(<AppointmentDatePicker onChange={onChangeSpy} minDate={new Date()}/>);
         const tomorrow = moment().add(1, "days").format("MMMM D, YYYY");
         const dateCell = getCellByTitle(getAllByTitle, tomorrow);
 
@@ -48,7 +48,7 @@ describe('DatePicker', () => {
 
     it('today needs to be enabled', async () => {
         const today = moment().format("MMMM D, YYYY");
-        const {getAllByTitle } = render(<AppointmentDatePicker />);
+        const {getAllByTitle } = render(<AppointmentDatePicker minDate={new Date()}/>);
         const dateCell = getCellByTitle(getAllByTitle, today);
         expect(dateCell.getAttribute('aria-disabled')).toBe("false");
         expect(dateCell.getAttribute('aria-selected')).toBe("true");
@@ -56,7 +56,7 @@ describe('DatePicker', () => {
 
     it('tomorrow needs to be enabled', async () => {
         const tomorrow = moment().add(1, "days").format("MMMM D, YYYY");
-        const {getAllByTitle } = render(<AppointmentDatePicker />);
+        const {getAllByTitle } = render(<AppointmentDatePicker minDate={new Date()}/>);
         const dateCell = getCellByTitle(getAllByTitle, tomorrow);
         expect(dateCell.getAttribute('aria-disabled')).toBe("false");
         expect(dateCell.getAttribute('aria-selected')).toBe("false");
