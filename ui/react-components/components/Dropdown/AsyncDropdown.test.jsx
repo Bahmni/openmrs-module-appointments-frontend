@@ -91,12 +91,12 @@ describe('AsyncDropdown', () => {
 
     it('should translate no option message if translation message is provided', async () => {
         const placeholder = 'placeholder';
-        const noOptionMessage = 'no option message';
+        const typeToSearchMessage = 'Type to search message';
         const {container, getByText, queryByText} = renderWithReactIntl(<AsyncDropdown placeholder={placeholder}/>,
-            {'DROPDOWN_NO_OPTIONS_MESSAGE': noOptionMessage});
+            {'DROPDOWN_TYPE_TO_SEARCH_MESSAGE': typeToSearchMessage});
         const querySelector = container.querySelector('.react-select__control');
         fireEvent.keyDown(querySelector, { key: 'ArrowDown', keyCode: 40 });
-        const noOption = await waitForElement(() => getByText(noOptionMessage));
+        const noOption = await waitForElement(() => getByText(typeToSearchMessage));
         expect(noOption).not.toBeNull();
         const typeToSearchOption = await queryByText(typeToSearch);
         expect(typeToSearchOption).toBeNull();
