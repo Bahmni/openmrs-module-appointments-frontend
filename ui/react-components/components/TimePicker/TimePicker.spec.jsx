@@ -12,7 +12,7 @@ describe('TimePicker', () => {
         let onChangeSpy = jest.fn();
         const {container} = renderWithReactIntl(<AppointmentTimePicker onChange={onChangeSpy}
                                                                        placeHolderTranslationKey={placeHolderKey}
-                                                                       defaultValue={defaultValue}/>);
+                                                                       placeHolderDefaultMessage={defaultValue}/>);
         expect(container.querySelector('.appointmentTimePicker')).not.toBeNull();
     });
 
@@ -22,7 +22,7 @@ describe('TimePicker', () => {
         const onChangeSpy = jest.fn();
         const {container} = renderWithReactIntl(<AppointmentTimePicker onChange={onChangeSpy}
                                                                        placeHolderTranslationKey={placeHolderKey}
-                                                                       defaultValue={defaultValue}/>);
+                                                                       placeHolderDefaultMessage={defaultValue}/>);
         const inputBox = container.querySelector('.rc-time-picker-input');
         expect(inputBox.placeholder).toBe("Click to select time");
     });
@@ -33,7 +33,7 @@ describe('TimePicker', () => {
         let onChangeSpy = jest.fn();
         const {container} = renderWithReactIntl(<AppointmentTimePicker onChange={onChangeSpy}
                                                                        placeHolderTranslationKey={placeHolderKey}
-                                                                       defaultValue={defaultValue}/>);
+                                                                       placeHolderDefaultMessage={defaultValue}/>);
         const inputBox = container.querySelector('.rc-time-picker-input');
         fireEvent.focusIn(inputBox, {target: {value: "7:10 am"}});
 

@@ -10,8 +10,8 @@ describe('Time Selector', () => {
             onChange: jest.fun,
             translationKey: 'translation key',
             defaultValue: defaultValue,
-            timeSelectionTranslationKey: 'time select translation key',
-            timeSelectionDefaultValue: timeSelectionDefaultValue};
+            placeHolderTranslationKey: 'time select translation key',
+            placeHolderDefaultMessage: timeSelectionDefaultValue};
         const {getByText, getByPlaceholderText} = renderWithReactIntl(<TimeSelector {...props} onChange={jest.fn()}/>);
         getByText(defaultValue);
         getByPlaceholderText(timeSelectionDefaultValue);
