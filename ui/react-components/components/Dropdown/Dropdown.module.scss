@@ -3,7 +3,12 @@
 .searchIcon {
   position: absolute;
   left: 6px;
-  color: $primary-color;
+  color: $primary-color-1;
+}
+
+.dropdownIndicator{
+  color: hsl(0,0%,80%);
+  font-weight: 800;
 }
 
 .resetSelectContainer {
@@ -12,7 +17,12 @@
   }
   div[class^='react-select__control']{
     border:0px;
+    border-radius: 0px;
     border-bottom: 1px solid $border-color;
+    box-shadow: none;
+  }
+  div[class^='react-select__single-value'] {
+    line-height: normal;
   }
 }
 

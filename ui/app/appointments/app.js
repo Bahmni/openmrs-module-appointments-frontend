@@ -97,7 +97,7 @@ angular
                 },
                 views: {
                     'content@appointment': {
-                        template: '<react-add-appointment/>'
+                        template: '<react-add-appointment-wrapper />'
                     }
                 },
                 resolve: {
@@ -143,8 +143,7 @@ angular
                 url: '/new',
                 views: {
                     'content@appointment': {
-                        templateUrl: 'views/manage/newAppointment.html',
-                        controller: 'AppointmentsCreateController'
+                        template: '<react-add-appointment-wrapper />'
                     }
                 },
                 resolve: {

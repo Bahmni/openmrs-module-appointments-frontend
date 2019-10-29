@@ -131,10 +131,10 @@ module.exports = function (grunt) {
         coverage: {
             options: {
                 thresholds: {
-                    statements: 69.15,
+                    statements: 68.15,
                     branches: 59.0,
                     functions: 62.35,
-                    lines: 69.33
+                    lines: 68.33
                 },
                 dir: 'coverage',
                 root: '.'
@@ -172,7 +172,8 @@ module.exports = function (grunt) {
         },
         useminPrepare: {
             html: [
-                '<%= yeoman.app %>/appointments/**/*.html'
+                '<%= yeoman.app %>/appointments/**/*.html',
+                '<%= yeoman.app %>/common/**/*.html'
             ],
             css: '<%= yeoman.app %>/styles/**/*.css',
             options: {
@@ -232,7 +233,8 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: '<%= yeoman.app %>',
                         src: [
-                            'appointments/**/*.html'
+                            'appointments/**/*.html',
+                            'common/**/*.html'
                         ],
                         dest: '<%= yeoman.dist %>'
                     }

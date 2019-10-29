@@ -1,37 +1,44 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {getPatientName} from "../../mapper/patientMapper";
 import {getPatientsByLocation} from '../../api/patientApi';
 import {currentLocation} from '../../utils/CookieUtil';
-import Dropdown from "../Dropdown/Dropdown.jsx";
+import AsyncDropdown from "../Dropdown/AsyncDropdown.jsx";
+import { injectIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 
-export default class PatientSearch extends Component {
-    constructor (props) {
-        super(props);
-        this.loadPatients = this.loadPatients.bind(this);
-    }
+const PatientSearch = (props) => {
+    const createDropdownOptions = (patients) => {
+        return patients.map(patient => {
+            const {identifier, uuid} = patient;
+            const name = getPatientName(patient);
+            return {
+                value: {name, identifier, uuid},
+                label: `${name} (${patient.identifier})`};
+        });
+    };
 
-    async loadPatients (searchString) {
+    const loadPatients = async (searchString) => {
         if (searchString.length < 3) {
             return [];
         } else {
             const patients = await getPatientsByLocation(currentLocation().uuid, searchString);
-            return this.createDropdownOptions(patients);
+            return createDropdownOptions(patients);
         }
-    }
+    };
 
-    createDropdownOptions (patients) {
-        return patients.map(patient => {
-            const givenName = patient.givenName ? patient.givenName : '';
-            const familyName = patient.familyName ? patient.familyName : '';
-            return {
-                value: patient,
-                label: `${givenName} ${familyName} (${patient.identifier})`};
-        });
-    }
+    const {intl, onChange} = props;
+    const placeholder = intl.formatMessage({id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT', defaultMessage: 'Patient Name or ID'});
+    return (
+        <AsyncDropdown
+            loadOptions={loadPatients}
+            onChange={onChange}
+            placeholder={placeholder}
+        />);
+};
 
-    render () {
-        return (
-            <Dropdown
-                loadOptions={this.loadPatients}
-            />);
-    }
-}
+PatientSearch.propTypes = {
+    intl: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
+};
+
+export default injectIntl(PatientSearch);
