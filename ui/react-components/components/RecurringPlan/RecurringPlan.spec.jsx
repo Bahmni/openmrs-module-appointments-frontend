@@ -15,8 +15,8 @@ describe('Recurring plan', () => {
 
     it('should call onChange on click of checkbox', () => {
         const onChangeSpy = jest.fn();
-        const {container, debug, getByText} = renderWithReactIntl(<RecurringPlan onChange={onChangeSpy}/>)
-        const checkBoxService = container.querySelector('.checkbox');
+        const {container, getByText} = renderWithReactIntl(<RecurringPlan onChange={onChangeSpy}/>);
+        const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
         expect(onChangeSpy).toHaveBeenCalled();
         expect(container.querySelector('.checkbox')).toBeChecked;
