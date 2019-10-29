@@ -156,6 +156,9 @@ const AppointmentEditor = props => {
 
     const {angularState} = React.useContext(AppContext);
 
+    const isValidEndDate = () => (endDateType === "On" && recurringEndDate) ||
+        (endDateType === "After" && occurrences && occurrences > 0);
+
     const isValidRecurringAppointment = () => {
         const isValidPatient = patient && patient.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(startTime, endTime);
@@ -172,8 +175,7 @@ const AppointmentEditor = props => {
         }
         setStartDateError(!startDateType || !recurringStartDate);
         return isValidPatient && service && startTime && endTime && startTimeBeforeEndTime &&
-            recurrenceType && period && period > 0 && recurringStartDate &&
-            ((endDateType === "On" && recurringEndDate) || (endDateType === "After" && occurrences && occurrences > 0));
+            recurrenceType && period && period > 0 && recurringStartDate && isValidEndDate();
     };
 
     const checkAndSave = async () => {
@@ -206,13 +208,13 @@ const AppointmentEditor = props => {
 
     const appointmentStartTimeProps = {
         translationKey: 'APPOINTMENT_TIME_FROM_LABEL', defaultValue: 'From',
-        timeSelectionTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', timeSelectionDefaultValue: 'Enter time as hh:mm am/pm',
+        placeHolderTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', placeHolderDefaultMessage: 'Enter time as hh:mm am/pm',
         defaultTime: startTime
     };
 
     const appointmentEndTimeProps = {
         translationKey: 'APPOINTMENT_TIME_TO_LABEL', defaultValue: 'To',
-        timeSelectionTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', timeSelectionDefaultValue: 'Enter time as hh:mm am/pm',
+        placeHolderTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', placeHolderDefaultMessage: 'Enter time as hh:mm am/pm',
         defaultTime: endTime
     };
 
@@ -344,7 +346,7 @@ const AppointmentEditor = props => {
                             <div className={classNames(timeSelector)}>
                                 <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
                                 <div data-testid="start-time-selector">
-                                    <TimeSelector {...appointmentStartTimeProps} defaultTime={startTime}
+                                    <TimeSelector {...appointmentStartTimeProps}
                                                   onChange={time => {
                                                       setStartTime(time);
                                                       endTimeBasedOnService(time, service, serviceType);
@@ -352,7 +354,7 @@ const AppointmentEditor = props => {
                                     <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
                                 </div>
                                 <div data-testid="end-time-selector">
-                                    <TimeSelector {...appointmentEndTimeProps} defaultTime={endTime}
+                                    <TimeSelector {...appointmentEndTimeProps}
                                                   onChange={time => {
                                                       setEndTime(time);
                                                       setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
@@ -380,7 +382,7 @@ const AppointmentEditor = props => {
                         <div>
                             <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
                             <div data-testid="start-time-selector">
-                                <TimeSelector {...appointmentStartTimeProps} defaultTime={startTime}
+                                <TimeSelector {...appointmentStartTimeProps}
                                               onChange={time => {
                                                   setStartTime(time);
                                                   endTimeBasedOnService(time, service, serviceType);
@@ -389,7 +391,6 @@ const AppointmentEditor = props => {
                             </div>
                             <div data-testid="end-time-selector">
                                 <TimeSelector {...appointmentEndTimeProps}
-                                              defaultTime={endTime}
                                               onChange={time => {
                                                   setEndTime(time);
                                                   setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
