@@ -1,4 +1,4 @@
-import React, {Text, useState} from 'react';
+import React, {useState} from 'react';
 import Calendar from 'rc-calendar';
 import 'rc-calendar/assets/index.css';
 import {
@@ -8,26 +8,14 @@ import {
 } from './DatePicker.module.scss';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import moment from 'moment';
-import {FROM} from "../../constants";
 
 const AppointmentDatePicker = (props) => {
-    const {isRecurring, startDate, startDateType, endDateType, dateType, defaultValue} = props;
+    const {minDate, defaultValue} = props;
     const [value, setValue] = useState(defaultValue);
     const disablePastDates = (current) => {
-        if (!current) {
-            return false;
-        }
-        const date = moment().subtract('1', 'days').endOf('day');
-        if (isRecurring) {
-            if (startDateType === FROM && dateType === "startDate")
-                return current.isBefore(date);
-            else if (endDateType === "On" && dateType === "endDate")
-                return current.isBefore(startDate);
-            else
-                return current;
-        } else
-            return current.isBefore(date);
+        if(minDate)
+            return current.isBefore(minDate);
+        return current;
     };
     const onChange = (date) => {
         setValue(date);
@@ -48,7 +36,7 @@ const AppointmentDatePicker = (props) => {
                 showToday={false}
                 onClear={onClear}
                 disabledDate={disablePastDates}
-                value={value}
+                defaultValue={value}
                 className={classNames(styles)}
                 dateInputPlaceholder="mm/dd/yyyy"
                 onSelect={onChange}
@@ -60,12 +48,8 @@ const AppointmentDatePicker = (props) => {
 AppointmentDatePicker.propTypes = {
     onChange: PropTypes.func,
     onClear: PropTypes.func,
-    startDate: PropTypes.object,
-    isRecurring: PropTypes.bool,
-    startDateType: PropTypes.string,
-    endDateType: PropTypes.string,
-    dateType: PropTypes.string,
-    defaultValue: PropTypes.object
+    defaultValue: PropTypes.object,
+    minDate: PropTypes.object
 };
 
 export default AppointmentDatePicker;
