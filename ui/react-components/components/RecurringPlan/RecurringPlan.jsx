@@ -1,6 +1,6 @@
 import React from "react";
 import Label from "../Label/Label.jsx";
-import {checkbox, checkboxContainer, planLabel} from "./RecurringPlan.module.scss";
+import {checkbox, checkboxContainer, planLabel, container} from "./RecurringPlan.module.scss";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
@@ -8,7 +8,7 @@ import Checkbox from 'rc-checkbox';
 import 'rc-checkbox/assets/index.css';
 
 const RecurringPlan = props => {
-    return (<div>
+    return (<div className={classNames(container)}>
         <span className={classNames(planLabel)}><Label className={classNames(planLabel)} translationKey="PLAN_LABEL" defaultValue="Plan"/></span>
         <div className={classNames(checkboxContainer)} data-test-id="checkbox">
             <Checkbox

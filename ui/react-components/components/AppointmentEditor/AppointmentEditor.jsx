@@ -224,6 +224,7 @@ const AppointmentEditor = props => {
         currentTime.add(duration, MINUTES);
         if (time) {
             setEndTime(currentTime);
+            setEndTimeError(false);
         }
     };
 
@@ -231,6 +232,28 @@ const AppointmentEditor = props => {
         if (endDateTypeError) return endDateTypeErrorMessage;
         if (endDateError) return dateErrorMessage;
         if (occurrencesError) return occurrencesErrorMessage;
+    };
+
+    const startDateOnChange = value => {
+        setStartDateType(value);
+        if (value === TODAY) {
+            setRecurringStartDate(moment());
+            setStartDateError(false);
+        }
+        else {
+            setRecurringEndDate(undefined);
+            setStartDateError(!recurringStartDate);
+        }
+    };
+
+    const endDateOnChange = value => {
+        setEndDateType(value);
+        setEndDateTypeError(false);
+        value === "After" && setEndDateError(false);
+        if (value === "On") {
+            setEndDateError(recurringStartDate && !recurringEndDate);
+            setOccurrencesError(false);
+        }
     };
 
     return (<Fragment>
@@ -289,16 +312,13 @@ const AppointmentEditor = props => {
                                 <Label translationKey="STARTS_LABEL" defaultValue="Starts"/>
                             </div>
                             <StartDateRadioGroup
-                                onChange={event => {
-                                    setStartDateType(event.currentTarget.value);
-                                    event.currentTarget.value === TODAY ? setRecurringStartDate(new Date()) :
-                                        setRecurringStartDate(undefined);
-                                }}
+                                onChange={event => startDateOnChange(event.target.value)}
                                 startDateType={startDateType}/>
                             <AppointmentDatePicker
                                 onChange={date => {
                                     setRecurringStartDate(date);
                                     setStartDateError(!date);
+                                    setRecurringEndDate(undefined);
                                 }}
                                 onClear={() => setRecurringStartDate(undefined)}
                                 defaultValue={recurringStartDate}
@@ -310,10 +330,7 @@ const AppointmentEditor = props => {
                                 <Label translationKey="ENDS_LABEL" defaultValue="Ends"/>
                             </div>
                             <EndDateRadioGroup
-                                onChange={event => {
-                                    setEndDateType(event.currentTarget.value)
-                                    event.currentTarget.value === "After" && setRecurringEndDate(undefined);
-                                }}
+                                onChange={event => endDateOnChange(event.target.value)}
                                 onOccurrencesChange={value => setOccurrences(value)}
                                 occurrences={occurrences}
                                 endDateType={endDateType}/>
@@ -324,7 +341,7 @@ const AppointmentEditor = props => {
                                 }}
                                 onClear={() => setRecurringEndDate(undefined)}
                                 defaultValue={recurringEndDate}
-                                minDate={endDateType === "On" ? recurringStartDate ? recurringStartDate : getYesterday() :
+                                minDate={endDateType === "On" ?  recurringStartDate :
                                     undefined}/>
 
                             <ErrorMessage message={getEndDateTypeErrorMessage()}/>
@@ -337,7 +354,10 @@ const AppointmentEditor = props => {
                             <div>
                                 <RecurrenceTypeRadioGroup
                                     onChange={event => setRecurrenceType(event.currentTarget.value)}
-                                    onPeriodChange={value => setPeriod(value)}
+                                    onPeriodChange={value => {
+                                        setPeriod(value);
+                                        setRecurrencePeriodError(false);
+                                    }}
                                     period={period}
                                     recurrenceType={recurrenceType}/>
                                 <ErrorMessage
@@ -350,6 +370,7 @@ const AppointmentEditor = props => {
                                                   onChange={time => {
                                                       setStartTime(time);
                                                       endTimeBasedOnService(time, service, serviceType);
+                                                      setStartTimeError(!time);
                                                   }}/>
                                     <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
                                 </div>
@@ -358,6 +379,7 @@ const AppointmentEditor = props => {
                                                   onChange={time => {
                                                       setEndTime(time);
                                                       setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
+                                                      setEndTimeError(!time);
                                                   }}/>
                                     <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
                                 </div>
@@ -386,6 +408,7 @@ const AppointmentEditor = props => {
                                               onChange={time => {
                                                   setStartTime(time);
                                                   endTimeBasedOnService(time, service, serviceType);
+                                                  setStartTimeError(!time);
                                               }}/>
                                 <ErrorMessage message={startTimeError ? timeErrorMessage : undefined}/>
                             </div>
@@ -394,6 +417,7 @@ const AppointmentEditor = props => {
                                               onChange={time => {
                                                   setEndTime(time);
                                                   setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
+                                                  setEndTimeError(!time);
                                               }}/>
                                 <ErrorMessage message={endTimeError ? timeErrorMessage : undefined}/>
                             </div>
