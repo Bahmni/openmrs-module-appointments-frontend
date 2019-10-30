@@ -50,7 +50,6 @@ require("angular-elastic/elastic");
 require("angular-ivh-treeview");
 require("../lib/angular-workers/dist/angular-workers");
 
-require("./common-constants");
 require("./route-errorhandler");
 
 require("bahmni-commons-ng/dist/bahmni-util-commons");
@@ -73,7 +72,6 @@ require("./initialization.js");
 require("./appointmentServiceInitialization.js");
 require("./appointmentInitialization.js");
 require("./appointmentConfigInitialization.js");
-require("./constants.js");
 
 require("./models/appointment.js");
 require("./models/appointmentService.js");
@@ -113,3 +111,12 @@ require("./controllers/manage/list/appointmentsListViewController.js" );
 require("./controllers/manage/appointmentsSummaryController.js" );
 require("./controllers/manage/appointmentsFilterController.js");
 require("./filters/appointmentsFilter.js");
+
+async function loadConstants() {
+    return  require("./loadConstants").loadAngularConstants();
+}
+
+(async () => {
+    await loadConstants();
+    angular.bootstrap(document, ['bahmni.appointments']);
+})();
