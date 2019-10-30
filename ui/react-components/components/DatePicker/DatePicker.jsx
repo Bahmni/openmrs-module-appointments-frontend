@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Calendar from 'rc-calendar';
 import 'rc-calendar/assets/index.css';
 import {
@@ -12,6 +12,9 @@ import classNames from 'classnames';
 const AppointmentDatePicker = (props) => {
     const {minDate, defaultValue} = props;
     const [value, setValue] = useState(defaultValue);
+    useEffect(() => {
+        setValue(defaultValue);
+    }, [defaultValue]);
     const disablePastDates = (current) => {
         if(minDate)
             return current.isBefore(minDate);
