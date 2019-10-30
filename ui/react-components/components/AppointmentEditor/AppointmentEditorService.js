@@ -16,5 +16,5 @@ export const saveAppointment = async (appointment) => {
 
 export const saveRecurring = async recurringRequest => {
     getFormattedProviders(recurringRequest.appointmentRequest.providers);
-    await saveRecurringAppointments(recurringRequest);
+    return await saveRecurringAppointments(recurringRequest);
 };
