@@ -43,7 +43,7 @@ import {
     isSpecialitiesEnabled,
     maxAppointmentProvidersAllowed
 } from "../../helper.js";
-import {getWeekDays} from "../../services/WeekDaysService/WeekDaysService";
+import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/WeekDaysService";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 
 const AppointmentEditor = props => {
@@ -78,6 +78,7 @@ const AppointmentEditor = props => {
     const [occurrences, setOccurrences] = useState();
     const [period, setPeriod] = useState();
     const [weekDays, setWeekDays] = useState(getWeekDays(appConfig && appConfig.startOfWeek));
+    const [weekDaysError, setWeekDaysError] = useState(false);
 
     useEffect(() => {
         if (occurrences === undefined)
@@ -120,12 +121,19 @@ const AppointmentEditor = props => {
         id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'From time should be before to time'
     });
 
+    const weekDaysErrorMessage = intl.formatMessage({
+        id: 'RECURRENCE_WEEKDAYS_ERROR_MESSAGE', defaultMessage: 'Please select the day(s)'
+    });
+
     const getRecurringPattern = () => {
         const recurringPattern = {
             type: recurrenceType,
             period: period
         };
         endDateType === "After" ? recurringPattern.frequency = occurrences : recurringPattern.endDate = recurringEndDate;
+        if (recurrenceType === 'WEEK') {
+            recurringPattern.daysOfWeek = getSelectedWeekDays(weekDays);
+         }
         return recurringPattern;
     };
 
@@ -177,6 +185,7 @@ const AppointmentEditor = props => {
             setEndDateError(endDateType === "On" && !recurringEndDate);
             setOccurrencesError(endDateType === "After" && (!occurrences || occurrences < 1));
         }
+        setWeekDaysError(recurrenceType === 'WEEK' && _.isEmpty(getSelectedWeekDays(weekDays)));
         setStartDateError(!startDateType || !recurringStartDate);
         return isValidPatient && service && startTime && endTime && startTimeBeforeEndTime &&
             recurrenceType && period && period > 0 && recurringStartDate && isValidEndDate();
@@ -356,25 +365,35 @@ const AppointmentEditor = props => {
                                 <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/>
                             </div>
                             <div>
-                                <RecurrenceTypeRadioGroup
-                                    onChange={event => setRecurrenceType(event.currentTarget.value)}
-                                    onPeriodChange={value => {
-                                        setPeriod(value);
-                                        setRecurrencePeriodError(false);
-                                    }}
-                                    period={period}
-                                    recurrenceType={recurrenceType}/>
-                                <ErrorMessage
-                                    message={recurrencePeriodError ? recurrencePeriodErrorMessage : undefined}/>
-                                <ButtonGroup buttonsList={weekDays} onClick={buttonKey => {
-                                    const prevWeekDaysMap = new Map(weekDays);
-                                    const nextEntry = {
-                                        ...prevWeekDaysMap.get(buttonKey),
-                                        isSelected: !prevWeekDaysMap.get(buttonKey).isSelected
-                                    };
-                                    prevWeekDaysMap.set(buttonKey, nextEntry);
-                                    setWeekDays(prevWeekDaysMap);
-                                }} enable={recurrenceType === 'WEEK'}/>
+                                <div>
+                                    <RecurrenceTypeRadioGroup
+                                        onChange={event => {
+                                            setRecurrenceType(event.currentTarget.value);
+                                            setWeekDaysError(weekDaysError && event.currentTarget.value === 'WEEK');
+                                        }}
+                                        onPeriodChange={value => {
+                                            setPeriod(value);
+                                            setRecurrencePeriodError(false);
+                                        }}
+                                        period={period}
+                                        recurrenceType={recurrenceType}/>
+                                    <ErrorMessage
+                                        message={recurrencePeriodError ? recurrencePeriodErrorMessage : undefined}/>
+                                </div>
+                                <div>
+                                    <ButtonGroup buttonsList={weekDays} onClick={buttonKey => {
+                                        const prevWeekDaysMap = new Map(weekDays);
+                                        const nextEntry = {
+                                            ...prevWeekDaysMap.get(buttonKey),
+                                            isSelected: !prevWeekDaysMap.get(buttonKey).isSelected
+                                        };
+                                        prevWeekDaysMap.set(buttonKey, nextEntry);
+                                        setWeekDays(prevWeekDaysMap);
+                                        setWeekDaysError(false);
+                                    }} enable={recurrenceType === 'WEEK'}/>
+                                    <ErrorMessage
+                                        message={weekDaysError ? weekDaysErrorMessage : undefined}/>
+                                </div>
                             </div>
                             <div className={classNames(timeSelector)}>
                                 <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
