@@ -29,8 +29,9 @@ const RecurrenceTypeRadioGroup = props => {
                 name={groupName}
                 onChange={onChange}
                 checked={recurrenceType === dayRecurrenceType}
+                id="recurrence-type-day"
             />
-            <Label translationKey="DAY_LABEL" defaultValue="Day"/>
+            <Label forInput="recurrence-type-day" translationKey="DAY_LABEL" defaultValue="Day"/>
         </div>
         <div
             className={(!recurrenceType || recurrenceType === weekRecurrenceType)
@@ -42,8 +43,9 @@ const RecurrenceTypeRadioGroup = props => {
                 name={groupName}
                 onChange={onChange}
                 checked={recurrenceType === weekRecurrenceType}
+                id="recurrence-type-week"
             />
-            <Label translationKey="WEEK_LABEL" defaultValue="Week"/>
+            <Label forInput="recurrence-type-week" translationKey="WEEK_LABEL" defaultValue="Week"/>
         </div>
     </div>)
 };
