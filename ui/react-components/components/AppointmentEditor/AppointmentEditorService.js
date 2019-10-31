@@ -1,4 +1,4 @@
-import {saveOrUpdateAppointment} from '../../api/appointmentsApi';
+import {getConflicts, saveOrUpdateAppointment} from '../../api/appointmentsApi';
 import {saveRecurringAppointments} from "../../api/recurringAppointmentsApi";
 
 const getFormattedProviders = providers => providers.forEach(provider => {
@@ -17,4 +17,9 @@ export const saveAppointment = async (appointment) => {
 export const saveRecurring = async recurringRequest => {
     getFormattedProviders(recurringRequest.appointmentRequest.providers);
     return await saveRecurringAppointments(recurringRequest);
+};
+
+export const getAppointmentConflicts = async appointment => {
+    getFormattedProviders(appointment.providers);
+    return await getConflicts(appointment);
 };

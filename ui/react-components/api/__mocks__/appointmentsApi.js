@@ -41,3 +41,7 @@ export const saveOrUpdateAppointment = () => {
         );
     });
 };
+
+export const getConflicts = () => {
+    return {};
+};
