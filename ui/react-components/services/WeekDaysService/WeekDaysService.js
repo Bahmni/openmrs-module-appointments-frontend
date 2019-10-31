@@ -38,3 +38,5 @@ export const getWeekDays = (startOfWeek) => {
     const temp = [...weekDays.entries()];
     return new Map(temp.splice(index).concat(temp));
 };
+
+export const getSelectedWeekDays = weekDays => [...weekDays.keys()].filter(key => weekDays.get(key).isSelected);
