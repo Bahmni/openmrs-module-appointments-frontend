@@ -15,8 +15,9 @@ const RecurringPlan = props => {
             onChange={props.onChange}
             defaultChecked={false}
             className={classNames(checkbox)}
+            id="recurrence-selection-checkbox"
         />
-            <Label translationKey="RECURRING_APPOINTMENT_LABEL" defaultValue="Recurring Appointment"/>
+            <Label forInput="recurrence-selection-checkbox" translationKey="RECURRING_APPOINTMENT_LABEL" defaultValue="Recurring Appointment"/>
         </div>
     </div>)
 };
