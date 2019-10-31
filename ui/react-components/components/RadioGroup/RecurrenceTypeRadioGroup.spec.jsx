@@ -28,4 +28,25 @@ describe('EndDateRadioGroup', () => {
         expect(radio[0].checked).toBe(true);
     });
 
+    it('should call onChange on click of `Week` radio button', () => {
+        const {getByTestId} = renderWithReactIntl(<RecurrenceTypeRadioGroup
+            onChange={jest.fn()}
+            onPeriodChange={jest.fn()}/>);
+        const radio = getByTestId('week-type');
+        expect(radio.checked).toBe(false);
+        fireEvent.change(radio, {target: {checked: true}});
+        expect(radio.checked).toBe(true);
+    });
+
+    it('should clear day radio selection on check of week and vice-versa', () => {
+        const {getByTestId} = renderWithReactIntl(<RecurrenceTypeRadioGroup
+            onChange={jest.fn()}
+            onPeriodChange={jest.fn()}/>);
+        const radioDay = getByTestId('day-type');
+        fireEvent.change(radioDay, {target: {checked: true}});
+        const radioWeek = getByTestId('week-type');
+        fireEvent.change(radioWeek, {target: {checked: true}});
+        expect(radioDay.checked).toBe(false);
+        expect(radioWeek.checked).toBe(true);
+    });
 });
