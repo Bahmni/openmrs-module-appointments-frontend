@@ -11,8 +11,7 @@ const ButtonGroup = props => {
     return (
         <div className={classNames(buttonGroup)}>
             {[...buttonsList.keys()].map(key =>
-                <button key={key}
-                        onClick={() => onClick(key)}
+                <button key={key} onClick={() => onClick(key)} data-testid={key}
                         className={classNames(buttonsList.get(key).isSelected && selected)} disabled={!enable}>
                     <FormattedMessage id={buttonsList.get(key).translationKey}
                                       defaultMessage={buttonsList.get(key).defaultValue}/>
