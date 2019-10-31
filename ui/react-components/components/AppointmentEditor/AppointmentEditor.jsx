@@ -78,13 +78,14 @@ const AppointmentEditor = props => {
     const [recurrenceType, setRecurrenceType] = useState(dayRecurrenceType);
     const [occurrences, setOccurrences] = useState();
     const [period, setPeriod] = useState();
-    const [weekDays, setWeekDays] = useState(getWeekDays(appConfig && appConfig.startOfWeek));
+    const [weekDays, setWeekDays] = useState();
     const [weekDaysError, setWeekDaysError] = useState(false);
 
     useEffect(() => {
         if (occurrences === undefined)
-            setOccurrences(getDefaultOccurrences(appConfig))
-    });
+            setOccurrences(getDefaultOccurrences(appConfig));
+        setWeekDays(getWeekDays(appConfig && appConfig.startOfWeek));
+    }, [appConfig]);
 
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
