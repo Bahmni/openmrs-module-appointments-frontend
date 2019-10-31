@@ -287,7 +287,22 @@ describe('Appointment Editor', () => {
         fireEvent.click(getAllByText('Sa')[2]);
         expect(container.querySelectorAll('.buttonGroup .selected').length).toBe(2);
         expect(container.querySelectorAll('.buttonGroup button:not[.selected]').length).toBe(5);
-    })
+    });
+
+    it('should display week days error message when check and save is clicked without selecting wek days', () => {
+        const config = {
+            "startOfWeek": "Tuesday",
+            "recurrence": {
+                "defaultNumberOfOccurrences": 10
+            }
+        };
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        const checkBoxService = container.querySelector('.rc-checkbox-input');
+        fireEvent.click(checkBoxService);
+        fireEvent.click(getByTestId('week-type'));
+        getByText('Check and Save');
+        getByText('Please select the day(s)');
+    });
 
     //TODO need to add test to check the status of response on click of checkAndSave
     //TODO Not able to do because onChange of time picket is not getting called. Need to fix that
