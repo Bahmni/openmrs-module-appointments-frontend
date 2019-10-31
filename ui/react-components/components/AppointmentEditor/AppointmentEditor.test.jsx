@@ -4,7 +4,6 @@ import {renderWithReactIntl} from "../../utils/TestUtil";
 import {fireEvent, waitForElement} from "@testing-library/react";
 import * as save from "./AppointmentEditorService.js";
 import moment from "moment";
-import {spyOn} from "jest-mock";
 
 jest.mock('../../api/patientApi');
 jest.mock('../../api/serviceApi');
@@ -254,6 +253,41 @@ describe('Appointment Editor', () => {
         expect(queryAllByText('Please select date').length).toBe(0);
         expect(saveAppointmentSpy).not.toHaveBeenCalled();
     });
+
+    it.only('should display all week days on click of recurring checkbox', () => {
+        const config = {
+            "startOfWeek": "Tuesday",
+            "recurrence": {
+                "defaultNumberOfOccurrences": 10
+            }
+        };
+        const {container, getByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        const checkBoxService = container.querySelector('.rc-checkbox-input');
+        fireEvent.click(checkBoxService);
+        fireEvent.click(getByTestId('week-type'));
+        const buttonsOrder = [];
+        container.querySelectorAll('.buttonGroup button').forEach(button => buttonsOrder.push(button.innerHTML));
+        expect(buttonsOrder).toStrictEqual(['Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo']);
+    });
+
+    it('should toggle the week day selection on click', () => {
+        const config = {
+            "startOfWeek": "Tuesday",
+            "recurrence": {
+                "defaultNumberOfOccurrences": 10
+            }
+        };
+        const {container, getAllByText, getByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        const checkBoxService = container.querySelector('.rc-checkbox-input');
+        fireEvent.click(checkBoxService);
+        fireEvent.click(getByTestId('week-type'));
+        fireEvent.click(getAllByText('Su')[2]);
+        fireEvent.click(getAllByText('We')[2]);
+        fireEvent.click(getAllByText('Sa')[2]);
+        fireEvent.click(getAllByText('Sa')[2]);
+        expect(container.querySelectorAll('.buttonGroup .selected').length).toBe(2);
+        expect(container.querySelectorAll('.buttonGroup button:not[.selected]').length).toBe(5);
+    })
 
     //TODO need to add test to check the status of response on click of checkAndSave
     //TODO Not able to do because onChange of time picket is not getting called. Need to fix that
