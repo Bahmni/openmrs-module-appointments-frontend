@@ -43,6 +43,8 @@ import {
     isSpecialitiesEnabled,
     maxAppointmentProvidersAllowed
 } from "../../helper.js";
+import {getWeekDays} from "../../services/WeekDaysService/WeekDaysService";
+import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -75,6 +77,8 @@ const AppointmentEditor = props => {
     const [recurrenceType, setRecurrenceType] = useState(dayRecurrenceType);
     const [occurrences, setOccurrences] = useState();
     const [period, setPeriod] = useState();
+    const [weekDays, setWeekDays] = useState(getWeekDays(appConfig && appConfig.startOfWeek));
+
     useEffect(() => {
         if (occurrences === undefined)
             setOccurrences(getDefaultOccurrences(appConfig))
@@ -362,6 +366,15 @@ const AppointmentEditor = props => {
                                     recurrenceType={recurrenceType}/>
                                 <ErrorMessage
                                     message={recurrencePeriodError ? recurrencePeriodErrorMessage : undefined}/>
+                                <ButtonGroup buttonsList={weekDays} onClick={buttonKey => {
+                                    const prevWeekDaysMap = new Map(weekDays);
+                                    const nextEntry = {
+                                        ...prevWeekDaysMap.get(buttonKey),
+                                        isSelected: !prevWeekDaysMap.get(buttonKey).isSelected
+                                    };
+                                    prevWeekDaysMap.set(buttonKey, nextEntry);
+                                    setWeekDays(prevWeekDaysMap);
+                                }} enable={recurrenceType === 'WEEK'}/>
                             </div>
                             <div className={classNames(timeSelector)}>
                                 <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
