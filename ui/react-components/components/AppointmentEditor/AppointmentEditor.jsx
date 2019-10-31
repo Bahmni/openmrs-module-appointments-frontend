@@ -178,14 +178,16 @@ const AppointmentEditor = props => {
     const isValidEndDate = () => (appointmentDetails.endDateType === "On" && appointmentDetails.recurringEndDate) ||
         (appointmentDetails.endDateType === "After" && appointmentDetails.occurrences && appointmentDetails.occurrences > 0);
 
+    const showSuccessPopUp = startDate => {
+        setViewDate(appointmentDetails.appointmentDate.startOf('day').toDate());
+        setShowSuccessPopup(true);
+    };
+
     const checkAndSave = async () => {
         if (isValidAppointment()) {
             const appointment = getAppointment();
             const response = await saveAppointment(appointment);
-            if (response.status === 200) {
-                setViewDate(appointmentDetails.appointmentDate.startOf('day').toDate());
-                setShowSuccessPopup(true);
-            }
+            response.status === 200 && showSuccessPopUp(appointmentDetails.appointmentDate);
         }
     };
 
@@ -196,10 +198,7 @@ const AppointmentEditor = props => {
                 recurringPattern: getRecurringPattern()
             };
             const response = await saveRecurring(recurringRequest);
-            if (response.status === 200) {
-                setViewDate(appointmentDetails.recurringStartDate.startOf('day').toDate());
-                setShowSuccessPopup(true);
-            }
+            response.status === 200 && showSuccessPopUp(appointmentDetails.recurringStartDate);
         }
     };
 
