@@ -1,4 +1,4 @@
-import {saveAppointment, saveRecurring} from "./AppointmentEditorService";
+import {getAppointmentConflicts, saveAppointment, saveRecurring} from "./AppointmentEditorService";
 
 jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/recurringAppointmentsApi');
@@ -6,16 +6,19 @@ const appointmentsApi = require('../../api/appointmentsApi');
 const recurringAppointmentsApi = require('../../api/recurringAppointmentsApi');
 let appointmentsApiSpy;
 let recurringAppointmentsApiSpy;
+let appointmentConflictsApiSpy;
 
 
 describe('Appointment Editor Service', () => {
     beforeEach(() => {
         appointmentsApiSpy = jest.spyOn(appointmentsApi, 'saveOrUpdateAppointment');
         recurringAppointmentsApiSpy = jest.spyOn(recurringAppointmentsApi, 'saveRecurringAppointments');
+        appointmentConflictsApiSpy = jest.spyOn(appointmentsApi, 'getConflicts');
     });
     afterEach(() => {
         appointmentsApiSpy.mockRestore();
         recurringAppointmentsApiSpy.mockRestore();
+        appointmentConflictsApiSpy.mockRestore();
     });
 
     it('should map providers as per payload', async () => {
@@ -104,5 +107,36 @@ describe('Appointment Editor Service', () => {
         await saveRecurring(recurringRequest);
 
         expect(recurringAppointmentsApiSpy).toHaveBeenCalledWith(updatedRecurringRequest)
+    });
+
+    it('should map providers as per payload for getting conflicts of appointment', () => {
+        const appointmentRequest = {
+            providers: [
+                {
+                    label: 'name1',
+                    value: 'uuid1'
+                },
+                {
+                    label: 'name2',
+                    value: 'uuid2'
+                }
+            ]
+
+        };
+        const updatedAppointmentRequest = {
+            providers: [
+                {
+                    name: 'name1',
+                    uuid: 'uuid1'
+                },
+                {
+                    name: 'name2',
+                    uuid: 'uuid2'
+                }
+            ]
+        };
+
+        getAppointmentConflicts(appointmentRequest);
+        expect(appointmentConflictsApiSpy).toHaveBeenCalledWith(updatedAppointmentRequest);
     });
 });
