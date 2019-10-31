@@ -7,7 +7,7 @@
     padding: 10px 0;
     border-radius: 0;
     border-width: 1px 0 1px 1px;
-    border-color: #231f20;
+    border-color: $border-color;
     background: $secondary-color-1;
 
     &:first-child {
@@ -15,7 +15,7 @@
     }
     &:last-child {
       border-radius: 0 4px 4px 0;
-      border-right: 1px solid;
+      border-right: 1px solid $border-color;
     }
     &:focus {
       outline: 0;

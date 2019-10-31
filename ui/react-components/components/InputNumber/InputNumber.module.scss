@@ -2,7 +2,7 @@
 
 .inputNumberContainer {
   display: inline-flex;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid $border-color;
   padding-bottom: 1px;
   margin: 0 5% 0 5%;
   .inputButton {

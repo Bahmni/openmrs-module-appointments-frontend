@@ -9,7 +9,8 @@ import {
     searchFieldsContainer,
     searchFieldsContainerLeft,
     searchFieldsContainerRight,
-    timeSelector
+    timeSelector,
+    weekDaysContainer
 } from './AppointmentEditor.module.scss';
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
@@ -361,6 +362,7 @@ const AppointmentEditor = props => {
 
                         </div>
                         <div data-testid="recurrence-type-group">
+                            <div>
                             <div className={classNames(dateHeading)}>
                                 <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/>
                             </div>
@@ -380,7 +382,7 @@ const AppointmentEditor = props => {
                                     <ErrorMessage
                                         message={recurrencePeriodError ? recurrencePeriodErrorMessage : undefined}/>
                                 </div>
-                                <div>
+                                <div className={classNames(weekDaysContainer)}>
                                     <ButtonGroup buttonsList={weekDays} onClick={buttonKey => {
                                         const prevWeekDaysMap = new Map(weekDays);
                                         const nextEntry = {
@@ -394,6 +396,7 @@ const AppointmentEditor = props => {
                                     <ErrorMessage
                                         message={weekDaysError ? weekDaysErrorMessage : undefined}/>
                                 </div>
+                            </div>
                             </div>
                             <div className={classNames(timeSelector)}>
                                 <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
