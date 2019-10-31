@@ -5,67 +5,90 @@ import {fireEvent} from "@testing-library/react";
 
 describe('Button Group', () => {
     it('should display the given content in buttons', () => {
-        const buttonsList = {
-            ONE: {
+        const buttonsList = new Map([
+            ['ONE', {
                 translationKey: 'ONE',
                 defaultValue: 'One'
-            },
-            TWO: {
+            }],
+            ['TWO', {
                 translationKey: 'TWO',
                 defaultValue: 'Two'
-            },
-            THREE: {
+            }],
+            ['THREE', {
                 translationKey: 'THREE',
                 defaultValue: 'Three'
-            }
-        };
-        const {getByText} = renderWithReactIntl(<ButtonGroup buttonsList={buttonsList} onClick={jest.fn()}/>);
+            }]
+        ]);
+        const {getByText} = renderWithReactIntl(<ButtonGroup buttonsList={buttonsList} onClick={jest.fn()}
+                                                             enable={false}/>);
         getByText('One');
         getByText('Two');
         getByText('Three');
     });
 
     it('should get selected className for selected buttons', () => {
-        const buttonsList = {
-            ONE: {
+        const buttonsList = new Map([
+            ['ONE', {
                 translationKey: 'ONE',
                 defaultValue: 'One',
                 isSelected: true
-            },
-            TWO: {
+            }],
+            ['TWO', {
                 translationKey: 'TWO',
                 defaultValue: 'Two',
                 isSelected: true
-            },
-            THREE: {
+            }],
+            ['THREE', {
                 translationKey: 'THREE',
                 defaultValue: 'Three',
                 isSelected: false
-            }
-        };
+            }]
+        ]);
 
-        const {container} = renderWithReactIntl(<ButtonGroup buttonsList={buttonsList} onClick={jest.fn()}/>);
+        const {container} = renderWithReactIntl(<ButtonGroup buttonsList={buttonsList} onClick={jest.fn()}
+                                                             enable={false}/>);
         expect(container.querySelectorAll('.selected').length).toBe(2);
     });
 
     it('should call onClick when button is clicked', () => {
-        const buttonsList = {
-            ONE: {
+        const buttonsList = new Map([
+            ['ONE', {
                 translationKey: 'ONE',
                 defaultValue: 'One',
                 isSelected: true
-            },
-            TWO: {
+            }],
+            ['TWO', {
                 translationKey: 'TWO',
                 defaultValue: 'Two',
                 isSelected: true
-            }
-        };
+            }]
+        ]);
 
         let onClickSpy = jest.fn();
-        const {getByText} = renderWithReactIntl(<ButtonGroup buttonsList={buttonsList} onClick={onClickSpy}/>);
+        const {getByText} = renderWithReactIntl(<ButtonGroup buttonsList={buttonsList} onClick={onClickSpy}
+                                                             enable={true}/>);
         fireEvent.click(getByText('One'));
         fireEvent.click(getByText('Two'));
         expect(onClickSpy).toHaveBeenCalledTimes(2);
-    })
+    });
+
+    it('should disable all the buttons when enable is false', () => {
+        const buttonsList = new Map([
+            ['ONE', {
+                translationKey: 'ONE',
+                defaultValue: 'One',
+                isSelected: true
+            }],
+            ['TWO', {
+                translationKey: 'TWO',
+                defaultValue: 'Two',
+                isSelected: true
+            }]
+        ]);
+
+        const {getByText} = renderWithReactIntl(<ButtonGroup buttonsList={buttonsList} onClick={jest.fn()}
+                                                             enable={false}/>);
+        expect(getByText('One').hasAttribute('disabled')).toBeTruthy();
+        expect(getByText('Two').hasAttribute('disabled')).toBeTruthy();
+    });
 });

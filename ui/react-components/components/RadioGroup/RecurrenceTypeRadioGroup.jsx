@@ -42,7 +42,6 @@ const RecurrenceTypeRadioGroup = props => {
                 name={groupName}
                 onChange={onChange}
                 checked={recurrenceType === weekRecurrenceType}
-                disabled={true}
             />
             <Label translationKey="WEEK_LABEL" defaultValue="Week"/>
         </div>
