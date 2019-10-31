@@ -33,8 +33,6 @@ describe('AppointmentsListViewController', function () {
             confirmBox = jasmine.createSpy('confirmBox');
             messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
             $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
-            $httpBackend.expectGET('/openmrs/ws/rest/v1/systemsetting/?q=bahmni.config.baseUrlForUIConfigs&v=custom:(property,value)').respond({results:[]});
-            $httpBackend.expectGET('/bahmni_config/openmrs/apps/overridden-constants.json').respond({});
             $httpBackend.expectGET('./i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/openmrs/ws/rest/v1/provider').respond('<div></div>');

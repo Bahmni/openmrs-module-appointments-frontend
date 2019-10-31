@@ -79,11 +79,9 @@ describe('AppointmentsFilterController', function () {
             q.all.and.returnValue(specUtil.simplePromise({}));
             state.params = {filterParams: {}};
             state.current = {tabName: "list"};
-            $httpBackend.expectGET('/openmrs/ws/rest/v1/systemsetting/?q=bahmni.config.baseUrlForUIConfigs&v=custom:(property,value)').respond({results:[]});
-            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider?v=custom:(display,person,uuid,retired,attributes:(attributeType:(display),value,voided))').respond('<div></div>')
-            $httpBackend.expectGET('/bahmni_config/openmrs/apps/overridden-constants.json').respond({});
             $httpBackend.expectGET('./i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>')
+            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider?v=custom:(display,person,uuid,retired,attributes:(attributeType:(display),value,voided))').respond('<div></div>')
         });
     });
 

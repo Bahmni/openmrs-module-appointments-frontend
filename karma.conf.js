@@ -18,6 +18,7 @@ module.exports = (config) => {
 
             {pattern: 'dist/appointment.js', watched: false},
 
+            {pattern: 'test/ng-test-constants.js', watched: false},
             {pattern: 'test/support/*.js', watched: false},
             {pattern: 'test/**/*spec.js', watched: false},
         ],
