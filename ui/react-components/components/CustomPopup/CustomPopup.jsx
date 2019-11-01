@@ -10,8 +10,8 @@ const CustomPopup = props => {
     return (
         <Popup className={classNames(style, 'popup-overlay')}
             trigger={triggerComponent}
-            closeOnDocumentClick={closeOnDocumentClick && closeOnDocumentClick}
-            closeOnEscape={closeOnEscape && closeOnEscape}
+            closeOnDocumentClick={closeOnDocumentClick}
+            closeOnEscape={closeOnEscape}
             open={open}
             modal>
             {
@@ -27,7 +27,7 @@ CustomPopup.propTypes = {
     open:PropTypes.bool,
     popupContent: PropTypes.object.isRequired,
     triggerComponent: PropTypes.object,
-    style: PropTypes.object
+    style: PropTypes.string
 };
 
 export default CustomPopup;
