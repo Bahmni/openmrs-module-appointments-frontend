@@ -112,6 +112,9 @@ require("./controllers/manage/appointmentsSummaryController.js" );
 require("./controllers/manage/appointmentsFilterController.js");
 require("./filters/appointmentsFilter.js");
 
+//Include react components bundled in the lib.
+require("../lib/reactAngularAdaptor");
+
 async function loadConstants() {
     return  require("./loadConstants").loadAngularConstants();
 }

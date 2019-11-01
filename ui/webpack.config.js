@@ -10,7 +10,8 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 const postcssNormalize = require('postcss-normalize');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
-const rootDir = path.resolve();
+const currentDir = path.resolve();
+const parentDir = path.resolve(__dirname, '..')
 module.exports = function (webpackEnv) {
     const isEnvDevelopment = webpackEnv === 'development';
     const isEnvProduction = webpackEnv === 'production'; // TODO : unglify, minify
@@ -61,10 +62,10 @@ module.exports = function (webpackEnv) {
     };
     return {
         entry: {
-            reactAngularAdaptor: ['babel-polyfill', rootDir + '/reactAngularAdaptor.js']
+            reactAngularAdaptor: ['babel-polyfill', currentDir + '/reactAngularAdaptor.js']
         },
         output: {
-            path: rootDir + '/dist/components',
+            path: parentDir + '/lib',
             filename: '[name].js'
         },
         module: {
@@ -127,12 +128,19 @@ module.exports = function (webpackEnv) {
                     )
                 },
                 {
-                    test: path.resolve(rootDir, 'node_modules/angular/angular.js'),
+                    test: path.resolve(currentDir, 'node_modules/angular/angular.js'),
                     loader: 'exports?window.angular'
                 }
             ]
         },
         devtool: "#inline-source-map",
-        mode: 'development'
+        mode: 'development',
+        plugins: [
+            new webpack.ProvidePlugin({
+                'moment': path.join(currentDir, 'node_modules', 'moment/min/moment-with-locales')
+            }),
+            new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/),
+        ]
+
     };
 };

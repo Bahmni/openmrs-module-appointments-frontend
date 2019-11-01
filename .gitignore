@@ -30,3 +30,4 @@ coverage
 ui/style-guide
 *.tern-port
 **/.idea/*
+lib/reactAngularAdaptor.js
