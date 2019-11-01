@@ -46,7 +46,8 @@ import {
 } from "../../helper.js";
 import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/WeekDaysService";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
-import {getErrorTranslations} from "../../translations/errorTranslations";
+import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
+import {isEmpty} from 'lodash';
 
 const AppointmentEditor = props => {
 
@@ -131,33 +132,21 @@ const AppointmentEditor = props => {
     const isValidAppointment = () => {
         const isValidPatient = patient && patient.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(startTime, endTime);
+        updateCommonErrorIndicators(isValidPatient, startTimeBeforeEndTime);
         updateErrorIndicators({
-            patientError: !isValidPatient,
-            serviceError: !service,
-            appointmentDateError: !appointmentDate,
-            startTimeError: !startTime,
-            endTimeError: !endTime,
-            startTimeBeforeEndTimeError: !startTimeBeforeEndTime
+            appointmentDateError: !appointmentDate
         });
         return isValidPatient && service && appointmentDate && startTime && endTime && startTimeBeforeEndTime;
     };
 
-    const isValidEndDate = () => (endDateType === "On" && recurringEndDate) ||
-        (endDateType === "After" && occurrences && occurrences > 0);
-
     const isValidRecurringAppointment = () => {
         const isValidPatient = patient && patient.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(startTime, endTime);
-
+        updateCommonErrorIndicators(isValidPatient, startTimeBeforeEndTime);
         updateErrorIndicators({
-            patientError: !isValidPatient,
-            serviceError: !service,
-            startTimeError: !startTime,
-            endTimeError: !endTime,
-            startTimeBeforeEndTimeError: !startTimeBeforeEndTime,
             recurrencePeriodError: !period || period < 1,
             endDateTypeError: !endDateType,
-            weekDaysError: recurrenceType === 'WEEK' && _.isEmpty(getSelectedWeekDays(weekDays)),
+            weekDaysError: recurrenceType === 'WEEK' && isEmpty(getSelectedWeekDays(weekDays)),
             startDateError: !startDateType || !recurringStartDate
         });
         if (endDateType) {
@@ -169,6 +158,18 @@ const AppointmentEditor = props => {
         return isValidPatient && service && startTime && endTime && startTimeBeforeEndTime &&
             recurrenceType && period && period > 0 && recurringStartDate && isValidEndDate();
     };
+
+    const updateCommonErrorIndicators = (isValidPatient, startTimeBeforeEndTime) =>
+        updateErrorIndicators({
+            patientError: !isValidPatient,
+            serviceError: !service,
+            startTimeError: !startTime,
+            endTimeError: !endTime,
+            startTimeBeforeEndTimeError: !startTimeBeforeEndTime
+        });
+
+    const isValidEndDate = () => (endDateType === "On" && recurringEndDate) ||
+        (endDateType === "After" && occurrences && occurrences > 0);
 
     const checkAndSave = async () => {
         if (isValidAppointment()) {
