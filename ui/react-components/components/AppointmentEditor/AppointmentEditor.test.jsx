@@ -254,7 +254,7 @@ describe('Appointment Editor', () => {
         expect(saveAppointmentSpy).not.toHaveBeenCalled();
     });
 
-    it.only('should display all week days on click of recurring checkbox', () => {
+    it('should display all week days on click of recurring checkbox', () => {
         const config = {
             "startOfWeek": "Tuesday",
             "recurrence": {
