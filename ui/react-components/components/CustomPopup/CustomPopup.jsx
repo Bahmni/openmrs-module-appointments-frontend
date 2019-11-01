@@ -2,14 +2,13 @@ import Popup from "reactjs-popup";
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from 'classnames';
-import {customPopup} from './CustomPopup.module.scss';
 
 const CustomPopup = props => {
 
-    const {triggerComponent, popupContent, closeOnDocumentClick, closeOnEscape, open} = props;
+    const {triggerComponent, popupContent, closeOnDocumentClick, closeOnEscape, open, style} = props;
 
     return (
-        <Popup className={classNames(customPopup, 'popup-overlay')}
+        <Popup className={classNames(style, 'popup-overlay')}
             trigger={triggerComponent}
             closeOnDocumentClick={closeOnDocumentClick && closeOnDocumentClick}
             closeOnEscape={closeOnEscape && closeOnEscape}
@@ -27,7 +26,8 @@ CustomPopup.propTypes = {
     closeOnEscape: PropTypes.bool,
     open:PropTypes.bool,
     popupContent: PropTypes.object.isRequired,
-    triggerComponent: PropTypes.object
+    triggerComponent: PropTypes.object,
+    style: PropTypes.object
 };
 
 export default CustomPopup;
