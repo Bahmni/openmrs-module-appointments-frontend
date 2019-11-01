@@ -11,6 +11,7 @@ import {
     searchFieldsContainerRight,
     timeSelector
 } from './AppointmentEditor.module.scss';
+import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
 import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
@@ -202,7 +203,7 @@ const AppointmentEditor = props => {
         }
     };
 
-    const savePopup = <CustomPopup
+    const savePopup = <CustomPopup style={customPopup}
         popupContent={<SuccessConfirmation patientDetails={patient && `${patient.name} (${patient.identifier})`}/>}/>;
 
     const appointmentStartTimeProps = {
