@@ -12,7 +12,7 @@ import {
     timeSelector,
     weekDaysContainer
 } from './AppointmentEditor.module.scss';
-import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
+import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
 import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
@@ -49,6 +49,7 @@ import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/W
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty} from 'lodash';
+import Conflicts from "../ConflictsModal/Conflicts.jsx";
 
 const AppointmentEditor = props => {
 
@@ -75,10 +76,11 @@ const AppointmentEditor = props => {
         recurrenceType: undefined,
         occurrences: undefined,
         period: undefined,
-        weekDays: undefined
+        weekDays: undefined,
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
+    const [conflicts, setConflicts] = useState();
     const [errors, setErrors] = useState({
         patientError: false,
         serviceError: false,
@@ -452,6 +454,11 @@ const AppointmentEditor = props => {
                 </div>
             </div>
             <AppointmentEditorFooter checkAndSave={appointmentDetails.isRecurring ? checkAndSaveRecurring : checkAndSave}/>
+            {conflicts ?
+                <CustomPopup style={conflictsPopup} open={true}
+                             closeOnDocumentClick={false}
+                             closeOnEscape={true}
+                             popupContent={<Conflicts/>}/> : undefined}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
