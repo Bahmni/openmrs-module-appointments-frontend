@@ -35,8 +35,8 @@ export const getWeekDays = (startOfWeek) => {
         return weekDays;
     }
     const index = [...weekDays.keys()].indexOf(startOfWeek.toUpperCase());
-    const temp = [...weekDays.entries()];
-    return new Map(temp.splice(index).concat(temp));
+    const weekDaysArray = [...weekDays.entries()];
+    return new Map(weekDaysArray.splice(index).concat(weekDaysArray));
 };
 
 export const getSelectedWeekDays = weekDays => [...weekDays.keys()].filter(key => weekDays.get(key).isSelected);
