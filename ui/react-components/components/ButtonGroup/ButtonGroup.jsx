@@ -10,19 +10,19 @@ const ButtonGroup = props => {
 
     return (
         <div className={classNames(buttonGroup)}>
-            {[...buttonsList.keys()].map(key =>
-                <button key={key} onClick={() => onClick(key)} data-testid={key}
-                        className={classNames(buttonsList.get(key).isSelected && selected)} disabled={!enable}>
-                    <FormattedMessage id={buttonsList.get(key).translationKey}
-                                      defaultMessage={buttonsList.get(key).defaultValue}/>
-                </button>
-            )}
+            {[...buttonsList.keys()].map(key => {
+                const value = buttonsList.get(key);
+                return (<button key={key} onClick={() => onClick(key)} data-testid={key}
+                                className={classNames(value.isSelected && selected)} disabled={!enable}>
+                    <FormattedMessage id={value.translationKey} defaultMessage={value.defaultValue}/>
+                </button>);
+            })}
         </div>
     )
 };
 
 ButtonGroup.propTypes = {
-    buttonsList: PropTypes.object.isRequired,
+    buttonsList: PropTypes.instanceOf(Map).isRequired,
     onClick: PropTypes.func.isRequired,
     enable: PropTypes.bool.isRequired
 };

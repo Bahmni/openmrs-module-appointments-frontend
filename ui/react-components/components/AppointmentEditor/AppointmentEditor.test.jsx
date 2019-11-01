@@ -228,7 +228,7 @@ describe('Appointment Editor', () => {
         expect(getAllByText('Please select time').length).toBe(2);
         expect(getAllByText('Please select date').length).toBe(1);
         expect(getAllByText('Please select recurrence end type').length).toBe(1);
-        expect(getAllByTestId('error-message').length).toBe(9);
+        expect(getAllByTestId('error-message').length).toBe(10);
         expect(saveAppointmentSpy).not.toHaveBeenCalled();
 
     });
@@ -286,7 +286,7 @@ describe('Appointment Editor', () => {
         fireEvent.click(getAllByText('Sa')[2]);
         fireEvent.click(getAllByText('Sa')[2]);
         expect(container.querySelectorAll('.buttonGroup .selected').length).toBe(2);
-        expect(container.querySelectorAll('.buttonGroup button:not[.selected]').length).toBe(5);
+        expect(container.querySelectorAll('.buttonGroup button:not(.selected)').length).toBe(5);
     });
 
     it('should display week days error message when check and save is clicked without selecting wek days', () => {
@@ -300,7 +300,7 @@ describe('Appointment Editor', () => {
         const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
         fireEvent.click(getByTestId('week-type'));
-        getByText('Check and Save');
+        fireEvent.click(getByText('Check and Save'));
         getByText('Please select the day(s)');
     });
 
