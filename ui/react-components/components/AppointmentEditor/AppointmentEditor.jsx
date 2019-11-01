@@ -50,22 +50,25 @@ import {getErrorTranslations} from "../../translations/errorTranslations";
 
 const AppointmentEditor = props => {
 
-
     const {appConfig, intl} = props;
     const {angularState} = React.useContext(AppContext);
 
+    const [errors, setErrors] = useState({
+        patientError: false,
+        serviceError: false,
+        appointmentDateError: false,
+        startDateError: false,
+        endDateError: false,
+        endDateTypeError: false,
+        occurrencesError: false,
+        startTimeError: false,
+        endTimeError: false,
+        recurrencePeriodError: false,
+        startTimeBeforeEndTimeError: false,
+        weekDaysError: false
+    });
+
     const [patient, setPatient] = useState();
-    const [patientError, setPatientError] = useState(false);
-    const [serviceError, setServiceError] = useState(false);
-    const [appointmentDateError, setAppointmentDateError] = useState(false);
-    const [startDateError, setStartDateError] = useState(false);
-    const [endDateError, setEndDateError] = useState(false);
-    const [endDateTypeError, setEndDateTypeError] = useState(false);
-    const [occurrencesError, setOccurrencesError] = useState(false);
-    const [startTimeError, setStartTimeError] = useState(false);
-    const [endTimeError, setEndTimeError] = useState(false);
-    const [recurrencePeriodError, setRecurrencePeriodError] = useState(false);
-    const [startTimeBeforeEndTimeError, setStartTimeBeforeEndTimeError] = useState(false);
     const [providers, setProviders] = useState([]);
     const [service, setService] = useState('');
     const [serviceType, setServiceType] = useState('');
@@ -84,7 +87,6 @@ const AppointmentEditor = props => {
     const [occurrences, setOccurrences] = useState();
     const [period, setPeriod] = useState();
     const [weekDays, setWeekDays] = useState();
-    const [weekDaysError, setWeekDaysError] = useState(false);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     useEffect(() => {
@@ -124,15 +126,19 @@ const AppointmentEditor = props => {
         return appointment;
     };
 
+    const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {return {...prevErrors, ...errorIndicators}});
+
     const isValidAppointment = () => {
         const isValidPatient = patient && patient.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(startTime, endTime);
-        setPatientError(!isValidPatient);
-        setServiceError(!service);
-        setAppointmentDateError(!appointmentDate);
-        setStartTimeError(!startTime);
-        setEndTimeError(!endTime);
-        setStartTimeBeforeEndTimeError(!startTimeBeforeEndTime);
+        updateErrorIndicators({
+            patientError: !isValidPatient,
+            serviceError: !service,
+            appointmentDateError: !appointmentDate,
+            startTimeError: !startTime,
+            endTimeError: !endTime,
+            startTimeBeforeEndTimeError: !startTimeBeforeEndTime
+        });
         return isValidPatient && service && appointmentDate && startTime && endTime && startTimeBeforeEndTime;
     };
 
@@ -142,19 +148,24 @@ const AppointmentEditor = props => {
     const isValidRecurringAppointment = () => {
         const isValidPatient = patient && patient.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(startTime, endTime);
-        setPatientError(!isValidPatient);
-        setServiceError(!service);
-        setStartTimeError(!startTime);
-        setEndTimeError(!endTime);
-        setStartTimeBeforeEndTimeError(!startTimeBeforeEndTime);
-        setRecurrencePeriodError(!period || period < 1);
-        setEndDateTypeError(!endDateType);
+
+        updateErrorIndicators({
+            patientError: !isValidPatient,
+            serviceError: !service,
+            startTimeError: !startTime,
+            endTimeError: !endTime,
+            startTimeBeforeEndTimeError: !startTimeBeforeEndTime,
+            recurrencePeriodError: !period || period < 1,
+            endDateTypeError: !endDateType,
+            weekDaysError: recurrenceType === 'WEEK' && _.isEmpty(getSelectedWeekDays(weekDays)),
+            startDateError: !startDateType || !recurringStartDate
+        });
         if (endDateType) {
-            setEndDateError(endDateType === "On" && !recurringEndDate);
-            setOccurrencesError(endDateType === "After" && (!occurrences || occurrences < 1));
+            updateErrorIndicators({
+                endDateError: endDateType === "On" && !recurringEndDate,
+                occurrencesError: endDateType === "After" && (!occurrences || occurrences < 1)
+            })
         }
-        setWeekDaysError(recurrenceType === 'WEEK' && _.isEmpty(getSelectedWeekDays(weekDays)));
-        setStartDateError(!startDateType || !recurringStartDate);
         return isValidPatient && service && startTime && endTime && startTimeBeforeEndTime &&
             recurrenceType && period && period > 0 && recurringStartDate && isValidEndDate();
     };
@@ -205,34 +216,33 @@ const AppointmentEditor = props => {
         currentTime.add(duration, MINUTES);
         if (time) {
             setEndTime(currentTime);
-            setEndTimeError(false);
+            updateErrorIndicators({endTimeError: false});
         }
     };
 
     const getEndDateTypeErrorMessage = () => {
-        if (endDateTypeError) return errorTranslations.endDateTypeErrorMessage;
-        if (endDateError) return errorTranslations.dateErrorMessage;
-        if (occurrencesError) return errorTranslations.occurrencesErrorMessage;
+        if (errors.endDateTypeError) return errorTranslations.endDateTypeErrorMessage;
+        if (errors.endDateError) return errorTranslations.dateErrorMessage;
+        if (errors.occurrencesError) return errorTranslations.occurrencesErrorMessage;
     };
 
     const startDateOnChange = value => {
         setStartDateType(value);
         if (value === TODAY) {
             setRecurringStartDate(moment());
-            setStartDateError(false);
+            updateErrorIndicators({startDateError: false});
         } else {
             setRecurringEndDate(undefined);
-            setStartDateError(!recurringStartDate);
+            updateErrorIndicators({startDateError: !recurringStartDate});
         }
     };
 
     const endDateOnChange = value => {
         setEndDateType(value);
-        setEndDateTypeError(false);
-        value === "After" && setEndDateError(false);
+        updateErrorIndicators({endDateTypeError: false});
+        value === "After" && updateErrorIndicators({endDateError: false});
         if (value === "On") {
-            setEndDateError(recurringStartDate && !recurringEndDate);
-            setOccurrencesError(false);
+            updateErrorIndicators({endDateError: recurringStartDate && !recurringEndDate, occurrencesError: false});
         }
     };
 
@@ -244,18 +254,18 @@ const AppointmentEditor = props => {
                         <PatientSearch onChange={(optionSelected) => {
                             const newValue = optionSelected ? optionSelected.value : undefined;
                             setPatient(newValue);
-                            setPatientError(!newValue);
+                            updateErrorIndicators({patientError: !newValue});
                         }}/>
-                        <ErrorMessage message={patientError ? errorTranslations.patientErrorMessage : undefined}/>
+                        <ErrorMessage message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
                     </div>
                     <div data-testid="service-search">
                         <ServiceSearch onChange={(optionSelected) => {
                             setService(optionSelected.value);
-                            setServiceError(!optionSelected.value);
+                            updateErrorIndicators({serviceError: !optionSelected.value});
                             endTimeBasedOnService(startTime, optionSelected.value, undefined);
                         }}
                                        specialityUuid={speciality}/>
-                        <ErrorMessage message={serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
+                        <ErrorMessage message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
                     </div>
                     <div data-testid="service-type-search">
                         <ServiceTypeSearch onChange={(optionSelected) => {
@@ -297,13 +307,13 @@ const AppointmentEditor = props => {
                             <AppointmentDatePicker
                                 onChange={date => {
                                     setRecurringStartDate(date);
-                                    setStartDateError(!date);
+                                    updateErrorIndicators({startDateError: !date});
                                     setRecurringEndDate(undefined);
                                 }}
                                 onClear={() => setRecurringStartDate(undefined)}
                                 defaultValue={recurringStartDate}
                                 minDate={startDateType === FROM ? getYesterday() : undefined}/>
-                            <ErrorMessage message={startDateError ? errorTranslations.dateErrorMessage : undefined}/>
+                            <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div data-testid="end-date-group">
                             <div className={classNames(dateHeading)}>
@@ -317,15 +327,12 @@ const AppointmentEditor = props => {
                             <AppointmentDatePicker
                                 onChange={date => {
                                     setRecurringEndDate(date);
-                                    setEndDateError(!date);
+                                    updateErrorIndicators({endDateError: !date});
                                 }}
                                 onClear={() => setRecurringEndDate(undefined)}
                                 defaultValue={recurringEndDate}
-                                minDate={endDateType === "On" ?  recurringStartDate :
-                                    undefined}/>
-
+                                minDate={endDateType === "On" ?  recurringStartDate : undefined}/>
                             <ErrorMessage message={getEndDateTypeErrorMessage()}/>
-
                         </div>
                         <div data-testid="recurrence-type-group">
                             <div>
@@ -337,16 +344,16 @@ const AppointmentEditor = props => {
                                     <RecurrenceTypeRadioGroup
                                         onChange={event => {
                                             setRecurrenceType(event.currentTarget.value);
-                                            setWeekDaysError(weekDaysError && event.currentTarget.value === 'WEEK');
+                                            updateErrorIndicators({weekDaysError: errors.weekDaysError && event.currentTarget.value === 'WEEK'});
                                         }}
                                         onPeriodChange={value => {
                                             setPeriod(value);
-                                            setRecurrencePeriodError(false);
+                                            updateErrorIndicators({recurrencePeriodError: false});
                                         }}
                                         period={period}
                                         recurrenceType={recurrenceType}/>
                                     <ErrorMessage
-                                        message={recurrencePeriodError ? errorTranslations.recurrencePeriodErrorMessage : undefined}/>
+                                        message={errors.recurrencePeriodError ? errorTranslations.recurrencePeriodErrorMessage : undefined}/>
                                 </div>
                                 <div className={classNames(weekDaysContainer)}>
                                     <ButtonGroup buttonsList={weekDays} onClick={buttonKey => {
@@ -357,10 +364,10 @@ const AppointmentEditor = props => {
                                         };
                                         prevWeekDaysMap.set(buttonKey, nextEntry);
                                         setWeekDays(prevWeekDaysMap);
-                                        setWeekDaysError(false);
+                                        updateErrorIndicators({weekDaysError: false});
                                     }} enable={recurrenceType === 'WEEK'}/>
                                     <ErrorMessage
-                                        message={weekDaysError ? errorTranslations.weekDaysErrorMessage : undefined}/>
+                                        message={errors.weekDaysError ? errorTranslations.weekDaysErrorMessage : undefined}/>
                                 </div>
                             </div>
                             </div>
@@ -371,21 +378,23 @@ const AppointmentEditor = props => {
                                                   onChange={time => {
                                                       setStartTime(time);
                                                       endTimeBasedOnService(time, service, serviceType);
-                                                      setStartTimeError(!time);
+                                                      updateErrorIndicators({startTimeError: !time});
                                                   }}/>
-                                    <ErrorMessage message={startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
+                                    <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                                 </div>
                                 <div data-testid="end-time-selector">
                                     <TimeSelector {...appointmentEndTimeProps}
                                                   onChange={time => {
                                                       setEndTime(time);
-                                                      setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
-                                                      setEndTimeError(!time);
+                                                      updateErrorIndicators({
+                                                          startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(startTime, time),
+                                                          endTimeError: !time
+                                                      });
                                                   }}/>
-                                    <ErrorMessage message={endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
+                                    <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                                 </div>
                                 <ErrorMessage
-                                    message={startTime && endTime && startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
+                                    message={startTime && endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
                             </div>
                         </div>
                     </div> :
@@ -395,12 +404,12 @@ const AppointmentEditor = props => {
                             <AppointmentDatePicker
                                 onChange={date => {
                                     setAppointmentDate(date);
-                                    setAppointmentDateError(!date);
+                                    updateErrorIndicators({appointmentDateError: !date});
                                 }}
                                 onClear={() => setAppointmentDate(undefined)}
                                 defaultValue={appointmentDate}
                                 minDate={getYesterday()}/>
-                            <ErrorMessage message={appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
+                            <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div>
                             <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
@@ -409,21 +418,23 @@ const AppointmentEditor = props => {
                                               onChange={time => {
                                                   setStartTime(time);
                                                   endTimeBasedOnService(time, service, serviceType);
-                                                  setStartTimeError(!time);
+                                                  updateErrorIndicators({startTimeError: !time});
                                               }}/>
-                                <ErrorMessage message={startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
+                                <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                             </div>
                             <div data-testid="end-time-selector">
                                 <TimeSelector {...appointmentEndTimeProps}
                                               onChange={time => {
                                                   setEndTime(time);
-                                                  setStartTimeBeforeEndTimeError(!isStartTimeBeforeEndTime(startTime, time));
-                                                  setEndTimeError(!time);
+                                                  updateErrorIndicators({
+                                                      startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(startTime, time),
+                                                      endTimeError: !time
+                                                  });
                                               }}/>
-                                <ErrorMessage message={endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
+                                <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                             </div>
                             <ErrorMessage
-                                message={startTime && endTime && startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
+                                message={startTime && endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
                         </div>
                     </div>}
                 <div className={classNames(recurringContainerRight)}>
