@@ -44,7 +44,7 @@ import {
     isSpecialitiesEnabled,
     maxAppointmentProvidersAllowed
 } from "../../helper.js";
-import Conflicts from "../ConflictsModal/Conflicts.jsx";
+import Conflicts from "../Conflicts/Conflicts.jsx";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -437,7 +437,7 @@ const AppointmentEditor = props => {
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
                              closeOnEscape={true}
-                             popupContent={<Conflicts/>}/> : undefined}
+                             popupContent={<Conflicts saveAnyway={checkAndSave}/>}/> : undefined}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
