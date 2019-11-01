@@ -5,3 +5,11 @@
     width: 470px !important;
   }
 }
+
+.conflictsPopup{
+  div[class^='popup-content'] {
+    margin: 3% 0 0 35% !important;
+    width: 65% !important;
+    height: auto;
+  }
+}
