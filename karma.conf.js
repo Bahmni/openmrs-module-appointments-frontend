@@ -9,14 +9,10 @@ module.exports = (config) => {
         autoWatch: false,
         singleRun: true,
         files: [
-            {pattern: 'node_modules/jquery/jquery.js', watched: false},
-            {pattern: 'lib/jquery/jquery-ui-1.10.4.custom.min.js', watched: false},
-            {pattern: 'node_modules/angular/angular.js', watched: false},
-            {pattern: 'node_modules/angular-mocks/angular-mocks.js', watched: false},
             {pattern: 'node_modules/moment/min/moment.min.js', watched: false},
             {pattern: 'node_modules/q/q.js', watched: false},
-
             {pattern: 'dist/appointment.js', watched: false},
+            {pattern: 'node_modules/angular-mocks/angular-mocks.js', watched: false},
 
             {pattern: 'test/ng-test-constants.js', watched: false},
             {pattern: 'test/support/*.js', watched: false},
