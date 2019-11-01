@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
 import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
+import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 
 
 const AppointmentEditorFooter = props => {
@@ -27,7 +28,7 @@ const AppointmentEditorFooter = props => {
     return (
         <div className={classNames(footer)}>
             <div className={classNames(footerElements)}>
-                <CustomPopup triggerComponent={cancelButton} popupContent={popupContent}/>
+                <CustomPopup style={customPopup} triggerComponent={cancelButton} popupContent={popupContent}/>
                 <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
                     <i className={classNames("fa", "fa-check")}/>
                     <span>
