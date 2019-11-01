@@ -11,7 +11,7 @@ import {
     searchFieldsContainerRight,
     timeSelector
 } from './AppointmentEditor.module.scss';
-import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
+import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
 import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
@@ -44,6 +44,7 @@ import {
     isSpecialitiesEnabled,
     maxAppointmentProvidersAllowed
 } from "../../helper.js";
+import Conflicts from "../ConflictsModal/Conflicts.jsx";
 
 const AppointmentEditor = props => {
     const [patient, setPatient] = useState();
@@ -76,6 +77,7 @@ const AppointmentEditor = props => {
     const [recurrenceType, setRecurrenceType] = useState(dayRecurrenceType);
     const [occurrences, setOccurrences] = useState();
     const [period, setPeriod] = useState();
+    const [conflicts, setConflicts] = useState();
     useEffect(() => {
         if (occurrences === undefined)
             setOccurrences(getDefaultOccurrences(appConfig))
@@ -431,6 +433,11 @@ const AppointmentEditor = props => {
                 </div>
             </div>
             <AppointmentEditorFooter checkAndSave={isRecurring ? checkAndSaveRecurring : checkAndSave}/>
+            {conflicts ?
+                <CustomPopup style={conflictsPopup} open={true}
+                             closeOnDocumentClick={false}
+                             closeOnEscape={true}
+                             popupContent={<Conflicts/>}/> : undefined}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
