@@ -12,6 +12,7 @@ import {
     timeSelector,
     weekDaysContainer
 } from './AppointmentEditor.module.scss';
+import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
 import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
@@ -179,7 +180,7 @@ const AppointmentEditor = props => {
         (appointmentDetails.endDateType === "After" && appointmentDetails.occurrences && appointmentDetails.occurrences > 0);
 
     const showSuccessPopUp = startDate => {
-        setViewDate(appointmentDetails.appointmentDate.startOf('day').toDate());
+        setViewDate(startDate.startOf('day').toDate());
         setShowSuccessPopup(true);
     };
 
@@ -202,7 +203,7 @@ const AppointmentEditor = props => {
         }
     };
 
-    const savePopup = <CustomPopup
+    const savePopup = <CustomPopup style={customPopup}
         popupContent={<SuccessConfirmation patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.name} (${appointmentDetails.patient.identifier})`}/>}/>;
 
     const appointmentStartTimeProps = {
