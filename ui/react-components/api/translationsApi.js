@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {mergeObjects} from '../utils/MergeObjectUtil';
+import {customLocaleUrl} from "../constants";
 
 const baseLocaleUrl = './i18n/';
 
@@ -15,9 +16,6 @@ const loadBahmniTranslations = async (fileURL) => {
     return await loadFile(`${baseLocaleUrl}${fileURL}`);
 };
 const loadCustomTranslations = async (fileURL) => {
-    const rootDirFromLocalStorage = localStorage.getItem('rootDir') || "";
-    const i18nBahmniConfigPath = '/bahmni_config/openmrs/i18n/';
-    const customLocaleUrl = `${rootDirFromLocalStorage}${i18nBahmniConfigPath}`;
     return await loadFile(`${customLocaleUrl}${fileURL}`);
 };
 
