@@ -49,7 +49,7 @@ import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/W
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty} from 'lodash';
-import Conflicts from "../ConflictsModal/Conflicts.jsx";
+import Conflicts from "../Conflicts/Conflicts.jsx";
 
 const AppointmentEditor = props => {
 
@@ -458,7 +458,7 @@ const AppointmentEditor = props => {
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
                              closeOnEscape={true}
-                             popupContent={<Conflicts/>}/> : undefined}
+                             popupContent={<Conflicts saveAnyway={checkAndSave}/>}/> : undefined}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
