@@ -1,8 +1,8 @@
 import React from "react";
-import AppointmentEditor from "./AppointmentEditor.jsx";
+import AddAppointment from "./AddAppointment.jsx";
 import {renderWithReactIntl} from "../../utils/TestUtil";
 import {fireEvent, waitForElement} from "@testing-library/react";
-import * as apiService from "./AppointmentEditorService.js";
+import * as apiService from "./AddAppointmentService.js";
 import moment from "moment";
 
 jest.mock('../../api/patientApi');
@@ -25,23 +25,23 @@ describe('Appointment Editor', () => {
     });
 
     it('should render an editor', () => {
-        const {container} = renderWithReactIntl(<AppointmentEditor/>);
+        const {container} = renderWithReactIntl(<AddAppointment/>);
         expect(container.hasChildNodes()).toBeTruthy();
     });
 
     it('should have an appointment-editor div', () => {
-        const {getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
+        const {getByTestId} = renderWithReactIntl(<AddAppointment/>);
         expect(getByTestId('appointment-editor')).not.toBeNull();
     });
 
     it('should display the patient search', () => {
-        const {container, getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
+        const {container, getByTestId} = renderWithReactIntl(<AddAppointment/>);
         expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
         expect(getByTestId('asyncSelect')).not.toBeNull();
     });
 
     it('should display the all components search except speciality', function () {
-        const {container, getAllByTestId} = renderWithReactIntl(<AppointmentEditor/>);
+        const {container, getAllByTestId} = renderWithReactIntl(<AddAppointment/>);
         expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
 
         expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
@@ -55,7 +55,7 @@ describe('Appointment Editor', () => {
         const config = {
             "enableSpecialities": "true"
         };
-        const {container, getAllByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        const {container, getAllByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
         expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
         expect(container.querySelector('.searchFieldsContainerLeft').children.length).toBe(5);
@@ -65,7 +65,7 @@ describe('Appointment Editor', () => {
     });
 
     it('should render AppointmentEditorFooter', function () {
-        const {getByTestId, container} = renderWithReactIntl(<AppointmentEditor/>);
+        const {getByTestId, container} = renderWithReactIntl(<AddAppointment/>);
         expect(container.querySelector('.footer')).not.toBeNull();
         expect(container.querySelector('.footerElements')).not.toBeNull();
         expect(container.querySelector('.footer').children.length).toBe(1);
@@ -73,7 +73,7 @@ describe('Appointment Editor', () => {
     });
 
     it('should render AppointmentDatePicker', function () {
-        const {getByTestId} = renderWithReactIntl(<AppointmentEditor/>);
+        const {getByTestId} = renderWithReactIntl(<AddAppointment/>);
         expect(getByTestId('datePicker')).not.toBeNull();
     });
 
@@ -82,7 +82,7 @@ describe('Appointment Editor', () => {
         const onChnageSpy = jest.fn();
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const {container, getByText, querySelector} = renderWithReactIntl(
-            <AppointmentEditor />);
+            <AddAppointment />);
         const inputBox = container.querySelector('.react-select__input input');
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
@@ -102,7 +102,7 @@ describe('Appointment Editor', () => {
     });
 
     it('should display error messages when checkAndSave is clicked and required fields are not selected', () => {
-        const {getByText, getAllByText} = renderWithReactIntl(<AppointmentEditor/>);
+        const {getByText, getAllByText} = renderWithReactIntl(<AddAppointment/>);
         const button = getByText('Check and Save');
         const saveAppointmentSpy = jest.spyOn(apiService, 'saveAppointment');
         fireEvent.click(button);
@@ -115,7 +115,7 @@ describe('Appointment Editor', () => {
     });
 
     it('should display time error message when time is not selected and remaining fields are selected ', async () => {
-        const {container, getByText, queryByText, getAllByTitle, getAllByText} = renderWithReactIntl(<AppointmentEditor/>);
+        const {container, getByText, queryByText, getAllByTitle, getAllByText} = renderWithReactIntl(<AddAppointment/>);
 
         //select patient
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
@@ -170,7 +170,7 @@ describe('Appointment Editor', () => {
         const config = {
             "enableSpecialities": "true"
         };
-        const {getByText, getByTestId, getAllByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        const {getByText, getByTestId, getAllByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         const checkAndSaveButton = getByText('Check and Save');
         fireEvent.click(checkAndSaveButton);
         getByTestId('patient-search');
@@ -186,13 +186,13 @@ describe('Appointment Editor', () => {
     });
 
     it('should display recurring plan', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditor/>);
+        const {container, getByText} = renderWithReactIntl(<AddAppointment/>);
         expect(getByText('Plan')).not.toBeNull();
         expect(container.querySelector('.planLabel')).not.toBeNull();
     });
 
     it('should render all recurring components on click of recurring appointments checkbox', () => {
-        const {container, getByTestId, getByText, getAllByText} = renderWithReactIntl(<AppointmentEditor/>);
+        const {container, getByTestId, getByText, getAllByText} = renderWithReactIntl(<AddAppointment/>);
         const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
         expect(container.querySelector('.checkbox')).toBeChecked;
@@ -216,7 +216,7 @@ describe('Appointment Editor', () => {
 
     it('should display error messages when checkAndSave is clicked and required recurring fields are not selected', () => {
         const {getByText, queryByText, getAllByTestId, getAllByText, container} = renderWithReactIntl(
-            <AppointmentEditor/>);
+            <AddAppointment/>);
         const saveAppointmentSpy = jest.spyOn(apiService, 'saveRecurring');
         const checkBox = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBox);
@@ -239,7 +239,7 @@ describe('Appointment Editor', () => {
                 "defaultNumberOfOccurrences": 10
             }
         };
-        const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AppointmentEditor
+        const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AddAppointment
             appConfig={config}/>);
         const saveAppointmentSpy = jest.spyOn(apiService, 'saveRecurring');
         const checkBox = container.querySelector('.rc-checkbox-input');
@@ -261,7 +261,7 @@ describe('Appointment Editor', () => {
                 "defaultNumberOfOccurrences": 10
             }
         };
-        const {container, getByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
         fireEvent.click(getByTestId('week-type'));
@@ -277,7 +277,7 @@ describe('Appointment Editor', () => {
                 "defaultNumberOfOccurrences": 10
             }
         };
-        const {container, getAllByText, getByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        const {container, getAllByText, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
         fireEvent.click(getByTestId('week-type'));
@@ -296,7 +296,7 @@ describe('Appointment Editor', () => {
                 "defaultNumberOfOccurrences": 10
             }
         };
-        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditor appConfig={config}/>);
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
         fireEvent.click(getByTestId('week-type'));
