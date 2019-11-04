@@ -9,10 +9,16 @@ const ConflictsFooter = props => {
     return (
         <div className={classNames(footer, conflictsFooter)}>
             <div className={classNames(footerElements)}>
-                <button className={classNames(button, save)} onClick={props.saveAnyway}>
+                <button className={classNames(button)} onClick={props.saveAnyway}>
                     <i className={classNames("fa", "fa-check")}/>
                     <span>
                         <FormattedMessage id={'APPOINTMENT_SAVE_ANYWAY'} defaultMessage={'Save Anyway'}/>
+                    </span>
+                </button>
+                <button className={classNames(button, save)} onClick={props.modifyInformation}>
+                    <i className={classNames("fa", "fa-edit")}/>
+                    <span>
+                        <FormattedMessage id={'APPOINTMENT_MODIFY_INFORMATION'} defaultMessage={'Modify information'}/>
                     </span>
                 </button>
             </div>
@@ -20,7 +26,8 @@ const ConflictsFooter = props => {
     )
 };
 ConflictsFooter.propTypes = {
-    saveAnyway: PropTypes.func
+    saveAnyway: PropTypes.func,
+    modifyInformation: PropTypes.func
 };
 
 export default injectIntl(ConflictsFooter);
