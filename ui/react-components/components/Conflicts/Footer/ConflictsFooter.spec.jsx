@@ -20,4 +20,14 @@ describe('ConflictsFooter', () => {
 
         expect(saveAnywaySpy).toHaveBeenCalled();
     });
+
+    it('should call modifyInformation function on modify information button click', () => {
+        const modifyInformationSpy = jest.fn();
+        const {getByText} = renderWithReactIntl(<ConflictsFooter modifyInformation={modifyInformationSpy}/>);
+        const modifyInformationButton = getByText('Modify information');
+
+        fireEvent.click(modifyInformationButton);
+
+        expect(modifyInformationSpy).toHaveBeenCalled();
+    });
 });

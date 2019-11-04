@@ -8,11 +8,12 @@ const Conflicts = props => {
 
     return (
         <div className="conflicts">
-            <ConflictsFooter saveAnyway={props.saveAnyway}/>
+            <ConflictsFooter saveAnyway={props.saveAnyway} modifyInformation={props.modifyInformation}/>
         </div>
     )
 };
 Conflicts.proptypes = {
-    saveAnyway: PropTypes.func
+    saveAnyway: PropTypes.func,
+    modifyInformation: PropTypes.func
 };
 export default injectIntl(Conflicts);
