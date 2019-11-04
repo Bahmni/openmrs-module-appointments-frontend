@@ -3,7 +3,7 @@ import {
     getRecurringAppointmentsConflicts,
     saveAppointment,
     saveRecurring
-} from "./AppointmentEditorService";
+} from "./AddAppointmentService";
 
 jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/recurringAppointmentsApi');

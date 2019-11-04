@@ -11,7 +11,7 @@ import {
     searchFieldsContainerRight,
     timeSelector,
     weekDaysContainer
-} from './AppointmentEditor.module.scss';
+} from './AddAppointment.module.scss';
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
@@ -28,7 +28,7 @@ import {
     getRecurringAppointmentsConflicts,
     saveAppointment,
     saveRecurring
-} from "./AppointmentEditorService";
+} from "./AddAppointmentService";
 import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
@@ -56,7 +56,7 @@ import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty} from 'lodash';
 import Conflicts from "../Conflicts/Conflicts.jsx";
 
-const AppointmentEditor = props => {
+const AddAppointment = props => {
 
     const {appConfig, intl} = props;
     const {setViewDate} = React.useContext(AppContext);
@@ -505,9 +505,9 @@ const AppointmentEditor = props => {
     </Fragment>);
 };
 
-AppointmentEditor.propTypes = {
+AddAppointment.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object
 };
 
-export default injectIntl(AppointmentEditor);
+export default injectIntl(AddAppointment);
