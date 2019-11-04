@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {appointmentConflictsUrl, appointmentsSaveUrl} from "../constants";
+import {appointmentsSaveUrl, appointmentConflictsUrl, appointmentByUuidUrl} from "../constants";
 
 export const saveOrUpdateAppointment = async (data) => {
     try {
@@ -13,6 +13,15 @@ export const saveOrUpdateAppointment = async (data) => {
 export const conflictsFor = async appointmentRequest => {
     try {
         return await axios.post(appointmentConflictsUrl, appointmentRequest);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const getAppointmentByUuid = async (appointmentUuid) => {
+    try {
+        const response = await axios.get(`${appointmentByUuidUrl}?uuid=${appointmentUuid}`);
+        return response;
     } catch (error) {
         console.error(error);
     }
