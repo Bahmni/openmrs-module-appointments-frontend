@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import AppointmentEditor from "../components/AppointmentEditor/AppointmentEditor.jsx";
+import AddAppointment from "../components/AddAppointment/AddAppointment.jsx";
 import {IntlProvider} from "react-intl";
 import {getLocale} from "../utils/LocalStorageUtil";
 import {getTranslations} from "../api/translationsApi";
@@ -12,7 +12,7 @@ import moment from "moment";
 
 // TODO : need to add connection to redux
 
-class AddAppointmentContainer extends Component {
+class AppointmentContainer extends Component {
 
     constructor (props) {
         super(props);
@@ -44,15 +44,15 @@ class AddAppointmentContainer extends Component {
         return (
             <AppContext.Provider value={{onBack: this.props.onBack, setViewDate: this.props.setViewDate}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
-                    <AppointmentEditor appConfig={appConfigs}/>
+                    <AddAppointment appConfig={appConfigs}/>
                 </IntlProvider>
             </AppContext.Provider>);
     }
 }
 
-AddAppointmentContainer .propTypes = {
+AppointmentContainer .propTypes = {
     onBack: PropTypes.func.isRequired,
     setViewDate: PropTypes.func.isRequired
 };
 
-export default AddAppointmentContainer;
+export default AppointmentContainer;
