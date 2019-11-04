@@ -459,7 +459,8 @@ const AppointmentEditor = props => {
                              closeOnDocumentClick={false}
                              closeOnEscape={true}
                              popupContent={<Conflicts saveAnyway={checkAndSave}
-                                                      modifyInformation={() => setConflicts(undefined)}/>}/> : undefined}
+                                                      modifyInformation={() => setConflicts(undefined)}
+                                                      conflicts={conflicts}/>}/> : undefined}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
