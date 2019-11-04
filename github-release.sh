@@ -38,7 +38,7 @@ main(){
   # Assign global variables to local variables
     local repo_owner=${args[0]}
     local token=$GH_AUTH_TOKEN;
-    local name="openmrs-module-appointment-frontend.zip";
+    local name="openmrs-module-appointments-frontend.zip";
     local file="$(pwd)/$name";
     local release_name=$(read_version)
     local commit_sha=$(git rev-parse HEAD)
