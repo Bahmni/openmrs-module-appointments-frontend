@@ -1,4 +1,4 @@
-import {saveAppointment, saveRecurring} from "./AppointmentEditorService";
+import {saveAppointment, saveRecurring} from "./AddAppointmentService";
 
 jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/recurringAppointmentsApi');
