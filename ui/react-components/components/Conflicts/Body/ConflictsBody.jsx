@@ -1,4 +1,4 @@
-import {Tab, Tabs, TabList} from 'react-tabs';
+import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import React, {useState} from "react";
 import "react-tabs/style/react-tabs.css";
 import PropTypes from "prop-types";
@@ -10,29 +10,48 @@ const ConflictsBody = props => {
     const patientDoubleBookingConflicts = props.conflicts.PATIENT_DOUBLE_BOOKING;
 
     const createTabs = () => {
-        let tabs = [];
-        patientDoubleBookingConflicts && tabs.push(
-            createTab(patientDoubleBookingConflicts, 'OVERLAPPING_CONFLICTS', 'Overlapping conflicts'));
-        serviceUnavailableConflicts && tabs.push(
-            createTab(serviceUnavailableConflicts, 'NO_SERVICE_DATE_CONFLICTS', 'No-Service Date conflicts'));
-        return tabs;
+        let tabHeads = [];
+        let tabPanels = [];
+        if (patientDoubleBookingConflicts) {
+            tabHeads.push(createTab(patientDoubleBookingConflicts, 'OVERLAPPING_CONFLICTS', 'Overlapping conflicts'));
+            tabPanels.push(createTabPanel(patientDoubleBookingConflicts, 'Overlapping conflicts content'));
+        }
+        if (serviceUnavailableConflicts) {
+            tabHeads.push(createTab(serviceUnavailableConflicts, 'NO_SERVICE_DATE_CONFLICTS', 'No-Service Date conflicts'));
+            tabPanels.push(createTabPanel(serviceUnavailableConflicts, 'No-Service Date conflicts content'));
+        }
+        return {tabHeads, tabPanels};
     };
 
-    const createTab = (conflict, translationKey, defaultMessage) => {
-        return <Tab key={defaultMessage}>
+    const createTab = (conflicts, translationKey, defaultMessage) => {
+        return <Tab key={defaultMessage} className="tab">
             <span>
                 <FormattedMessage id={translationKey} defaultMessage={defaultMessage}/>
-                    <span className={conflictsCount}>{conflict.length}</span>
+                    <span className={conflictsCount}>{conflicts.length}</span>
                 </span>
         </Tab>
     };
 
+    const getContent = conflicts => {
+        let list = [];
+        conflicts.forEach(conflict => {
+            list.push(<span>{conflict.uuid}</span>);
+        });
+        return list;
+    };
+
+    const createTabPanel = (conflicts, key) => {
+        return <TabPanel className="tabPanel" key={key}>{getContent(conflicts)}</TabPanel>
+    };
+
     const [tabs] = useState(createTabs());
 
-    return tabs.length ? (
+    return tabs && tabs.tabHeads.length > 0 ? (
         <Tabs>
-            <TabList>{tabs}</TabList>
+            <TabList>{tabs.tabHeads}</TabList>
+            {tabs.tabPanels}
         </Tabs>
+
     ) : null;
 
 };
