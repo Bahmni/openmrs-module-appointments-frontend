@@ -1,3 +1,7 @@
+dist
+node_modules
+.idea
+
 .DS_Store
 nbproject
 manifest.mf
@@ -24,7 +28,5 @@ test_out
 omod/src/main/webapp/*
 coverage
 ui/style-guide
-node_modules
 *.tern-port
 **/.idea/*
-ui/common.background.min.js
