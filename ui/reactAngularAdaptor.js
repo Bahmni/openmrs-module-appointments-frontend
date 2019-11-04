@@ -1,8 +1,8 @@
 import {react2angular} from 'react2angular';
-import AddAppointmentContainer from './react-components/containers/AddAppointmentContainer.jsx';
+import AppointmentContainer from './react-components/containers/AppointmentContainer.jsx';
 
 angular.module('bahmni.appointments')
-.component('reactAddAppointment', react2angular(AddAppointmentContainer));
+.component('reactAddAppointment', react2angular(AppointmentContainer));
 
 // Used this component to pass a callback function to react component
 angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
