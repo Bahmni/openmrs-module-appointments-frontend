@@ -22,6 +22,7 @@
     "react-intl": "^3.3.2",
     "react-redux": "^7.1.1",
     "react-select": "^3.0.6",
+    "react-tabs": "^3.0.0",
     "react2angular": "^4.0.6",
     "reactjs-popup": "^1.5.0",
     "redux": "^4.0.4",
