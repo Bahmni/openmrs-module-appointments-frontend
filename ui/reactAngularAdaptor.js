@@ -6,7 +6,7 @@ angular.module('bahmni.appointments')
 
 // Used this component to pass a callback function to react component
 angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
-    template: '<react-add-appointment on-back="onBack" set-view-date="setViewDate" appointment-uuid="appointmentUuid">',
+    template: '<react-add-appointment on-back="onBack" set-view-date="setViewDate" appointment-uuid="appointmentUuid" is-recurring="isRecurring">>',
     controller: reactAddAppointmentController
 });
 
@@ -20,4 +20,5 @@ function reactAddAppointmentController($scope, $state, $stateParams) {
         $state.params.viewDate = date;
     };
     $scope.appointmentUuid = $state.current.url === '/:uuid' ? $stateParams.uuid : undefined;
+    $scope.isRecurring = $stateParams.isRecurring;
 }
