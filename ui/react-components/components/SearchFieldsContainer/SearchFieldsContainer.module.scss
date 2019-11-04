@@ -1,0 +1,26 @@
+.searchFieldsContainer {
+  top: 50px;
+  position: relative;
+  padding: 4% 2% 0 2%;
+  display: flex;
+  justify-content: space-between;
+
+  &:nth-child(2) {
+    padding-top: 0;
+  }
+
+  .searchFieldsContainerLeft {
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    > div {
+      width: calc(100% / 3 - 30px);
+      margin-bottom: 25px;
+      margin-right: 30px;
+    }
+  }
+
+  .searchFieldsContainerRight {
+    width: 30%;
+  }
+}

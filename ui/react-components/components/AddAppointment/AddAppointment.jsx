@@ -13,12 +13,6 @@ import {
     weekDaysContainer
 } from './AddAppointment.module.scss';
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
-import PatientSearch from "../PatientSearch/PatientSearch.jsx";
-import ServiceSearch from "../Service/ServiceSearch.jsx";
-import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
-import ProviderSearch from "../Provider/ProviderSearch.jsx";
-import LocationSearch from "../Location/LocationSearch.jsx";
-import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
 import {injectIntl} from "react-intl";
@@ -46,14 +40,13 @@ import moment from "moment";
 import {
     getDefaultOccurrences,
     getDuration,
-    getYesterday,
-    isSpecialitiesEnabled,
-    maxAppointmentProvidersAllowed
+    getYesterday
 } from "../../helper.js";
 import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/WeekDaysService";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty} from 'lodash';
+import SearchFieldsContainer from "../SearchFieldsContainer/SearchFieldsContainer.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
 
 const AddAppointment = props => {
@@ -293,48 +286,9 @@ const AddAppointment = props => {
 
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor)}>
-            <div className={classNames(searchFieldsContainer)}>
-                <div className={classNames(searchFieldsContainerLeft)}>
-                    <div data-testid="patient-search">
-                        <PatientSearch
-                            onChange={(optionSelected) => {
-                            const newValue = optionSelected ? optionSelected.value : undefined;
-                            updateAppointmentDetails({patient: newValue});
-                            updateErrorIndicators({patientError: !newValue});
-                        }}/>
-                        <ErrorMessage message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
-                    </div>
-                    <div data-testid="service-search">
-                        <ServiceSearch onChange={(optionSelected) => {
-                            updateAppointmentDetails({service: optionSelected.value});
-                            updateErrorIndicators({serviceError: !optionSelected.value});
-                            endTimeBasedOnService(appointmentDetails.startTime, optionSelected.value, undefined);
-                        }}
-                                       specialityUuid={appointmentDetails.speciality}/>
-                        <ErrorMessage message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
-                    </div>
-                    <div data-testid="service-type-search">
-                        <ServiceTypeSearch onChange={(optionSelected) => {
-                            updateAppointmentDetails({serviceType: optionSelected.value});
-                            endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
-                        }}
-                       serviceUuid={appointmentDetails.service && appointmentDetails.service.uuid}/>
-                    </div>
-                    {isSpecialitiesEnabled(appConfig) ?
-                        <div data-testid="speciality-search">
-                            <SpecialitySearch onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected.value})}/>
-                        </div> : null
-                    }
-                    <div data-testid="location-search">
-                        <LocationSearch onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected.value})}/>
-                        <ErrorMessage message={undefined}/>
-                    </div>
-                </div>
-                <div className={classNames(searchFieldsContainerRight)} data-testid="provider-search">
-                    <ProviderSearch onChange={selectedProviders => updateAppointmentDetails({providers: selectedProviders})}
-                                    maxAppointmentProvidersAllowed={maxAppointmentProvidersAllowed(appConfig)}/>
-                </div>
-            </div>
+            <SearchFieldsContainer updateAppointmentDetails={updateAppointmentDetails} updateErrorIndicators={updateErrorIndicators}
+                                   appointmentDetails={appointmentDetails} endTimeBasedOnService={endTimeBasedOnService} appConfig={appConfig}
+                                   errorTranslations={errorTranslations} errors={errors}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(searchFieldsContainerLeft)}>
                     <RecurringPlan onChange={event => updateAppointmentDetails({isRecurring: event.target.checked})}/>
