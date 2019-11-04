@@ -1,0 +1,111 @@
+'use strict';
+
+window.Bahmni = window.Bahmni || {};
+Bahmni.Common = Bahmni.Common || {};
+
+(function () {
+    var hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host')) : "";
+    var rootDir = localStorage.getItem('rootDir') || "";
+    var RESTWS = hostUrl + "/openmrs/ws/rest";
+    var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
+    var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
+    var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
+    var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
+    var baseLocaleURL = './i18n/';
+    var customLocaleURL = rootDir + '/bahmni_config/openmrs/i18n/';
+
+    var representation = "custom:(uuid,name,names,conceptClass," +
+        "setMembers:(uuid,name,names,conceptClass," +
+        "setMembers:(uuid,name,names,conceptClass," +
+        "setMembers:(uuid,name,names,conceptClass))))";
+
+    var unAuthenticatedReferenceDataMap = {
+        "/openmrs/ws/rest/v1/location?tags=Login+Location&s=byTags&v=default": "LoginLocations",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=locale.allowed.list": "LocaleList"
+    };
+
+    var authenticatedReferenceDataMap = {
+        "/openmrs/ws/rest/v1/idgen/identifiertype": "IdentifierTypes",
+        "/openmrs/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form": "AddressHierarchyLevels",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=mrs.genders": "Genders",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.encountersession.duration": "encounterSessionDuration",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.relationshipTypeMap": "RelationshipTypeMap",
+        "/openmrs/ws/rest/v1/bahmnicore/config/bahmniencounter?callerContext=REGISTRATION_CONCEPTS": "RegistrationConcepts",
+        "/openmrs/ws/rest/v1/relationshiptype?v=custom:(aIsToB,bIsToA,uuid)": "RelationshipType",
+        "/openmrs/ws/rest/v1/personattributetype?v=custom:(uuid,name,sortWeight,description,format,concept)": "PersonAttributeType",
+        "/openmrs/ws/rest/v1/entitymapping?mappingType=loginlocation_visittype&s=byEntityAndMappingType": "LoginLocationToVisitTypeMapping",
+        "/openmrs/ws/rest/v1/bahmnicore/config/patient": "PatientConfig",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Consultation+Note&v=custom:(uuid,name,answers)": "ConsultationNote",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Lab+Order+Notes&v=custom:(uuid,name)": "LabOrderNotes",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Impression&v=custom:(uuid,name)": "RadiologyImpressionConfig",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=All_Tests_and_Panels&v=custom:(uuid,name:(uuid,name),setMembers:(uuid,name:(uuid,name)))": "AllTestsAndPanelsConcept",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Dosage+Frequency&v=custom:(uuid,name,answers)": "DosageFrequencyConfig",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Dosage+Instructions&v=custom:(uuid,name,answers)": "DosageInstructionConfig",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=bahmni.encounterType.default": "DefaultEncounterType",
+        "/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=Stopped+Order+Reason&v=custom:(uuid,name,answers)": "StoppedOrderReasonConfig",
+        "/openmrs/ws/rest/v1/ordertype": "OrderType",
+        "/openmrs/ws/rest/v1/bahmnicore/config/drugOrders": "DrugOrderConfig",
+        "/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=drugOrder.drugOther": "NonCodedDrugConcept"
+    };
+
+    authenticatedReferenceDataMap["/openmrs/ws/rest/v1/entitymapping?mappingType=location_encountertype&s=byEntityAndMappingType&entityUuid=" + (localStorage.getItem("LoginInformation") ? JSON.parse(localStorage.getItem("LoginInformation")).currentLocation.uuid : "")] = "LoginLocationToEncounterTypeMapping";
+
+    Bahmni.Common.Constants = {
+        hostURL: hostUrl,
+        dateFormat: "dd/mm/yyyy",
+        dateDisplayFormat: "DD-MMM-YYYY",
+        timeDisplayFormat: "hh:mm",
+        locationUrl: RESTWS_V1 + "/location",
+        bahmniSearchUrl: BAHMNI_CORE + "/search",
+        conceptUrl: RESTWS_V1 + "/concept",
+        openmrsUrl: hostUrl + "/openmrs",
+        loggingUrl: hostUrl + "/log/",
+        bahmniRESTBaseURL: BAHMNI_CORE + "",
+        locationCookieName: 'bahmni.user.location',
+        JSESSIONID: "JSESSIONID",
+        currentUser: 'bahmni.user',
+        viewPatientsPrivilege: 'View Patients',
+        grantProviderAccessDataCookieName: "app.clinical.grantProviderAccessData",
+        globalPropertyUrl: BAHMNI_CORE + "/sql/globalproperty",
+        noNavigationLinksMessage: "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE",
+        defaultExtensionName: "default",
+        providerUrl: RESTWS_V1 + "/provider",
+        userUrl: RESTWS_V1 + "/user",
+        passwordUrl: RESTWS_V1 + "/password",
+        sqlUrl: BAHMNI_CORE + "/sql",
+        patientAttributeDateFieldFormat: "org.openmrs.util.AttributableDate",
+        platform: "user.platform",
+        RESTWS_V1: RESTWS_V1,
+        baseUrl: BASE_URL,
+        customUrl: CUSTOM_URL,
+        faviconUrl: hostUrl + "/bahmni/favicon.ico",
+        platformType: {
+            other: 'other'
+        },
+        encryptionType: {
+            SHA3: 'SHA3'
+        },
+        LoginInformation: 'LoginInformation',
+        // orderSetSpecialUnits:["mg/kg","mg/m2"],
+        ServerDateTimeFormat: 'YYYY-MM-DDTHH:mm:ssZZ',
+        unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
+        authenticatedReferenceDataMap: authenticatedReferenceDataMap,
+        rootDir: rootDir,
+        uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+        eventlogFilterUrl: hostUrl + "/openmrs/ws/rest/v1/eventlog/filter",
+        bahmniConnectMetaDataDb: "metaData",
+        serverDateTimeUrl: "/cgi-bin/systemdate",
+        loginText: "/bahmni_config/openmrs/apps/home/whiteLabel.json",
+        auditLogUrl: RESTWS_V1 + "/auditlog",
+        appointmentServiceUrl: RESTWS_V1 + "/appointmentService",
+        localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
+        privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED",
+        defaultPossibleRelativeSearchLimit: 10,
+        fetchLoginLocationURL: RESTWS_V1 + "/appui/session",
+        openMRSSystemSettingUrl: RESTWS_V1 + "/systemsetting/",
+        baseLocaleURL:baseLocaleURL,
+        customLocaleURL:customLocaleURL,
+        loginPageUrl: "../home/index.html#/login"
+    };
+})();
+
