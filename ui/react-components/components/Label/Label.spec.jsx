@@ -8,4 +8,9 @@ describe('Label Component', () => {
         const {getByText} = renderWithReactIntl(<Label translationKey="SOME_TEXT" defaultValue="somelabel"/>);
         getByText('somelabel');
     });
+
+    it('should disable the label when disabled is true', () => {
+        const {container} = renderWithReactIntl(<Label translationKey="SOME_TEXT" defaultValue="somelabel" disabled={true}/>);
+        expect(container.querySelector('.disabledLabelContainer'));
+    })
 });

@@ -21,4 +21,9 @@ describe('Recurring plan', () => {
         expect(onChangeSpy).toHaveBeenCalled();
         expect(container.querySelector('.checkbox')).toBeChecked;
     });
+
+    it('should disable the checkbox when isRecurring is false', () => {
+        const {container} = renderWithReactIntl(<RecurringPlan isRecurring={false}/>);
+        expect(container.querySelector('.rc-checkbox-disabled')).not.toBeNull()
+    })
 });

@@ -22,6 +22,10 @@
       border-radius: 30%;
     }
 
+    span[class*='checkbox-disabled'] {
+      cursor: not-allowed;
+    }
+
     span[class*='checkbox'] {
       &:hover {
         span[class*='checkbox-inner'] {
@@ -37,6 +41,9 @@
             border-color: $primary-color-1;
           }
         }
+      }
+      &:disabled {
+        cursor: not-allowed;
       }
     }
 
