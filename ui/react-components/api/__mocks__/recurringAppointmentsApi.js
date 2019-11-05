@@ -117,6 +117,14 @@ export const getRecurringAppointment = (uuid) => {
     });
 };
 
+export const getRecurringAppointmentByUuid = () => {
+    return new Promise((resolve, reject) => {
+        process.nextTick(() =>
+            resolve([appointment])
+        );
+    });
+};
+
 export const recurringConflictsFor = () => {
     return {};
 };
