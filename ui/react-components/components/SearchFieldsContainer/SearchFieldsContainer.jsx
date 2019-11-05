@@ -39,31 +39,33 @@ const SearchFieldsContainer = props => {
                             message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
                     </div>
                     <div data-testid="service-search">
-                        <ServiceSearch onChange={(optionSelected) => {
-                            updateAppointmentDetails({service: optionSelected.value});
-                            updateErrorIndicators({serviceError: !optionSelected.value});
+                        <ServiceSearch value={appointmentDetails.service} onChange={(optionSelected) => {
+                            updateAppointmentDetails({service: optionSelected});
+                            updateErrorIndicators({serviceError: !optionSelected});
                             endTimeBasedOnService(appointmentDetails.startTime, optionSelected.value, undefined);
                         }}
-                                       specialityUuid={appointmentDetails.speciality}/>
+                                       specialityUuid={appointmentDetails.speciality
+                                       && appointmentDetails.speciality.value
+                                       && appointmentDetails.speciality.value.uuid}/>
                         <ErrorMessage
                             message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
                     </div>
                     <div data-testid="service-type-search">
-                        <ServiceTypeSearch onChange={(optionSelected) => {
-                            updateAppointmentDetails({serviceType: optionSelected.value});
-                            endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
+                        <ServiceTypeSearch  value={appointmentDetails.serviceType} onChange={(optionSelected) => {
+                            updateAppointmentDetails({serviceType: optionSelected});
+                            endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected);
                         }}
-                                           serviceUuid={appointmentDetails.service && appointmentDetails.service.uuid}/>
+                                           serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}/>
                     </div>
                     {isSpecialitiesEnabled(appConfig) ?
                         <div data-testid="speciality-search">
-                            <SpecialitySearch
-                                onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected.value})}/>
+                            <SpecialitySearch value={appointmentDetails.speciality}
+                                onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected})}/>
                         </div> : null
                     }
                     <div data-testid="location-search">
-                        <LocationSearch
-                            onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected.value})}/>
+                        <LocationSearch value={appointmentDetails.location}
+                            onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}/>
                         <ErrorMessage message={undefined}/>
                     </div>
                 </div>
