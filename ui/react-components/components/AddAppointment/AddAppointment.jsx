@@ -116,8 +116,8 @@ const AddAppointment = props => {
     const getAppointmentRequest = () => {
         let appointment = {
             patientUuid: appointmentDetails.patient && appointmentDetails.patient.value.uuid,
-            serviceUuid: appointmentDetails.service && appointmentDetails.service.uuid,
-            serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.uuid,
+            serviceUuid: appointmentDetails.service && appointmentDetails.service.value.uuid,
+            serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.value.uuid,
             startDateTime: appointmentDetails.isRecurring
                 ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.startTime)
                 : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
@@ -125,7 +125,7 @@ const AddAppointment = props => {
                 ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.endTime)
                 : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
             providers: appointmentDetails.providers,
-            locationUuid: appointmentDetails.location,
+            locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
             appointmentKind: "Scheduled",
             comments: appointmentDetails.notes
         };
@@ -287,8 +287,7 @@ const AddAppointment = props => {
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor)}>
             <SearchFieldsContainer updateAppointmentDetails={updateAppointmentDetails} updateErrorIndicators={updateErrorIndicators}
-                                   appointmentDetails={appointmentDetails} endTimeBasedOnService={endTimeBasedOnService} appConfig={appConfig}
-                                   errorTranslations={errorTranslations} errors={errors}/>
+                                   appointmentDetails={appointmentDetails} endTimeBasedOnService={endTimeBasedOnService} appConfig={appConfig} errors={errors}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(searchFieldsContainerLeft)}>
                     <RecurringPlan onChange={event => updateAppointmentDetails({isRecurring: event.target.checked})}/>

@@ -35,15 +35,23 @@ describe('Edit Appointment', () => {
         expect(recurringAppointmentsApiSpy).toHaveBeenCalledTimes(1);
     });
 
-    it('should render patient details coming from response', async () => {
+    //TODO Warnings while running tests
+    it('should render patient, service, service type, speciality and location details coming from response', async () => {
         let getByTextInDom = undefined;
+        const config = {
+            "enableSpecialities": true
+        };
         act(() => {
             const {getByText} = renderWithReactIntl(<EditAppointment
-                appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} isRecurring={false}/>);
+                appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} isRecurring={false} appConfig={config}/>);
             getByTextInDom = getByText;
         });
         await flushPromises();
         getByTextInDom('9DEC81BF 9DEC81C6 (IQ1114)');
+        getByTextInDom('Physiotherapy OPD');
+        getByTextInDom('1 session');
+        getByTextInDom('Operating Theatre');
+        getByTextInDom('test speciality');
     });
 });
 

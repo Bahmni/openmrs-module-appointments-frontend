@@ -9,7 +9,7 @@ import {disable} from './ServiceTypeSearch.module.scss';
 
 const ServiceTypeSearch = props => {
 
-    const {intl, serviceUuid, onChange} = props;
+    const {intl, serviceUuid, onChange, value} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SERVICE_APP_TYPE', defaultMessage: 'Service App Type'
     });
@@ -57,6 +57,7 @@ const ServiceTypeSearch = props => {
                 placeholder={placeHolder}
                 value={selectedOption}
                 onChange={updateSelection}
+                selectedValue={value}
             />
         </div>
     );
@@ -65,7 +66,8 @@ const ServiceTypeSearch = props => {
 ServiceTypeSearch.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
-    serviceUuid: PropTypes.string
+    serviceUuid: PropTypes.string,
+    value:PropTypes.object
 };
 
 export default injectIntl(ServiceTypeSearch);

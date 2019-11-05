@@ -17,7 +17,7 @@ const SpecialitySearch = (props) => {
         const options = [{value: null, label: defaultOption}];
         forEach(specialities, function (speciality) {
             options.push({
-                value: speciality.uuid,
+                value: speciality,
                 label: speciality.name
             });
         });
@@ -29,7 +29,7 @@ const SpecialitySearch = (props) => {
         setSpecialities(createDropdownOptions(specialities));
     };
 
-    const {intl, onChange} = props;
+    const {intl, onChange, value} = props;
     const placeholder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SPECIALITY', defaultMessage: 'Speciality'
     });
@@ -39,12 +39,14 @@ const SpecialitySearch = (props) => {
             options={Object.values(specialities)}
             onChange={onChange}
             placeholder={placeholder}
+            selectedValue={value}
         />);
 };
 
 SpecialitySearch.propTypes = {
     intl: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.object
 };
 
 export default injectIntl(SpecialitySearch);
