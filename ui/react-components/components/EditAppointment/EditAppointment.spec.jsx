@@ -53,5 +53,11 @@ describe('Edit Appointment', () => {
         getByTextInDom('Operating Theatre');
         getByTextInDom('test speciality');
     });
+
+    it('should recurring plan component', () => {
+        const {getByText} = renderWithReactIntl(<EditAppointment appointmentUuid={'appt-uuid'} isRecurring={true}/>);
+        getByText('Plan');
+        getByText('Recurring Appointment');
+    })
 });
 
