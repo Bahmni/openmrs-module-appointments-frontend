@@ -16,7 +16,7 @@ import {AppContext} from "../AppContext/AppContext";
 const SuccessModal = (props) => {
 
     const {intl, patientDetails} = props;
-    const {onBack, angularState} = React.useContext(AppContext);
+    const {onBack} = React.useContext(AppContext);
 
     const saveConfirmationTextPartOne = intl.formatMessage({
         id: 'APPOINTMENT_SAVE_CONFIRMATION_TEXT_PART_1', defaultMessage: 'The new appointment for the patient'
@@ -30,7 +30,7 @@ const SuccessModal = (props) => {
         <div className={classNames(saveModal)}>
             <div className={classNames(saveModalCloseIcon)}>
                 <a data-testid="save-close-icon">
-                    <i className={classNames("fa", "fa-times")} onClick={() => onBack(angularState)}/>
+                    <i className={classNames("fa", "fa-times")} onClick={() => onBack()}/>
                 </a>
             </div>
             <div>
@@ -44,7 +44,7 @@ const SuccessModal = (props) => {
                                       defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
                 </div>
                 <div className={classNames(saveConfirmationFooter)}>
-                    <button className={classNames(button)} data-testid="save-close-button" onClick={() => onBack(angularState)}>
+                    <button className={classNames(button)} data-testid="save-close-button" onClick={() => onBack()}>
                         <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_CLOSE'} defaultMessage={'Close'}/>
                     </button>
                     <span className={classNames(newAppointmentLink)}>

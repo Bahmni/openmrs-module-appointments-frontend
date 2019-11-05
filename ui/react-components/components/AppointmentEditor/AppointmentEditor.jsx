@@ -52,7 +52,7 @@ import {isEmpty} from 'lodash';
 const AppointmentEditor = props => {
 
     const {appConfig, intl} = props;
-    const {angularState} = React.useContext(AppContext);
+    const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
 
     const initialAppointmentState = {
@@ -183,7 +183,7 @@ const AppointmentEditor = props => {
             const appointment = getAppointment();
             const response = await saveAppointment(appointment);
             if (response.status === 200) {
-                angularState.params.viewDate = appointmentDetails.appointmentDate.startOf('day').toDate();
+                setViewDate(appointmentDetails.appointmentDate.startOf('day').toDate());
                 setShowSuccessPopup(true);
             }
         }
@@ -197,7 +197,7 @@ const AppointmentEditor = props => {
             };
             const response = await saveRecurring(recurringRequest);
             if (response.status === 200) {
-                angularState.params.viewDate = appointmentDetails.recurringStartDate.startOf('day').toDate();
+                setViewDate(appointmentDetails.recurringStartDate.startOf('day').toDate());
                 setShowSuccessPopup(true);
             }
         }
