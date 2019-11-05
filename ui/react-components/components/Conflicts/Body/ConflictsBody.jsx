@@ -24,7 +24,7 @@ const ConflictsBody = props => {
     };
 
     const createTab = (conflicts, translationKey, defaultMessage) => {
-        return <Tab key={defaultMessage} className="tab">
+        return <Tab key={defaultMessage}>
             <span>
                 <FormattedMessage id={translationKey} defaultMessage={defaultMessage}/>
                     <span className={conflictsCount}>{conflicts.length}</span>
