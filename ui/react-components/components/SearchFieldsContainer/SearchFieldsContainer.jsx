@@ -29,8 +29,9 @@ const SearchFieldsContainer = props => {
                 <div className={classNames(searchFieldsContainerLeft)}>
                     <div data-testid="patient-search">
                         <PatientSearch
+                            value={appointmentDetails.patient}
                             onChange={(optionSelected) => {
-                                const newValue = optionSelected ? optionSelected.value : undefined;
+                                const newValue = optionSelected ? optionSelected : undefined;
                                 updateAppointmentDetails({patient: newValue});
                                 updateErrorIndicators({patientError: !newValue});
                             }}/>
