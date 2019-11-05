@@ -41,3 +41,11 @@ export const saveRecurringAppointments = () => {
         );
     });
 };
+
+export const getRecurringAppointmentByUuid = () => {
+    return new Promise((resolve, reject) => {
+        process.nextTick(() =>
+            resolve([appointment])
+        );
+    });
+};
