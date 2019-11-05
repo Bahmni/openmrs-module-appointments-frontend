@@ -12,7 +12,7 @@ create_release() {
     local commit_sha="$3";
     local repo_owner="$4";
 
-    curl -s -S -X POST "https://api.github.com/repos/$repo_owner/openmrs-module-appointment-frontend/releases" \
+    curl -s -S -X POST "https://api.github.com/repos/$repo_owner/openmrs-module-appointments-frontend/releases" \
 	 -H "Authorization: token $token" \
 	 -H "Content-Type: application/json" \
 	 -d '{"tag_name": "'"$tag_name"'", "name" : "'"$tag_name"'", "target_commitish":"'"$commit_sha"'" }';
@@ -27,7 +27,7 @@ upload_asset() {
     local id="$4";
     local repo_owner="$5";
 
-  curl -s -S -X POST "https://uploads.github.com/repos/$repo_owner/openmrs-module-appointment-frontend/releases/$id/assets?name=$name" \
+  curl -s -S -X POST "https://uploads.github.com/repos/$repo_owner/openmrs-module-appointments-frontend/releases/$id/assets?name=$name" \
 	 -H "Accept: application/vnd.github.v3+json" \
 	 -H "Authorization: token $token" \
 	 -H "Content-Type: application/octet-stream" \
