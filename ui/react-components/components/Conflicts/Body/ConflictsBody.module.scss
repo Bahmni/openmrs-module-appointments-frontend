@@ -1,0 +1,28 @@
+@import '../../../variables.scss';
+
+.conflictsCount {
+  &:before {
+    content: "-";
+    padding: 3px;
+  }
+}
+
+ul[class*='react-tabs__tab-list'] {
+  border-bottom: none;
+  margin-left: 1.5%;
+}
+
+li[class*='react-tabs__tab'] {
+  border: none;
+  margin-right: 5%;
+  padding: 15px 0 15px 0;
+  bottom: -4px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+li[class*='react-tabs__tab'][aria-selected="true"] {
+  color: $primary-color-2;
+  border-bottom: 2px solid $primary-color-2;
+}
+
