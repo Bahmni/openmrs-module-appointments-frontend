@@ -8,22 +8,29 @@ import Checkbox from 'rc-checkbox';
 import 'rc-checkbox/assets/index.css';
 
 const RecurringPlan = props => {
+
+    const {onChange, isRecurring} = props;
+
     return (<div className={classNames(container)}>
-        <span className={classNames(planLabel)}><Label className={classNames(planLabel)} translationKey="PLAN_LABEL" defaultValue="Plan"/></span>
+        <span className={classNames(planLabel)}><Label className={classNames(planLabel)} translationKey="PLAN_LABEL"
+                                                       defaultValue="Plan"/></span>
         <div className={classNames(checkboxContainer)} data-test-id="checkbox">
             <Checkbox
-            onChange={props.onChange}
-            defaultChecked={false}
-            className={classNames(checkbox)}
-            id="recurrence-selection-checkbox"
-        />
-            <Label forInput="recurrence-selection-checkbox" translationKey="RECURRING_APPOINTMENT_LABEL" defaultValue="Recurring Appointment"/>
+                onChange={onChange}
+                defaultChecked={isRecurring || false}
+                className={classNames(checkbox)}
+                id="recurrence-selection-checkbox"
+                disabled={isRecurring === undefined ? false : !isRecurring}
+            />
+            <Label forInput="recurrence-selection-checkbox" translationKey="RECURRING_APPOINTMENT_LABEL"
+                   defaultValue="Recurring Appointment" disabled={!isRecurring}/>
         </div>
     </div>)
 };
 
 RecurringPlan.propTypes = {
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func,
+    isRecurring: PropTypes.bool
 };
 
 export default injectIntl(RecurringPlan);

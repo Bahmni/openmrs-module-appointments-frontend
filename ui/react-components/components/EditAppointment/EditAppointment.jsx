@@ -3,7 +3,11 @@ import {Fragment, useEffect, useState} from "react";
 import React from "react";
 import {injectIntl} from "react-intl";
 import classNames from "classnames";
-import {appointmentEditor} from "../AddAppointment/AddAppointment.module.scss";
+import {
+    appointmentEditor,
+    searchFieldsContainer,
+    searchFieldsContainerLeft
+} from "../AddAppointment/AddAppointment.module.scss";
 import SearchFieldsContainer from "../SearchFieldsContainer/SearchFieldsContainer.jsx";
 import {getRecurringAppointmentByUuid} from "../../api/recurringAppointmentsApi";
 import {getAppointmentByUuid} from "../../api/appointmentsApi";
@@ -11,6 +15,7 @@ import {getPatientForDropdown} from "../../mapper/patientMapper";
 import moment from "moment";
 import {getDuration} from "../../helper";
 import {MINUTES} from "../../constants";
+import RecurringPlan from "../RecurringPlan/RecurringPlan.jsx";
 
 const EditAppointment = props => {
 
@@ -89,6 +94,7 @@ const EditAppointment = props => {
                 startTime: appointmentResponse.startTime,
                 endTime: appointmentResponse.endTime,
                 notes: appointmentResponse.notes,
+                isRecurring: isRecurring
             });
             if (isRecurring) {
                 updateAppointmentDetails({
@@ -119,6 +125,11 @@ const EditAppointment = props => {
                                    updateErrorIndicators={updateErrorIndicators}
                                    endTimeBasedOnService={endTimeBasedOnService}
                                    updateAppointmentDetails={updateAppointmentDetails} appConfig={appConfig}/>
+            <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
+                <div className={classNames(searchFieldsContainerLeft)}>
+                    <RecurringPlan isRecurring={appointmentDetails.isRecurring}/>
+                </div>
+            </div>
         </div>
     </Fragment>);
 };
