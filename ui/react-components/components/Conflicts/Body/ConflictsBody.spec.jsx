@@ -33,12 +33,4 @@ describe('Conflicts Body', () => {
         expect(queryByText('No-Service Date conflicts')).toBeNull();
     });
 
-    it('should render tabs and respective panels', () => {
-        const conflicts = {SERVICE_UNAVAILABLE: [{uuid: "uuid"}], PATIENT_DOUBLE_BOOKING: [{uuid: "uuid"}]};
-
-        const {container} = renderWithReactIntl(<ConflictsBody conflicts={conflicts}/>, messages);
-
-        expect(container.querySelectorAll('.tab').length).toBe(2);
-        expect(container.querySelectorAll('.tabPanel').length).toBe(2);
-    });
 });
