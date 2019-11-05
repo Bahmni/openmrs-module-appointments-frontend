@@ -115,7 +115,7 @@ const AddAppointment = props => {
 
     const getAppointmentRequest = () => {
         let appointment = {
-            patientUuid: appointmentDetails.patient && appointmentDetails.patient.uuid,
+            patientUuid: appointmentDetails.patient && appointmentDetails.patient.value.uuid,
             serviceUuid: appointmentDetails.service && appointmentDetails.service.uuid,
             serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.uuid,
             startDateTime: appointmentDetails.isRecurring
@@ -148,7 +148,7 @@ const AddAppointment = props => {
     });
 
     const isValidAppointment = () => {
-        const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.uuid;
+        const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.value.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
         updateCommonErrorIndicators(isValidPatient, startTimeBeforeEndTime);
         updateErrorIndicators({appointmentDateError: !appointmentDetails.appointmentDate});
@@ -156,7 +156,7 @@ const AddAppointment = props => {
     };
 
     const isValidRecurringAppointment = () => {
-        const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.uuid;
+        const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.value.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
         updateCommonErrorIndicators(isValidPatient, startTimeBeforeEndTime);
         updateErrorIndicators({
@@ -234,7 +234,7 @@ const AddAppointment = props => {
     };
 
     const savePopup = <CustomPopup style={customPopup}
-        popupContent={<SuccessConfirmation patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.name} (${appointmentDetails.patient.identifier})`}/>}/>;
+        popupContent={<SuccessConfirmation patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}/>}/>;
 
     const appointmentStartTimeProps = {
         translationKey: 'APPOINTMENT_TIME_FROM_LABEL', defaultValue: 'From',

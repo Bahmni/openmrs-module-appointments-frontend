@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import AsyncSelect from "react-select/async";
 import {dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
 import classNames from 'classnames';
@@ -9,13 +9,24 @@ import {IndicatorSeparator} from "./IndicatorSeparator.jsx";
 import {ValueContainer} from "./ValueContainer.jsx";
 
 const AsyncDropdown = (props) => {
+
+    const {loadOptions, placeholder, onChange, intl, selectedValue} = props;
+
     const [inputValue, setInputValue] = useState();
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(selectedValue);
     const [lastSelectedValue, setLastSelectedValue] = useState('');
-    const {loadOptions, placeholder, onChange, intl} = props;
+
     let select;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_TYPE_TO_SEARCH_MESSAGE', defaultMessage: 'Type to search'});
     const loadingMessage = intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'});
+
+
+    useEffect(() => {
+        if (selectedValue) {
+            setValue(selectedValue);
+            onChange(selectedValue);
+        }
+    },[selectedValue]);
 
     const handleOnChange = (event) => {
         setInputValue('');
@@ -76,5 +87,6 @@ export default injectIntl(AsyncDropdown);
 AsyncDropdown.propTypes = {
     loadOptions: PropTypes.func,
     onChange: PropTypes.func,
-    placeholder: PropTypes.string
+    placeholder: PropTypes.string,
+    selectedValue: PropTypes.object
 };

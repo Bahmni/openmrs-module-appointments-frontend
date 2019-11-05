@@ -25,6 +25,7 @@ angular.module('bahmni.appointments')
                     if (state === 'edit') {
                         ngDialog.close(dialog.id, false);
                         params.uuid = appointment.uuid;
+                        params.isRecurring = appointment.recurring;
                         $state.go('home.manage.appointments.calendar.edit', params, {reload: false});
                     } else if (state === 'new') {
                         ngDialog.close(dialog.id, false);
