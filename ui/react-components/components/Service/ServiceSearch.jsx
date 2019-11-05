@@ -7,7 +7,7 @@ import {forEach} from 'lodash';
 
 const ServiceSearch = (props) => {
 
-    const {intl, onChange, specialityUuid} = props;
+    const {intl, onChange, specialityUuid, value} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SERVICE', defaultMessage: 'Service'
     });
@@ -35,9 +35,10 @@ const ServiceSearch = (props) => {
 
     return (
         <Dropdown data-testid="service-search"
-            options={Object.values(services)}
-            placeholder={placeHolder}
-            onChange={onChange}
+                  options={Object.values(services)}
+                  placeholder={placeHolder}
+                  onChange={onChange}
+                  selectedValue={value}
         />
     );
 };
@@ -45,7 +46,8 @@ const ServiceSearch = (props) => {
 ServiceSearch.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
-    specialityUuid: PropTypes.string
+    specialityUuid: PropTypes.string,
+    value: PropTypes.object
 };
 
 export default injectIntl(ServiceSearch);

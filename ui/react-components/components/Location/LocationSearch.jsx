@@ -18,7 +18,7 @@ const LocationSearch = (props) => {
         const options = [{value: null, label: defaultOption}];
         forEach(locations, function (location) {
             options.push({
-                value: location.uuid,
+                value: location,
                 label: location.name
             });
         });
@@ -30,7 +30,7 @@ const LocationSearch = (props) => {
         setLocations(createDropdownOptions(locations));
     };
 
-    const {intl, onChange} = props;
+    const {intl, onChange, value} = props;
     const placeholder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_LOCATION', defaultMessage: 'Location'
     });
@@ -39,12 +39,14 @@ const LocationSearch = (props) => {
             options={Object.values(locations)}
             onChange={onChange}
             placeholder={placeholder}
+            selectedValue={value}
         />);
 };
 
 LocationSearch.propTypes = {
     intl: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.object
 };
 
 export default injectIntl(LocationSearch);
