@@ -115,9 +115,11 @@ require("./filters/appointmentsFilter.js");
 //Include react components bundled in the lib.
 require("../lib/reactAngularAdaptor");
 
+async function loadConstants() {
+    return  require("./loadConstants").loadAngularConstants();
+}
+
 (async () => {
-    const constantsLoader = require("./loadConstants");
-    await constantsLoader.loadAngularConstants();
-    await constantsLoader.loadReactConstants();
+    await loadConstants();
     angular.bootstrap(document, ['bahmni.appointments']);
 })();

@@ -12,12 +12,3 @@ export async function loadAngularConstants() {
             })
         })
 }
-
-export async function loadReactConstants() {
-    return fetch("./constants/react-constants.json")
-        .then((res) =>
-            res.json().then((data) => {
-                localStorage.setItem("reactConstants", JSON.stringify(data));
-            })
-        );
-}
