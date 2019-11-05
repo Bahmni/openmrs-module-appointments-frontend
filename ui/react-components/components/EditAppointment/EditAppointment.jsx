@@ -8,6 +8,9 @@ import SearchFieldsContainer from "../SearchFieldsContainer/SearchFieldsContaine
 import {getRecurringAppointmentByUuid} from "../../api/recurringAppointmentsApi";
 import {getAppointmentByUuid} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
+import moment from "moment";
+import {getDuration} from "../../helper";
+import {MINUTES} from "../../constants";
 
 const EditAppointment = props => {
 
@@ -59,6 +62,17 @@ const EditAppointment = props => {
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 
+    //TODO To be checked if can be moved to common place
+    const endTimeBasedOnService = (time, service, serviceType) => {
+        const currentTime = moment(time);
+        const duration = getDuration(service, serviceType);
+        currentTime.add(duration, MINUTES);
+        if (time) {
+            updateAppointmentDetails({endTime: currentTime});
+            updateErrorIndicators({endTimeError: false});
+        }
+    };
+
     const generateAppointmentDetails = async () => {
         const appointment = isRecurring ? await getRecurringAppointmentByUuid(appointmentUuid) : await getAppointmentByUuid(appointmentUuid);
         const appointmentResponse = isRecurring
@@ -68,10 +82,10 @@ const EditAppointment = props => {
             updateAppointmentDetails({
                 patient: getPatientForDropdown(appointmentResponse.patient),
                 providers: appointmentResponse.providers,
-                service: appointmentResponse.service,
-                serviceType: appointmentResponse.serviceType,
-                location: appointmentResponse.location,
-                speciality: appointmentResponse.speciality,
+                service: {label: appointmentResponse.service.name, value: appointmentResponse.service},
+                serviceType: appointmentResponse.serviceType ? {label: appointmentResponse.serviceType.name, value: appointmentResponse.serviceType} : undefined,
+                location: appointmentResponse.location ? {label: appointmentResponse.location.name, value: appointmentResponse.location} : undefined,
+                speciality: appointmentResponse.service.speciality.uuid ? {label: appointmentResponse.service.speciality.name, value: appointmentResponse.service.speciality} : undefined,
                 startTime: appointmentResponse.startTime,
                 endTime: appointmentResponse.endTime,
                 notes: appointmentResponse.notes,
@@ -103,6 +117,7 @@ const EditAppointment = props => {
         <div data-testid="appointment-editor" className={classNames(appointmentEditor)}>
             <SearchFieldsContainer appointmentDetails={appointmentDetails} errors={errors}
                                    updateErrorIndicators={updateErrorIndicators}
+                                   endTimeBasedOnService={endTimeBasedOnService}
                                    updateAppointmentDetails={updateAppointmentDetails} appConfig={appConfig}/>
         </div>
     </Fragment>);

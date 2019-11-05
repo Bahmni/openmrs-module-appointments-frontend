@@ -6,7 +6,7 @@ const appointmentResponse = {"data" : {
         "appointmentServiceId": 1,
         "name": "Physiotherapy OPD",
         "description": null,
-        "speciality": {},
+        "speciality": {name: 'test speciality', uuid: '8de35e75-20e0-11e7-a53f-5usc29e530d2'},
         "startTime": "",
         "endTime": "",
         "maxAppointmentsLimit": null,
