@@ -5,10 +5,13 @@ import {injectIntl} from "react-intl";
 import classNames from "classnames";
 import {appointmentEditor} from "../AddAppointment/AddAppointment.module.scss";
 import SearchFieldsContainer from "../SearchFieldsContainer/SearchFieldsContainer.jsx";
+import {getRecurringAppointmentByUuid} from "../../api/recurringAppointmentsApi";
+import {getAppointmentByUuid} from "../../api/appointmentsApi";
+import {getPatientForDropdown} from "../../mapper/patientMapper";
 
 const EditAppointment = props => {
 
-    const {appConfig} = props;
+    const {appConfig, appointmentUuid, isRecurring} = props;
 
     const [errors, setErrors] = useState({
         patientError: false,
@@ -48,18 +51,58 @@ const EditAppointment = props => {
     };
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
 
-    const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {return {...prevErrors, ...errorIndicators}});
+    const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {
+        return {...prevErrors, ...errorIndicators}
+    });
 
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 
+    const generateAppointmentDetails = async () => {
+        const appointment = isRecurring ? await getRecurringAppointmentByUuid(appointmentUuid) : await getAppointmentByUuid(appointmentUuid);
+        const appointmentResponse = isRecurring
+            ? (appointment && appointment.data && appointment.data.appointmentDefaultResponse) || undefined
+            : (appointment && appointment.data && appointment.data) || undefined;
+        if (appointmentResponse) {
+            updateAppointmentDetails({
+                patient: getPatientForDropdown(appointmentResponse.patient),
+                providers: appointmentResponse.providers,
+                service: appointmentResponse.service,
+                serviceType: appointmentResponse.serviceType,
+                location: appointmentResponse.location,
+                speciality: appointmentResponse.speciality,
+                startTime: appointmentResponse.startTime,
+                endTime: appointmentResponse.endTime,
+                notes: appointmentResponse.notes,
+            });
+            if (isRecurring) {
+                updateAppointmentDetails({
+                    recurringStartDate: appointmentResponse.recurringStartDate,
+                    recurringEndDate: appointmentResponse.recurringEndDate,
+                    startDateType: appointmentResponse.startDateType,
+                    endDateType: appointmentResponse.endDateType,
+                    recurrenceType: appointmentResponse.recurrenceType,
+                    occurrences: appointmentResponse.occurrences,
+                    period: appointmentResponse.period,
+                    weekDays: appointmentResponse.weekDays
+                });
+            } else {
+                updateAppointmentDetails({
+                    appointmentDate: appointmentResponse.appointmentDate,
+                });
+            }
+        }
+    };
+
     useEffect(() => {
+        generateAppointmentDetails().then();
     }, [appConfig]);
 
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor)}>
-            <SearchFieldsContainer appointmentDetails={appointmentDetails} errors={errors} updateErrorIndicators={updateErrorIndicators}
+            <SearchFieldsContainer appointmentDetails={appointmentDetails} errors={errors}
+                                   updateErrorIndicators={updateErrorIndicators}
                                    updateAppointmentDetails={updateAppointmentDetails} appConfig={appConfig}/>
         </div>
     </Fragment>);
@@ -68,7 +111,8 @@ const EditAppointment = props => {
 EditAppointment.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object,
-    appointmentUuid: PropTypes.string.isRequired
+    appointmentUuid: PropTypes.string.isRequired,
+    isRecurring: PropTypes.bool.isRequired
 };
 
 export default injectIntl(EditAppointment);
