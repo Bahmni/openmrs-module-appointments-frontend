@@ -29,7 +29,7 @@ const dailyRecurringAppointment = {
             "endDateTime": 1570770000000,
             "appointmentKind": "Scheduled",
             "status": "Scheduled",
-            "comments": null,
+            "comments": "comments",
             "additionalInfo": {},
             "providers": [{
                 "uuid": "dae6561f-cca8-4304-9996-6eae80892d91",
@@ -78,7 +78,7 @@ const weeklyRecurringAppointment = {
             "endDateTime": 1570770000000,
             "appointmentKind": "Scheduled",
             "status": "Scheduled",
-            "comments": null,
+            "comments": "comments",
             "additionalInfo": {},
             "providers": [{
                 "uuid": "dae6561f-cca8-4304-9996-6eae80892d91",
