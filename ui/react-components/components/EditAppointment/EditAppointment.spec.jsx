@@ -61,6 +61,75 @@ describe('Edit Appointment', () => {
         expect(containerInDom.querySelectorAll('.rc-time-picker-input')[1].value).toBe('10:30 am');
     });
 
+    it('should render daily recurring appointment details coming from response', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        const config = {
+            "enableSpecialities": true
+        };
+        act(() => {
+            const {getByText, container, getByTestId} = renderWithReactIntl(<EditAppointment
+                appointmentUuid={'DAY'} isRecurring={true} appConfig={config}/>);
+            getByTextInDom = getByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+        });
+        await flushPromises();
+        getByTextInDom('9DEC81BF 9DEC81C6 (IQ1114)');
+        getByTextInDom('Physiotherapy OPD');
+        getByTextInDom('1 session');
+        getByTextInDom('Operating Theatre');
+        getByTextInDom('test speciality');
+        getByTextInDom('to');
+        getByTextInDom('10:00 am');
+        getByTextInDom('10:30 am');
+        getByTextInDom('2nd');
+        getByTextInDom('DAY');
+        expect(getByTestIdInDom('input-box').value).toBe('3');
+        getByTextInDom('Occurrences');
+        expect(containerInDom.querySelectorAll('.rc-time-picker-input')[0].value).toBe('10:00 am');
+        expect(containerInDom.querySelectorAll('.rc-time-picker-input')[1].value).toBe('10:30 am');
+    });
+
+    it('should render weekly recurring appointment details coming from response', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        const config = {
+            "enableSpecialities": true
+        };
+        act(() => {
+            const {getByText, container, getByTestId} = renderWithReactIntl(<EditAppointment
+                appointmentUuid={'WEEK'} isRecurring={true} appConfig={config}/>);
+            getByTextInDom = getByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+        });
+        await flushPromises();
+        getByTextInDom('9DEC81BF 9DEC81C6 (IQ1114)');
+        getByTextInDom('Physiotherapy OPD');
+        getByTextInDom('1 session');
+        getByTextInDom('Operating Theatre');
+        getByTextInDom('test speciality');
+        getByTextInDom('to');
+        getByTextInDom('10:00 am');
+        getByTextInDom('10:30 am');
+        getByTextInDom('2nd');
+        getByTextInDom('WEEK');
+        getByTextInDom('New end date');
+        getByTextInDom('11th October 2019');
+        expect(getByTestIdInDom('SUNDAY').hasAttribute('disabled')).toBeTruthy();
+        expect(getByTestIdInDom('MONDAY').hasAttribute('disabled')).toBeTruthy();
+        expect(getByTestIdInDom('TUESDAY').hasAttribute('disabled')).toBeTruthy();
+        expect(getByTestIdInDom('WEDNESDAY').hasAttribute('disabled')).toBeTruthy();
+        expect(getByTestIdInDom('THURSDAY').hasAttribute('disabled')).toBeTruthy();
+        expect(getByTestIdInDom('FRIDAY').hasAttribute('disabled')).toBeTruthy();
+        expect(getByTestIdInDom('SATURDAY').hasAttribute('disabled')).toBeTruthy();
+        expect(containerInDom.querySelectorAll('.rc-time-picker-input')[0].value).toBe('10:00 am');
+        expect(containerInDom.querySelectorAll('.rc-time-picker-input')[1].value).toBe('10:30 am');
+    });
+
     it('should recurring plan component', () => {
         const {getByText} = renderWithReactIntl(<EditAppointment appointmentUuid={'appt-uuid'} isRecurring={true}/>);
         getByText('Plan');
