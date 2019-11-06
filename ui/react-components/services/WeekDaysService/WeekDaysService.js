@@ -1,5 +1,5 @@
-export const getWeekDays = (startOfWeek) => {
-    const weekDays = new Map([
+const getDefaultWeekDaysMap = () => {
+    return new Map([
         ['SUNDAY', {
             translationKey: 'SUNDAY',
             defaultValue: 'Su',
@@ -30,6 +30,10 @@ export const getWeekDays = (startOfWeek) => {
             isSelected: false
         }]
     ]);
+};
+
+export const getWeekDays = (startOfWeek) => {
+    const weekDays = getDefaultWeekDaysMap();
 
     if (!startOfWeek) {
         return weekDays;
@@ -40,3 +44,11 @@ export const getWeekDays = (startOfWeek) => {
 };
 
 export const getSelectedWeekDays = weekDays => [...weekDays.keys()].filter(key => weekDays.get(key).isSelected);
+
+export const selectWeekDays = (weekDays, selectedDaysOfWeek) => {
+    if (!weekDays)
+        weekDays = getDefaultWeekDaysMap();
+
+    selectedDaysOfWeek.forEach(selectedDayOfWeek => weekDays.get(selectedDayOfWeek).isSelected = true);
+    return weekDays;
+};

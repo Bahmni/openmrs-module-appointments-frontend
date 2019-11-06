@@ -290,7 +290,8 @@ const AddAppointment = props => {
                                    appointmentDetails={appointmentDetails} endTimeBasedOnService={endTimeBasedOnService} appConfig={appConfig} errors={errors}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(searchFieldsContainerLeft)}>
-                    <RecurringPlan onChange={event => updateAppointmentDetails({isRecurring: event.target.checked})}/>
+                    <RecurringPlan isRecurring={appointmentDetails.isRecurring}
+                                   onChange={() => updateAppointmentDetails({isRecurring: !appointmentDetails.isRecurring})}/>
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
