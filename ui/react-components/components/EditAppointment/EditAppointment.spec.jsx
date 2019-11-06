@@ -59,6 +59,9 @@ describe('Edit Appointment', () => {
         getByTextInDom('10:30 am');
         expect(containerInDom.querySelectorAll('.rc-time-picker-input')[0].value).toBe('10:00 am');
         expect(containerInDom.querySelectorAll('.rc-time-picker-input')[1].value).toBe('10:30 am');
+        getByTextInDom('comments');
+        getByTextInDom('Update');
+        getByTextInDom('Cancel');
     });
 
     it('should render daily recurring appointment details coming from response', async () => {
@@ -90,6 +93,9 @@ describe('Edit Appointment', () => {
         getByTextInDom('Occurrences');
         expect(containerInDom.querySelectorAll('.rc-time-picker-input')[0].value).toBe('10:00 am');
         expect(containerInDom.querySelectorAll('.rc-time-picker-input')[1].value).toBe('10:30 am');
+        getByTextInDom('comments');
+        getByTextInDom('Update');
+        getByTextInDom('Cancel');
     });
 
     it('should render weekly recurring appointment details coming from response', async () => {
@@ -128,6 +134,9 @@ describe('Edit Appointment', () => {
         expect(getByTestIdInDom('SATURDAY').hasAttribute('disabled')).toBeTruthy();
         expect(containerInDom.querySelectorAll('.rc-time-picker-input')[0].value).toBe('10:00 am');
         expect(containerInDom.querySelectorAll('.rc-time-picker-input')[1].value).toBe('10:30 am');
+        getByTextInDom('comments');
+        getByTextInDom('Update');
+        getByTextInDom('Cancel');
     });
 
     it('should recurring plan component', () => {
@@ -136,4 +145,3 @@ describe('Edit Appointment', () => {
         getByText('Recurring Appointment');
     });
 });
-

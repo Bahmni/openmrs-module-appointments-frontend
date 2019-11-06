@@ -5,12 +5,13 @@ import {notes} from './AppointmentNotes.module.scss'
 
 const AppointmentNotes = (props) => (
         <div>
-            <textarea className={classNames(notes)} onChange={props.onChange} data-testid="notes"/>
+            <textarea value={props.value} className={classNames(notes)} onChange={props.onChange} data-testid="notes"/>
         </div>
 );
 
 AppointmentNotes.propTypes = {
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string
 };
 
 export default AppointmentNotes;

@@ -16,7 +16,7 @@ import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave} = props;
+    const {checkAndSave, isEdit} = props;
 
     const popupContent = <CancelConfirmation/>;
 
@@ -28,20 +28,28 @@ const AppointmentEditorFooter = props => {
     return (
         <div className={classNames(footer)}>
             <div className={classNames(footerElements)}>
-                <CustomPopup style={customPopup} triggerComponent={cancelButton} popupContent={popupContent}/>
-                <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
-                    <i className={classNames("fa", "fa-check")}/>
-                    <span>
+                <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
+                {isEdit
+                    ? <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
+                        <i className={classNames("fa", "fa-check")}/>
+                        <span>
+                        <FormattedMessage id={'APPOINTMENT_UPDATE_LABEL'} defaultMessage={'Update'}/>
+                    </span>
+                    </button>
+                    : <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
+                        <i className={classNames("fa", "fa-check")}/>
+                        <span>
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
                     </span>
-                </button>
+                    </button>}
             </div>
         </div>
     );
 };
 
 AppointmentEditorFooter.propTypes = {
-    checkAndSave: PropTypes.func.isRequired
+    checkAndSave: PropTypes.func,
+    isEdit: PropTypes.bool
 };
 
 export default AppointmentEditorFooter;
