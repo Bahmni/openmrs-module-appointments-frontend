@@ -26,3 +26,31 @@ li[class*='react-tabs__tab'][aria-selected="true"] {
   border-bottom: 2px solid $primary-color-2;
 }
 
+.conflictsHeading {
+  margin: 2% 0 2% 1.5%;
+  font-size: 14px;
+  height: 19px;
+  color: $secondary-color-2;
+}
+
+.conflictsList {
+  height: 600px;
+  overflow: auto
+}
+
+.appointmentConflict {
+  margin: 1% 0 3% 1.5%;
+  font-size: 14px;
+  color: $secondary-color-2;
+  .conflictMessage {
+    padding: 1% 0 1% 0;
+    .boldContent {
+      font-weight: 600;
+    }
+  }
+  .conflictDetails {
+    padding-top: 0.5%;
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
