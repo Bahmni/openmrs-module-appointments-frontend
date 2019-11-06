@@ -4,4 +4,20 @@
     font-size: 18px;
     margin-bottom: 50px;
   }
+
+  .recurringDetailsEdit {
+    > div {
+      margin-bottom: 35px;
+      div {
+        margin-bottom: 15px;
+        margin-left: 0;
+      }
+    }
+    .dateText {
+      &:before {
+        content: "|";
+        padding: 3px;
+      }
+    }
+  }
 }

@@ -9,7 +9,7 @@ import 'rc-checkbox/assets/index.css';
 
 const RecurringPlan = props => {
 
-    const {onChange, isRecurring} = props;
+    const {onChange, isRecurring, isEdit} = props;
 
     return (<div className={classNames(container)}>
         <span className={classNames(planLabel)}><Label className={classNames(planLabel)} translationKey="PLAN_LABEL"
@@ -17,20 +17,22 @@ const RecurringPlan = props => {
         <div className={classNames(checkboxContainer)} data-test-id="checkbox">
             <Checkbox
                 onChange={onChange}
-                defaultChecked={isRecurring || false}
+                defaultChecked={false}
                 className={classNames(checkbox)}
                 id="recurrence-selection-checkbox"
-                disabled={isRecurring === undefined ? false : !isRecurring}
+                checked={isRecurring}
+                disabled={isEdit}
             />
             <Label forInput="recurrence-selection-checkbox" translationKey="RECURRING_APPOINTMENT_LABEL"
-                   defaultValue="Recurring Appointment" disabled={!isRecurring}/>
+                   defaultValue="Recurring Appointment" disabled={isEdit}/>
         </div>
     </div>)
 };
 
 RecurringPlan.propTypes = {
     onChange: PropTypes.func,
-    isRecurring: PropTypes.bool
+    isRecurring: PropTypes.bool.isRequired,
+    isEdit: PropTypes.bool
 };
 
 export default injectIntl(RecurringPlan);
