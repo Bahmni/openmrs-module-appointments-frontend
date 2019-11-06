@@ -4,7 +4,7 @@ import React from "react";
 import {injectIntl} from "react-intl";
 import classNames from "classnames";
 import {
-    appointmentEditor, recurringContainer, recurringContainerLeft,
+    appointmentEditor, recurringContainer, recurringContainerLeft, recurringContainerRight,
     searchFieldsContainer,
     searchFieldsContainerLeft
 } from "../AddAppointment/AddAppointment.module.scss";
@@ -23,6 +23,8 @@ import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import InputNumber from "../InputNumber/InputNumber.jsx";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getWeekDays, selectWeekDays} from "../../services/WeekDaysService/WeekDaysService";
+import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
+import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
 
 const EditAppointment = props => {
 
@@ -103,7 +105,7 @@ const EditAppointment = props => {
                 speciality: appointmentResponse.service.speciality.uuid ? {label: appointmentResponse.service.speciality.name, value: appointmentResponse.service.speciality} : undefined,
                 startTime: moment(new Date(appointmentResponse.startDateTime)),
                 endTime: moment(new Date(appointmentResponse.endDateTime)),
-                notes: appointmentResponse.notes,
+                notes: appointmentResponse.comments,
                 appointmentDate: moment(new Date(appointmentResponse.startDateTime)),
             });
             setCurrentStartTime(moment(new Date(appointmentResponse.startDateTime)).format('hh:mm a'));
@@ -221,7 +223,12 @@ const EditAppointment = props => {
                                 </div>}
                         </div> : undefined}
                 </div>
+                <div className={classNames(recurringContainerRight)}>
+                    <Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/>
+                    <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
+                </div>
             </div>
+            <AppointmentEditorFooter isEdit={true}/>
         </div>
     </Fragment>);
 };
