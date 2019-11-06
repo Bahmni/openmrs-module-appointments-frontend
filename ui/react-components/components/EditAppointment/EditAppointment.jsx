@@ -18,8 +18,11 @@ import {MINUTES} from "../../constants";
 import RecurringPlan from "../RecurringPlan/RecurringPlan.jsx";
 import Label from "../Label/Label.jsx";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
-import {editAppointment, currentTimeSlot} from './EditAppointment.module.scss'
+import {editAppointment, currentTimeSlot, recurringDetailsEdit, dateText} from './EditAppointment.module.scss'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
+import InputNumber from "../InputNumber/InputNumber.jsx";
+import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
+import {getWeekDays, selectWeekDays} from "../../services/WeekDaysService/WeekDaysService";
 
 const EditAppointment = props => {
 
@@ -52,10 +55,8 @@ const EditAppointment = props => {
         recurringEndDate: undefined,
         startTime: undefined,
         endTime: undefined,
-        isRecurring: false,
+        isRecurring: isRecurring,
         notes: undefined,
-        startDateType: undefined,
-        endDateType: undefined,
         recurrenceType: undefined,
         occurrences: undefined,
         period: undefined,
@@ -90,6 +91,8 @@ const EditAppointment = props => {
         const appointmentResponse = isRecurring
             ? (appointment && appointment.data && appointment.data.appointmentDefaultResponse) || undefined
             : (appointment && appointment.data && appointment.data) || undefined;
+        const recurringPattern = isRecurring
+            ? (appointment && appointment.data && appointment.data.recurringPattern) || undefined : undefined;
         if (appointmentResponse) {
             updateAppointmentDetails({
                 patient: getPatientForDropdown(appointmentResponse.patient),
@@ -97,28 +100,22 @@ const EditAppointment = props => {
                 service: {label: appointmentResponse.service.name, value: appointmentResponse.service},
                 serviceType: appointmentResponse.serviceType ? {label: appointmentResponse.serviceType.name, value: appointmentResponse.serviceType} : undefined,
                 location: appointmentResponse.location ? {label: appointmentResponse.location.name, value: appointmentResponse.location} : undefined,
-                speciality: appointmentResponse.service.speciality !== {} ? {label: appointmentResponse.service.speciality.name, value: appointmentResponse.service.speciality} : undefined,
+                speciality: appointmentResponse.service.speciality.uuid ? {label: appointmentResponse.service.speciality.name, value: appointmentResponse.service.speciality} : undefined,
                 startTime: moment(new Date(appointmentResponse.startDateTime)),
                 endTime: moment(new Date(appointmentResponse.endDateTime)),
                 notes: appointmentResponse.notes,
-                isRecurring: isRecurring
+                appointmentDate: moment(new Date(appointmentResponse.startDateTime)),
             });
             setCurrentStartTime(moment(new Date(appointmentResponse.startDateTime)).format('hh:mm a'));
             setCurrentEndTime(moment(new Date(appointmentResponse.endDateTime)).format('hh:mm a'));
             if (isRecurring) {
                 updateAppointmentDetails({
-                    recurringStartDate: appointmentResponse.recurringStartDate,
-                    recurringEndDate: appointmentResponse.recurringEndDate,
-                    startDateType: appointmentResponse.startDateType,
-                    endDateType: appointmentResponse.endDateType,
-                    recurrenceType: appointmentResponse.recurrenceType,
-                    occurrences: appointmentResponse.occurrences,
-                    period: appointmentResponse.period,
-                    weekDays: appointmentResponse.weekDays
-                });
-            } else {
-                updateAppointmentDetails({
-                    appointmentDate: moment(new Date(appointmentResponse.startDateTime)),
+                    recurrenceType: recurringPattern.type,
+                    recurringStartDate: moment(new Date(appointmentResponse.startDateTime)),
+                    recurringEndDate: recurringPattern.endDate && moment(new Date(recurringPattern.endDate)),
+                    occurrences: recurringPattern.frequency,
+                    period: recurringPattern.period,
+                    weekDays: recurringPattern.daysOfWeek && selectWeekDays(getWeekDays(appConfig && appConfig.startOfWeek), recurringPattern.daysOfWeek)
                 });
             }
         }
@@ -148,7 +145,7 @@ const EditAppointment = props => {
                                    updateAppointmentDetails={updateAppointmentDetails} appConfig={appConfig}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(searchFieldsContainerLeft)}>
-                    <RecurringPlan isRecurring={appointmentDetails.isRecurring}/>
+                    <RecurringPlan isRecurring={appointmentDetails.isRecurring} isEdit={true}/>
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
@@ -186,6 +183,43 @@ const EditAppointment = props => {
                                           }}/>
                         </div>
                     </div>
+                    {appointmentDetails.isRecurring ?
+                        <div className={classNames(recurringDetailsEdit)}>
+                            <div>
+                                <div><Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/></div>
+                                <div>
+                                    <span id='sowmika'>{moment.localeData().ordinal(appointmentDetails.period)} &nbsp; {appointmentDetails.recurrenceType === 'WEEK'
+                                        ? <Label translationKey="WEEK_LABEL" defaultValue="WEEK"/>
+                                        : <Label translationKey="DAY_LABEL" defaultValue="DAY"/>}</span>
+                                </div>
+                                <div>
+                                    {appointmentDetails.recurrenceType === 'WEEK'
+                                        ? <ButtonGroup buttonsList={appointmentDetails.weekDays}/>
+                                        : undefined}
+                                </div>
+                            </div>
+                            {appointmentDetails.occurrences
+                                ? <div>
+                                    <div>
+                                        <Label translationKey="NUMBER_OF_OCCURRENCE_LABEL"
+                                               defaultValue="# of occurrences"/>
+                                    </div>
+                                    <InputNumber
+                                        onOccurrencesChange={value => updateAppointmentDetails({occurrences: value})}
+                                        defaultValue={appointmentDetails.occurrences}/>
+                                    <Label translationKey="OCCURRENCES_LABEL" defaultValue="Occurrences"/>
+                                </div>
+                                : <div>
+                                    <div>
+                                        <Label translationKey="NEW_END_DATE_LABEL" defaultValue="New end date"/>
+                                    </div>
+                                    <div>
+                                        <span>{moment(appointmentDetails.recurringEndDate).format("Do MMMM YYYY")}</span>
+                                        <span
+                                            className={classNames(dateText)}>{moment(appointmentDetails.recurringEndDate).format("dddd").toUpperCase()}</span>
+                                    </div>
+                                </div>}
+                        </div> : undefined}
                 </div>
             </div>
         </div>
