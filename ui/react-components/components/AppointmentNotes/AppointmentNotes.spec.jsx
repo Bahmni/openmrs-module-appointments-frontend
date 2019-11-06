@@ -10,5 +10,11 @@ describe('Appointment Notes', () => {
        const inputBox = container.querySelector('.notes');
        fireEvent.change(inputBox, {target:{value:'someNotes'}});
        expect(onChangeSpy.mock.calls.length).toBe(1);
-   })
+   });
+
+   it('should set the text are with given value', () => {
+       const onChangeSpy =  jest.fn();
+       const {getByText} = render(<AppointmentNotes value='value' onChange={onChangeSpy}/>);
+       getByText('value');
+   });
 });
