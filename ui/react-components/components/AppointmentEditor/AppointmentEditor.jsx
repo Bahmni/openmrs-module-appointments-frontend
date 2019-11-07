@@ -78,7 +78,7 @@ const AppointmentEditor = props => {
         notes: undefined,
         startDateType: undefined,
         endDateType: undefined,
-        recurrenceType: undefined,
+        recurrenceType: dayRecurrenceType,
         occurrences: undefined,
         period: undefined,
         weekDays: undefined,
@@ -237,7 +237,7 @@ const AppointmentEditor = props => {
     };
 
     const saveAppointments = () => {
-        isRecurring ? saveRecurringAppointments(getRecurringAppointmentRequest()) : save(getAppointmentRequest());
+        appointmentDetails.isRecurring ? saveRecurringAppointments(getRecurringAppointmentRequest()) : save(getAppointmentRequest());
     };
 
     const savePopup = <CustomPopup style={customPopup}
@@ -495,7 +495,7 @@ const AppointmentEditor = props => {
                              closeOnEscape={true}
                              popupContent={<Conflicts saveAnyway={saveAppointments}
                                                       modifyInformation={() => setConflicts(undefined)}
-                                                      conflicts={conflicts} service={service}/>}/> : undefined}
+                                                      conflicts={conflicts} service={appointmentDetails.service}/>}/> : undefined}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
