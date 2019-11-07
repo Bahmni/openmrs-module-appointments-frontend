@@ -1,7 +1,7 @@
 import {getConflicts, saveOrUpdateAppointment} from '../../api/appointmentsApi';
-import {saveRecurringAppointments} from "../../api/recurringAppointmentsApi";
+import {getRecurringConflicts, saveRecurringAppointments} from "../../api/recurringAppointmentsApi";
 
-const getFormattedProviders = providers => providers.forEach(provider => {
+const updateProviders = providers => providers.forEach(provider => {
     provider.name = provider.label;
     provider.uuid = provider.value;
     delete provider.label;
@@ -10,16 +10,21 @@ const getFormattedProviders = providers => providers.forEach(provider => {
 });
 
 export const saveAppointment = async (appointment) => {
-    getFormattedProviders(appointment.providers);
+    updateProviders(appointment.providers);
     return await saveOrUpdateAppointment(appointment);
 };
 
 export const saveRecurring = async recurringRequest => {
-    getFormattedProviders(recurringRequest.appointmentRequest.providers);
+    updateProviders(recurringRequest.appointmentRequest.providers);
     return await saveRecurringAppointments(recurringRequest);
 };
 
 export const getAppointmentConflicts = async appointment => {
-    getFormattedProviders(appointment.providers);
+    updateProviders(appointment.providers);
     return await getConflicts(appointment);
+};
+
+export const getRecurringAppointmentsConflicts = async recurringAppointmentRequest => {
+    updateProviders(recurringAppointmentRequest.appointmentRequest.providers);
+    return await getRecurringConflicts(recurringAppointmentRequest);
 };
