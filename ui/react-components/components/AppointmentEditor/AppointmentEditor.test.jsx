@@ -2,7 +2,7 @@ import React from "react";
 import AppointmentEditor from "./AppointmentEditor.jsx";
 import {renderWithReactIntl} from "../../utils/TestUtil";
 import {fireEvent, waitForElement} from "@testing-library/react";
-import * as save from "./AppointmentEditorService.js";
+import * as apiService from "./AppointmentEditorService.js";
 import moment from "moment";
 
 jest.mock('../../api/patientApi');
@@ -104,7 +104,7 @@ describe('Appointment Editor', () => {
     it('should display error messages when checkAndSave is clicked and required fields are not selected', () => {
         const {getByText, getAllByText} = renderWithReactIntl(<AppointmentEditor/>);
         const button = getByText('Check and Save');
-        const saveAppointmentSpy = jest.spyOn(save, 'saveAppointment');
+        const saveAppointmentSpy = jest.spyOn(apiService, 'saveAppointment');
         fireEvent.click(button);
         getByText('Please select patient');
         getByText('Please select service');
@@ -217,7 +217,7 @@ describe('Appointment Editor', () => {
     it('should display error messages when checkAndSave is clicked and required recurring fields are not selected', () => {
         const {getByText, queryByText, getAllByTestId, getAllByText, container} = renderWithReactIntl(
             <AppointmentEditor/>);
-        const saveAppointmentSpy = jest.spyOn(save, 'saveRecurring');
+        const saveAppointmentSpy = jest.spyOn(apiService, 'saveRecurring');
         const checkBox = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBox);
         const checkAndSaveButton = getByText('Check and Save');
@@ -241,7 +241,7 @@ describe('Appointment Editor', () => {
         };
         const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AppointmentEditor
             appConfig={config}/>);
-        const saveAppointmentSpy = jest.spyOn(save, 'saveRecurring');
+        const saveAppointmentSpy = jest.spyOn(apiService, 'saveRecurring');
         const checkBox = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBox);
         const todayButton = getByTestId("today-radio-button");
@@ -305,6 +305,7 @@ describe('Appointment Editor', () => {
     });
 
     //TODO need to add test to check the status of response on click of checkAndSave
+    //TODO need to add test for conflicts api on click of check and save
     //TODO Not able to do because onChange of time picket is not getting called. Need to fix that
 });
 
