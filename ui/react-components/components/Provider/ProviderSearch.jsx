@@ -2,24 +2,23 @@ import {getAllProviders} from "../../api/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, {useEffect, useState} from "react";
 import Tags from "../Tags/Tags.jsx";
-import {forEach, find, includes, filter} from 'lodash';
+import {forEach, find} from 'lodash';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 
 
 const ProviderSearch = props => {
 
-    const {intl, onChange, maxAppointmentProvidersAllowed} = props;
+    const {intl, selectedProviders, onChange, onProviderRemove, maxAppointmentProvidersAllowed} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PROVIDER', defaultMessage: 'Choose Provider'
     });
-    const [selectedProviders, setSelectedProviders] = useState([]);
     const [providers, setProviders] = useState([]);
-    const [selectedProvider, setSelectedProvider] = useState();
+    const [selectedProvider, setSelectedProvider] = useState(null);
 
     useEffect(() => {
-        setProviders(loadProviders())
-    }, []);
+        setProviders(loadProviders());
+    }, [selectedProvider]);
 
     const loadProviders = async () => {
         const providers = await getAllProviders();
@@ -40,21 +39,11 @@ const ProviderSearch = props => {
     };
 
     const onProviderSelect = selectedProviderOption => {
-        if (selectedProviders.length < maxAppointmentProvidersAllowed) {
-            const selectedProvider = find(providers, ["value", selectedProviderOption.value]);
-            const updatedProviders = includes(selectedProviders, selectedProvider)
-                ? selectedProviders
-                : [...selectedProviders, selectedProvider];
-            setSelectedProviders(updatedProviders);
-            onChange(updatedProviders);
-        }
         setSelectedProvider(null);
-    };
-
-    const onProviderRemove = selectedProviderIdentifier => {
-        const updatedProviders = filter(selectedProviders, provider => provider.value !== selectedProviderIdentifier);
-        setSelectedProviders(updatedProviders);
-        onChange(updatedProviders);
+        if (selectedProviders.length < maxAppointmentProvidersAllowed) {
+            const selectedProviderObj = find(providers, ["value", selectedProviderOption.value]);
+            onChange(selectedProviderObj);
+        }
     };
 
     return (
@@ -63,7 +52,7 @@ const ProviderSearch = props => {
                 options={Object.values(providers)}
                 placeholder={placeHolder}
                 onChange={onProviderSelect}
-                value={selectedProvider}
+                selectedValue={selectedProvider}
             />
             <Tags selectedTags={selectedProviders} onChange={onProviderRemove}/>
         </div>
@@ -73,7 +62,9 @@ const ProviderSearch = props => {
 ProviderSearch.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
-    maxAppointmentProvidersAllowed: PropTypes.number.isRequired
+    onProviderRemove: PropTypes.func.isRequired,
+    maxAppointmentProvidersAllowed: PropTypes.number.isRequired,
+    selectedProviders: PropTypes.array
 };
 
 export default injectIntl(ProviderSearch);
