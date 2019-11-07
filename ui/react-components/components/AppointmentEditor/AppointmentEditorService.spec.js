@@ -1,4 +1,9 @@
-import {getAppointmentConflicts, saveAppointment, saveRecurring} from "./AppointmentEditorService";
+import {
+    getAppointmentConflicts,
+    getRecurringAppointmentsConflicts,
+    saveAppointment,
+    saveRecurring
+} from "./AppointmentEditorService";
 
 jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/recurringAppointmentsApi');
@@ -7,19 +12,51 @@ const recurringAppointmentsApi = require('../../api/recurringAppointmentsApi');
 let appointmentsApiSpy;
 let recurringAppointmentsApiSpy;
 let appointmentConflictsApiSpy;
+let recurringAppointmentsConflictsApiSpy;
 
 
 describe('Appointment Editor Service', () => {
+    let recurringRequest;
     beforeEach(() => {
         appointmentsApiSpy = jest.spyOn(appointmentsApi, 'saveOrUpdateAppointment');
         recurringAppointmentsApiSpy = jest.spyOn(recurringAppointmentsApi, 'saveRecurringAppointments');
         appointmentConflictsApiSpy = jest.spyOn(appointmentsApi, 'getConflicts');
+        recurringAppointmentsConflictsApiSpy = jest.spyOn(recurringAppointmentsApi, 'getRecurringConflicts');
+        recurringRequest = {
+            appointmentRequest: {
+                providers: [
+                    {
+                        label: 'name1',
+                        value: 'uuid1'
+                    },
+                    {
+                        label: 'name2',
+                        value: 'uuid2'
+                    }
+                ]
+            }
+        };
     });
     afterEach(() => {
         appointmentsApiSpy.mockRestore();
         recurringAppointmentsApiSpy.mockRestore();
         appointmentConflictsApiSpy.mockRestore();
+        recurringAppointmentsConflictsApiSpy.mockRestore();
     });
+    const updatedRecurringRequest = {
+        appointmentRequest: {
+            providers: [
+                {
+                    name: 'name1',
+                    uuid: 'uuid1'
+                },
+                {
+                    name: 'name2',
+                    uuid: 'uuid2'
+                }
+            ]
+        }
+    };
 
     it('should map providers as per payload', async () => {
         const appointment = {
@@ -75,35 +112,6 @@ describe('Appointment Editor Service', () => {
     });
 
     it('should map providers as per payload for recurringAppointments', async () => {
-        const recurringRequest = {
-            appointmentRequest: {
-                providers: [
-                    {
-                        label: 'name1',
-                        value: 'uuid1'
-                    },
-                    {
-                        label: 'name2',
-                        value: 'uuid2'
-                    }
-                ]
-            }
-        };
-        const updatedRecurringRequest = {
-            appointmentRequest: {
-                providers: [
-                    {
-                        name: 'name1',
-                        uuid: 'uuid1'
-                    },
-                    {
-                        name: 'name2',
-                        uuid: 'uuid2'
-                    }
-                ]
-            }
-        };
-
         await saveRecurring(recurringRequest);
 
         expect(recurringAppointmentsApiSpy).toHaveBeenCalledWith(updatedRecurringRequest)
@@ -138,5 +146,11 @@ describe('Appointment Editor Service', () => {
 
         getAppointmentConflicts(appointmentRequest);
         expect(appointmentConflictsApiSpy).toHaveBeenCalledWith(updatedAppointmentRequest);
+    });
+
+    it('should map providers as per payload for getting conflicts of recurring appointment request', async () => {
+        getRecurringAppointmentsConflicts(recurringRequest);
+
+        expect(recurringAppointmentsConflictsApiSpy).toHaveBeenCalledWith(updatedRecurringRequest);
     });
 });
