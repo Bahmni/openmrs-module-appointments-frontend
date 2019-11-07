@@ -112,8 +112,7 @@ angular
                 url: '/:uuid',
                 views: {
                     'content@appointment': {
-                        template: require('./views/manage/newAppointment.html'),
-                        controller: 'AppointmentsCreateController'
+                        template: '<react-add-appointment-wrapper />'
                     }
                 },
                 resolve: {
@@ -158,8 +157,7 @@ angular
                 url: '/:uuid',
                 views: {
                     'content@appointment': {
-                        template: require('./views/manage/newAppointment.html'),
-                        controller: 'AppointmentsCreateController'
+                        template: '<react-add-appointment-wrapper />'
                     }
                 },
                 resolve: {
