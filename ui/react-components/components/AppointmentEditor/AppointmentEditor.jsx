@@ -22,7 +22,12 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
 import {injectIntl} from "react-intl";
 import PropTypes from "prop-types";
-import {saveAppointment, saveRecurring} from "./AppointmentEditorService";
+import {
+    getAppointmentConflicts,
+    getRecurringAppointmentsConflicts,
+    saveAppointment,
+    saveRecurring
+} from "./AppointmentEditorService";
 import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
@@ -128,7 +133,7 @@ const AppointmentEditor = props => {
         return recurringPattern;
     };
 
-    const getAppointment = () => {
+    const getAppointmentRequest = () => {
         let appointment = {
             patientUuid: patient && patient.uuid,
             serviceUuid: service && service.uuid,
@@ -143,6 +148,13 @@ const AppointmentEditor = props => {
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
         return appointment;
+    };
+
+    const getRecurringAppointmentRequest = () => {
+        return {
+            appointmentRequest: getAppointmentRequest(),
+            recurringPattern: getRecurringPattern()
+        };
     };
 
     const isValidAppointment = () => {
@@ -186,23 +198,46 @@ const AppointmentEditor = props => {
         setShowSuccessPopup(true);
     };
 
-    const checkAndSave = async () => {
-        if (isValidAppointment()) {
-            const appointment = getAppointment();
-            const response = await saveAppointment(appointment);
-            response.status === 200 && showSuccessPopUp(appointmentDate);
+    const save = async appointmentRequest => {
+        const response = await saveAppointment(appointmentRequest);
+        if (response.status === 200) {
+            setConflicts(undefined);
+            showSuccessPopUp(appointmentDate);
         }
     };
 
-    const checkAndSaveRecurring = async () => {
-        if (isValidRecurringAppointment()) {
-            const recurringRequest = {
-                appointmentRequest: getAppointment(),
-                recurringPattern: getRecurringPattern()
-            };
-            const response = await saveRecurring(recurringRequest);
-            response.status === 200 && showSuccessPopUp(recurringStartDate);
+    const checkAndSave = async () => {
+        if (isValidAppointment()) {
+            const appointment = getAppointmentRequest();
+            const response = await getAppointmentConflicts(appointment);
+            if (response.status === 204) {
+                await save(appointment);
+            }
+            response.status === 200 && setConflicts(response.data);
         }
+    };
+
+    const saveRecurringAppointments = async recurringAppointmentRequest => {
+        const response = await saveRecurring(recurringAppointmentRequest);
+        if (response.status === 200) {
+            setConflicts(undefined);
+            showSuccessPopUp(recurringStartDate);
+        }
+    };
+
+    const checkAndSaveRecurringAppointments = async () => {
+        if (isValidRecurringAppointment()) {
+            const recurringRequest = getRecurringAppointmentRequest();
+            const response = await getRecurringAppointmentsConflicts(recurringRequest);
+            if (response.status === 204) {
+                await saveRecurringAppointments(recurringRequest);
+            }
+            response.status === 200 && setConflicts(response.data);
+        }
+    };
+
+    const saveAppointments = () => {
+        isRecurring ? saveRecurringAppointments(getRecurringAppointmentRequest()) : save(getAppointmentRequest());
     };
 
     const savePopup = <CustomPopup style={customPopup}
@@ -432,12 +467,12 @@ const AppointmentEditor = props => {
                     <AppointmentNotes onChange={(event) => setNotes(event.target.value)}/>
                 </div>
             </div>
-            <AppointmentEditorFooter checkAndSave={isRecurring ? checkAndSaveRecurring : checkAndSave}/>
+            <AppointmentEditorFooter checkAndSave={isRecurring ? checkAndSaveRecurringAppointments : checkAndSave}/>
             {conflicts ?
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
                              closeOnEscape={true}
-                             popupContent={<Conflicts saveAnyway={checkAndSave}
+                             popupContent={<Conflicts saveAnyway={saveAppointments}
                                                       modifyInformation={() => setConflicts(undefined)}
                                                       conflicts={conflicts} service={service}/>}/> : undefined}
             {showSuccessPopup ? React.cloneElement(savePopup, {
