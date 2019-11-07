@@ -25,6 +25,7 @@ import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getWeekDays, selectWeekDays} from "../../services/WeekDaysService/WeekDaysService";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
+import {getProviderDropDownOptions} from "../../mapper/providerMapper";
 
 const EditAppointment = props => {
 
@@ -98,7 +99,7 @@ const EditAppointment = props => {
         if (appointmentResponse) {
             updateAppointmentDetails({
                 patient: getPatientForDropdown(appointmentResponse.patient),
-                providers: appointmentResponse.providers,
+                providers: getProviderDropDownOptions(appointmentResponse.providers),
                 service: {label: appointmentResponse.service.name, value: appointmentResponse.service},
                 serviceType: appointmentResponse.serviceType ? {label: appointmentResponse.serviceType.name, value: appointmentResponse.serviceType} : undefined,
                 location: appointmentResponse.location ? {label: appointmentResponse.location.name, value: appointmentResponse.location} : undefined,

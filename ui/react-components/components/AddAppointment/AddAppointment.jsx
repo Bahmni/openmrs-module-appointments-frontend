@@ -461,7 +461,7 @@ const AddAppointment = props => {
 
 AddAppointment.propTypes = {
     intl: PropTypes.object.isRequired,
-    appConfig: PropTypes.object
+    appConfig: PropTypes.object,
 };
 
 export default injectIntl(AddAppointment);

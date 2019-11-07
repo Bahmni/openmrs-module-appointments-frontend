@@ -16,6 +16,7 @@ import ProviderSearch from "../Provider/ProviderSearch.jsx";
 import React from "react";
 import {injectIntl} from "react-intl";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
+import {includes, filter} from "lodash";
 
 const SearchFieldsContainer = props => {
 
@@ -71,7 +72,11 @@ const SearchFieldsContainer = props => {
                 </div>
                 <div className={classNames(searchFieldsContainerRight)} data-testid="provider-search">
                     <ProviderSearch
-                        onChange={selectedProviders => updateAppointmentDetails({providers: selectedProviders})}
+                        onChange={selectedProvider => includes(appointmentDetails.providers, selectedProvider)
+                            || updateAppointmentDetails({providers: [...appointmentDetails.providers, selectedProvider]})
+                        }
+                        onProviderRemove={providerIdentifier => updateAppointmentDetails({providers: filter(appointmentDetails.providers, provider => provider.value !== providerIdentifier)})}
+                        selectedProviders={appointmentDetails.providers}
                         maxAppointmentProvidersAllowed={maxAppointmentProvidersAllowed(appConfig)}/>
                 </div>
             </div>
