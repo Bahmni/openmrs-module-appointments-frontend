@@ -20,7 +20,7 @@ angular
                 abstract: true,
                 views: {
                     'additional-header': {
-                        template: require('./views/appointmentsHeader.html'),
+                        templateUrl: 'views/appointmentsHeader.html',
                         controller: 'AppointmentsHeaderController'
                     },
                     'mainContent': {
@@ -33,15 +33,15 @@ angular
                     backLinks: []
                 },
                 resolve: {
-                    initializeConfig: ['initialization', '$stateParams', function (initialization, $stateParams) {
-                            return initialization($stateParams.appName);
-                        }
-                    ]}
+                    initializeConfig: function (initialization, $stateParams) {
+                        return initialization($stateParams.appName);
+                    }
+                }
             }).state('home.manage', {
                 url: '/manage',
                 views: {
                     'content': {
-                        template: require('./views/manage/appointmentsManage.html'),
+                        templateUrl: 'views/manage/appointmentsManage.html',
                         controller: 'AppointmentsManageController'
                     }
                 }
@@ -53,7 +53,7 @@ angular
                 },
                 views: {
                     'content@manage': {
-                        template: require('./views/manage/appointmentsSummary.html'),
+                        templateUrl: 'views/manage/appointmentsSummary.html',
                         controller: 'AppointmentsSummaryController'
                     }
                 }
@@ -66,11 +66,11 @@ angular
                 },
                 views: {
                     'filter': {
-                        template: require('./views/manage/appointmentFilter.html'),
+                        templateUrl: 'views/manage/appointmentFilter.html',
                         controller: 'AppointmentsFilterController'
                     },
                     'content@manage': {
-                        template: require('./views/manage/allAppointments.html'),
+                        templateUrl: 'views/manage/allAppointments.html',
                         controller: 'AllAppointmentsController'
                     }
 
@@ -86,7 +86,7 @@ angular
                 },
                 views: {
                     'content@viewAppointments': {
-                        template: require('./views/manage/calendar/calendarView.html'),
+                        templateUrl: 'views/manage/calendar/calendarView.html',
                         controller: 'AppointmentsCalendarViewController'
                     }
                 }
@@ -101,28 +101,27 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
+                    appointmentContext: function (appointmentInitialization, $stateParams) {
                         return appointmentInitialization($stateParams);
-                    }],
-                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                    },
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
                         return appointmentConfigInitialization(appointmentContext);
-                    }]
+                    }
                 }
             }).state('home.manage.appointments.calendar.edit', {
                 url: '/:uuid',
                 views: {
                     'content@appointment': {
-                        template: require('./views/manage/newAppointment.html'),
-                        controller: 'AppointmentsCreateController'
+                        template: '<react-add-appointment-wrapper />'
                     }
                 },
                 resolve: {
-                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
+                    appointmentContext: function (appointmentInitialization, $stateParams) {
                         return appointmentInitialization($stateParams);
-                    }],
-                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                    },
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
                         return appointmentConfigInitialization(appointmentContext);
-                    }]
+                    }
                 }
             }).state('home.manage.appointments.list', {
                 url: '/list',
@@ -135,7 +134,7 @@ angular
                 },
                 views: {
                     'content@viewAppointments': {
-                        template: require('./views/manage/list/listView.html'),
+                        templateUrl: 'views/manage/list/listView.html',
                         controller: 'AppointmentsListViewController'
                     }
                 }
@@ -147,42 +146,41 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
+                    appointmentContext: function (appointmentInitialization, $stateParams) {
                         return appointmentInitialization($stateParams);
-                    }],
-                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                    },
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
                         return appointmentConfigInitialization(appointmentContext);
-                    }]
+                    }
                 }
             }).state('home.manage.appointments.list.edit', {
                 url: '/:uuid',
                 views: {
                     'content@appointment': {
-                        template: require('./views/manage/newAppointment.html'),
-                        controller: 'AppointmentsCreateController'
+                        template: '<react-add-appointment-wrapper />'
                     }
                 },
                 resolve: {
-                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
+                    appointmentContext: function (appointmentInitialization, $stateParams) {
                         return appointmentInitialization($stateParams);
-                    }],
-                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                    },
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
                         return appointmentConfigInitialization(appointmentContext);
-                    }]
+                    }
                 }
             }).state('home.admin', {
                 url: '/admin',
                 abstract: true,
                 views: {
                     'content': {
-                        template: require('./views/admin/appointmentsAdmin.html')
+                        templateUrl: 'views/admin/appointmentsAdmin.html'
                     }
                 }
             }).state('home.admin.service', {
                 url: '/service',
                 views: {
                     'content@admin': {
-                        template: require('./views/admin/allAppointmentServices.html'),
+                        templateUrl: 'views/admin/allAppointmentServices.html',
                         controller: 'AllAppointmentServicesController'
                     }
                 }
@@ -190,15 +188,15 @@ angular
                 url: '/:uuid',
                 views: {
                     'content@admin': {
-                        template: require('./views/admin/appointmentService.html'),
+                        templateUrl: 'views/admin/appointmentService.html',
                         controller: 'AppointmentServiceController'
                     }
                 },
                 resolve: {
-                    appointmentServiceContext: ['appointmentServiceInitialization', '$stateParams', function (appointmentServiceInitialization, $stateParams) {
+                    appointmentServiceContext: function (appointmentServiceInitialization, $stateParams) {
                         return appointmentServiceInitialization($stateParams.uuid);
                     }
-                    ]                }
+                }
             });
 
             $bahmniTranslateProvider.init({app: 'appointments', shouldMerge: true});
