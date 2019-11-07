@@ -52,6 +52,30 @@ const ConflictsBody = props => {
         if (key === OVERLAPPING_CONFLICTS_CONTENT) {
             return createDoubleBookingConflictsContent(conflicts);
         }
+        if (key === SERVICE_UNAVAILABLE_CONTENT) {
+            return createServiceUnavailableConflictsContent(conflicts);
+        }
+    };
+
+    const createServiceUnavailableConflictsContent = conflicts => {
+        let list = [];
+        conflicts.forEach((conflict, index) => {
+            list.push(<div className={classNames(appointmentConflict)} key={index}>
+                <div className={conflictDetails}>{getAppointmentConflictDetails(conflict)}</div>
+            </div>);
+        });
+        const defaultMessage = `The ${service.name} service you had selected for the appointment(s) is not 
+                                available during below listed dates`;
+        return (
+            <div>
+                <div className={classNames(conflictsHeading)}>
+                    <FormattedMessage id="NO_SERVICE_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage}/>
+                </div>
+                <div className={conflictsList}>
+                    <ul>{list}</ul>
+                </div>
+            </div>
+        );
     };
 
     const createDoubleBookingConflictsContent = conflicts => {
