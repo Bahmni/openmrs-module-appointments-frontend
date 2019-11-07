@@ -48,6 +48,20 @@ describe('Conflicts Body', () => {
         getByText('5th December ‘19 | Thursday | 9:30 PM');
         expect(container.querySelector('.conflictMessage').innerHTML).toContain('Current Orthopedic request');
         expect(container.querySelector('.boldContent').innerHTML).toContain('conflicts with Dressing');
-    })
+    });
+
+    it('should render service conflicts content', () => {
+        const conflicts = {
+            SERVICE_UNAVAILABLE: [{service: {name: "Orthopedic"}, startDateTime: 1575561600000},
+                {service: {name: "Orthopedic"}, startDateTime: 1576861600000}]
+        };
+
+        const {getByText} = renderWithReactIntl(<ConflictsBody conflicts={conflicts} service={service}/>);
+
+        getByText('The Orthopedic service you had selected for the appointment(s) is not available during below ' +
+            'listed dates');
+        getByText('5th December ‘19 | Thursday | 9:30 PM');
+        getByText('20th December ‘19 | Friday | 10:36 PM');
+    });
 
 });
