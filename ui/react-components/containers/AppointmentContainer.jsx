@@ -8,6 +8,7 @@ import translations from '../../app/i18n/appointments';
 import {appName} from '../constants';
 import PropTypes from "prop-types";
 import {AppContext} from "../components/AppContext/AppContext";
+import EditAppointment from "../components/EditAppointment/EditAppointment.jsx";
 
 // TODO : need to add connection to redux
 
@@ -18,7 +19,7 @@ class AppointmentContainer extends Component {
         this.state = {
             locale: getLocale(),
             messages: translations[props.locale],
-            appConfigs: null
+            appConfig: null
         };
         (async () => {
             await this.getMessages();
@@ -32,17 +33,19 @@ class AppointmentContainer extends Component {
     }
 
     async getAppConfigs () {
-        const appConfigs = await getAppConfigs({appName: appName});
-        const {config} = appConfigs;
-        this.setState({appConfigs: config});
+        const appConfig = await getAppConfigs({appName: appName});
+        const {config} = appConfig;
+        this.setState({appConfig: config});
     }
 
     render () {
-        const {locale, messages, appConfigs} = this.state;
+        const {locale, messages, appConfig} = this.state;
         return (
-            <AppContext.Provider value={{onBack: this.props.onBack, setViewDate: this.props.setViewDate}}>
+            <AppContext.Provider value={{onBack: this.props.onBack, angularState: this.props.state}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
-                    <AddAppointment appConfig={appConfigs}/>
+                    {this.props.appointmentUuid
+                        ? <EditAppointment appConfig={appConfig} appointmentUuid={this.props.appointmentUuid}/>
+                        : <AddAppointment appConfig={appConfig}/>}
                 </IntlProvider>
             </AppContext.Provider>);
     }
@@ -50,7 +53,8 @@ class AppointmentContainer extends Component {
 
 AppointmentContainer .propTypes = {
     onBack: PropTypes.func.isRequired,
-    setViewDate: PropTypes.func.isRequired
+    state: PropTypes.object.isRequired,
+    appointmentUuid: PropTypes.string
 };
 
 export default AppointmentContainer;
