@@ -41,7 +41,7 @@ class AppointmentContainer extends Component {
     render () {
         const {locale, messages, appConfig} = this.state;
         return (
-            <AppContext.Provider value={{onBack: this.props.onBack, angularState: this.props.state}}>
+            <AppContext.Provider value={{onBack: this.props.onBack, setViewDate: this.props.setViewDate}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
                     {this.props.appointmentUuid
                         ? <EditAppointment appConfig={appConfig} appointmentUuid={this.props.appointmentUuid} isRecurring={this.props.isRecurring}/>
@@ -53,10 +53,9 @@ class AppointmentContainer extends Component {
 
 AppointmentContainer .propTypes = {
     onBack: PropTypes.func.isRequired,
-    state: PropTypes.object.isRequired,
     appointmentUuid: PropTypes.string,
-    isRecurring: PropTypes.bool
-
+    isRecurring: PropTypes.bool,
+    setViewDate: PropTypes.func.isRequired
 };
 
 export default AppointmentContainer;
