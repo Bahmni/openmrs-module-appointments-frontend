@@ -1,13 +1,16 @@
 .editAppointment {
   .currentTimeSlot {
     margin-top: 15px;
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 50px;
   }
 
   .recurringDetailsEdit {
     > div {
       margin-bottom: 35px;
+      span {
+        font-size: 16px;
+      }
       div {
         margin-bottom: 15px;
         margin-left: 0;
