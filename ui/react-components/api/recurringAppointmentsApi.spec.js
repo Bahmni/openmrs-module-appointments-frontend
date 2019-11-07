@@ -1,30 +1,32 @@
 import mockAxios from "jest-mock-axios";
-import {saveRecurringAppointments} from "./recurringAppointmentsApi";
-import {recurringAppointmentsSaveUrl} from "../constants";
+import {getRecurringConflicts, saveRecurringAppointments} from "./recurringAppointmentsApi";
+import {appointmentConflictsUrl, recurringAppointmentsConflictsUrl, recurringAppointmentsSaveUrl} from "../constants";
 
-describe('Appointments Api', () => {
+describe('Recurring Appointments Api', () => {
+    let payload = {
+        "appointmentRequest": {
+            "patientUuid": "fda50921-d5d5-4493-8de8-6ef54c9d4481",
+            "serviceUuid": "2b87edcf-39ac-4dec-94c9-713b932e847c",
+            "serviceTypeUuid": "50ac6a9c-158a-4743-a6b5-a4f9c9317007",
+            "startDateTime": "2019-10-11T04:30:00.000Z",
+            "endDateTime": "2019-10-11T05:00:00.000Z",
+            "providers": [{
+                "uuid": "dae6561f-cca8-4304-9996-6eae80892d91",
+                "response": "ACCEPTED",
+                "comments": null
+            }],
+            "locationUuid": "8debb630-20e0-11e7-a53f-000c29e530d2",
+            "appointmentKind": "Scheduled"
+        },
+        "recurringPattern": {
+            "frequency": 2,
+            "type": "DAY",
+            "period": 3
+        }
+    };
+
     it('should save recurring appointments and get saved appointments as response', async () => {
-        let payload = {
-            "appointmentRequest": {
-                "patientUuid": "fda50921-d5d5-4493-8de8-6ef54c9d4481",
-                "serviceUuid": "2b87edcf-39ac-4dec-94c9-713b932e847c",
-                "serviceTypeUuid": "50ac6a9c-158a-4743-a6b5-a4f9c9317007",
-                "startDateTime": "2019-10-11T04:30:00.000Z",
-                "endDateTime": "2019-10-11T05:00:00.000Z",
-                "providers": [{
-                    "uuid": "dae6561f-cca8-4304-9996-6eae80892d91",
-                    "response": "ACCEPTED",
-                    "comments": null
-                }],
-                "locationUuid": "8debb630-20e0-11e7-a53f-000c29e530d2",
-                "appointmentKind": "Scheduled"
-            },
-            "recurringPattern": {
-                "frequency": 2,
-                "type": "DAY",
-                "period": 3
-            }
-        };
+
         let mockResponse = [
             {
                 "uuid": "36fdc60e-7ae5-4708-9fcc-8c98daba0ca9",
@@ -115,6 +117,25 @@ describe('Appointments Api', () => {
         let appointment = await saveRecurringAppointments(payload);
 
         expect(mockAxios.post).toHaveBeenCalledWith(recurringAppointmentsSaveUrl, payload);
+
+        expect(appointment.data).toEqual(mockResponse);
+    });
+
+    it('should get conflicting appointments for recurring appointment request', async () => {
+        let mockResponse = {
+            "SERVICE_UNAVAILABLE": [],
+            "PATIENT_DOUBLE_BOOKING": []
+        };
+
+        mockAxios.post.mockImplementationOnce(() =>
+            Promise.resolve({
+                data: mockResponse
+            })
+        );
+
+        let appointment = await getRecurringConflicts(payload);
+
+        expect(mockAxios.post).toHaveBeenCalledWith(recurringAppointmentsConflictsUrl, payload);
 
         expect(appointment.data).toEqual(mockResponse);
     });
