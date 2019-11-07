@@ -8,6 +8,7 @@ import translations from '../../app/i18n/appointments';
 import {appName} from '../constants';
 import PropTypes from "prop-types";
 import {AppContext} from "../components/AppContext/AppContext";
+import moment from "moment";
 
 // TODO : need to add connection to redux
 
@@ -24,6 +25,7 @@ class AddAppointmentContainer extends Component {
             await this.getMessages();
             await this.getAppConfigs();
         })();
+        moment.locale(getLocale());
     }
 
     async getMessages () {
