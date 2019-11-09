@@ -1,0 +1,54 @@
+@import '../../variables.scss';
+
+.saveModal {
+  .saveModalCloseIcon {
+    text-align: right;
+    a {
+      color: $secondary-color-2;
+    }
+  }
+  > div:nth-child(2) {
+    padding: 0 30px 30px 30px;
+
+    .saveModalTitle {
+      margin: 0 0 12px;
+      font-size: 30px;
+      line-height: normal;
+      color: $secondary-color-2;
+    }
+
+    .saveModalBody {
+      margin: 0 0 24px;
+      line-height: normal;
+    }
+
+    .saveConfirmationFooter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .button {
+        background: #f2f2f2;
+        border: 0;
+        border-radius: 4px;
+        padding: 10px 40px;
+        color: $secondary-color-1;
+        background: $primary-color-2;
+
+        &:hover {
+          background: darkgrey;
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .newAppointmentLink {
+        a {
+          text-decoration-line: underline;
+        }
+      }
+    }
+  }
+}
