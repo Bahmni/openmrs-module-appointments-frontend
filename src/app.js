@@ -110,18 +110,13 @@ angular
                 }
             }).state('home.manage.appointments.calendar.edit', {
                 url: '/:uuid',
+                params: {
+                    isRecurring: null
+                },
                 views: {
                     'content@appointment': {
                         template: '<react-add-appointment-wrapper />'
                     }
-                },
-                resolve: {
-                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
-                        return appointmentInitialization($stateParams);
-                    }],
-                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
-                        return appointmentConfigInitialization(appointmentContext);
-                    }]
                 }
             }).state('home.manage.appointments.list', {
                 url: '/list',
@@ -155,18 +150,13 @@ angular
                 }
             }).state('home.manage.appointments.list.edit', {
                 url: '/:uuid',
+                params: {
+                    isRecurring: null
+                },
                 views: {
                     'content@appointment': {
                         template: '<react-add-appointment-wrapper />'
                     }
-                },
-                resolve: {
-                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
-                        return appointmentInitialization($stateParams);
-                    }],
-                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
-                        return appointmentConfigInitialization(appointmentContext);
-                    }]
                 }
             }).state('home.admin', {
                 url: '/admin',
