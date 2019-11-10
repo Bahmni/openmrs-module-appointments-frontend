@@ -91,6 +91,8 @@
         background: #ebfaff;
       }
       background: transparent;
+      background: var(--color-primary-1);
+      color: var(--color-secondary-1);
     }
   }
   td[class*='rc-calendar-disabled'] {
