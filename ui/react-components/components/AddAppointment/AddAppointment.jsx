@@ -402,7 +402,7 @@ const AddAppointment = props => {
                     </div>}
                 <div className={classNames(recurringContainerRight)}>
                     <Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/>
-                    <AppointmentNotes onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
+                    <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
             <AppointmentEditorFooter checkAndSave={appointmentDetails.isRecurring ? checkAndSaveRecurring : checkAndSave}/>
