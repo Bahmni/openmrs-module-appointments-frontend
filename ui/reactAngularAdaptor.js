@@ -13,7 +13,7 @@ angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
 reactAddAppointmentController.$inject = ['$scope', '$state', '$stateParams'];
 function reactAddAppointmentController($scope, $state, $stateParams) {
     $scope.onBack = function () {
-        $state.go('^', state.params, {reload: true});
+        $state.go('^', $state.params, {reload: true});
     };
 
     $scope.setViewDate = function (date) {
