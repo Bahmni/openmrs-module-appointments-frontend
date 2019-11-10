@@ -110,17 +110,12 @@ angular
                 }
             }).state('home.manage.appointments.calendar.edit', {
                 url: '/:uuid',
+                params: {
+                    isRecurring: null
+                },
                 views: {
                     'content@appointment': {
                         template: '<react-add-appointment-wrapper />'
-                    }
-                },
-                resolve: {
-                    appointmentContext: function (appointmentInitialization, $stateParams) {
-                        return appointmentInitialization($stateParams);
-                    },
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
-                        return appointmentConfigInitialization(appointmentContext);
                     }
                 }
             }).state('home.manage.appointments.list', {
@@ -155,17 +150,12 @@ angular
                 }
             }).state('home.manage.appointments.list.edit', {
                 url: '/:uuid',
+                params: {
+                    isRecurring: null
+                },
                 views: {
                     'content@appointment': {
                         template: '<react-add-appointment-wrapper />'
-                    }
-                },
-                resolve: {
-                    appointmentContext: function (appointmentInitialization, $stateParams) {
-                        return appointmentInitialization($stateParams);
-                    },
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
-                        return appointmentConfigInitialization(appointmentContext);
                     }
                 }
             }).state('home.admin', {
