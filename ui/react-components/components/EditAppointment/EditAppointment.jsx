@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
-import {Fragment, useEffect, useState} from "react";
-import React from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {injectIntl} from "react-intl";
 import classNames from "classnames";
 import {
-    appointmentEditor, recurringContainer, recurringContainerLeft, recurringContainerRight,
+    appointmentEditor,
+    recurringContainer,
+    recurringContainerLeft,
+    recurringContainerRight,
     searchFieldsContainer,
     searchFieldsContainerLeft
 } from "../AddAppointment/AddAppointment.module.scss";
@@ -17,8 +19,13 @@ import {getDuration, getYesterday} from "../../helper";
 import {MINUTES} from "../../constants";
 import RecurringPlan from "../RecurringPlan/RecurringPlan.jsx";
 import Label from "../Label/Label.jsx";
-import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
-import {editAppointment, currentTimeSlot, recurringDetailsEdit, dateText} from './EditAppointment.module.scss'
+import {
+    currentTimeSlot,
+    dateText,
+    editAppointment,
+    recurringDetailsEdit,
+    recurringEndDateContainer
+} from './EditAppointment.module.scss'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import InputNumber from "../InputNumber/InputNumber.jsx";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
@@ -26,6 +33,8 @@ import {getWeekDays, selectWeekDays} from "../../services/WeekDaysService/WeekDa
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
 import {getProviderDropDownOptions} from "../../mapper/providerMapper";
+import CalendarPicker from "../CalendarPicker/CalendarPicker.jsx";
+import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 
 const EditAppointment = props => {
 
@@ -191,7 +200,7 @@ const EditAppointment = props => {
                             <div>
                                 <div><Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/></div>
                                 <div>
-                                    <span id='sowmika'>{moment.localeData().ordinal(appointmentDetails.period)} &nbsp; {appointmentDetails.recurrenceType === 'WEEK'
+                                    <span>{moment.localeData().ordinal(appointmentDetails.period)} &nbsp; {appointmentDetails.recurrenceType === 'WEEK'
                                         ? <Label translationKey="WEEK_LABEL" defaultValue="WEEK"/>
                                         : <Label translationKey="DAY_LABEL" defaultValue="DAY"/>}</span>
                                 </div>
@@ -202,7 +211,7 @@ const EditAppointment = props => {
                                 </div>
                             </div>
                             {appointmentDetails.occurrences
-                                ? <div>
+                                ? (<div>
                                     <div>
                                         <Label translationKey="NUMBER_OF_OCCURRENCE_LABEL"
                                                defaultValue="# of occurrences"/>
@@ -211,17 +220,19 @@ const EditAppointment = props => {
                                         onOccurrencesChange={value => updateAppointmentDetails({occurrences: value})}
                                         defaultValue={appointmentDetails.occurrences}/>
                                     <Label translationKey="OCCURRENCES_LABEL" defaultValue="Occurrences"/>
-                                </div>
-                                : <div>
+                                </div>)
+                                : (<div className={classNames(recurringEndDateContainer)}>
                                     <div>
                                         <Label translationKey="NEW_END_DATE_LABEL" defaultValue="New end date"/>
                                     </div>
                                     <div>
                                         <span>{moment(appointmentDetails.recurringEndDate).format("Do MMMM YYYY")}</span>
-                                        <span
-                                            className={classNames(dateText)}>{moment(appointmentDetails.recurringEndDate).format("dddd").toUpperCase()}</span>
+                                        <span className={classNames(dateText)}>
+                                            {moment(appointmentDetails.recurringEndDate).format("dddd").toUpperCase()}
+                                        </span>
+                                        <span><CalendarPicker date={appointmentDetails.recurringEndDate}/></span>
                                     </div>
-                                </div>}
+                                </div>)}
                         </div> : undefined}
                 </div>
                 <div className={classNames(recurringContainerRight)}>

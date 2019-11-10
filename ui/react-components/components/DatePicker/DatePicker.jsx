@@ -10,24 +10,19 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const AppointmentDatePicker = (props) => {
-    const {minDate, defaultValue} = props;
+    const {minDate, defaultValue, onClear, onChange} = props;
     const [value, setValue] = useState(defaultValue);
+
     useEffect(() => {
         setValue(defaultValue);
     }, [defaultValue]);
+
     const disablePastDates = (current) => {
         if(minDate)
             return current.isBefore(minDate);
         return current;
     };
-    const onChange = (date) => {
-        setValue(date);
-        props.onChange(date);
-    };
-    const onClear = () => {
-        setValue(null);
-        props.onClear();
-    };
+
     let styles = [appointmentDatePicker];
     value ? styles.push(appointmentDatePickerSelected)
         : styles.push(appointmentDatePickerNotSelected);
@@ -39,10 +34,10 @@ const AppointmentDatePicker = (props) => {
                 showToday={false}
                 onClear={onClear}
                 disabledDate={disablePastDates}
-                defaultValue={value}
                 className={classNames(styles)}
                 dateInputPlaceholder="mm/dd/yyyy"
-                onSelect={onChange}
+                onChange={onChange}
+                value={value}
             />
         </div>
     );
