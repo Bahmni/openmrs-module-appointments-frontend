@@ -31,7 +31,7 @@ const RecurringPlan = props => {
 
 RecurringPlan.propTypes = {
     onChange: PropTypes.func,
-    isRecurring: PropTypes.bool.isRequired,
+    isRecurring: PropTypes.bool,
     isEdit: PropTypes.bool
 };
 
