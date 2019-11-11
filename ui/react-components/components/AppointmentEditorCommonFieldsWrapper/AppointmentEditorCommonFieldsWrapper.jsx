@@ -4,7 +4,7 @@ import {
     searchFieldsContainer,
     searchFieldsContainerLeft,
     searchFieldsContainerRight
-} from "./SearchFieldsContainer.module.scss";
+} from "./AppointmentEditorCommonFieldsWrapper.module.scss";
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
@@ -18,7 +18,7 @@ import {injectIntl} from "react-intl";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {includes, filter} from "lodash";
 
-const SearchFieldsContainer = props => {
+const AppointmentEditorCommonFieldsWrapper = props => {
 
     const {updateAppointmentDetails, updateErrorIndicators} = props;
     const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl} = props;
@@ -84,4 +84,4 @@ const SearchFieldsContainer = props => {
     );
 };
 
-export default injectIntl(SearchFieldsContainer);
+export default injectIntl(AppointmentEditorCommonFieldsWrapper);

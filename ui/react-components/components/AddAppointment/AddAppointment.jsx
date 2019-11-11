@@ -46,7 +46,7 @@ import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/W
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty} from 'lodash';
-import SearchFieldsContainer from "../SearchFieldsContainer/SearchFieldsContainer.jsx";
+import SearchFieldsContainer from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
 
 const AddAppointment = props => {

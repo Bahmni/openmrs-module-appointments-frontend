@@ -11,7 +11,7 @@ import {
     searchFieldsContainerLeft,
     dateHeading
 } from "../AddAppointment/AddAppointment.module.scss";
-import SearchFieldsContainer from "../SearchFieldsContainer/SearchFieldsContainer.jsx";
+import SearchFieldsContainer from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import {getRecurringAppointment} from "../../api/recurringAppointmentsApi";
 import {getAppointment} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
@@ -253,7 +253,7 @@ EditAppointment.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object,
     appointmentUuid: PropTypes.string.isRequired,
-    isRecurring: PropTypes.bool.isRequired
+    isRecurring: PropTypes.string.isRequired
 };
 
 export default injectIntl(EditAppointment);
