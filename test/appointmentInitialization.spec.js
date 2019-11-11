@@ -4,7 +4,7 @@ describe('AppointmentInitialization', function () {
     var appointmentInitialization, appointmentsService, $stateParams;
 
     beforeEach(function () {
-        appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAppointmentByUuid']);
+        appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAppointment']);
         $stateParams = {};
     });
 

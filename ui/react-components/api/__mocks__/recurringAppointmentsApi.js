@@ -105,7 +105,7 @@ export const saveRecurringAppointments = () => {
     });
 };
 
-export const getRecurringAppointmentByUuid = (uuid) => {
+export const getRecurringAppointment = (uuid) => {
     return new Promise((resolve, reject) => {
         process.nextTick(() => {
                 if (uuid === 'DAY')
