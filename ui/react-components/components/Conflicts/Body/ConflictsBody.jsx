@@ -1,19 +1,20 @@
-import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import {Tab, TabList, TabPanel, Tabs} from 'react-tabs';
 import React, {useState} from "react";
 import "react-tabs/style/react-tabs.css";
 import classNames from 'classnames';
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
 import {
-    conflictsCount,
-    conflictsHeading,
     appointmentConflict,
     boldContent,
-    conflictMessage,
     conflictDetails,
+    conflictMessage,
+    conflictsCount,
+    conflictsHeading,
     conflictsList
 } from './ConflictsBody.module.scss';
-import moment from 'moment';
+import PatientDoubleBookingConflicts from "../PatientDoubleBookingConflicts.jsx";
+import ServiceUnavailableConflicts from "../ServiceUnavailableConflicts.jsx";
 
 const ConflictsBody = props => {
     const {service, conflicts} = props;
@@ -39,7 +40,7 @@ const ConflictsBody = props => {
         return <Tab key={defaultMessage}>
             <span>
                 <FormattedMessage id={translationKey} defaultMessage={defaultMessage}/>
-                <span className={conflictsCount}>{conflicts.length}</span>
+                <span className={classNames(conflictsCount)}>{conflicts.length}</span>
             </span>
         </Tab>
     };
@@ -50,88 +51,20 @@ const ConflictsBody = props => {
 
     const getContent = (conflicts, key) => {
         if (key === OVERLAPPING_CONFLICTS_CONTENT) {
-            return createDoubleBookingConflictsContent(conflicts);
+            return (<PatientDoubleBookingConflicts conflicts={conflicts} service={service}/>);
         }
         if (key === SERVICE_UNAVAILABLE_CONTENT) {
-            return createServiceUnavailableConflictsContent(conflicts);
+            return <ServiceUnavailableConflicts conflicts={conflicts} service={service}/>;
         }
-    };
-
-    const createServiceUnavailableConflictsContent = conflicts => {
-        let list = [];
-        conflicts.forEach((conflict, index) => {
-            list.push(<div className={classNames(appointmentConflict)} key={index}>
-                <div className={conflictDetails}>{getAppointmentConflictDetails(conflict)}</div>
-            </div>);
-        });
-        const defaultMessage = `The ${service.name} service you had selected for the appointment(s) is not 
-                                available during below listed dates`;
-        return (
-            <div>
-                <div className={classNames(conflictsHeading)}>
-                    <FormattedMessage id="NO_SERVICE_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage}/>
-                </div>
-                <div className={conflictsList}>
-                    <ul>{list}</ul>
-                </div>
-            </div>
-        );
-    };
-
-    const createDoubleBookingConflictsContent = conflicts => {
-        let list = [];
-        conflicts.forEach((conflict, index) => {
-            list.push(
-                <div className={classNames(appointmentConflict)} key={index}>
-                    {getDoubleBookingAppointmentConflictMessage(conflict)}
-                    <div className={conflictDetails}>{getAppointmentConflictDetails(conflict)}</div>
-                </div>);
-        });
-        const defaultMessage = "The recurring appointments you are trying to book overlaps with the following dates";
-        return (
-            <div>
-                <div className={classNames(conflictsHeading)}>
-                    <FormattedMessage id="OVERLAPPING_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage}/>
-                </div>
-                <div className={conflictsList}>
-                    <ul>{list}</ul>
-                </div>
-            </div>
-        );
-    };
-
-    const getDoubleBookingAppointmentConflictMessage = conflict => {
-        const currentAppointmentService = service.name;
-        const existingAppointmentService = conflict.service.name;
-        return (
-            <div className={conflictMessage}>Current {currentAppointmentService} request
-                <span className={classNames(boldContent)}> conflicts with {existingAppointmentService} </span>
-                appointment on
-            </div>
-        );
-    };
-
-    const getAppointmentConflictDetails = conflict => {
-        let appointmentConflictDetails = "";
-        const appointmentStartDateTime = conflict.startDateTime;
-        appointmentConflictDetails += moment(appointmentStartDateTime).format('Do');
-        appointmentConflictDetails += ' ' + moment(appointmentStartDateTime).format('MMMM');
-        appointmentConflictDetails += ' ‘' + moment(appointmentStartDateTime).format('YY');
-        appointmentConflictDetails += ' | ' + moment(appointmentStartDateTime).format('dddd');
-        appointmentConflictDetails += ' | ' + moment(appointmentStartDateTime).format('LT');
-
-        return appointmentConflictDetails;
     };
 
     const [tabs] = useState(createTabs());
-
 
     return tabs && tabs.tabHeads.length > 0 ? (
         <Tabs>
             <TabList>{tabs.tabHeads}</TabList>
             {tabs.tabPanels}
         </Tabs>
-
     ) : null;
 
 };

@@ -20,8 +20,8 @@ describe('Appointment Editor Service', () => {
     beforeEach(() => {
         appointmentsApiSpy = jest.spyOn(appointmentsApi, 'saveOrUpdateAppointment');
         recurringAppointmentsApiSpy = jest.spyOn(recurringAppointmentsApi, 'saveRecurringAppointments');
-        appointmentConflictsApiSpy = jest.spyOn(appointmentsApi, 'getConflicts');
-        recurringAppointmentsConflictsApiSpy = jest.spyOn(recurringAppointmentsApi, 'getRecurringConflicts');
+        appointmentConflictsApiSpy = jest.spyOn(appointmentsApi, 'conflictsFor');
+        recurringAppointmentsConflictsApiSpy = jest.spyOn(recurringAppointmentsApi, 'recurringConflictsFor');
         recurringRequest = {
             appointmentRequest: {
                 providers: [

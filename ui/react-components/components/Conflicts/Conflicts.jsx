@@ -7,11 +7,11 @@ import {injectIntl} from "react-intl";
 const Conflicts = props => {
 
     return (
-        <div className="conflicts">
-            <div className={"body"}>
+        <div data-testid="conflicts">
+            <div data-testid="conflicts-body">
                 <ConflictsBody conflicts={props.conflicts} service={props.service}/>
             </div>
-            <div className="footer">
+            <div data-testid="conflicts-footer">
                 <ConflictsFooter saveAnyway={props.saveAnyway} modifyInformation={props.modifyInformation}/>
             </div>
         </div>
