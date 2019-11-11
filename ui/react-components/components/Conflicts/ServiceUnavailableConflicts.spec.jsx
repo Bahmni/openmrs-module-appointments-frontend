@@ -3,7 +3,7 @@ import React from "react";
 import ServiceUnavailableConflicts from "./ServiceUnavailableConflicts";
 
 describe('ServiceUnavailableConflicts', () => {
-    it('should render service conflicts content', () => {
+    it.skip('should render service conflicts content', () => {
         const service = {name: 'Orthopedic'};
         const conflicts = {
             SERVICE_UNAVAILABLE: [{service: {name: "Orthopedic"}, startDateTime: 1575561600000},
