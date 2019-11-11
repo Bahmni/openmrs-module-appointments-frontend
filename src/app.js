@@ -109,7 +109,7 @@ angular
                     }
                 }
             }).state('home.manage.appointments.calendar.edit', {
-                url: '/:uuid',
+                url: '/:uuid?isRecurring',
                 params: {
                     isRecurring: null
                 },
@@ -149,7 +149,7 @@ angular
                     }
                 }
             }).state('home.manage.appointments.list.edit', {
-                url: '/:uuid',
+                url: '/:uuid?isRecurring',
                 params: {
                     isRecurring: null
                 },
