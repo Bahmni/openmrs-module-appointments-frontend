@@ -42,6 +42,6 @@ export const saveRecurringAppointments = () => {
     });
 };
 
-export const getRecurringConflicts = () => {
+export const recurringConflictsFor = () => {
     return {};
 };
