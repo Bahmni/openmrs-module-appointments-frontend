@@ -42,6 +42,6 @@ export const saveOrUpdateAppointment = () => {
     });
 };
 
-export const getConflicts = () => {
+export const conflictsFor = () => {
     return {};
 };
