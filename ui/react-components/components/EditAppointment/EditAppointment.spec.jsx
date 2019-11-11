@@ -25,13 +25,13 @@ describe('Edit Appointment', () => {
 
     it('should call getAppointmentByUuid when isRecurring is false', () => {
         renderWithReactIntl(<EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'}
-                                             isRecurring={false}/>);
+                                             isRecurring="false"/>);
         expect(appointmentsApiSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should call getRecurringAppointmentByUuid when isRecurring is false', () => {
         renderWithReactIntl(<EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'}
-                                             isRecurring={true}/>);
+                                             isRecurring="true"/>);
         expect(recurringAppointmentsApiSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -44,7 +44,7 @@ describe('Edit Appointment', () => {
         };
         act(() => {
             const {getByText, container} = renderWithReactIntl(<EditAppointment
-                appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} isRecurring={false} appConfig={config}/>);
+                appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} isRecurring="false" appConfig={config}/>);
             getByTextInDom = getByText;
             containerInDom = container;
         });
@@ -73,7 +73,7 @@ describe('Edit Appointment', () => {
         };
         act(() => {
             const {getByText, container, getByTestId} = renderWithReactIntl(<EditAppointment
-                appointmentUuid={'DAY'} isRecurring={true} appConfig={config}/>);
+                appointmentUuid={'DAY'} isRecurring="true" appConfig={config}/>);
             getByTextInDom = getByText;
             containerInDom = container;
             getByTestIdInDom = getByTestId;
@@ -88,7 +88,7 @@ describe('Edit Appointment', () => {
         getByTextInDom('10:00 am');
         getByTextInDom('10:30 am');
         getByTextInDom('2nd');
-        getByTextInDom('DAY');
+        getByTextInDom('Day');
         expect(getByTestIdInDom('input-box').value).toBe('3');
         getByTextInDom('Occurrences');
         expect(containerInDom.querySelectorAll('.rc-time-picker-input')[0].value).toBe('10:00 am');
@@ -107,7 +107,7 @@ describe('Edit Appointment', () => {
         };
         act(() => {
             const {getByText, container, getByTestId} = renderWithReactIntl(<EditAppointment
-                appointmentUuid={'WEEK'} isRecurring={true} appConfig={config}/>);
+                appointmentUuid={'WEEK'} isRecurring="true" appConfig={config}/>);
             getByTextInDom = getByText;
             containerInDom = container;
             getByTestIdInDom = getByTestId;
@@ -122,7 +122,7 @@ describe('Edit Appointment', () => {
         getByTextInDom('10:00 am');
         getByTextInDom('10:30 am');
         getByTextInDom('2nd');
-        getByTextInDom('WEEK');
+        getByTextInDom('Week');
         getByTextInDom('New end date');
         getByTextInDom('11th October 2019');
         expect(getByTestIdInDom('SUNDAY').hasAttribute('disabled')).toBeTruthy();
@@ -140,7 +140,7 @@ describe('Edit Appointment', () => {
     });
 
     it('should recurring plan component', () => {
-        const {getByText} = renderWithReactIntl(<EditAppointment appointmentUuid={'appt-uuid'} isRecurring={true}/>);
+        const {getByText} = renderWithReactIntl(<EditAppointment appointmentUuid={'appt-uuid'} isRecurring="true"/>);
         getByText('Plan');
         getByText('Recurring Appointment');
     });
