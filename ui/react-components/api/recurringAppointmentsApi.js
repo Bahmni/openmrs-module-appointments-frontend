@@ -1,5 +1,5 @@
 import axios from "axios";
-import {recurringAppointmentByUuidUrl, recurringAppointmentsConflictsUrl, recurringAppointmentsSaveUrl} from "../constants";
+import {recurringAppointmentFetchUrl, recurringAppointmentsConflictsUrl, recurringAppointmentsSaveUrl} from "../constants";
 
 export const saveRecurringAppointments = async data => {
     try {
@@ -9,9 +9,9 @@ export const saveRecurringAppointments = async data => {
     }
 };
 
-export const getRecurringAppointmentByUuid = async (appointmentUuid) => {
+export const getRecurringAppointment = async (appointmentUuid) => {
     try {
-        const response = await axios.get(`${recurringAppointmentByUuidUrl}?uuid=${appointmentUuid}`);
+        const response = await axios.get(`${recurringAppointmentFetchUrl}?uuid=${appointmentUuid}`);
         return response;
     } catch (error) {
         console.error(error);

@@ -1,7 +1,7 @@
 import {renderWithReactIntl} from "../../utils/TestUtil";
 import EditAppointment from "./EditAppointment";
 import React from "react";
-import {getAppointmentByUuid} from "../../api/appointmentsApi";
+import {getAppointment} from "../../api/appointmentsApi";
 import {act} from "@testing-library/react";
 
 jest.mock('../../api/appointmentsApi');
@@ -15,21 +15,21 @@ describe('Edit Appointment', () => {
     const flushPromises = () => new Promise(setImmediate);
 
     beforeEach(() => {
-        appointmentsApiSpy = jest.spyOn(appointmentsApi, 'getAppointmentByUuid');
-        recurringAppointmentsApiSpy = jest.spyOn(recurringAppointmentsApi, 'getRecurringAppointmentByUuid');
+        appointmentsApiSpy = jest.spyOn(appointmentsApi, 'getAppointment');
+        recurringAppointmentsApiSpy = jest.spyOn(recurringAppointmentsApi, 'getRecurringAppointment');
     });
     afterEach(() => {
         appointmentsApiSpy.mockRestore();
         recurringAppointmentsApiSpy.mockRestore();
     });
 
-    it('should call getAppointmentByUuid when isRecurring is false', () => {
+    it('should call getAppointment when isRecurring is false', () => {
         renderWithReactIntl(<EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'}
                                              isRecurring="false"/>);
         expect(appointmentsApiSpy).toHaveBeenCalledTimes(1);
     });
 
-    it('should call getRecurringAppointmentByUuid when isRecurring is false', () => {
+    it('should call getRecurringAppointment when isRecurring is false', () => {
         renderWithReactIntl(<EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'}
                                              isRecurring="true"/>);
         expect(recurringAppointmentsApiSpy).toHaveBeenCalledTimes(1);
