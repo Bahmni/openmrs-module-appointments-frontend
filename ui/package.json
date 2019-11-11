@@ -96,7 +96,7 @@
   },
   "scripts": {
     "test": "karma start test/config/karma.conf.js",
-    "test-react": "jest",
+    "test-react": "TZ=UTC jest",
     "test-react-watch": "jest --watch",
     "build-react": "webpack --env=production",
     "build-react-dev": "webpack --env=developemnt --watch",
