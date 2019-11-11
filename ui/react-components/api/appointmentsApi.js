@@ -10,7 +10,7 @@ export const saveOrUpdateAppointment = async (data) => {
     }
 };
 
-export const getConflicts = async appointmentRequest => {
+export const conflictsFor = async appointmentRequest => {
     try {
         return await axios.post(appointmentConflictsUrl, appointmentRequest);
     } catch (error) {

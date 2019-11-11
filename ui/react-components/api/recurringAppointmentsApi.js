@@ -9,9 +9,9 @@ export const saveRecurringAppointments = async data => {
     }
 };
 
-export const getRecurringConflicts = async request => {
+export const recurringConflictsFor = async recurringAppointmentRequest => {
     try {
-        return await axios.post(recurringAppointmentsConflictsUrl, request);
+        return await axios.post(recurringAppointmentsConflictsUrl, recurringAppointmentRequest);
     } catch (error) {
         console.error(error);
     }

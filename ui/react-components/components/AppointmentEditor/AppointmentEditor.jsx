@@ -489,13 +489,13 @@ const AppointmentEditor = props => {
                 </div>
             </div>
             <AppointmentEditorFooter checkAndSave={appointmentDetails.isRecurring ? checkAndSaveRecurringAppointments : checkAndSave}/>
-            {conflicts ?
+            {conflicts &&
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
                              closeOnEscape={true}
                              popupContent={<Conflicts saveAnyway={saveAppointments}
                                                       modifyInformation={() => setConflicts(undefined)}
-                                                      conflicts={conflicts} service={appointmentDetails.service}/>}/> : undefined}
+                                                      conflicts={conflicts} service={appointmentDetails.service}/>}/>}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,

@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios";
 import {appointmentConflictsUrl, appointmentsSaveUrl} from "../constants";
-import {getConflicts, saveOrUpdateAppointment} from "./appointmentsApi";
+import {conflictsFor, saveOrUpdateAppointment} from "./appointmentsApi";
 
 describe('Appointments Api', () => {
 
@@ -84,7 +84,7 @@ describe('Appointments Api', () => {
             })
         );
 
-        let appointment = await getConflicts(payload);
+        let appointment = await conflictsFor(payload);
 
         expect(mockAxios.post).toHaveBeenCalledWith(appointmentConflictsUrl, payload);
 
