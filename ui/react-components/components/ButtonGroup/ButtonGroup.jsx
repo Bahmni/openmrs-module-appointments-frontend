@@ -23,8 +23,8 @@ const ButtonGroup = props => {
 
 ButtonGroup.propTypes = {
     buttonsList: PropTypes.instanceOf(Map).isRequired,
-    onClick: PropTypes.func.isRequired,
-    enable: PropTypes.bool.isRequired
+    onClick: PropTypes.func,
+    enable: PropTypes.bool
 };
 
 export default ButtonGroup;
