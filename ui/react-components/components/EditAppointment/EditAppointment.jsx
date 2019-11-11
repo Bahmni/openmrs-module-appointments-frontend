@@ -8,7 +8,8 @@ import {
     recurringContainerLeft,
     recurringContainerRight,
     searchFieldsContainer,
-    searchFieldsContainerLeft
+    searchFieldsContainerLeft,
+    dateHeading
 } from "../AddAppointment/AddAppointment.module.scss";
 import SearchFieldsContainer from "../SearchFieldsContainer/SearchFieldsContainer.jsx";
 import {getRecurringAppointmentByUuid} from "../../api/recurringAppointmentsApi";
@@ -35,6 +36,7 @@ import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEdito
 import {getProviderDropDownOptions} from "../../mapper/providerMapper";
 import CalendarPicker from "../CalendarPicker/CalendarPicker.jsx";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
+import {capitalize} from "lodash/string";
 
 const EditAppointment = props => {
 
@@ -67,7 +69,7 @@ const EditAppointment = props => {
         recurringEndDate: undefined,
         startTime: undefined,
         endTime: undefined,
-        isRecurring: isRecurring,
+        isRecurring: isRecurring === 'true',
         notes: undefined,
         recurrenceType: undefined,
         occurrences: undefined,
@@ -99,11 +101,11 @@ const EditAppointment = props => {
     const [currentEndTime, setCurrentEndTime] = useState();
 
     const generateAppointmentDetails = async () => {
-        const appointment = isRecurring ? await getRecurringAppointmentByUuid(appointmentUuid) : await getAppointmentByUuid(appointmentUuid);
-        const appointmentResponse = isRecurring
+        const appointment = appointmentDetails.isRecurring ? await getRecurringAppointmentByUuid(appointmentUuid) : await getAppointmentByUuid(appointmentUuid);
+        const appointmentResponse = appointmentDetails.isRecurring
             ? (appointment && appointment.data && appointment.data.appointmentDefaultResponse) || undefined
             : (appointment && appointment.data && appointment.data) || undefined;
-        const recurringPattern = isRecurring
+        const recurringPattern = appointmentDetails.isRecurring
             ? (appointment && appointment.data && appointment.data.recurringPattern) || undefined : undefined;
         if (appointmentResponse) {
             updateAppointmentDetails({
@@ -120,7 +122,7 @@ const EditAppointment = props => {
             });
             setCurrentStartTime(moment(new Date(appointmentResponse.startDateTime)).format('hh:mm a'));
             setCurrentEndTime(moment(new Date(appointmentResponse.endDateTime)).format('hh:mm a'));
-            if (isRecurring) {
+            if (appointmentDetails.isRecurring) {
                 updateAppointmentDetails({
                     recurrenceType: recurringPattern.type,
                     recurringStartDate: moment(new Date(appointmentResponse.startDateTime)),
@@ -163,7 +165,8 @@ const EditAppointment = props => {
             <div className={classNames(recurringContainer)}>
                 <div className={classNames(recurringContainerLeft)}>
                     <div data-testid="date-selector">
-                        <Label translationKey='CHANGE_DATE_TO_LABEL' defaultValue='Change date to'/>
+                        <div className={classNames(dateHeading)}><Label translationKey='CHANGE_DATE_TO_LABEL'
+                                                                        defaultValue='Change date to'/></div>
                         <AppointmentDatePicker
                             onChange={date => {
                                 updateAppointmentDetails({appointmentDate: date});
@@ -174,13 +177,13 @@ const EditAppointment = props => {
                             minDate={getYesterday()}/>
                     </div>
                     <div>
-                        <Label translationKey="CURRENT_TIME_SLOT_LABEL" defaultValue="Current time slot"/>
+                        <div className={classNames(dateHeading)} ><Label translationKey="CURRENT_TIME_SLOT_LABEL" defaultValue="Current time slot"/></div>
                         <div className={classNames(currentTimeSlot)}>
                             <span>{currentStartTime}</span>
                             <span> to </span>
                             <span>{currentEndTime}</span>
                         </div>
-                        <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
+                        <div className={classNames(dateHeading)} ><Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/></div>
                         <div data-testid="start-time-selector">
                             <TimeSelector {...appointmentStartTimeProps}
                                           onChange={time => {
@@ -198,11 +201,11 @@ const EditAppointment = props => {
                     {appointmentDetails.isRecurring ?
                         <div className={classNames(recurringDetailsEdit)}>
                             <div>
-                                <div><Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/></div>
+                                <div className={classNames(dateHeading)}><Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats every"/></div>
                                 <div>
                                     <span>{moment.localeData().ordinal(appointmentDetails.period)} &nbsp; {appointmentDetails.recurrenceType === 'WEEK'
-                                        ? <Label translationKey="WEEK_LABEL" defaultValue="WEEK"/>
-                                        : <Label translationKey="DAY_LABEL" defaultValue="DAY"/>}</span>
+                                        ? <Label translationKey="WEEK_LABEL" defaultValue="Week"/>
+                                        : <Label translationKey="DAY_LABEL" defaultValue="Day"/>}</span>
                                 </div>
                                 <div>
                                     {appointmentDetails.recurrenceType === 'WEEK'
@@ -212,7 +215,7 @@ const EditAppointment = props => {
                             </div>
                             {appointmentDetails.occurrences
                                 ? (<div>
-                                    <div>
+                                    <div className={classNames(dateHeading)}>
                                         <Label translationKey="NUMBER_OF_OCCURRENCE_LABEL"
                                                defaultValue="# of occurrences"/>
                                     </div>
@@ -222,13 +225,13 @@ const EditAppointment = props => {
                                     <Label translationKey="OCCURRENCES_LABEL" defaultValue="Occurrences"/>
                                 </div>)
                                 : (<div className={classNames(recurringEndDateContainer)}>
-                                    <div>
+                                    <div className={classNames(dateHeading)}>
                                         <Label translationKey="NEW_END_DATE_LABEL" defaultValue="New end date"/>
                                     </div>
                                     <div>
                                         <span>{moment(appointmentDetails.recurringEndDate).format("Do MMMM YYYY")}</span>
                                         <span className={classNames(dateText)}>
-                                            {moment(appointmentDetails.recurringEndDate).format("dddd").toUpperCase()}
+                                            {capitalize(moment(appointmentDetails.recurringEndDate).format("dddd"))}
                                         </span>
                                         <span><CalendarPicker date={appointmentDetails.recurringEndDate}/></span>
                                     </div>
@@ -236,7 +239,8 @@ const EditAppointment = props => {
                         </div> : undefined}
                 </div>
                 <div className={classNames(recurringContainerRight)}>
-                    <Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/>
+                    <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_NOTES"
+                                                                    defaultValue="Notes"/></div>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>

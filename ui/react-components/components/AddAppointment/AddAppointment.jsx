@@ -109,7 +109,8 @@ const AddAppointment = props => {
         let appointment = {
             patientUuid: appointmentDetails.patient && appointmentDetails.patient.value.uuid,
             serviceUuid: appointmentDetails.service && appointmentDetails.service.value.uuid,
-            serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.value.uuid,
+            serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.value &&
+                appointmentDetails.serviceType.value.uuid,
             startDateTime: appointmentDetails.isRecurring
                 ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.startTime)
                 : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
@@ -363,7 +364,9 @@ const AddAppointment = props => {
                     </div> :
                     <div className={classNames(recurringContainerLeft)}>
                         <div data-testid="date-selector">
-                            <Label translationKey="APPOINTMENT_DATE_LABEL" defaultValue="Appointment date"/>
+                            <div className={classNames(dateHeading)}>
+                                <Label translationKey="APPOINTMENT_DATE_LABEL" defaultValue="Appointment date"/>
+                            </div>
                             <AppointmentDatePicker
                                 onChange={date => {
                                     updateAppointmentDetails({appointmentDate: date});
@@ -375,7 +378,7 @@ const AddAppointment = props => {
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div>
-                            <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
+                            <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/></div>
                             <div data-testid="start-time-selector">
                                 <TimeSelector {...appointmentStartTimeProps}
                                               onChange={time => {
@@ -401,7 +404,7 @@ const AddAppointment = props => {
                         </div>
                     </div>}
                 <div className={classNames(recurringContainerRight)}>
-                    <Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/>
+                    <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/></div>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
