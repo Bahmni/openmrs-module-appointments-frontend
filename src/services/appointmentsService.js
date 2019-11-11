@@ -40,7 +40,7 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            this.getAppointmentByUuid = function (appointmentUuid) {
+            this.getAppointment = function (appointmentUuid) {
                 var params = {uuid: appointmentUuid};
                 return $http.get(Bahmni.Appointments.Constants.getAppointmentByUuid, {
                     params: params,
