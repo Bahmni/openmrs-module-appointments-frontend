@@ -11,7 +11,7 @@ export const saveOrUpdateAppointment = async (data) => {
 };
 
 
-export const getAppointmentByUuid = async (appointmentUuid) => {
+export const getAppointment = async (appointmentUuid) => {
     try {
         const response = await axios.get(`${appointmentByUuidUrl}?uuid=${appointmentUuid}`);
         return response;

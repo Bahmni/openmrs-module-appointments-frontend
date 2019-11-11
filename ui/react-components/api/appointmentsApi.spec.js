@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios";
 import {appointmentsSaveUrl, appointmentByUuidUrl} from "../constants";
-import {getAppointmentByUuid, saveOrUpdateAppointment} from "./appointmentsApi";
+import {getAppointment, saveOrUpdateAppointment} from "./appointmentsApi";
 
 describe('Appointments Api', () => {
     it('should save appointment and get saved appointment as response', async () => {
@@ -113,7 +113,7 @@ describe('Appointments Api', () => {
             })
         );
         let appointmentUuid = 'appointment-uuid';
-        let appointment = await getAppointmentByUuid(appointmentUuid);
+        let appointment = await getAppointment(appointmentUuid);
 
         expect(mockAxios.get).toHaveBeenCalledWith(`${appointmentByUuidUrl}?uuid=${appointmentUuid}`);
 

@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios";
-import {getRecurringAppointmentByUuid, saveRecurringAppointments} from "./recurringAppointmentsApi";
-import {recurringAppointmentByUuidUrl, recurringAppointmentsSaveUrl} from "../constants";
+import {getRecurringAppointment, saveRecurringAppointments} from "./recurringAppointmentsApi";
+import {recurringAppointmentFetchUrl, recurringAppointmentsSaveUrl} from "../constants";
 
 describe('Appointments Api', () => {
     it('should save recurring appointments and get saved appointments as response', async () => {
@@ -171,9 +171,9 @@ describe('Appointments Api', () => {
             })
         );
         let appointmentUuid = 'appointment-uuid';
-        let appointment = await getRecurringAppointmentByUuid(appointmentUuid);
+        let appointment = await getRecurringAppointment(appointmentUuid);
 
-        expect(mockAxios.get).toHaveBeenCalledWith(`${recurringAppointmentByUuidUrl}?uuid=${appointmentUuid}`);
+        expect(mockAxios.get).toHaveBeenCalledWith(`${recurringAppointmentFetchUrl}?uuid=${appointmentUuid}`);
 
         expect(appointment.data).toEqual(mockResponse);
     });

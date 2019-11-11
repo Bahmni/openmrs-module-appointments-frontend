@@ -12,8 +12,8 @@ import {
     dateHeading
 } from "../AddAppointment/AddAppointment.module.scss";
 import SearchFieldsContainer from "../SearchFieldsContainer/SearchFieldsContainer.jsx";
-import {getRecurringAppointmentByUuid} from "../../api/recurringAppointmentsApi";
-import {getAppointmentByUuid} from "../../api/appointmentsApi";
+import {getRecurringAppointment} from "../../api/recurringAppointmentsApi";
+import {getAppointment} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
 import moment from "moment";
 import {getDuration, getYesterday} from "../../helper";
@@ -101,7 +101,7 @@ const EditAppointment = props => {
     const [currentEndTime, setCurrentEndTime] = useState();
 
     const generateAppointmentDetails = async () => {
-        const appointment = appointmentDetails.isRecurring ? await getRecurringAppointmentByUuid(appointmentUuid) : await getAppointmentByUuid(appointmentUuid);
+        const appointment = appointmentDetails.isRecurring ? await getRecurringAppointment(appointmentUuid) : await getAppointment(appointmentUuid);
         const appointmentResponse = appointmentDetails.isRecurring
             ? (appointment && appointment.data && appointment.data.appointmentDefaultResponse) || undefined
             : (appointment && appointment.data && appointment.data) || undefined;
