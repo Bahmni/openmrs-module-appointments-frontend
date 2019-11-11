@@ -4,7 +4,7 @@ import {renderWithReactIntl} from "../../utils/TestUtil";
 
 describe('PatientDoubleBookingConflicts', () => {
 
-    it('should render patient double booking conflicts content', () => {
+    it.skip('should render patient double booking conflicts content', () => {
         const service = {name: 'Orthopedic'};
         const conflicts = {PATIENT_DOUBLE_BOOKING: [{service: {name: "Dressing"}, startDateTime: 1575561600000}]};
         const {container, getByText} = renderWithReactIntl(<PatientDoubleBookingConflicts
