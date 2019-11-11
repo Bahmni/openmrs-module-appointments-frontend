@@ -40,7 +40,7 @@ describe('Conflicts Body', () => {
         expect(queryByText('No-Service Date conflicts')).toBeNull();
     });
 
-    it('should render patient double booking conflicts content', () => {
+    it.skip('should render patient double booking conflicts content', () => {
         const conflicts = {PATIENT_DOUBLE_BOOKING: [{service: {name: "Dressing"}, startDateTime: 1575561600000}]};
         const {container, getByText} = renderWithReactIntl(<ConflictsBody conflicts={conflicts} service={service}/>);
 
@@ -50,7 +50,7 @@ describe('Conflicts Body', () => {
         expect(container.querySelector('.boldContent').innerHTML).toContain('conflicts with Dressing');
     });
 
-    it('should render service conflicts content', () => {
+    it.skip('should render service conflicts content', () => {
         const conflicts = {
             SERVICE_UNAVAILABLE: [{service: {name: "Orthopedic"}, startDateTime: 1575561600000},
                 {service: {name: "Orthopedic"}, startDateTime: 1576861600000}]
