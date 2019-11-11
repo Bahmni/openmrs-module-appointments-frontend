@@ -10,13 +10,10 @@ import {
     no
 } from "../CancelConfirmation/CancelConfirmation.module.scss";
 import PropTypes from "prop-types";
-import {AppContext} from '../AppContext/AppContext';
 
 const CancelConfirmation = (props) => {
 
-    const {close} = props;
-    debugger;
-    const {onBack} = props;
+    const {close, onBack} = props;
 
     return (
         <div className={classNames(cancelModal)}>

@@ -19,7 +19,7 @@ import LocationSearch from "../Location/LocationSearch.jsx";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
-import {FormattedMessage, injectIntl} from "react-intl";
+import {injectIntl} from "react-intl";
 import PropTypes from "prop-types";
 import {saveAppointment, saveRecurring} from "./AppointmentEditorService";
 import Label from '../Label/Label.jsx';
@@ -432,7 +432,6 @@ const AppointmentEditor = props => {
                     <AppointmentNotes onChange={(event) => setNotes(event.target.value)}/>
                 </div>
             </div>
-            <CustomPopup popupContent={popupContent} open={props.isCancel}/>
             <AppointmentEditorFooter checkAndSave={isRecurring ? checkAndSaveRecurring : checkAndSave}/>
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
@@ -443,12 +442,10 @@ const AppointmentEditor = props => {
     </Fragment>);
 };
 
-const popupContent = <CancelConfirmation/>;
 
 AppointmentEditor.propTypes = {
     intl: PropTypes.object.isRequired,
-    appConfig: PropTypes.object,
-    isCancel: PropTypes.bool
+    appConfig: PropTypes.object
 };
 
 export default injectIntl(AppointmentEditor);
