@@ -43,7 +43,7 @@ export const saveOrUpdateAppointment = () => {
 };
 
 
-export const getAppointmentByUuid = () => {
+export const getAppointment = () => {
     return new Promise((resolve, reject) => {
         process.nextTick(() =>
             resolve(appointmentResponse)

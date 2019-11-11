@@ -19,7 +19,6 @@ function reactAddAppointmentController($scope, $state, $stateParams) {
     $scope.setViewDate = function (date) {
         $state.params.viewDate = date;
     };
-    console.log($state.current.url);
     $scope.appointmentUuid = $state.current.url === '/:uuid?isRecurring' ? $stateParams.uuid : undefined;
     $scope.isRecurring = $stateParams.isRecurring;
 }
