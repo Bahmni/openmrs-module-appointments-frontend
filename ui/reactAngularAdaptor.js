@@ -35,7 +35,7 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
             backUrl = next.name;
             $scope.dialog = ngDialog.open({
                 template: 'templateId',
-                className: 'ngDialog-react-popup',
+                className: 'ngdialog-react-popup',
                 scope: $scope
             });
         }
