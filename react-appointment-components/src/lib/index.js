@@ -1,10 +1,5 @@
-import Example from './components/Example';
-import SecondExample from './components/SecondExample';
-import AppointmentEditor from "./components/AppointmentEditor/AppointmentEditor";
-
-export default Example;
+import AddAppointmentContainer from './containers/AddAppointmentContainer';
 
 export {
-  SecondExample,
-  AppointmentEditor
-};
+    AddAppointmentContainer
+}
