@@ -10,12 +10,10 @@ import {
     no
 } from "../CancelConfirmation/CancelConfirmation.module.scss";
 import PropTypes from "prop-types";
-import {AppContext} from '../AppContext/AppContext';
 
 const CancelConfirmation = (props) => {
 
-    const {close} = props;
-    const {onBack} = React.useContext(AppContext);
+    const {close, onBack} = props;
 
     return (
         <div className={classNames(cancelModal)}>
@@ -46,7 +44,8 @@ const CancelConfirmation = (props) => {
 };
 
 CancelConfirmation.propTypes = {
-    close: PropTypes.func
+    close: PropTypes.func,
+    onBack: PropTypes.func
 };
 
 export default CancelConfirmation;
