@@ -145,7 +145,21 @@ div.ngdialog-close {
     margin-top: 10px; clear: both;
     button:focus {outline: 2px solid $clinicalFormFocus;}
 }
-
+.ngdialog-react-popup {
+    .ngdialog-content {
+        position: relative;
+        background: rgb(255, 255, 255);
+        width: 482px;
+        border: 1px solid rgb(187, 187, 187);
+        padding: 5px;
+        border-radius: 0;
+        font-size: 14px !important;
+        font-family: OpenSans, Arial, sans-serif, Arial, sans-serif;
+        top: 100px;
+        left: 479px;
+        line-height: 1.1em;
+    }
+}
 .ngdialog-theme-default{
     &.ng-dialog-all-details-page{
         padding-bottom: 10px;
