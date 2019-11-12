@@ -4,15 +4,7 @@ import "react-tabs/style/react-tabs.css";
 import classNames from 'classnames';
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
-import {
-    appointmentConflict,
-    boldContent,
-    conflictDetails,
-    conflictMessage,
-    conflictsCount,
-    conflictsHeading,
-    conflictsList
-} from './ConflictsBody.module.scss';
+import {conflictsCount} from './ConflictsBody.module.scss';
 import PatientDoubleBookingConflicts from "../PatientDoubleBookingConflicts.jsx";
 import ServiceUnavailableConflicts from "../ServiceUnavailableConflicts.jsx";
 
