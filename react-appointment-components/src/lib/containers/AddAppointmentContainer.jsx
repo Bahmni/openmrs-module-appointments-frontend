@@ -4,7 +4,7 @@ import {IntlProvider} from "react-intl";
 import {getLocale} from "../utils/LocalStorageUtil";
 import {getTranslations} from "../api/translationsApi";
 import {getAppConfigs} from "../api/configApi";
-import translations from '../../app/i18n/appointments';
+import translations from '../../i18n';
 import {appName} from '../constants';
 import PropTypes from "prop-types";
 import {AppContext} from "../components/AppContext/AppContext";
@@ -48,7 +48,7 @@ class AddAppointmentContainer extends Component {
     }
 }
 
-AddAppointmentContainer .propTypes = {
+AddAppointmentContainer.propTypes = {
     onBack: PropTypes.func.isRequired,
     state: PropTypes.object.isRequired
 };
