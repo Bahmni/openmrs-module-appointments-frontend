@@ -18,31 +18,29 @@ const ServiceTypeSearch = props => {
     const [selectedOption, setSelectedOption] = useState(null);
 
     useEffect(() => {
+        const getServiceType = async (serviceUuid) => {
+            const service = await getService(serviceUuid);
+            const serviceTypes = service.serviceTypes;
+            setServiceTypes(createDropdownOptions(serviceTypes));
+        };
+        const createDropdownOptions = (results) => {
+            const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SERVICE_APPOINTMENTS_TYPE',
+                defaultMessage: 'Select a service appointment type'});
+            const options = [{value: null, label: defaultOption}];
+            forEach(results, function (serviceType) {
+                options.push({
+                    value: serviceType.uuid,
+                    label: serviceType.name
+                })
+            });
+            return options;
+        };
         setSelectedOption(null);
         if (serviceUuid) {
             setServiceTypes(getServiceType(serviceUuid));
             setDisabled(false);
         }
-    }, [serviceUuid]);
-
-    const getServiceType = async (serviceUuid) => {
-        const service = await getService(serviceUuid);
-        const serviceTypes = service.serviceTypes;
-        setServiceTypes(createDropdownOptions(serviceTypes));
-    };
-
-    const createDropdownOptions = (results) => {
-        const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SERVICE_APPOINTMENTS_TYPE',
-            defaultMessage: 'Select a service appointment type'});
-        const options = [{value: null, label: defaultOption}];
-        forEach(results, function (serviceType) {
-            options.push({
-                value: serviceType.uuid,
-                label: serviceType.name
-            })
-        });
-        return options;
-    };
+    }, [serviceUuid,intl]);
 
     const updateSelection = option => {
         setSelectedOption(option);

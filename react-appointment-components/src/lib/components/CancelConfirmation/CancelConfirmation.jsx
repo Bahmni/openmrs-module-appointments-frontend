@@ -20,9 +20,9 @@ const CancelConfirmation = (props) => {
     return (
         <div className={classNames(cancelModal)}>
             <div className={classNames(cancelModalCloseIcon)}>
-                <a data-testid="cancel-close-icon">
+                <button data-testid="cancel-close-icon">
                     <i className={classNames("fa", "fa-times")} onClick={close}/>
-                </a>
+                </button>
             </div>
             <div>
                 <h1 className={classNames(cancelModalTitle)}>

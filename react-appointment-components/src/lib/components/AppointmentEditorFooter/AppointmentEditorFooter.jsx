@@ -3,7 +3,6 @@ import {
     button,
     footer,
     footerElements,
-    cancelPopup,
     save
 } from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
 import React from "react";

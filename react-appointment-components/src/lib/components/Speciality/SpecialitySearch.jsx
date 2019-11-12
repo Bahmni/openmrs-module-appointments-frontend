@@ -8,31 +8,29 @@ import {forEach} from 'lodash';
 const SpecialitySearch = (props) => {
 
     const [specialities, setSpecialities] = useState([]);
-    useEffect(() => {
-        setSpecialities(loadSpecialities())
-    }, []);
-
-    const createDropdownOptions = (specialities) => {
-        const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SPECIALITY', defaultMessage: 'Select a speciality'});
-        const options = [{value: null, label: defaultOption}];
-        forEach(specialities, function (speciality) {
-            options.push({
-                value: speciality.uuid,
-                label: speciality.name
-            });
-        });
-        return options;
-    };
-
-    const loadSpecialities = async () => {
-        const specialities = await getAllSpecialities();
-        setSpecialities(createDropdownOptions(specialities));
-    };
-
     const {intl, onChange} = props;
     const placeholder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SPECIALITY', defaultMessage: 'Speciality'
     });
+
+    useEffect(() => {
+        const loadSpecialities = async () => {
+            const specialities = await getAllSpecialities();
+            setSpecialities(createDropdownOptions(specialities));
+        };
+        const createDropdownOptions = (specialities) => {
+            const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SPECIALITY', defaultMessage: 'Select a speciality'});
+            const options = [{value: null, label: defaultOption}];
+            forEach(specialities, function (speciality) {
+                options.push({
+                    value: speciality.uuid,
+                    label: speciality.name
+                });
+            });
+            return options;
+        };
+        setSpecialities(loadSpecialities());
+    }, [intl]);
 
     return (
         <Dropdown

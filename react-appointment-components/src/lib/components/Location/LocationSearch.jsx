@@ -9,31 +9,30 @@ import {forEach} from 'lodash';
 const LocationSearch = (props) => {
 
     const [locations, setLocations] = useState([]);
-    useEffect(() => {
-        setLocations(loadLocations())
-    }, []);
-
-    const createDropdownOptions = (locations) => {
-        const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_LOCATION', defaultMessage: 'Select a location'});
-        const options = [{value: null, label: defaultOption}];
-        forEach(locations, function (location) {
-            options.push({
-                value: location.uuid,
-                label: location.name
-            });
-        });
-        return options;
-    };
-
-    const loadLocations = async () => {
-        const locations = await getAllByTag(locationTagName);
-        setLocations(createDropdownOptions(locations));
-    };
-
     const {intl, onChange} = props;
     const placeholder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_LOCATION', defaultMessage: 'Location'
     });
+
+    useEffect(() => {
+        const loadLocations = async () => {
+            const locations = await getAllByTag(locationTagName);
+            setLocations(createDropdownOptions(locations));
+        };
+        const createDropdownOptions = (locations) => {
+            const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_LOCATION', defaultMessage: 'Select a location'});
+            const options = [{value: null, label: defaultOption}];
+            forEach(locations, function (location) {
+                options.push({
+                    value: location.uuid,
+                    label: location.name
+                });
+            });
+            return options;
+        };
+        setLocations(loadLocations())
+    }, [intl]);
+
     return (
         <Dropdown
             options={Object.values(locations)}

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import AsyncSelect from "react-select/async";
-import {dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
+import {resetSelectContainer} from './Dropdown.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {injectIntl} from "react-intl";
@@ -13,7 +13,6 @@ const AsyncDropdown = (props) => {
     const [value, setValue] = useState('');
     const [lastSelectedValue, setLastSelectedValue] = useState('');
     const {loadOptions, placeholder, onChange, intl} = props;
-    let select;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'Type to search'});
     const loadingMessage = intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'});
 
@@ -44,9 +43,6 @@ const AsyncDropdown = (props) => {
     return (
         <div data-testid="asyncSelect">
             <AsyncSelect
-                ref={ref => {
-                    select = ref;
-                }}
                 cacheOptions={true}
                 defaultOptions
                 className={classNames(resetSelectContainer, 'react-select-container')}

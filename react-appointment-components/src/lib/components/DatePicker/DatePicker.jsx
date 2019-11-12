@@ -1,4 +1,4 @@
-import React, {Text, useState} from 'react';
+import React, {useState} from 'react';
 import Calendar from 'rc-calendar';
 import 'rc-calendar/assets/index.css';
 import { appointmentDatePicker, appointmentDatePickerSelected, appointmentDatePickerNotSelected } from './DatePicker.module.scss';

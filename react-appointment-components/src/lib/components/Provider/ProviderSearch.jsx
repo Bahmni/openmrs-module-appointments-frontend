@@ -18,26 +18,24 @@ const ProviderSearch = props => {
     const [selectedProvider, setSelectedProvider] = useState();
 
     useEffect(() => {
+        const loadProviders = async () => {
+            const providers = await getAllProviders();
+            setProviders(createDropdownOptions(providers));
+        };
+        const createDropdownOptions = (results) => {
+            const options = [];
+            forEach(results, provider =>
+                options.push({
+                    value: provider.uuid,
+                    label: provider.person.display,
+                    comments: null,
+                    response: "ACCEPTED"
+                })
+            );
+            return options;
+        };
         setProviders(loadProviders())
     }, []);
-
-    const loadProviders = async () => {
-        const providers = await getAllProviders();
-        setProviders(createDropdownOptions(providers));
-    };
-
-    const createDropdownOptions = (results) => {
-        const options = [];
-        forEach(results, provider =>
-            options.push({
-                value: provider.uuid,
-                label: provider.person.display,
-                comments: null,
-                response: "ACCEPTED"
-            })
-        );
-        return options;
-    };
 
     const onProviderSelect = selectedProviderOption => {
         if (selectedProviders.length < maxAppointmentProvidersAllowed) {

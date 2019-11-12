@@ -1,5 +1,5 @@
 import Select from "react-select";
-import {dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
+import { resetSelectContainer} from './Dropdown.module.scss';
 import React from "react";
 import classNames from 'classnames';
 import {PropTypes} from 'prop-types';

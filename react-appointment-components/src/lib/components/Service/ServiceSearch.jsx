@@ -13,26 +13,27 @@ const ServiceSearch = (props) => {
     });
     const [services, setServices] = useState([]);
 
-    useEffect(() => { setServices(loadServices()) },[]);
+    useEffect(() => { 
+        const loadServices = async () => {
+            const services = await getAllServices();
+            setServices(createDropdownOptions(services));
+    
+        };
+        const createDropdownOptions = (results) => {
+            const options = [];
+            forEach(results, function (service) {
+                if (!specialityUuid || specialityUuid === service.speciality.uuid)
+                    options.push({
+                        value: service.uuid,
+                        label: service.name
+                    })
+            });
+            return options;
+        };
+        setServices(loadServices()) 
+    },[specialityUuid]);
 
-    const loadServices = async () => {
-        const services = await getAllServices();
-        setServices(createDropdownOptions(services));
-
-    };
-
-    const createDropdownOptions = (results) => {
-        const options = [];
-        forEach(results, function (service) {
-            if (!specialityUuid || specialityUuid === service.speciality.uuid)
-                options.push({
-                    value: service.uuid,
-                    label: service.name
-                })
-        });
-        return options;
-    };
-
+    
     return (
         <Dropdown data-testid="service-search"
             options={Object.values(services)}
