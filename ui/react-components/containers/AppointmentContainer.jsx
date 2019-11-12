@@ -2,12 +2,10 @@ import React, {Component} from "react";
 import AddAppointment from "../components/AddAppointment/AddAppointment.jsx";
 import {IntlProvider} from "react-intl";
 import {getLocale} from "../utils/LocalStorageUtil";
-import {getTranslations} from "../api/translationsApi";
-import {getAppConfigs} from "../api/configApi";
 import translations from '../../app/i18n/appointments';
-import {appName} from '../constants';
 import PropTypes from "prop-types";
 import {AppContext} from "../components/AppContext/AppContext";
+import {getAppConfig, getMessages} from "../components/AppContext/AppService";
 import EditAppointment from "../components/EditAppointment/EditAppointment.jsx";
 import moment from "moment";
 
@@ -15,7 +13,7 @@ import moment from "moment";
 
 class AppointmentContainer extends Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
             locale: getLocale(),
@@ -23,24 +21,13 @@ class AppointmentContainer extends Component {
             appConfig: null
         };
         (async () => {
-            await this.getMessages();
-            await this.getAppConfigs();
+            this.setState({messages: await getMessages(this.state.locale)});
+            this.setState({appConfig: await getAppConfig()});
         })();
         moment.locale(getLocale());
     }
 
-    async getMessages () {
-        const messages = await getTranslations({appName: appName, locale: this.state.locale});
-        this.setState({messages: messages});
-    }
-
-    async getAppConfigs () {
-        const appConfig = await getAppConfigs({appName: appName});
-        const {config} = appConfig;
-        this.setState({appConfig: config});
-    }
-
-    render () {
+    render() {
         const {locale, messages, appConfig} = this.state;
         return (
             <AppContext.Provider value={{onBack: this.props.onBack, setViewDate: this.props.setViewDate}}>
@@ -57,7 +44,9 @@ AppointmentContainer .propTypes = {
     onBack: PropTypes.func.isRequired,
     appointmentUuid: PropTypes.string,
     isRecurring: PropTypes.bool,
-    setViewDate: PropTypes.func.isRequired
+    setViewDate: PropTypes.func.isRequired,
+    state: PropTypes.object.isRequired,
+    isCancel: PropTypes.bool
 };
 
 export default AppointmentContainer;

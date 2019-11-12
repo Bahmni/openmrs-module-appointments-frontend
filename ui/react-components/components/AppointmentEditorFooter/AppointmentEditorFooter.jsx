@@ -12,13 +12,14 @@ import {FormattedMessage} from "react-intl";
 import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
+import {AppContext} from "../AppContext/AppContext";
 
 
 const AppointmentEditorFooter = props => {
 
     const {checkAndSave, isEdit} = props;
 
-    const popupContent = <CancelConfirmation/>;
+    const popupContent = <CancelConfirmation onBack={React.useContext(AppContext).onBack}/>;
 
     const cancelButton = <button className={classNames(button)} data-testid="cancel">
                             <i className={classNames("fa", "fa-times")}/>
