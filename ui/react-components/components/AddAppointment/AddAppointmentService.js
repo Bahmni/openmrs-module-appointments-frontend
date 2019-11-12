@@ -25,11 +25,11 @@ export const getAppointmentConflicts = async appointment => {
 
 export const getRecurringAppointmentsConflicts = async recurringAppointmentRequest => {
     const providers = getProviders(recurringAppointmentRequest.appointmentRequest.providers);
-    console.log(recurringAppointmentRequest)
     return await recurringConflictsFor(updateProvidersFor(recurringAppointmentRequest, providers));
 };
 
 const updateProvidersFor = (recurringAppointmentRequest, providers) => {
-    return {...recurringAppointmentRequest, 
-        ...{appointmentRequest:{...recurringAppointmentRequest.appointmentRequest, ...{providers}}}};
-}
+    return {...recurringAppointmentRequest,
+        ...{appointmentRequest: {...recurringAppointmentRequest.appointmentRequest, ...{providers}}}
+    };
+};
