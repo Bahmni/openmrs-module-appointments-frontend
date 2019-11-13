@@ -1,13 +1,13 @@
 import React from "react";
 import Label from "../Label/Label.jsx";
-import {checkbox, checkboxContainer, planLabel, container} from "./RecurringPlan.module.scss";
+import {checkbox, checkboxContainer, planLabel, container} from "./AppointmentPlan.module.scss";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import Checkbox from 'rc-checkbox';
 import 'rc-checkbox/assets/index.css';
 
-const RecurringPlan = props => {
+const AppointmentPlan = props => {
 
     const {onChange, isRecurring, isEdit} = props;
 
@@ -29,10 +29,10 @@ const RecurringPlan = props => {
     </div>)
 };
 
-RecurringPlan.propTypes = {
+AppointmentPlan.propTypes = {
     onChange: PropTypes.func,
     isRecurring: PropTypes.bool,
     isEdit: PropTypes.bool
 };
 
-export default injectIntl(RecurringPlan);
+export default injectIntl(AppointmentPlan);
