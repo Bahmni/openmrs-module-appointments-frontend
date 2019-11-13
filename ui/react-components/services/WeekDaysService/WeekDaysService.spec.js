@@ -44,4 +44,16 @@ describe('Weekdays Service', () => {
         expect(selectedWeekDays.length).toBe(3);
         expect(selectedWeekDays.includes("SATURDAY", "WEDNESDAY", "SUNDAY")).toBeTruthy();
     });
+
+    it('should return default map when start of week is number', () => {
+        const startOfWeek = 1;
+        const weekDays = getWeekDays(startOfWeek);
+        expect([...weekDays.keys()]).toStrictEqual(['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY']);
+    });
+
+    it('should return default map when start of week is invalid string', () => {
+        const startOfWeek = "INVALID";
+        const weekDays = getWeekDays(startOfWeek);
+        expect([...weekDays.keys()]).toStrictEqual(['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY']);
+    });
 });

@@ -34,13 +34,15 @@ const getDefaultWeekDaysMap = () => {
 
 export const getWeekDays = (startOfWeek) => {
     const weekDays = getDefaultWeekDaysMap();
-
-    if (!startOfWeek) {
+    if (!isValidWeekDay(startOfWeek,weekDays))
         return weekDays;
-    }
     const index = [...weekDays.keys()].indexOf(startOfWeek.toUpperCase());
     const weekDaysArray = [...weekDays.entries()];
     return new Map(weekDaysArray.splice(index).concat(weekDaysArray));
+};
+
+const isValidWeekDay = (startOfWeek, weekDays) => {
+    return startOfWeek && isNaN(startOfWeek) && [...weekDays.keys()].includes(startOfWeek.toUpperCase());
 };
 
 export const getSelectedWeekDays = weekDays => [...weekDays.keys()].filter(key => weekDays.get(key).isSelected);
