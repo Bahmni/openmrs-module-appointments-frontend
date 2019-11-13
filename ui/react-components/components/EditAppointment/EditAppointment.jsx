@@ -18,7 +18,7 @@ import {getPatientForDropdown} from "../../mapper/patientMapper";
 import moment from "moment";
 import {getDuration, getYesterday} from "../../helper";
 import {MINUTES} from "../../constants";
-import RecurringPlan from "../RecurringPlan/RecurringPlan.jsx";
+import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import Label from "../Label/Label.jsx";
 import {
     currentTimeSlot,
@@ -159,7 +159,7 @@ const EditAppointment = props => {
                                    updateAppointmentDetails={updateAppointmentDetails} appConfig={appConfig}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(searchFieldsContainerLeft)}>
-                    <RecurringPlan isRecurring={appointmentDetails.isRecurring} isEdit={true}/>
+                    <AppointmentPlan isRecurring={appointmentDetails.isRecurring} isEdit={true}/>
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
