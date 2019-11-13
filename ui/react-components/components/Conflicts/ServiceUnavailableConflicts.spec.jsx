@@ -4,7 +4,7 @@ import ServiceUnavailableConflicts from "./ServiceUnavailableConflicts";
 
 describe('ServiceUnavailableConflicts', () => {
     it('should render service conflicts content', () => {
-        const service = {name: 'Orthopedic'};
+        const service = {label: 'Orthopedic'};
         const conflicts = {
             SERVICE_UNAVAILABLE: [{service: {name: "Orthopedic"}, startDateTime: 1575561600000},
                 {service: {name: "Orthopedic"}, startDateTime: 1576861600000}]

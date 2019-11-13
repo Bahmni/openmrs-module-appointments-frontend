@@ -16,7 +16,7 @@ const ServiceUnavailableConflicts = props => {
         });
         return conflictList;
     };
-    const defaultMessage = `The ${props.service.name} service you had selected for the appointment(s) is not 
+    const defaultMessage = `The ${props.service.label} service you had selected for the appointment(s) is not 
                                 available during below listed dates`;
     return (
         <div>
