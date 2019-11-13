@@ -15,7 +15,7 @@ import {getAppointmentConflictDetails} from "./ConflictsUtil";
 const PatientDoubleBookingConflicts = props => {
 
     const getDoubleBookingAppointmentConflictMessage = conflict => {
-        const currentAppointmentService = props.service.name;
+        const currentAppointmentService = props.service.label;
         const existingAppointmentService = conflict.service.name;
         return (
             <div className={classNames(conflictMessage)}>Current {currentAppointmentService} request
