@@ -27,7 +27,7 @@ import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
-import RecurringPlan from "../RecurringPlan/RecurringPlan.jsx";
+import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
 import {AppContext} from "../AppContext/AppContext";
@@ -291,8 +291,8 @@ const AddAppointment = props => {
                                    appointmentDetails={appointmentDetails} endTimeBasedOnService={endTimeBasedOnService} appConfig={appConfig} errors={errors}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(searchFieldsContainerLeft)}>
-                    <RecurringPlan isRecurring={appointmentDetails.isRecurring}
-                                   onChange={() => updateAppointmentDetails({isRecurring: !appointmentDetails.isRecurring})}/>
+                    <AppointmentPlan isRecurring={appointmentDetails.isRecurring}
+                                     onChange={() => updateAppointmentDetails({isRecurring: !appointmentDetails.isRecurring})}/>
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
