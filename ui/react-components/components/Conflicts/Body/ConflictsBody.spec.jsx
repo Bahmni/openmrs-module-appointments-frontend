@@ -9,7 +9,7 @@ describe('Conflicts Body', () => {
         'OVERLAPPING_CONFLICTS': 'Patient double booking',
         'NO_SERVICE_DATE_CONFLICTS': 'Service unavailability'
     };
-    const service = {name: 'Orthopedic'};
+    const service = {label: 'Orthopedic'};
 
     it('should render patient double booking and service unavailable tabs', function () {
         const conflicts = {
