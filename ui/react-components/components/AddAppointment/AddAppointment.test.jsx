@@ -307,5 +307,15 @@ describe('Appointment Editor', () => {
     //TODO need to add test to check the status of response on click of checkAndSave
     //TODO need to add test for conflicts api on click of check and save
     //TODO Not able to do because onChange of time picket is not getting called. Need to fix that
+
+    it('should toggle the selection of checkbox when changing the other',() => {
+        const {container} = renderWithReactIntl(<AddAppointment/>);
+        const recurringCheckBox = container.querySelectorAll('.rc-checkbox-input')[0];
+        fireEvent.click(recurringCheckBox);
+        const walkInCheckBox = container.querySelectorAll('.rc-checkbox-input')[1];
+        fireEvent.click(walkInCheckBox);
+        expect(container.querySelectorAll('.rc-checkbox-input')[0].checked).toBeFalsy();
+        expect(container.querySelectorAll('.rc-checkbox-input')[1].checked).toBeTruthy();
+    });
 });
 

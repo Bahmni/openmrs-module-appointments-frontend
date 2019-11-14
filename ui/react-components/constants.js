@@ -29,3 +29,5 @@ export const TODAY = "TODAY";
 export const FROM = "FROM";
 export const MINUTES = "minutes";
 
+export const RECURRING_APPOINTMENT_TYPE = "Recurring";
+export const WALK_IN_APPOINTMENT_TYPE = "WalkIn";
