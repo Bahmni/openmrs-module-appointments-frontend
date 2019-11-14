@@ -45,6 +45,7 @@ import {
     saveAppointment
 } from "../../services/AppointmentsService/AppointmentsService";
 import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
+import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
 
 
 const EditAppointment = props => {
@@ -87,6 +88,7 @@ const EditAppointment = props => {
     };
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
     const [conflicts, setConflicts] = useState();
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [currentStartTime, setCurrentStartTime] = useState();
     const [currentEndTime, setCurrentEndTime] = useState();
 
@@ -112,6 +114,10 @@ const EditAppointment = props => {
     const saveAppointments = () => {
         appointmentDetails.isRecurring ? undefined : save(getAppointmentRequest());
     };
+
+    const savePopup = <CustomPopup style={customPopup}
+                                   popupContent={
+                                       <SuccessConfirmation isEdit={true} patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}/>}/>;
 
     const getAppointmentRequest = () => {
         let appointment = {
@@ -147,10 +153,13 @@ const EditAppointment = props => {
         }
     };
 
+    const showSuccessPopUp = () => setShowSuccessPopup(true);
+
     const save = async appointmentRequest => {
         const response = await saveAppointment(appointmentRequest);
         if (response.status === 200) {
             setConflicts(undefined);
+            showSuccessPopUp(appointmentDetails.appointmentDate);
         }
     };
 
@@ -320,6 +329,11 @@ const EditAppointment = props => {
                          popupContent={<Conflicts saveAnyway={saveAppointments}
                                                   modifyInformation={() => setConflicts(undefined)}
                                                   conflicts={conflicts} service={appointmentDetails.service}/>}/>}
+            {showSuccessPopup ? React.cloneElement(savePopup, {
+                open: true,
+                closeOnDocumentClick: false,
+                closeOnEscape: false
+            }) : undefined}
         </div>
     </Fragment>);
 };
