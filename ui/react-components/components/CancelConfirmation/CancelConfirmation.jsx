@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 
 const CancelConfirmation = (props) => {
 
-    const {close, onBack} = props;
+    const {close, onBack, isEdit} = props;
 
     return (
         <div className={classNames(cancelModal)}>
@@ -27,11 +27,18 @@ const CancelConfirmation = (props) => {
                     <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TITLE'} defaultMessage={'Wait!'}/>
                 </h1>
                 <div className={classNames(cancelModalBody)}>
-                    <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT'}
-                                      defaultMessage={'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'}/>
+                    {isEdit ? (
+                        <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT_EDIT'}
+                                          defaultMessage={'Are you sure you want to cancel updating the new appointment?This will erase everything you have filled. Nothing will be updated.'}/>
+
+                    ) : (
+                        <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT'}
+                                          defaultMessage={'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'}/>
+
+                    )}
                 </div>
                 <div>
-                    <button className={classNames(button, no)} data-testid="cancel-no" onClick={close} >
+                    <button className={classNames(button, no)} data-testid="cancel-no" onClick={close}>
                         <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_NO'} defaultMessage={'No'}/>
                     </button>
                     <button className={classNames(button)} data-testid="cancel-yes" onClick={onBack}>
@@ -45,7 +52,8 @@ const CancelConfirmation = (props) => {
 
 CancelConfirmation.propTypes = {
     close: PropTypes.func,
-    onBack: PropTypes.func
+    onBack: PropTypes.func,
+    isEdit: PropTypes.bool
 };
 
 export default CancelConfirmation;
