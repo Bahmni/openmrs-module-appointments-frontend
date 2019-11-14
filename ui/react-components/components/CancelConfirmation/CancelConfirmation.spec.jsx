@@ -39,4 +39,15 @@ describe('CancelConfirmation ', () => {
         fireEvent.click(getByText('Yes'));
         expect(onBackSpy).toHaveBeenCalledTimes(1);
     });
+
+    it('should render cancel modal with cancel confirmation message for update', () => {
+        const {container, getByText} = renderWithReactIntl(<CancelConfirmation isEdit={true} close={jest.fn()}/>);
+        expect(container.querySelectorAll('.cancelModal').length).toBe(1);
+        expect(container.querySelectorAll('.cancelModalCloseIcon').length).toBe(1);
+        getByText('Wait!');
+        getByText('Are you sure you want to cancel updating the new appointment?This will erase everything you have filled. Nothing will be updated.');
+        getByText('Yes');
+        getByText('No');
+        expect(container.querySelectorAll('.button').length).toBe(2);
+    });
 });
