@@ -19,7 +19,7 @@ const AppointmentEditorFooter = props => {
 
     const {checkAndSave, isEdit} = props;
 
-    const popupContent = <CancelConfirmation onBack={React.useContext(AppContext).onBack}/>;
+    const popupContent = <CancelConfirmation isEdit={isEdit} onBack={React.useContext(AppContext).onBack}/>;
 
     const cancelButton = <button className={classNames(button)} data-testid="cancel">
                             <i className={classNames("fa", "fa-times")}/>
