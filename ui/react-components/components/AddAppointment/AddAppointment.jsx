@@ -35,7 +35,14 @@ import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import StartDateRadioGroup from "../RadioGroup/StartDateRadioGroup.jsx";
 import EndDateRadioGroup from "../RadioGroup/EndDateRadioGroup.jsx";
 import RecurrenceTypeRadioGroup from "../RadioGroup/RecurrenceTypeRadioGroup.jsx";
-import {dayRecurrenceType, FROM, MINUTES, TODAY} from "../../constants";
+import {
+    dayRecurrenceType,
+    FROM,
+    MINUTES,
+    RECURRING_APPOINTMENT_TYPE,
+    TODAY,
+    WALK_IN_APPOINTMENT_TYPE
+} from "../../constants";
 import moment from "moment";
 import {
     getDefaultOccurrences,
@@ -67,7 +74,7 @@ const AddAppointment = props => {
         recurringEndDate: undefined,
         startTime: undefined,
         endTime: undefined,
-        isRecurring: false,
+        appointmentType: undefined,
         notes: undefined,
         startDateType: undefined,
         endDateType: undefined,
@@ -119,15 +126,16 @@ const AddAppointment = props => {
             serviceUuid: appointmentDetails.service && appointmentDetails.service.value.uuid,
             serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.value &&
                 appointmentDetails.serviceType.value.uuid,
-            startDateTime: appointmentDetails.isRecurring
+            startDateTime: appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE
                 ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.startTime)
                 : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
-            endDateTime: appointmentDetails.isRecurring
+            endDateTime: appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE
                 ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.endTime)
                 : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
-            appointmentKind: "Scheduled",
+            appointmentKind: appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE
+                ? WALK_IN_APPOINTMENT_TYPE : "Scheduled",
             comments: appointmentDetails.notes
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
@@ -231,7 +239,8 @@ const AddAppointment = props => {
     };
 
     const saveAppointments = () => {
-        appointmentDetails.isRecurring ? saveRecurringAppointments(getRecurringAppointmentRequest()) : save(getAppointmentRequest());
+        appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE
+            ? saveRecurringAppointments(getRecurringAppointmentRequest()) : save(getAppointmentRequest());
     };
 
     const savePopup = <CustomPopup style={customPopup}
@@ -291,12 +300,17 @@ const AddAppointment = props => {
                                    appointmentDetails={appointmentDetails} endTimeBasedOnService={endTimeBasedOnService} appConfig={appConfig} errors={errors}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(searchFieldsContainerLeft)}>
-                    <AppointmentPlan isRecurring={appointmentDetails.isRecurring}
-                                     onChange={() => updateAppointmentDetails({isRecurring: !appointmentDetails.isRecurring})}/>
+                    <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
+                                     onChange={(e) => {
+                                         if (appointmentDetails.appointmentType === e.target.name)
+                                             updateAppointmentDetails({appointmentType: undefined});
+                                         else
+                                             updateAppointmentDetails({appointmentType: e.target.name})
+                                     }}/>
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
-                {appointmentDetails.isRecurring ?
+                {appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ?
                     <div className={classNames(recurringContainerLeft)}>
                         <div data-testid="start-date-group">
                             <div className={classNames(dateHeading)}>
@@ -445,7 +459,8 @@ const AddAppointment = props => {
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
-            <AppointmentEditorFooter checkAndSave={appointmentDetails.isRecurring ? checkAndSaveRecurringAppointments : checkAndSave}/>
+            <AppointmentEditorFooter checkAndSave={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE
+                ? checkAndSaveRecurringAppointments : checkAndSave}/>
             {conflicts &&
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
