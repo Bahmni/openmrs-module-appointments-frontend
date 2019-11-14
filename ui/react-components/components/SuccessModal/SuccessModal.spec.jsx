@@ -30,7 +30,7 @@ describe('Success Confirmation', () => {
 
     it('should call onBack function provided from context on click of close icon', () => {
         const onBackSpy = jest.fn();
-        const {container, getByText} = renderWithReactIntl(
+        const {container} = renderWithReactIntl(
             <AppContext.Provider value={{onBack: onBackSpy}}>
                 <SuccessModal patientDetails="patientDetails"/>
             </AppContext.Provider>);

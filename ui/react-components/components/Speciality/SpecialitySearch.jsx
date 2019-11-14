@@ -10,7 +10,7 @@ const SpecialitySearch = (props) => {
     const [specialities, setSpecialities] = useState([]);
     useEffect(() => {
         setSpecialities(loadSpecialities())
-    }, []);
+    }, [loadSpecialities]);
 
     const createDropdownOptions = (specialities) => {
         const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SPECIALITY', defaultMessage: 'Select a speciality'});

@@ -23,7 +23,7 @@ const ServiceTypeSearch = props => {
             setServiceTypes(getServiceType(serviceUuid));
             setDisabled(false);
         }
-    }, [serviceUuid]);
+    }, [getServiceType, serviceUuid]);
 
     const getServiceType = async (serviceUuid) => {
         const service = await getService(serviceUuid);

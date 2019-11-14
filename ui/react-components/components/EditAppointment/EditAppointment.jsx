@@ -149,7 +149,7 @@ const EditAppointment = props => {
 
     useEffect(() => {
         generateAppointmentDetails().then();
-    }, [appConfig]);
+    }, [appConfig, generateAppointmentDetails]);
 
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor, editAppointment)}>

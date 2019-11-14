@@ -18,7 +18,7 @@ const ProviderSearch = props => {
 
     useEffect(() => {
         setProviders(loadProviders());
-    }, [selectedProvider]);
+    }, [loadProviders, selectedProvider]);
 
     const loadProviders = async () => {
         const providers = await getAllProviders();

@@ -13,7 +13,7 @@ const ServiceSearch = (props) => {
     });
     const [services, setServices] = useState([]);
 
-    useEffect(() => { setServices(loadServices()) },[]);
+    useEffect(() => { setServices(loadServices()) },[loadServices]);
 
     const loadServices = async () => {
         const services = await getAllServices();

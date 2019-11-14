@@ -29,7 +29,6 @@ describe('Bahmni Config Api', () => {
             })
         );
 
-        const appConfigs = await getAppConfigs({appName});
         expect(mockAxios.get)
             .toHaveBeenCalledWith(
                 `${BAHMNI_CONFIG_URL}/${appName}/${APP_FILE}`);

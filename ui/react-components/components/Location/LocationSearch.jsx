@@ -11,7 +11,7 @@ const LocationSearch = (props) => {
     const [locations, setLocations] = useState([]);
     useEffect(() => {
         setLocations(loadLocations())
-    }, []);
+    }, [loadLocations]);
 
     const createDropdownOptions = (locations) => {
         const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_LOCATION', defaultMessage: 'Select a location'});

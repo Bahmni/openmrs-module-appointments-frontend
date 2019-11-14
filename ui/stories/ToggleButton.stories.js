@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import ToggleButton from '../components/ToggleButton/ToggleButton';
+import ToggleButton from '../react-components/components/ToggleButton/ToggleButton';
 
 export default { title: 'ToggleButton' };
 

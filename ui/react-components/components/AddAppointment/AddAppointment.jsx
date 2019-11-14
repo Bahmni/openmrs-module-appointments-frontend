@@ -99,7 +99,7 @@ const AddAppointment = props => {
         if (appointmentDetails.occurrences === undefined)
             updateAppointmentDetails({occurrences: getDefaultOccurrences(appConfig)});
         updateAppointmentDetails({weekDays: getWeekDays(appConfig && appConfig.startOfWeek)});
-    }, [appConfig]);
+    }, [appConfig, appointmentDetails.occurrences]);
 
     const getRecurringPattern = () => {
         const recurringPattern = {

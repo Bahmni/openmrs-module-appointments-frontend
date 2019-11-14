@@ -18,7 +18,7 @@ const Dropdown = props => {
             setValue(selectedValue);
             onChange(selectedValue);
         }
-    },[selectedValue]);
+    },[onChange, selectedValue]);
 
     return (
         <div data-testid="select">

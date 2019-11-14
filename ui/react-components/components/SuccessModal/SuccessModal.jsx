@@ -29,9 +29,9 @@ const SuccessModal = (props) => {
     return (
         <div className={classNames(saveModal)}>
             <div className={classNames(saveModalCloseIcon)}>
-                <a data-testid="save-close-icon">
+                <span data-testid="save-close-icon">
                     <i className={classNames("fa", "fa-times")} onClick={() => onBack()}/>
-                </a>
+                </span>
             </div>
             <div>
                 <h1 className={classNames(saveModalTitle)}>
@@ -48,9 +48,9 @@ const SuccessModal = (props) => {
                         <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_CLOSE'} defaultMessage={'Close'}/>
                     </button>
                     <span className={classNames(newAppointmentLink)}>
-                        <a  data-testid="save-new-appointment-link" onClick={() => window.location.reload()}>
+                        <button  data-testid="save-new-appointment-link" onClick={() => window.location.reload()}>
                          <FormattedMessage id={'ADD_NEW_APPOINTMENT'} defaultMessage={'Add New Appointment'}/>
-                        </a>
+                        </button>
                     </span>
                 </div>
             </div>

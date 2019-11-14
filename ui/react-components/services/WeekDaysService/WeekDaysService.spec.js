@@ -1,4 +1,3 @@
-import React from "react";
 import {getSelectedWeekDays, getWeekDays} from "./WeekDaysService";
 
 describe('Weekdays Service', () => {

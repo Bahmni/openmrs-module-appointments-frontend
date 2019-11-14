@@ -23,7 +23,7 @@ describe('Speciality Search', () => {
     });
 
     it('should load options when SpecialitySearch component is rendered', () => {
-        const {getByText} = renderWithReactIntl(<SpecialitySearch onChange={jest.fn()}/>);
+        renderWithReactIntl(<SpecialitySearch onChange={jest.fn()}/>);
         expect(getAllSpecialitiesSpy).toHaveBeenCalled();
     });
 
@@ -57,10 +57,9 @@ describe('Speciality Search', () => {
         );
         const option = getByText(targetLocation);
         fireEvent.click(option);
-        let singleValue;
         await waitForElement(
             () =>
-                (singleValue = container.querySelector(
+                (container.querySelector(
                     '.react-select__single-value'
                 ))
         );

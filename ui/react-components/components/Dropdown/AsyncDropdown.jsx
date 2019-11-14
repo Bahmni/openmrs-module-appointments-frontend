@@ -26,7 +26,7 @@ const AsyncDropdown = (props) => {
             setValue(selectedValue);
             onChange(selectedValue);
         }
-    },[selectedValue]);
+    },[onChange, selectedValue]);
 
     const handleOnChange = (event) => {
         setInputValue('');

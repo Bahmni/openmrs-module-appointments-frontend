@@ -1,4 +1,3 @@
-import React from 'react';
 import mockAxios from 'jest-mock-axios';
 import {getAllProviders} from "./providerApi";
 import {providerUrl, providerParams} from "../constants";
