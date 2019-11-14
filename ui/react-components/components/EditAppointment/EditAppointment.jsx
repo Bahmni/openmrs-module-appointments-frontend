@@ -11,6 +11,7 @@ import {
     searchFieldsContainerLeft,
     dateHeading
 } from "../AddAppointment/AddAppointment.module.scss";
+import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import SearchFieldsContainer from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import {getRecurringAppointment} from "../../api/recurringAppointmentsApi";
 import {getAppointment} from "../../api/appointmentsApi";
@@ -37,6 +38,14 @@ import {getProviderDropDownOptions} from "../../mapper/providerMapper";
 import CalendarPicker from "../CalendarPicker/CalendarPicker.jsx";
 import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import {capitalize} from "lodash/string";
+import CustomPopup from "../CustomPopup/CustomPopup.jsx";
+import Conflicts from "../Conflicts/Conflicts.jsx";
+import {
+    getAppointmentConflicts,
+    saveAppointment
+} from "../../services/AppointmentsService/AppointmentsService";
+import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
+
 
 const EditAppointment = props => {
 
@@ -77,6 +86,9 @@ const EditAppointment = props => {
         weekDays: undefined
     };
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
+    const [conflicts, setConflicts] = useState();
+    const [currentStartTime, setCurrentStartTime] = useState();
+    const [currentEndTime, setCurrentEndTime] = useState();
 
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {
         return {...prevErrors, ...errorIndicators}
@@ -97,8 +109,64 @@ const EditAppointment = props => {
         }
     };
 
-    const [currentStartTime, setCurrentStartTime] = useState();
-    const [currentEndTime, setCurrentEndTime] = useState();
+    const saveAppointments = () => {
+        appointmentDetails.isRecurring ? undefined : save(getAppointmentRequest());
+    };
+
+    const getAppointmentRequest = () => {
+        let appointment = {
+            uuid: appointmentUuid,
+            patientUuid: appointmentDetails.patient && appointmentDetails.patient.value.uuid,
+            serviceUuid: appointmentDetails.service && appointmentDetails.service.value.uuid,
+            serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.value &&
+                appointmentDetails.serviceType.value.uuid,
+            startDateTime: appointmentDetails.isRecurring
+                ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.startTime)
+                : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
+            endDateTime: appointmentDetails.isRecurring
+                ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.endTime)
+                : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
+            providers: appointmentDetails.providers,
+            locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
+            appointmentKind: "Scheduled",
+            comments: appointmentDetails.notes
+        };
+        if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
+            delete appointment.serviceTypeUuid;
+        return appointment;
+    };
+
+    const checkAndSave = async () => {
+        if (isValidAppointment()) {
+            const appointment = getAppointmentRequest();
+            const response = await getAppointmentConflicts(appointment);
+            if (response.status === 204) {
+                await save(appointment);
+            }
+            response.status === 200 && setConflicts(response.data);
+        }
+    };
+
+    const save = async appointmentRequest => {
+        const response = await saveAppointment(appointmentRequest);
+        if (response.status === 200) {
+            setConflicts(undefined);
+        }
+    };
+
+    const isValidAppointment = () => {
+        const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
+        updateCommonErrorIndicators(startTimeBeforeEndTime);
+        updateErrorIndicators({appointmentDateError: !appointmentDetails.appointmentDate});
+        return appointmentDetails.service && appointmentDetails.appointmentDate && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime;
+    };
+
+    const updateCommonErrorIndicators = (startTimeBeforeEndTime) => updateErrorIndicators({
+        serviceError: !appointmentDetails.service,
+        startTimeError: !appointmentDetails.startTime,
+        endTimeError: !appointmentDetails.endTime,
+        startTimeBeforeEndTimeError: !startTimeBeforeEndTime
+    });
 
     const generateAppointmentDetails = async () => {
         const appointment = appointmentDetails.isRecurring ? await getRecurringAppointment(appointmentUuid) : await getAppointment(appointmentUuid);
@@ -244,7 +312,14 @@ const EditAppointment = props => {
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
-            <AppointmentEditorFooter isEdit={true}/>
+            <AppointmentEditorFooter checkAndSave={appointmentDetails.isRecurring ? undefined : checkAndSave} isEdit={true}/>
+            {conflicts &&
+            <CustomPopup style={conflictsPopup} open={true}
+                         closeOnDocumentClick={false}
+                         closeOnEscape={true}
+                         popupContent={<Conflicts saveAnyway={saveAppointments}
+                                                  modifyInformation={() => setConflicts(undefined)}
+                                                  conflicts={conflicts} service={appointmentDetails.service}/>}/>}
         </div>
     </Fragment>);
 };
