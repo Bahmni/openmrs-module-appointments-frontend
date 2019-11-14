@@ -1,9 +1,9 @@
 import axios from 'axios';
-import {appointmentsSaveUrl, appointmentConflictsUrl, appointmentByUuidUrl} from "../constants";
+import {appointmentByUuidUrl, appointmentConflictsUrl, appointmentSaveUrl} from "../constants";
 
 export const saveOrUpdateAppointment = async (data) => {
     try {
-        const response = await axios.post(`${appointmentsSaveUrl}`, data);
+        const response = await axios.post(`${appointmentSaveUrl}`, data);
         return response;
     } catch (error) {
         console.error(error);

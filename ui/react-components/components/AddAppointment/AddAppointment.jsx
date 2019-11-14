@@ -22,7 +22,7 @@ import {
     getRecurringAppointmentsConflicts,
     saveAppointment,
     saveRecurring
-} from "./AddAppointmentService";
+} from "../../services/AppointmentsService/AppointmentsService";
 import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
