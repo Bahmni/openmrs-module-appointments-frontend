@@ -47,4 +47,13 @@ describe('Success Confirmation', () => {
         fireEvent.click(getByText('Add New Appointment'));
         expect(spy).toHaveBeenCalledTimes(1);
     });
+
+    it('should render Success modal on success of updating appointment', () => {
+        const {container, getByText} = renderWithReactIntl(<SuccessModal isEdit={true} patientDetails="patientDetails"/>);
+        expect(container.querySelectorAll('.saveModal').length).toBe(1);
+        expect(container.querySelectorAll('.saveModalCloseIcon').length).toBe(1);
+        getByText('Update Successful!');
+        getByText('Close');
+        expect(container.querySelectorAll('.button').length).toBe(1);
+    });
 });
