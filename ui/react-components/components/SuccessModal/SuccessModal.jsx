@@ -15,7 +15,7 @@ import {AppContext} from "../AppContext/AppContext";
 
 const SuccessModal = (props) => {
 
-    const {intl, patientDetails} = props;
+    const {intl, patientDetails, isEdit} = props;
     const {onBack} = React.useContext(AppContext);
 
     const saveConfirmationTextPartOne = intl.formatMessage({
@@ -35,7 +35,7 @@ const SuccessModal = (props) => {
             </div>
             <div>
                 <h1 className={classNames(saveModalTitle)}>
-                    <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_TITLE'} defaultMessage={'Save successful'}/>
+                    <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_TITLE'} defaultMessage={isEdit ? 'Update Successful!' : 'Save successful'}/>
                 </h1>
                 <div className={classNames(saveModalBody)}>
                     <span>{`${saveConfirmationTextPartOne} "${patientDetails}" ${saveConfirmationTextPartTwo}`}</span>
@@ -59,7 +59,8 @@ const SuccessModal = (props) => {
 };
 
 SuccessModal.propTypes = {
-    patientDetails: PropTypes.string.isRequired
+    patientDetails: PropTypes.string.isRequired,
+    isEdit: PropTypes.bool
 };
 
 export default injectIntl(SuccessModal);
