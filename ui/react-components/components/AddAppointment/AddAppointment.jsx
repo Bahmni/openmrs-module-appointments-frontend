@@ -120,22 +120,24 @@ const AddAppointment = props => {
         return recurringPattern;
     };
 
+    const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
+    const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
+
     const getAppointmentRequest = () => {
         let appointment = {
             patientUuid: appointmentDetails.patient && appointmentDetails.patient.value.uuid,
             serviceUuid: appointmentDetails.service && appointmentDetails.service.value.uuid,
             serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.value &&
                 appointmentDetails.serviceType.value.uuid,
-            startDateTime: appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE
+            startDateTime: isRecurringAppointment()
                 ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.startTime)
                 : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
-            endDateTime: appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE
+            endDateTime: isRecurringAppointment()
                 ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.endTime)
                 : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
-            appointmentKind: appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE
-                ? WALK_IN_APPOINTMENT_TYPE : "Scheduled",
+            appointmentKind: isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : "Scheduled",
             comments: appointmentDetails.notes
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
@@ -239,7 +241,7 @@ const AddAppointment = props => {
     };
 
     const saveAppointments = () => {
-        appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE
+        isRecurringAppointment()
             ? saveRecurringAppointments(getRecurringAppointmentRequest()) : save(getAppointmentRequest());
     };
 
@@ -310,7 +312,7 @@ const AddAppointment = props => {
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
-                {appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ?
+                {isRecurringAppointment() ?
                     <div className={classNames(recurringContainerLeft)}>
                         <div data-testid="start-date-group">
                             <div className={classNames(dateHeading)}>
@@ -459,7 +461,7 @@ const AddAppointment = props => {
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
-            <AppointmentEditorFooter checkAndSave={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE
+            <AppointmentEditorFooter checkAndSave={isRecurringAppointment()
                 ? checkAndSaveRecurringAppointments : checkAndSave}/>
             {conflicts &&
                 <CustomPopup style={conflictsPopup} open={true}
