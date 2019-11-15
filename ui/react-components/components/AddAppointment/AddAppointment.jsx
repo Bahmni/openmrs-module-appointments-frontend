@@ -452,7 +452,8 @@ const AddAppointment = props => {
                              closeOnEscape={true}
                              popupContent={<Conflicts saveAnyway={saveAppointments}
                                                       modifyInformation={() => setConflicts(undefined)}
-                                                      conflicts={conflicts} service={appointmentDetails.service}/>}/>}
+                                                      conflicts={conflicts} service={appointmentDetails.service}
+                                                      isRecurring={appointmentDetails.isRecurring}/>}/>}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,

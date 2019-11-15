@@ -9,7 +9,7 @@ import PatientDoubleBookingConflicts from "../PatientDoubleBookingConflicts.jsx"
 import ServiceUnavailableConflicts from "../ServiceUnavailableConflicts.jsx";
 
 const ConflictsBody = props => {
-    const {service, conflicts} = props;
+    const {service, conflicts, isRecurring} = props;
     const serviceUnavailableConflicts = conflicts.SERVICE_UNAVAILABLE;
     const patientDoubleBookingConflicts = conflicts.PATIENT_DOUBLE_BOOKING;
     const OVERLAPPING_CONFLICTS_CONTENT = "Overlapping conflicts content";
@@ -43,7 +43,7 @@ const ConflictsBody = props => {
 
     const getContent = (conflicts, key) => {
         if (key === OVERLAPPING_CONFLICTS_CONTENT) {
-            return (<PatientDoubleBookingConflicts conflicts={conflicts} service={service}/>);
+            return (<PatientDoubleBookingConflicts conflicts={conflicts} service={service} isRecurring={isRecurring}/>);
         }
         if (key === SERVICE_UNAVAILABLE_CONTENT) {
             return <ServiceUnavailableConflicts conflicts={conflicts} service={service}/>;
