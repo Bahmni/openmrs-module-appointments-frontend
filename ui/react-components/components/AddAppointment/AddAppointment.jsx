@@ -10,7 +10,8 @@ import {
     searchFieldsContainerLeft,
     searchFieldsContainerRight,
     timeSelector,
-    weekDaysContainer
+    weekDaysContainer,
+    appointmentPlanContainer
 } from './AddAppointment.module.scss';
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
@@ -301,7 +302,7 @@ const AddAppointment = props => {
             <SearchFieldsContainer updateAppointmentDetails={updateAppointmentDetails} updateErrorIndicators={updateErrorIndicators}
                                    appointmentDetails={appointmentDetails} endTimeBasedOnService={endTimeBasedOnService} appConfig={appConfig} errors={errors}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
-                <div className={classNames(searchFieldsContainerLeft)}>
+                <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
                                      onChange={(e) => {
                                          if (appointmentDetails.appointmentType === e.target.name)

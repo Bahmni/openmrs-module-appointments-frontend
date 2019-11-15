@@ -9,7 +9,8 @@ import {
     recurringContainerRight,
     searchFieldsContainer,
     searchFieldsContainerLeft,
-    dateHeading
+    dateHeading,
+    appointmentPlanContainer
 } from "../AddAppointment/AddAppointment.module.scss";
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import SearchFieldsContainer from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
@@ -96,7 +97,6 @@ const EditAppointment = props => {
     const [currentStartTime, setCurrentStartTime] = useState();
     const [currentEndTime, setCurrentEndTime] = useState();
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
-    const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
     const [showUpdateOptions, setShowUpdateOptions] = useState(false);
 
 
@@ -222,7 +222,7 @@ const EditAppointment = props => {
                 appointmentDate: moment(new Date(appointmentResponse.startDateTime)),
                 appointmentKind: appointmentResponse.appointmentKind,
                 appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE :
-                    isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : undefined
+                    appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined
             });
             setCurrentStartTime(moment(new Date(appointmentResponse.startDateTime)).format('hh:mm a'));
             setCurrentEndTime(moment(new Date(appointmentResponse.endDateTime)).format('hh:mm a'));
@@ -262,7 +262,7 @@ const EditAppointment = props => {
                                    endTimeBasedOnService={endTimeBasedOnService}
                                    updateAppointmentDetails={updateAppointmentDetails} appConfig={appConfig}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
-                <div className={classNames(searchFieldsContainerLeft)}>
+                <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan isEdit={true} appointmentType={appointmentDetails.appointmentType}/>
                 </div>
             </div>
