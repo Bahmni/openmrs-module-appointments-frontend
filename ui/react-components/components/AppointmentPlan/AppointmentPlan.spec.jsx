@@ -23,7 +23,7 @@ describe('Recurring plan', () => {
 
     it('should disable the checkbox when isEdit is true', () => {
         const {container} = renderWithReactIntl(<AppointmentPlan isEdit={true}/>);
-        expect(container.querySelector('.rc-checkbox-disabled')).not.toBeNull()
+        expect(container.querySelector('.rc-checkbox-disabled')).not.toBeUndefined();
     });
 
     it('should display walk-in appointment', () => {
@@ -42,5 +42,27 @@ describe('Recurring plan', () => {
         const checkBoxService = container.querySelectorAll('.rc-checkbox-input')[1];
         fireEvent.click(checkBoxService);
         expect(onChangeSpy).toHaveBeenCalled();
+    });
+
+    it('should check walk in appointment when appointment type is walk in', () => {
+        const {container} = renderWithReactIntl(<AppointmentPlan appointmentType="WalkIn"/>);
+        expect(container.querySelectorAll('.rc-checkbox-input')[1].checked).toBeTruthy();
+    });
+
+    it('should check recurring appointment when appointment type is recurring', () => {
+        const {container} = renderWithReactIntl(<AppointmentPlan appointmentType="Recurring"/>);
+        expect(container.querySelectorAll('.rc-checkbox-input')[0].checked).toBeTruthy();
+    });
+
+    it('should not check walk in or recurring when appointment type is undefined', () => {
+        const {container} = renderWithReactIntl(<AppointmentPlan appointmentType={undefined}/>);
+        expect(container.querySelectorAll('.rc-checkbox-input')[0].checked).toBeFalsy();
+        expect(container.querySelectorAll('.rc-checkbox-input')[1].checked).toBeFalsy();
+    });
+
+    it('should disable the walk in appointment when the appointment is recurring and isEdit is true', () => {
+        const {container} = renderWithReactIntl(<AppointmentPlan isEdit={true} appointmentType="Recurring"/>);
+        expect(container.querySelectorAll('.rc-checkbox-disabled')[1]).not.toBeUndefined();
+        expect(container.querySelectorAll('.disabledLabelContainer')[1]).not.toBeUndefined();
     });
 });
