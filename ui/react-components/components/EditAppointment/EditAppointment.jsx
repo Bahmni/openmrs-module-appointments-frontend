@@ -92,6 +92,8 @@ const EditAppointment = props => {
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [currentStartTime, setCurrentStartTime] = useState();
     const [currentEndTime, setCurrentEndTime] = useState();
+    const [showUpdateOptions, setShowUpdateOptions] = useState(true);
+
 
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {
         return {...prevErrors, ...errorIndicators}
@@ -326,8 +328,7 @@ const EditAppointment = props => {
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
-            <AppointmentEditorFooter checkAndSave={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE
-                ? undefined : checkAndSave} isEdit={true}/>
+            <AppointmentEditorFooter checkAndSave={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? checkAndSave : undefined} isEdit={true} showUpdateOptions={showUpdateOptions} />
             {conflicts &&
             <CustomPopup style={conflictsPopup} open={true}
                          closeOnDocumentClick={false}

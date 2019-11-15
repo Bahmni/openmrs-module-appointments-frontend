@@ -6,18 +6,24 @@ import {
     cancelPopup,
     save
 } from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
 import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import {AppContext} from "../AppContext/AppContext";
+import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
 
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit} = props;
+    const {checkAndSave, isEdit, showUpdateOptions} = props;
+    const[showUpdateButtons, setShowUpdateButtons] = useState(false);
+
+    const getUpdateButtons =() =>{
+        setShowUpdateButtons(!showUpdateButtons);
+    };
 
     const popupContent = <CancelConfirmation isEdit={isEdit} onBack={React.useContext(AppContext).onBack}/>;
 
@@ -31,11 +37,12 @@ const AppointmentEditorFooter = props => {
             <div className={classNames(footerElements)}>
                 <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
                 {isEdit
-                    ? <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
+                    ? <button className={classNames(button, save)} onClick={showUpdateOptions ? getUpdateButtons : checkAndSave} data-testid="check-and-save">
                         <i className={classNames("fa", "fa-check")}/>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_UPDATE_LABEL'} defaultMessage={'Update'}/>
                     </span>
+                        {showUpdateButtons ?  <i className={classNames("fa", "fa-times")} /> : undefined}
                     </button>
                     : <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
                         <i className={classNames("fa", "fa-check")}/>
@@ -43,6 +50,8 @@ const AppointmentEditorFooter = props => {
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
                     </span>
                     </button>}
+                {showUpdateButtons ? <UpdateButtons/> : undefined}
+
             </div>
         </div>
     );
@@ -50,7 +59,8 @@ const AppointmentEditorFooter = props => {
 
 AppointmentEditorFooter.propTypes = {
     checkAndSave: PropTypes.func,
-    isEdit: PropTypes.bool
+    isEdit: PropTypes.bool,
+    showUpdateButtons: PropTypes.bool
 };
 
 export default AppointmentEditorFooter;
