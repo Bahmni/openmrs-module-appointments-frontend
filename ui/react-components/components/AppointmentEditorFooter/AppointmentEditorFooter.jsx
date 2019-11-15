@@ -19,7 +19,7 @@ import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
 const AppointmentEditorFooter = props => {
 
     const {checkAndSave, isEdit, showUpdateOptions} = props;
-    const[showUpdateButtons, setShowUpdateButtons] = useState(false);
+    const[showUpdateButtons, setShowUpdateButtons] = useState(showUpdateOptions);
 
     const getUpdateButtons =() =>{
         setShowUpdateButtons(!showUpdateButtons);
