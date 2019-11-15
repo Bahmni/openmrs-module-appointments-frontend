@@ -37,11 +37,15 @@ const PatientDoubleBookingConflicts = props => {
         return conflictsList;
     };
 
-    const defaultMessage = "The recurring appointments you are trying to book overlaps with the following dates";
+    const defaultMessage = "The appointment you are trying to book overlaps with the following dates";
+    const recurringDefaultMessage = "The recurring appointments you are trying to book overlaps with the following dates";
     return (
         <div>
             <div className={classNames(conflictsHeading)}>
-                <FormattedMessage id="OVERLAPPING_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage}/>
+            {props.isRecurring 
+                ? <FormattedMessage id="RECURRING_OVERLAPPING_CONFLICTS_DEFAULT_TEXT" defaultMessage={recurringDefaultMessage}/>
+                : <FormattedMessage id="OVERLAPPING_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage}/> 
+            }
             </div>
             <div className={classNames(conflictsList)}>
                 <ul>{getConflictsList()}</ul>
