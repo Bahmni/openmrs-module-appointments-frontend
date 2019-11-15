@@ -1,8 +1,8 @@
 @import '../../variables.scss';
 
 .container {
-  align-items: center;
   display: flex;
+  width: 100%;
 
   .planLabel {
     color: $primary-color-1;
@@ -11,8 +11,7 @@
   }
 
   .checkboxContainer {
-    padding-right: 23px;
-    margin-left: 13%;
+    margin-left: 5%;
     font-size: 14px;
     .checkbox {
       margin-right: 8px;
