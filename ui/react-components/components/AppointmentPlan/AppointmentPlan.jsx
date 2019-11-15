@@ -37,9 +37,11 @@ const AppointmentPlan = props => {
                 onChange={onChange}
                 checked={appointmentType === WALK_IN_APPOINTMENT_TYPE}
                 name={WALK_IN_APPOINTMENT_TYPE}
+                disabled={isEdit && appointmentType === RECURRING_APPOINTMENT_TYPE}
             />
             <Label forInput="walk-in-selection-checkbox" translationKey="WALK_IN_APPOINTMENT_LABEL"
-                   defaultValue="Walk-in Appointment"/>
+                   defaultValue="Walk-in Appointment"
+                   disabled={isEdit && appointmentType === RECURRING_APPOINTMENT_TYPE}/>
         </div>
     </div>)
 };
