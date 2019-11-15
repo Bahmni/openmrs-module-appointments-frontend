@@ -22,7 +22,6 @@ describe('Appointment editor Footer Search', () => {
         const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter isEdit={true} showUpdateOptions={true}/>);
 
         const update = getByText('Update');
-        fireEvent.click(update);
         expect(container.hasChildNodes()).toBeTruthy();
         expect(container.querySelector('.updateOptions')).not.toBeNull();
     });

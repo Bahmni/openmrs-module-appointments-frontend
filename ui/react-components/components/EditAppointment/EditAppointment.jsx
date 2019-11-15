@@ -46,6 +46,7 @@ import {
 } from "../../services/AppointmentsService/AppointmentsService";
 import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
 import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
+import UpdateConfirmationModal from "../UpdateConfirmationModal/UpdateConfirmationModal.jsx";
 
 
 const EditAppointment = props => {
@@ -89,10 +90,11 @@ const EditAppointment = props => {
     };
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
     const [conflicts, setConflicts] = useState();
-    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [showUpdateConfirmPopup, setShowUpdateConfirmPopup] = useState(false);
+    const [showUpdateSuccessPopup, setShowUpdateSuccessPopup] = useState(false);
     const [currentStartTime, setCurrentStartTime] = useState();
     const [currentEndTime, setCurrentEndTime] = useState();
-    const [showUpdateOptions, setShowUpdateOptions] = useState(true);
+    const [showUpdateOptions, setShowUpdateOptions] = useState(false);
 
 
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {
@@ -115,12 +117,27 @@ const EditAppointment = props => {
     };
 
     const saveAppointments = () => {
-        appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? undefined : save(getAppointmentRequest());
+        if (appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE) {
+
+        } else {
+            setShowUpdateConfirmPopup(true);
+            // save(getAppointmentRequest()).then();
+        }
     };
 
     const savePopup = <CustomPopup style={customPopup}
                                    popupContent={
                                        <SuccessConfirmation isEdit={true} patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}/>}/>;
+
+    const updateConfirmPopup = <CustomPopup style={customPopup} onClose={() => setShowUpdateConfirmPopup(false)}
+                                            popupContent={
+                                                <UpdateConfirmationModal
+                                                    isRecurring={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE}
+                                                    onClose={() => setShowUpdateConfirmPopup(false)}
+                                                    save={() => {
+                                                        setShowUpdateConfirmPopup(false);
+                                                        console.log("save clicked");
+                                                    }}/>}/>;
 
     const getAppointmentRequest = () => {
         let appointment = {
@@ -150,13 +167,13 @@ const EditAppointment = props => {
             const appointment = getAppointmentRequest();
             const response = await getAppointmentConflicts(appointment);
             if (response.status === 204) {
-                await save(appointment);
+                setShowUpdateConfirmPopup(true);
             }
             response.status === 200 && setConflicts(response.data);
         }
     };
 
-    const showSuccessPopUp = () => setShowSuccessPopup(true);
+    const showSuccessPopUp = () => setShowUpdateSuccessPopup(true);
 
     const save = async appointmentRequest => {
         const response = await saveAppointment(appointmentRequest);
@@ -328,7 +345,7 @@ const EditAppointment = props => {
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
-            <AppointmentEditorFooter checkAndSave={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? checkAndSave : undefined} isEdit={true} showUpdateOptions={showUpdateOptions} />
+            <AppointmentEditorFooter checkAndSave={appointmentDetails.appointmentType !== RECURRING_APPOINTMENT_TYPE ? checkAndSave : undefined} isEdit={true} showUpdateOptions={showUpdateOptions} />
             {conflicts &&
             <CustomPopup style={conflictsPopup} open={true}
                          closeOnDocumentClick={false}
@@ -336,11 +353,18 @@ const EditAppointment = props => {
                          popupContent={<Conflicts saveAnyway={saveAppointments}
                                                   modifyInformation={() => setConflicts(undefined)}
                                                   conflicts={conflicts} service={appointmentDetails.service}/>}/>}
-            {showSuccessPopup ? React.cloneElement(savePopup, {
+            {showUpdateSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
                 closeOnEscape: false
             }) : undefined}
+
+            {showUpdateConfirmPopup ? React.cloneElement(updateConfirmPopup, {
+                open: true,
+                closeOnDocumentClick: true,
+                closeOnEscape: true
+            }) : undefined}
+
         </div>
     </Fragment>);
 };
