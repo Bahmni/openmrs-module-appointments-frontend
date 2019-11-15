@@ -10,7 +10,7 @@ const Conflicts = props => {
 
     return (
         <div data-testid="conflicts">
-            <button className={classNames(button)} onClick={props.modifyInformation}>
+            <button className={classNames(button)} data-testid="conflictsCancel" onClick={props.modifyInformation}>
                     <i className={classNames("fa", "fa-times")}/>
                 </button>
             <div data-testid="conflicts-body">

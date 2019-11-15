@@ -14,7 +14,7 @@ const RecurringPlan = props => {
     return (<div className={classNames(container)}>
         <span className={classNames(planLabel)}><Label className={classNames(planLabel)} translationKey="PLAN_LABEL"
                                                        defaultValue="Plan"/></span>
-        <div className={classNames(checkboxContainer)} data-test-id="checkbox">
+        <div className={classNames(checkboxContainer)} data-testid="checkbox">
             <Checkbox
                 onChange={onChange}
                 defaultChecked={false}
