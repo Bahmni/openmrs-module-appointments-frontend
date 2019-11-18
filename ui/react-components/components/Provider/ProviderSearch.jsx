@@ -9,7 +9,7 @@ import {injectIntl} from "react-intl";
 
 const ProviderSearch = props => {
 
-    const {intl, selectedProviders, onChange, onProviderRemove, maxAppointmentProvidersAllowed} = props;
+    const {intl, selectedProviders, onChange, onProviderRemove, maxAppointmentProvidersAllowed, isDisabled} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PROVIDER', defaultMessage: 'Choose Provider'
     });
@@ -49,6 +49,7 @@ const ProviderSearch = props => {
     return (
         <div>
             <Dropdown
+                isDisabled={isDisabled}
                 options={Object.values(providers)}
                 placeholder={placeHolder}
                 onChange={onProviderSelect}
@@ -64,7 +65,8 @@ ProviderSearch.propTypes = {
     onChange: PropTypes.func.isRequired,
     onProviderRemove: PropTypes.func.isRequired,
     maxAppointmentProvidersAllowed: PropTypes.number.isRequired,
-    selectedProviders: PropTypes.array
+    selectedProviders: PropTypes.array,
+    isDisabled: PropTypes.bool
 };
 
 export default injectIntl(ProviderSearch);
