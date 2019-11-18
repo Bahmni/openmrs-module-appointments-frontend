@@ -46,5 +46,6 @@ Dropdown.propTypes = {
     options: PropTypes.array,
     placeholder: PropTypes.string,
     onChange: PropTypes.func,
-    selectedValue: PropTypes.object
+    selectedValue: PropTypes.object,
+    isDisabled: PropTypes.bool
 };

@@ -30,12 +30,13 @@ const LocationSearch = (props) => {
         setLocations(createDropdownOptions(locations));
     };
 
-    const {intl, onChange, value} = props;
+    const {intl, onChange, value, isDisabled} = props;
     const placeholder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_LOCATION', defaultMessage: 'Location'
     });
     return (
         <Dropdown
+            isDisabled={isDisabled}
             options={Object.values(locations)}
             onChange={onChange}
             placeholder={placeholder}
@@ -46,7 +47,8 @@ const LocationSearch = (props) => {
 LocationSearch.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
-    value: PropTypes.object
+    value: PropTypes.object,
+    isDisabled: PropTypes.bool
 };
 
 export default injectIntl(LocationSearch);
