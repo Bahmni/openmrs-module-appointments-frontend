@@ -2,7 +2,7 @@ import {renderWithReactIntl} from "../../utils/TestUtil";
 import EditAppointment from "./EditAppointment";
 import React from "react";
 import {getAppointment} from "../../api/appointmentsApi";
-import {act} from "@testing-library/react";
+import {act, fireEvent} from "@testing-library/react";
 
 jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/recurringAppointmentsApi');
@@ -143,5 +143,14 @@ describe('Edit Appointment', () => {
         const {getByText} = renderWithReactIntl(<EditAppointment appointmentUuid={'appt-uuid'} isRecurring="true"/>);
         getByText('Plan');
         getByText('Recurring Appointment');
+    });
+
+    it('should check the walk in appointment when clicked', () => {
+        const {container} = renderWithReactIntl(<EditAppointment isRecurring={false} appointmentUuid="appt-uuid"/>);
+        const walkInCheckBox = container.querySelectorAll('.rc-checkbox-input')[1];
+        fireEvent.click(walkInCheckBox);
+        expect(walkInCheckBox.checked).toBeTruthy();
+        fireEvent.click(walkInCheckBox);
+        expect(walkInCheckBox.checked).toBeFalsy();
     });
 });
