@@ -1,16 +1,17 @@
 import React, {useState, useEffect} from "react";
 import AsyncSelect from "react-select/async";
-import {dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
+import {dropdownIndicator, resetSelectContainer, searchIcon, disable} from './Dropdown.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {injectIntl} from "react-intl";
 import {DropdownIndicator} from "./DropdownIndicator.jsx";
 import {IndicatorSeparator} from "./IndicatorSeparator.jsx";
 import {ValueContainer} from "./ValueContainer.jsx";
+import {isUndefined} from "lodash";
 
 const AsyncDropdown = (props) => {
 
-    const {loadOptions, placeholder, onChange, intl, selectedValue} = props;
+    const {loadOptions, placeholder, onChange, intl, selectedValue, isEditable} = props;
 
     const [inputValue, setInputValue] = useState();
     const [value, setValue] = useState(selectedValue);
@@ -52,8 +53,11 @@ const AsyncDropdown = (props) => {
     const handleFocus = () => {
         value && setInputValue(inputValue !== '' ? inputValue : value.label);
     };
+
+    const isDisabled = () => isUndefined(isEditable) ? false :  !isEditable;
+
     return (
-        <div data-testid="asyncSelect">
+        <div data-testid="asyncSelect" className={classNames(isDisabled() ? disable : '')}>
             <AsyncSelect
                 ref={ref => {
                     select = ref;
@@ -77,6 +81,7 @@ const AsyncDropdown = (props) => {
                 loadingMessage={() => loadingMessage}
                 onMenuOpen={() => undefined}
                 openMenuOnClick={false}
+                isDisabled={isDisabled()}
             />
         </div>
     );
@@ -88,5 +93,6 @@ AsyncDropdown.propTypes = {
     loadOptions: PropTypes.func,
     onChange: PropTypes.func,
     placeholder: PropTypes.string,
-    selectedValue: PropTypes.object
+    selectedValue: PropTypes.object,
+    isEditable: PropTypes.bool
 };

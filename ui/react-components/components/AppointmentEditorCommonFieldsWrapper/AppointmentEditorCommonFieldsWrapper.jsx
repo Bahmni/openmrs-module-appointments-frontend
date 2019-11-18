@@ -21,7 +21,7 @@ import {includes, filter} from "lodash";
 const AppointmentEditorCommonFieldsWrapper = props => {
 
     const {updateAppointmentDetails, updateErrorIndicators} = props;
-    const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl} = props;
+    const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl, isPatientEditable} = props;
     const errorTranslations = getErrorTranslations(intl);
 
     return (
@@ -35,7 +35,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                 const newValue = optionSelected ? optionSelected : undefined;
                                 updateAppointmentDetails({patient: newValue});
                                 updateErrorIndicators({patientError: !newValue});
-                            }}/>
+                            }} isPatientEditable={isPatientEditable}/>
                         <ErrorMessage
                             message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
                     </div>
