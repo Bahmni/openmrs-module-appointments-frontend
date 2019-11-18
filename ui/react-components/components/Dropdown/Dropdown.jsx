@@ -1,5 +1,5 @@
 import Select from "react-select";
-import {dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
+import {disable, dropdownIndicator, resetSelectContainer, searchIcon} from './Dropdown.module.scss';
 import React, {useEffect, useState} from "react";
 import classNames from 'classnames';
 import {PropTypes} from 'prop-types';
@@ -7,6 +7,7 @@ import {DropdownIndicator} from "./DropdownIndicator.jsx";
 import {ValueContainer} from "./ValueContainer.jsx";
 import {IndicatorSeparator} from "./IndicatorSeparator.jsx";
 import {injectIntl} from "react-intl";
+import {isUndefined} from "lodash";
 
 const Dropdown = props => {
     const {options, placeholder, onChange, isDisabled, intl, selectedValue} = props;
@@ -20,8 +21,10 @@ const Dropdown = props => {
         }
     },[selectedValue]);
 
+    const isComponentDisabled = () => isUndefined(isDisabled) ? false :  isDisabled;
+
     return (
-        <div data-testid="select">
+        <div data-testid="select" className={classNames(isComponentDisabled() ? disable : '')}>
             <Select
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"

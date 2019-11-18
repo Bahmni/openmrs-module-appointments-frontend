@@ -32,3 +32,6 @@ export const MINUTES = "minutes";
 
 export const RECURRING_APPOINTMENT_TYPE = "Recurring";
 export const WALK_IN_APPOINTMENT_TYPE = "WalkIn";
+
+export const SCHEDULED_APPOINTMENT_STATUS = "Scheduled";
+export const CHECKED_IN_APPOINTMENT_STATUS = "CheckedIn";
