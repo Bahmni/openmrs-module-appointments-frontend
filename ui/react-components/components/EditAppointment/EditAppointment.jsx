@@ -48,7 +48,7 @@ import {
 import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
 import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
 import UpdateConfirmationModal from "../UpdateConfirmationModal/UpdateConfirmationModal.jsx";
-
+import {getComponentsDisableStatus} from "./DisableComponentsHelper";
 
 const EditAppointment = props => {
 
@@ -81,6 +81,7 @@ const EditAppointment = props => {
         endTime: undefined,
         appointmentKind: undefined,
         appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE : undefined,
+        status: undefined,
         recurringStartDate: undefined,
         recurringEndDate: undefined,
         notes: undefined,
@@ -99,7 +100,7 @@ const EditAppointment = props => {
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
     const [showUpdateOptions, setShowUpdateOptions] = useState(false);
-
+    const [componentsDisableStatus, setComponentsDisableStatus] = useState({});
 
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {
         return {...prevErrors, ...errorIndicators}
@@ -222,6 +223,7 @@ const EditAppointment = props => {
                 notes: appointmentResponse.comments,
                 appointmentDate: moment(new Date(appointmentResponse.startDateTime)),
                 appointmentKind: appointmentResponse.appointmentKind,
+                status: appointmentResponse.status,
                 appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE :
                     appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined
             });
@@ -253,7 +255,10 @@ const EditAppointment = props => {
     };
 
     useEffect(() => {
-        generateAppointmentDetails().then();
+        generateAppointmentDetails().then(
+            setComponentsDisableStatus(getComponentsDisableStatus(appointmentDetails,
+                appConfig && appConfig.isServiceOnAppointmentEditable))
+        );
     }, [appConfig]);
 
     return (<Fragment>
@@ -263,7 +268,7 @@ const EditAppointment = props => {
                                                   endTimeBasedOnService={endTimeBasedOnService}
                                                   updateAppointmentDetails={updateAppointmentDetails}
                                                   appConfig={appConfig}
-                                                  isPatientEditable={false}/>
+                                                  componentsDisableStatus={componentsDisableStatus} />
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan isEdit={true} appointmentType={appointmentDetails.appointmentType}

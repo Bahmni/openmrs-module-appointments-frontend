@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 const PatientSearch = (props) => {
 
-    const {intl, onChange, value, isPatientEditable} = props;
+    const {intl, onChange, value, isDisabled} = props;
 
     const createDropdownOptions = (patients) => {
         return patients.map(patient => getPatientForDropdown(patient));
@@ -30,7 +30,7 @@ const PatientSearch = (props) => {
             onChange={onChange}
             placeholder={placeholder}
             selectedValue={value}
-            isEditable={isPatientEditable}
+            isDisabled={isDisabled}
         />);
 };
 
@@ -38,7 +38,7 @@ PatientSearch.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.object,
-    isPatientEditable: PropTypes.bool
+    isDisabled: PropTypes.bool
 };
 
 export default injectIntl(PatientSearch);

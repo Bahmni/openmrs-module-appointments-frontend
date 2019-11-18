@@ -72,4 +72,9 @@ describe('Dropdown', () => {
         const noOption = await waitForElement(() => getByText(noOptionMessage));
         expect(noOption).not.toBeNull();
     });
+
+    it('should be disabled when isDisabled is true', () => {
+        const {container} = renderWithReactIntl(<Dropdown isDisabled={true}/>);
+        expect(container.querySelector('.disable')).not.toBeNull();
+    });
 });
