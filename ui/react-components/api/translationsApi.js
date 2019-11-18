@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {mergeObjects} from '../utils/MergeObjectUtil';
 
-const baseLocaleUrl = '../i18n/';
+const baseLocaleUrl = 'i18n/';
 
 const loadFile = async (url) => {
     try {
