@@ -207,8 +207,8 @@ describe('AsyncDropdown', () => {
             expect(onChnageSpy.mock.calls[2][0]).toBe(onChnageSpy.mock.calls[0][0]);
         });
 
-    it('should be disabled when isEditable is false', () => {
-        const {container} = renderWithReactIntl(<AsyncDropdown isEditable={false}/>);
+    it('should be disabled when isDisabled is true', () => {
+        const {container} = renderWithReactIntl(<AsyncDropdown isDisabled={true}/>);
         expect(container.querySelector('.disable')).not.toBeNull();
     });
 });

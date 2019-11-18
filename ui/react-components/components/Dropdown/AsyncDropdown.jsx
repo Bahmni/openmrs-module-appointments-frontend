@@ -11,7 +11,7 @@ import {isUndefined} from "lodash";
 
 const AsyncDropdown = (props) => {
 
-    const {loadOptions, placeholder, onChange, intl, selectedValue, isEditable} = props;
+    const {loadOptions, placeholder, onChange, intl, selectedValue, isDisabled} = props;
 
     const [inputValue, setInputValue] = useState();
     const [value, setValue] = useState(selectedValue);
@@ -54,10 +54,10 @@ const AsyncDropdown = (props) => {
         value && setInputValue(inputValue !== '' ? inputValue : value.label);
     };
 
-    const isDisabled = () => isUndefined(isEditable) ? false :  !isEditable;
+    const isComponentDisabled = () => isUndefined(isDisabled) ? false :  isDisabled;
 
     return (
-        <div data-testid="asyncSelect" className={classNames(isDisabled() ? disable : '')}>
+        <div data-testid="asyncSelect" className={classNames(isComponentDisabled() ? disable : '')}>
             <AsyncSelect
                 ref={ref => {
                     select = ref;
@@ -81,7 +81,7 @@ const AsyncDropdown = (props) => {
                 loadingMessage={() => loadingMessage}
                 onMenuOpen={() => undefined}
                 openMenuOnClick={false}
-                isDisabled={isDisabled()}
+                isDisabled={isComponentDisabled()}
             />
         </div>
     );
@@ -94,5 +94,5 @@ AsyncDropdown.propTypes = {
     onChange: PropTypes.func,
     placeholder: PropTypes.string,
     selectedValue: PropTypes.object,
-    isEditable: PropTypes.bool
+    isDisabled: PropTypes.bool
 };
