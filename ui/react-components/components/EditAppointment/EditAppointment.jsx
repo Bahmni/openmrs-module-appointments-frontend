@@ -13,7 +13,7 @@ import {
     appointmentPlanContainer
 } from "../AddAppointment/AddAppointment.module.scss";
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
-import SearchFieldsContainer from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
+import AppointmentEditorCommonFieldsWrapper from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import {getRecurringAppointment} from "../../api/recurringAppointmentsApi";
 import {getAppointment} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
@@ -258,10 +258,12 @@ const EditAppointment = props => {
 
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor, editAppointment)}>
-            <SearchFieldsContainer appointmentDetails={appointmentDetails} errors={errors}
-                                   updateErrorIndicators={updateErrorIndicators}
-                                   endTimeBasedOnService={endTimeBasedOnService}
-                                   updateAppointmentDetails={updateAppointmentDetails} appConfig={appConfig}/>
+            <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails} errors={errors}
+                                                  updateErrorIndicators={updateErrorIndicators}
+                                                  endTimeBasedOnService={endTimeBasedOnService}
+                                                  updateAppointmentDetails={updateAppointmentDetails}
+                                                  appConfig={appConfig}
+                                                  isPatientEditable={false}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan isEdit={true} appointmentType={appointmentDetails.appointmentType}
