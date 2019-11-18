@@ -41,4 +41,29 @@ describe('Disable components helper', () => {
         expect(componentStatus.service).toBeTruthy();
         expect(componentStatus.speciality).toBeTruthy();
     });
+
+    it('should disable location, providers, service type when appointment status is not scheduled or ' +
+        'checked in', () => {
+        const componentStatus = getComponentsDisableStatus({status: 'Missed'}, undefined);
+
+        expect(componentStatus.serviceType).toBeTruthy();
+        expect(componentStatus.providers).toBeTruthy();
+        expect(componentStatus.location).toBeTruthy();
+    });
+
+    it('should enable location, providers, service type when appointment status is scheduled', () => {
+        const componentStatus = getComponentsDisableStatus({status: SCHEDULED_APPOINTMENT_STATUS}, undefined);
+
+        expect(componentStatus.serviceType).toBeFalsy();
+        expect(componentStatus.providers).toBeFalsy();
+        expect(componentStatus.location).toBeFalsy();
+    });
+
+    it('should enable location, providers, service type when appointment status is checked in', () => {
+        const componentStatus = getComponentsDisableStatus({status: CHECKED_IN_APPOINTMENT_STATUS}, undefined);
+
+        expect(componentStatus.serviceType).toBeFalsy();
+        expect(componentStatus.providers).toBeFalsy();
+        expect(componentStatus.location).toBeFalsy();
+    });
 });

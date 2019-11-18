@@ -53,21 +53,24 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                             message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
                     </div>
                     <div data-testid="service-type-search">
-                        <ServiceTypeSearch  value={appointmentDetails.serviceType} onChange={(optionSelected) => {
+                        <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
                             updateAppointmentDetails({serviceType: optionSelected});
                             endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected);
                         }}
-                                           serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}/>
+                                           serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
+                                           isDisabled={componentsDisableStatus.serviceType}/>
                     </div>
                     {isSpecialitiesEnabled(appConfig) ?
                         <div data-testid="speciality-search">
                             <SpecialitySearch value={appointmentDetails.speciality}
-                                onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected})}/>
+                                              onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected})}
+                                              isDisabled={componentsDisableStatus.speciality}/>
                         </div> : null
                     }
                     <div data-testid="location-search">
                         <LocationSearch value={appointmentDetails.location}
-                            onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}/>
+                                        onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
+                                        isDisabled={componentsDisableStatus.location}/>
                         <ErrorMessage message={undefined}/>
                     </div>
                 </div>
@@ -78,7 +81,8 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         }
                         onProviderRemove={providerIdentifier => updateAppointmentDetails({providers: filter(appointmentDetails.providers, provider => provider.value !== providerIdentifier)})}
                         selectedProviders={appointmentDetails.providers}
-                        maxAppointmentProvidersAllowed={maxAppointmentProvidersAllowed(appConfig)}/>
+                        maxAppointmentProvidersAllowed={maxAppointmentProvidersAllowed(appConfig)}
+                        isDisabled={componentsDisableStatus.providers}/>
                 </div>
             </div>
         </Fragment>
