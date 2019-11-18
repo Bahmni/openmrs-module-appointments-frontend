@@ -206,4 +206,9 @@ describe('AsyncDropdown', () => {
             expect(onChnageSpy.mock.calls[1][0]).toBeUndefined();
             expect(onChnageSpy.mock.calls[2][0]).toBe(onChnageSpy.mock.calls[0][0]);
         });
+
+    it('should be disabled when isEditable is false', () => {
+        const {container} = renderWithReactIntl(<AsyncDropdown isEditable={false}/>);
+        expect(container.querySelector('.disable')).not.toBeNull();
+    });
 });
