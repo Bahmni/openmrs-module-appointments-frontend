@@ -97,6 +97,7 @@ const EditAppointment = props => {
     const [currentStartTime, setCurrentStartTime] = useState();
     const [currentEndTime, setCurrentEndTime] = useState();
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
+    const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
     const [showUpdateOptions, setShowUpdateOptions] = useState(false);
 
 
@@ -263,7 +264,13 @@ const EditAppointment = props => {
                                    updateAppointmentDetails={updateAppointmentDetails} appConfig={appConfig}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
-                    <AppointmentPlan isEdit={true} appointmentType={appointmentDetails.appointmentType}/>
+                    <AppointmentPlan isEdit={true} appointmentType={appointmentDetails.appointmentType}
+                                     onChange={(e) => e.target.name === WALK_IN_APPOINTMENT_TYPE ?
+                                         updateAppointmentDetails({
+                                             appointmentType: isWalkInAppointment()
+                                                 ? undefined : WALK_IN_APPOINTMENT_TYPE
+                                         }) : undefined
+                                     }/>
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
