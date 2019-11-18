@@ -146,5 +146,7 @@
   "APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE": "Successfully changed appointment status to {{toStatus}}",
   "SELECT_APPOINTMENT_PROVIDER": "Sélectionner pourvoyeur",
   "INVITED_PROVIDERS": "Invités",
-  "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Retirer"
+  "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Retirer",
+  "INITIAL_APPOINTMENT_STATUS_KEY": "Statut de rendez-vous initial",
+  "PLACEHOLDER_APPOINTMENT_REQUEST": "Sélectionnez statut rendez-vous"
 }

@@ -146,5 +146,7 @@
   "APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE": "Successfully changed appointment status to {{toStatus}}",
   "SELECT_APPOINTMENT_PROVIDER": "Selecione Provedor",
   "INVITED_PROVIDERS": "Convidamos",
-  "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Remover"
+  "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Remover",
+  "INITIAL_APPOINTMENT_STATUS_KEY": "Status do Compromisso Inicial",
+  "PLACEHOLDER_APPOINTMENT_REQUEST": "Selecionar status do compromisso"
 }

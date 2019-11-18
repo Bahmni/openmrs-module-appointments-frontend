@@ -64,6 +64,7 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
             color: serviceDetails.color,
             startTime: getDateTime(serviceDetails.startTime),
             endTime: getDateTime(serviceDetails.endTime),
+            initialAppointmentStatus: serviceDetails.initialAppointmentStatus,
             specialityUuid: serviceDetails.speciality ? serviceDetails.speciality.uuid : undefined,
             locationUuid: serviceDetails.location ? serviceDetails.location.uuid : undefined,
             weeklyAvailability: parseAvailability(serviceDetails.weeklyAvailability) || [],

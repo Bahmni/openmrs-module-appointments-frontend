@@ -169,5 +169,7 @@
   "RECURRENCE_ALL_APPOINTMENTS" : "Cancel All",
   "DONT_CANCEL_KEY": "Don't Cancel",
   "APPOINTMENT_STATUS_CANCEL_CONFIRM_MESSAGE": "This is a recurring appointment. You can cancel either the selected appointment or the entire series",
-  "RECURRENCE_INDICATION_MESSAGE": "This is a recurring appointment"
+  "RECURRENCE_INDICATION_MESSAGE": "This is a recurring appointment",
+  "INITIAL_APPOINTMENT_STATUS_KEY": "Initial Appointment Status",
+  "PLACEHOLDER_APPOINTMENT_REQUEST": "Select Appointment Status"
 }

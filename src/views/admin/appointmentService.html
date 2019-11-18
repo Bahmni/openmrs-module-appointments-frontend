@@ -18,6 +18,15 @@
                     <i class="fa fa-exclamation-circle small"></i>
                     <span> {{'DUPLICATE_SERVICE_NAME_ERROR_MESSAGE' | translate}} </span>
                 </p>
+                <p ng-show="enableAppointmentRequests">
+                    <label for="initial-appointment-status">
+                        {{'INITIAL_APPOINTMENT_STATUS_KEY' | translate}}
+                    </label>
+                    <select id="initial-appointment-status" ng-model="service.initialAppointmentStatus"
+                            ng-options="o as o for o in initialAppointmentStatusOptions">
+                        <option value="">{{ ::'PLACEHOLDER_APPOINTMENT_REQUEST' | translate}}</option>
+                    </select>
+                </p>
                 <p>
                     <label for="description">
                         {{'APPOINTMENT_SERVICE_DESCRIPTION_KEY' | translate}}

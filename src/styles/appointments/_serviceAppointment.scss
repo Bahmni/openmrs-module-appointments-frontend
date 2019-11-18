@@ -73,6 +73,7 @@
         text-align: right;
         color: #656161;
         margin-right: 10px;
+        max-width: 103px;
 
       }
       input, textarea, select {
@@ -84,6 +85,7 @@
         border-color: #c3c6ca;
         font-size: 13px;
         color: #656161;
+        vertical-align: top;
       }
       textarea {
         min-height: 50px;
