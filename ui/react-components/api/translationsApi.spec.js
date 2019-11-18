@@ -6,7 +6,7 @@ afterEach(() => {
 });
 const appName = 'appointments';
 const i18nBahmniConfigPath = '/bahmni_config/openmrs/i18n/';
-const baseLocaleUrl = '../i18n/';
+const baseLocaleUrl = 'i18n/';
 const fileURL = `${appName}/locale_en.json`;
 describe('Translations Api', () => {
     it('should fetch the transaltions and merge from bahmni config and local when should merge is true', async () => {
