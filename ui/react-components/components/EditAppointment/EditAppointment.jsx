@@ -148,6 +148,7 @@ const EditAppointment = props => {
     };
 
     useEffect(() => {
+        generateAppointmentDetails().then();
     }, [appConfig]);
 
     return (<Fragment>
