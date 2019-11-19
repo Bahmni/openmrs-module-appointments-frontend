@@ -274,7 +274,7 @@ const EditAppointment = props => {
 
     const isValidEndDate = () => appointmentDetails.recurringEndDate || (appointmentDetails.occurrences && appointmentDetails.occurrences > 0);
 
-    const generateAppointmentDetails = async () => {
+    const generateAppointmentDetails = async (callback) => {
         const appointment = isRecurringAppointment()
             ? await getRecurringAppointment(appointmentUuid) : await getAppointment(appointmentUuid);
         const appointmentResponse = isRecurringAppointment()
@@ -316,6 +316,7 @@ const EditAppointment = props => {
                 });
             }
         }
+        callback(appointmentResponse);
     };
 
     const appointmentStartTimeProps = {
@@ -345,10 +346,9 @@ const EditAppointment = props => {
     };
 
     useEffect(() => {
-        generateAppointmentDetails().then(
-            setComponentsDisableStatus(getComponentsDisableStatus(appointmentDetails,
-                appConfig && appConfig.isServiceOnAppointmentEditable))
-        );
+        const setDisableStatus = (appointmentResponse) => setComponentsDisableStatus(getComponentsDisableStatus(appointmentResponse,
+            appConfig && appConfig.isServiceOnAppointmentEditable));
+        generateAppointmentDetails(setDisableStatus).then();
     }, [appConfig]);
 
     return (<Fragment>
