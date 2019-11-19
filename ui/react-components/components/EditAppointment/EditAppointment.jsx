@@ -472,6 +472,7 @@ const EditAppointment = props => {
                 }}
                 isEdit={true}
                 isOptionsRequired={isRecurringAppointment() && isApplicableForAll()}
+                disableUpdateButton={isStartDateModified() && (isEndDateModified() || isOccurrencesModified())}
             />
             {conflicts &&
             <CustomPopup style={conflictsPopup} open={true}
