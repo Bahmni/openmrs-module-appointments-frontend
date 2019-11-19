@@ -42,32 +42,37 @@ describe('Disable components helper', () => {
         expect(componentStatus.speciality).toBeTruthy();
     });
 
-    it('should disable location, providers, service type and start date when appointment status is not scheduled or ' +
-        'checked in', () => {
+    it('should disable location, providers, service type, start date and time when appointment status is ' +
+        'not scheduled or checked in', () => {
         const componentStatus = getComponentsDisableStatus({status: 'Missed'});
 
         expect(componentStatus.serviceType).toBeTruthy();
         expect(componentStatus.providers).toBeTruthy();
         expect(componentStatus.location).toBeTruthy();
         expect(componentStatus.startDate).toBeTruthy();
+        expect(componentStatus.time).toBeTruthy();
 
     });
 
-    it('should enable location, providers, service type and start date when appointment status is scheduled', () => {
+    it('should enable location, providers, service type, start date and time when appointment status is ' +
+        'scheduled', () => {
         const componentStatus = getComponentsDisableStatus({status: SCHEDULED_APPOINTMENT_STATUS});
 
         expect(componentStatus.serviceType).toBeFalsy();
         expect(componentStatus.providers).toBeFalsy();
         expect(componentStatus.location).toBeFalsy();
         expect(componentStatus.startDate).toBeFalsy();
+        expect(componentStatus.time).toBeFalsy();
     });
 
-    it('should enable location, providers, service type and start date when appointment status is checked in', () => {
+    it('should enable location, providers, service type start date and time when appointment status is' +
+        ' checked in', () => {
         const componentStatus = getComponentsDisableStatus({status: CHECKED_IN_APPOINTMENT_STATUS});
 
         expect(componentStatus.serviceType).toBeFalsy();
         expect(componentStatus.providers).toBeFalsy();
         expect(componentStatus.location).toBeFalsy();
         expect(componentStatus.startDate).toBeFalsy();
+        expect(componentStatus.time).toBeFalsy();
     });
 });
