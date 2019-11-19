@@ -21,7 +21,7 @@
         margin: auto 5px;
       }
 
-      &:hover {
+      &:hover:not(.save) {
         background: darkgrey;
       }
 
@@ -29,9 +29,11 @@
     .save {
       color: $secondary-color-1;
       background: $primary-color-2;
-      &:hover {
-        background: $primary-color-2;
-        opacity: 1;
+      &:not([disabled]) {
+        &:hover {
+          background: $primary-color-2;
+          opacity: 1;
+        }
       }
     }
   }
