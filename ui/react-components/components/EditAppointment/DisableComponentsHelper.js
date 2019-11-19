@@ -8,7 +8,8 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
         serviceType: false,
         providers: false,
         location: false,
-        startDate: false
+        startDate: false,
+        time: false
     };
 
     const scheduledOrCheckedInAppointment = isAppointmentScheduledOrCheckedIn(appointment);
@@ -19,5 +20,6 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
     componentDisableStatus.providers = !scheduledOrCheckedInAppointment;
     componentDisableStatus.location = !scheduledOrCheckedInAppointment;
     componentDisableStatus.startDate = !scheduledOrCheckedInAppointment;
+    componentDisableStatus.time = !scheduledOrCheckedInAppointment;
     return componentDisableStatus;
 };
