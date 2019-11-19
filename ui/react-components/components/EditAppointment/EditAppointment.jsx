@@ -355,7 +355,8 @@ const EditAppointment = props => {
                                         <span className={classNames(dateText)}>
                                             {capitalize(moment(appointmentDetails.recurringEndDate).format("dddd"))}
                                         </span>
-                                        <span><CalendarPicker date={appointmentDetails.recurringEndDate}/></span>
+                                        <span><CalendarPicker date={appointmentDetails.recurringEndDate}
+                                                              isDisabled={componentsDisableStatus.endDate}/></span>
                                     </div>
                                 </div>)}
                         </div> : undefined}
