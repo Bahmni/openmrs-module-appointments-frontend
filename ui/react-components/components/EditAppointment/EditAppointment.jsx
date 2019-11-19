@@ -467,7 +467,8 @@ const EditAppointment = props => {
                                                     if (date)
                                                         updateErrorIndicators({endDateError: !date});
                                                 }}
-                                                date={appointmentDetails.recurringEndDate}/>
+                                                date={appointmentDetails.recurringEndDate}
+                                                isDisabled={componentsDisableStatus.endDate}/>
                                         </span>
                                     </div>
                                     <ErrorMessage message={errors.endDateError ? errorTranslations.dateErrorMessage : undefined}/>
