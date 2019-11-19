@@ -400,7 +400,8 @@ const EditAppointment = props => {
                                               updateAppointmentDetails({startTime: time});
                                               endTimeBasedOnService(time, appointmentDetails.service, appointmentDetails.serviceType);
                                               updateErrorIndicators({startTimeError: !time});
-                                          }}/>
+                                          }}
+                                          isDisabled={componentsDisableStatus.time} />
                             <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                         </div>
                         <div data-testid="end-time-selector">
@@ -411,7 +412,8 @@ const EditAppointment = props => {
                                                   startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
                                                   endTimeError: !time
                                               });
-                                          }}/>
+                                          }}
+                                          isDisabled={componentsDisableStatus.time} />
                             <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                         </div>
                         <ErrorMessage
