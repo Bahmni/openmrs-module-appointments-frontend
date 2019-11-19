@@ -42,7 +42,7 @@ describe('Disable components helper', () => {
         expect(componentStatus.speciality).toBeTruthy();
     });
 
-    it('should disable location, providers, service type, start date, time and occurrences ' +
+    it('should disable location, providers, service type, start date, time, occurrences and end date' +
         'when appointment status is not scheduled or checked in', () => {
         const componentStatus = getComponentsDisableStatus({status: 'Missed'});
 
@@ -52,10 +52,11 @@ describe('Disable components helper', () => {
         expect(componentStatus.startDate).toBeTruthy();
         expect(componentStatus.time).toBeTruthy();
         expect(componentStatus.occurrences).toBeTruthy();
+        expect(componentStatus.endDate).toBeTruthy();
 
     });
 
-    it('should enable location, providers, service type, start date, time and occurrences ' +
+    it('should enable location, providers, service type, start date, time, occurrences and end date' +
         'when appointment status is scheduled', () => {
         const componentStatus = getComponentsDisableStatus({status: SCHEDULED_APPOINTMENT_STATUS});
 
@@ -65,9 +66,10 @@ describe('Disable components helper', () => {
         expect(componentStatus.startDate).toBeFalsy();
         expect(componentStatus.time).toBeFalsy();
         expect(componentStatus.occurrences).toBeFalsy();
+        expect(componentStatus.endDate).toBeFalsy();
     });
 
-    it('should enable location, providers, service type start date, time and occurrences' +
+    it('should enable location, providers, service type start date, time, occurrences and end date' +
         ' when appointment status is checked in', () => {
         const componentStatus = getComponentsDisableStatus({status: CHECKED_IN_APPOINTMENT_STATUS});
 
@@ -77,5 +79,6 @@ describe('Disable components helper', () => {
         expect(componentStatus.startDate).toBeFalsy();
         expect(componentStatus.time).toBeFalsy();
         expect(componentStatus.occurrences).toBeFalsy();
+        expect(componentStatus.endDate).toBeFalsy();
     });
 });
