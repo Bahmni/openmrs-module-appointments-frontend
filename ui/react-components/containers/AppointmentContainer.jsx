@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import AddAppointment from "../components/AddAppointment/AddAppointment.jsx";
 import {IntlProvider} from "react-intl";
 import {getLocale} from "../utils/LocalStorageUtil";
-import translations from '../../app/i18n/appointments';
+import translations from '../../i18n/appointments';
 import PropTypes from "prop-types";
 import {AppContext} from "../components/AppContext/AppContext";
 import {getAppConfig, getMessages} from "../components/AppContext/AppService";
