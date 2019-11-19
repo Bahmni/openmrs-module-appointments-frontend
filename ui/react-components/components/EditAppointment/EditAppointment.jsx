@@ -308,13 +308,15 @@ const EditAppointment = props => {
                                           onChange={time => {
                                               updateAppointmentDetails({startTime: time});
                                               endTimeBasedOnService(time, appointmentDetails.service, appointmentDetails.serviceType);
-                                          }}/>
+                                          }}
+                                          isDisabled={componentsDisableStatus.time} />
                         </div>
                         <div data-testid="end-time-selector">
                             <TimeSelector {...appointmentEndTimeProps}
                                           onChange={time => {
                                               updateAppointmentDetails({endTime: time});
-                                          }}/>
+                                          }}
+                                          isDisabled={componentsDisableStatus.time} />
                         </div>
                     </div>
                     {isRecurringAppointment() ?
