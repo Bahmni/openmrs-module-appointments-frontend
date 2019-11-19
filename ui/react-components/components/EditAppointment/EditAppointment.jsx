@@ -342,7 +342,8 @@ const EditAppointment = props => {
                                     </div>
                                     <InputNumber
                                         onOccurrencesChange={value => updateAppointmentDetails({occurrences: value})}
-                                        defaultValue={appointmentDetails.occurrences}/>
+                                        defaultValue={appointmentDetails.occurrences}
+                                        isDisabled={componentsDisableStatus.occurrences} />
                                     <Label translationKey="OCCURRENCES_LABEL" defaultValue="Occurrences"/>
                                 </div>)
                                 : (<div className={classNames(recurringEndDateContainer)}>
