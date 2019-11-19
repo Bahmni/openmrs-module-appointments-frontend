@@ -29,11 +29,12 @@ class AppointmentContainer extends Component {
 
     render() {
         const {locale, messages, appConfig} = this.state;
+        const {appointmentUuid,isRecurring, setViewDate, onBack } = this.props;
         return (
-            <AppContext.Provider value={{onBack: this.props.onBack, setViewDate: this.props.setViewDate}}>
+            <AppContext.Provider value={{onBack: onBack, setViewDate: setViewDate}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
-                    {this.props.appointmentUuid
-                        ? <EditAppointment appConfig={appConfig} appointmentUuid={this.props.appointmentUuid} isRecurring={this.props.isRecurring}/>
+                    {appointmentUuid
+                        ? <EditAppointment appConfig={appConfig} appointmentUuid={appointmentUuid} isRecurring={isRecurring}/>
                         : <AddAppointment appConfig={appConfig}/>}
                 </IntlProvider>
             </AppContext.Provider>);
