@@ -445,7 +445,8 @@ const EditAppointment = props => {
                                             updateAppointmentDetails({occurrences: value});
                                             updateErrorIndicators({occurrencesError: !value || value < 1});
                                         }}
-                                        defaultValue={appointmentDetails.occurrences}/>
+                                        defaultValue={appointmentDetails.occurrences}
+                                        isDisabled={componentsDisableStatus.occurrences} />
                                     <Label translationKey="OCCURRENCES_LABEL" defaultValue="Occurrences"/>
                                     <ErrorMessage message={errors.occurrencesError ? errorTranslations.occurrencesErrorMessage : undefined}/>
 

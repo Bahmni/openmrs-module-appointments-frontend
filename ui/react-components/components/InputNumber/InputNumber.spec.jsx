@@ -43,5 +43,10 @@ describe('Input Number', () => {
         fireEvent.click(leftButton);
         expect(onChangeSpy).not.toHaveBeenCalled();
     });
+
+    it('should have disable class', () => {
+        const {container} = render(<InputNumber onChange={() => {}} isDisabled={true}/>);
+        expect(container.querySelector('.disable')).not.toBeNull();
+    })
 });
 
