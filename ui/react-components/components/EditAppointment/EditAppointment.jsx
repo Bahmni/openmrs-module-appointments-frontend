@@ -382,7 +382,8 @@ const EditAppointment = props => {
                             }}
                             onClear={() => updateAppointmentDetails({appointmentDate: undefined})}
                             defaultValue={appointmentDetails.appointmentDate}
-                            minDate={getYesterday()}/>
+                            minDate={getYesterday()}
+                            isDisabled={componentsDisableStatus.startDate}/>
                         <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                     </div>
                     <div>

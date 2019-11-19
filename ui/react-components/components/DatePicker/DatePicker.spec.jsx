@@ -61,4 +61,9 @@ describe('DatePicker', () => {
         expect(dateCell.getAttribute('aria-disabled')).toBe("false");
         expect(dateCell.getAttribute('aria-selected')).toBe("false");
     });
+
+    it('date component should have disable class', () => {
+        const {container} = render(<AppointmentDatePicker isDisabled={true}/>);
+        expect(container.querySelector('.disable')).not.toBeNull();
+    })
 });
