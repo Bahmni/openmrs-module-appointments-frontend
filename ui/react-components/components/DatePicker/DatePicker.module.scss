@@ -105,3 +105,11 @@
     }
   }
 }
+
+.disable {
+  cursor: not-allowed;
+  div:first-child {
+    pointer-events: none;
+    opacity: 0.9;
+  }
+}
