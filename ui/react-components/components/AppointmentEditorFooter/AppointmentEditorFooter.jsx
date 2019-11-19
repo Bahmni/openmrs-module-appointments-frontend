@@ -18,8 +18,8 @@ import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit, showUpdateOptions} = props;
-    const[showUpdateButtons, setShowUpdateButtons] = useState(showUpdateOptions);
+    const {checkAndSave, isEdit, isOptionsRequired} = props;
+    const[showUpdateButtons, setShowUpdateButtons] = useState(false);
 
     const getUpdateButtons =() =>{
         setShowUpdateButtons(!showUpdateButtons);
@@ -37,12 +37,13 @@ const AppointmentEditorFooter = props => {
             <div className={classNames(footerElements)}>
                 <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
                 {isEdit
-                    ? <button className={classNames(button, save)} onClick={showUpdateOptions ? getUpdateButtons : checkAndSave} data-testid="check-and-save">
+                    ? <button className={classNames(button, save)}
+                              onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}
+                              data-testid="check-and-save">
                         <i className={classNames("fa", "fa-check")}/>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_UPDATE_LABEL'} defaultMessage={'Update'}/>
                     </span>
-                        {showUpdateButtons ?  <i className={classNames("fa", "fa-times")} /> : undefined}
                     </button>
                     : <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
                         <i className={classNames("fa", "fa-check")}/>
@@ -50,7 +51,7 @@ const AppointmentEditorFooter = props => {
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
                     </span>
                     </button>}
-                {showUpdateButtons ? <UpdateButtons/> : undefined}
+                {isOptionsRequired && showUpdateButtons ? <UpdateButtons checkAndSave={applyForAll =>  checkAndSave(applyForAll)} /> : undefined}
 
             </div>
         </div>
@@ -60,7 +61,7 @@ const AppointmentEditorFooter = props => {
 AppointmentEditorFooter.propTypes = {
     checkAndSave: PropTypes.func,
     isEdit: PropTypes.bool,
-    showUpdateButtons: PropTypes.bool
+    isOptionsRequired: PropTypes.bool
 };
 
 export default AppointmentEditorFooter;

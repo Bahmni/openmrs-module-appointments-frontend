@@ -9,6 +9,14 @@ export const saveRecurringAppointments = async data => {
     }
 };
 
+export const updateRecurringAppointments = async data => {
+    try {
+        return await axios.put(`${recurringAppointmentsSaveUrl}/${data.appointmentRequest.uuid}`, data);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 export const getRecurringAppointment = async (appointmentUuid) => {
     try {
         const response = await axios.get(`${recurringAppointmentFetchUrl}?uuid=${appointmentUuid}`);
