@@ -18,7 +18,7 @@ import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit, isOptionsRequired} = props;
+    const {checkAndSave, isEdit, isOptionsRequired, disableUpdateButton} = props;
     const[showUpdateButtons, setShowUpdateButtons] = useState(false);
 
     const getUpdateButtons =() =>{
@@ -39,6 +39,7 @@ const AppointmentEditorFooter = props => {
                 {isEdit
                     ? <button className={classNames(button, save)}
                               onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}
+                              disabled={disableUpdateButton}
                               data-testid="check-and-save">
                         <i className={classNames("fa", "fa-check")}/>
                         <span>
@@ -61,7 +62,8 @@ const AppointmentEditorFooter = props => {
 AppointmentEditorFooter.propTypes = {
     checkAndSave: PropTypes.func,
     isEdit: PropTypes.bool,
-    isOptionsRequired: PropTypes.bool
+    isOptionsRequired: PropTypes.bool,
+    disableUpdateButton: PropTypes.bool
 };
 
 export default AppointmentEditorFooter;
