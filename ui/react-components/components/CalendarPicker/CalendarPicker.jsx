@@ -7,13 +7,14 @@ import {
     appointmentDatePicker,
     appointmentDatePickerNotSelected,
     appointmentDatePickerSelected,
+    disable
 } from '../DatePicker/DatePicker.module.scss';
 import classNames from "classnames";
 
 
 const CalendarPicker = (props) => {
 
-    const {date, onChange} = props;
+    const {date, onChange, isDisabled} = props;
 
     let styles = [appointmentDatePicker];
     date ? styles.push(appointmentDatePickerSelected)
@@ -21,13 +22,15 @@ const CalendarPicker = (props) => {
     const calendar = (<Calendar showToday={false} className={classNames(styles)}/>);
 
     return (
-        <DatePicker
-            animation="slide-up"
-            value={date}
-            calendar={calendar}
-            onChange={onChange}
-            dateInputPlaceholder="mm/dd/yyyy"
-        >{({value}) => <i className={classNames("fa fa-calendar")}/>}</DatePicker>
+        <div className={classNames(isDisabled ? disable : '')}>
+            <DatePicker
+                animation="slide-up"
+                value={date}
+                calendar={calendar}
+                onChange={onChange}
+                dateInputPlaceholder="mm/dd/yyyy"
+            >{({value}) => <i className={classNames("fa fa-calendar")}/>}</DatePicker>
+        </div>
     );
 };
 
