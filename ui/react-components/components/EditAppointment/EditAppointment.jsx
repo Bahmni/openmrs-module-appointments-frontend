@@ -292,7 +292,8 @@ const EditAppointment = props => {
                             }}
                             onClear={() => updateAppointmentDetails({appointmentDate: undefined})}
                             defaultValue={appointmentDetails.appointmentDate}
-                            minDate={getYesterday()}/>
+                            minDate={getYesterday()}
+                            isDisabled={componentsDisableStatus.startDate} />
                     </div>
                     <div>
                         <div className={classNames(dateHeading)} ><Label translationKey="CURRENT_TIME_SLOT_LABEL" defaultValue="Current time slot"/></div>
