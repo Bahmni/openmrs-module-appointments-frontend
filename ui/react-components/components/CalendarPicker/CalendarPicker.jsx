@@ -13,7 +13,7 @@ import classNames from "classnames";
 
 const CalendarPicker = (props) => {
 
-    const {date} = props;
+    const {date, onChange} = props;
 
     let styles = [appointmentDatePicker];
     date ? styles.push(appointmentDatePickerSelected)
@@ -25,7 +25,7 @@ const CalendarPicker = (props) => {
             animation="slide-up"
             value={date}
             calendar={calendar}
-            onChange={() => undefined}
+            onChange={onChange}
             dateInputPlaceholder="mm/dd/yyyy"
         >{({value}) => <i className={classNames("fa fa-calendar")}/>}</DatePicker>
     );
@@ -33,6 +33,7 @@ const CalendarPicker = (props) => {
 
 CalendarPicker.propTypes = {
     date: PropTypes.object,
+    onChange: PropTypes.func
 };
 
 export default CalendarPicker;
