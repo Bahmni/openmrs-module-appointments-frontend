@@ -26,8 +26,7 @@
     "react2angular": "^4.0.6",
     "reactjs-popup": "^1.5.0",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0",
-    "request": "^2.88.0"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -42,44 +41,13 @@
     "babel-loader": "^8.0.6",
     "babel-preset-es2015": "^6.24.1",
     "css-loader": "^3.2.0",
-    "eslint-config-angular": "^0.5.0",
-    "eslint-config-semistandard": "^7.0.0",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-plugin-angular": "^1.4.1",
-    "eslint-plugin-promise": "^3.3.0",
-    "eslint-plugin-standard": "^2.0.1",
-    "grunt": "~0.4.5",
-    "grunt-comment-toggler": "^0.2.2",
-    "grunt-contrib-clean": "0.6.0",
-    "grunt-contrib-compass": "~0.8.0",
-    "grunt-contrib-concat": "~0.4.0",
-    "grunt-contrib-copy": "0.6.0",
-    "grunt-contrib-cssmin": "~0.10.0",
-    "grunt-contrib-htmlmin": "~0.3.0",
-    "grunt-contrib-imagemin": "~0.1.2",
-    "grunt-contrib-uglify": "~0.11.0",
-    "grunt-eslint": "^19.0.0",
-    "grunt-filerev": "^0.2.1",
-    "grunt-hologram": "0.0.4",
-    "grunt-istanbul-coverage": "0.0.5",
-    "grunt-karma": "^2.0.0",
-    "grunt-ng-annotate": "^1.0.1",
-    "grunt-preprocess": "^5.0.1",
-    "grunt-regarde": "~0.1.1",
-    "grunt-rename": "~0.1.3",
-    "grunt-usemin": "~2.2.0",
     "identity-obj-proxy": "^3.0.0",
     "intl": "^1.2.5",
     "is-wsl": "^2.1.1",
     "jest": "^24.9.0",
+    "jest-environment-jsdom-fourteen": "^0.1.0",
     "jest-mock-axios": "^3.1.1",
-    "karma": "^0.13.00",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-coverage": "~0.2.4",
-    "karma-firefox-launcher": "~0.1.7",
-    "karma-jasmine": "~0.2.0",
-    "karma-junit-reporter": "^0.2.2",
-    "karma-ng-html2js-preprocessor": "^0.1.2",
+    "jest-watch-typeahead": "^0.4.2",
     "matchdep": "^0.3.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
@@ -89,6 +57,7 @@
     "postcss-normalize": "^8.0.1",
     "postcss-preset-env": "^6.7.0",
     "postcss-safe-parser": "^4.0.1",
+    "react-app-polyfill": "^1.0.4",
     "react-dev-utils": "^9.0.4",
     "react-select-event": "^2.1.1",
     "resolve-url-loader": "^3.1.0",
@@ -99,7 +68,6 @@
     "webpack-cli": "^3.3.9"
   },
   "scripts": {
-    "test": "karma start test/config/karma.conf.js",
     "test-react": "TZ=UTC jest",
     "test-react-watch": "TZ=UTC jest --watch",
     "build-react": "webpack --env=production -p",
@@ -119,30 +87,50 @@
   },
   "jest": {
     "roots": [
-      "<rootDir>/react-components"
+      "<rootDir>"
     ],
     "collectCoverageFrom": [
-      "react-components/**/*.{js,jsx}"
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
     ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [],
     "testMatch": [
       "<rootDir>/react-components/**/*.{spec,test}.{js,jsx}"
     ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
     "transform": {
-      "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest"
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$",
       "^.+\\.module\\.(css|sass|scss)$"
     ],
+    "modulePaths": [],
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
       "\\.(css|less)$": "<rootDir>/react-components/__mocks__/styleMock.js"
     },
     "moduleFileExtensions": [
+      "web.js",
       "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
       "json",
-      "jsx"
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
     ]
   }
 }
