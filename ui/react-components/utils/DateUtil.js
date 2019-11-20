@@ -1,6 +1,8 @@
+import moment from "moment";
+
 export const getDateTime = (appointmentDate, appointmentTime) => {
     if (!appointmentDate && !appointmentTime) return appointmentDate;
-    var formattedTime = moment(appointmentTime, ["hh:mm a"]).format("HH:mm");
+    const formattedTime = moment(appointmentTime, ["hh:mm a"]).format("HH:mm");
     return parseDateToUTC(getDateWithoutTime(appointmentDate) + ' ' + formattedTime);
 };
 

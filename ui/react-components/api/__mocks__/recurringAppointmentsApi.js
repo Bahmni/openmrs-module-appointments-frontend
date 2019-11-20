@@ -128,3 +128,7 @@ export const getRecurringAppointmentByUuid = () => {
 export const recurringConflictsFor = () => {
     return {};
 };
+
+export const updateRecurringAppointments = () => {
+    return {};
+};

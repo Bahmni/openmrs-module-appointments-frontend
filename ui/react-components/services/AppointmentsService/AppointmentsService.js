@@ -38,7 +38,6 @@ const updateProvidersFor = (recurringAppointmentRequest, providers) => {
     };
 };
 
-
 export const updateRecurring = async recurringAppointmentRequest => {
     const providers = getProviders(recurringAppointmentRequest.appointmentRequest.providers);
     return await updateRecurringAppointments(updateProvidersFor(recurringAppointmentRequest, providers));
