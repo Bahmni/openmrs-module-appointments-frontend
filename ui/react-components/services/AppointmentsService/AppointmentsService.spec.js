@@ -2,7 +2,8 @@ import {
     getAppointmentConflicts,
     getRecurringAppointmentsConflicts,
     saveAppointment,
-    saveRecurring
+    saveRecurring,
+    updateRecurring
 } from "./AppointmentsService";
 
 jest.mock('../../api/appointmentsApi');
@@ -13,7 +14,7 @@ let appointmentsApiSpy;
 let recurringAppointmentsApiSpy;
 let appointmentConflictsApiSpy;
 let recurringAppointmentsConflictsApiSpy;
-
+let updateRecurringAppointmentsApiSpy;
 
 describe('Appointment Editor Service', () => {
     let recurringRequest;
@@ -22,6 +23,7 @@ describe('Appointment Editor Service', () => {
         recurringAppointmentsApiSpy = jest.spyOn(recurringAppointmentsApi, 'saveRecurringAppointments');
         appointmentConflictsApiSpy = jest.spyOn(appointmentsApi, 'conflictsFor');
         recurringAppointmentsConflictsApiSpy = jest.spyOn(recurringAppointmentsApi, 'recurringConflictsFor');
+        updateRecurringAppointmentsApiSpy= jest.spyOn(recurringAppointmentsApi, 'updateRecurringAppointments');
         recurringRequest = {
             appointmentRequest: {
                 providers: [
@@ -42,6 +44,7 @@ describe('Appointment Editor Service', () => {
         recurringAppointmentsApiSpy.mockRestore();
         appointmentConflictsApiSpy.mockRestore();
         recurringAppointmentsConflictsApiSpy.mockRestore();
+        updateRecurringAppointmentsApiSpy.mockRestore();
     });
     const updatedRecurringRequest = {
         appointmentRequest: {
@@ -153,4 +156,20 @@ describe('Appointment Editor Service', () => {
 
         expect(recurringAppointmentsConflictsApiSpy).toHaveBeenCalledWith(updatedRecurringRequest);
     });
+
+    it('should map providers as per payload for updating recurring appointment request', async () => {
+        await updateRecurring(recurringRequest);
+
+        expect(updateRecurringAppointmentsApiSpy).toHaveBeenCalledWith(updatedRecurringRequest);
+    });
+
+    it('should return the response returned from updateRecurringAppointments', async () => {
+        const expectedResponse = {};
+        updateRecurringAppointmentsApiSpy.mockImplementation(() => expectedResponse);
+
+        const response = await updateRecurring(recurringRequest);
+
+        expect(response).toEqual(expectedResponse);
+    });
+
 });

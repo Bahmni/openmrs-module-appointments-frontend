@@ -99,7 +99,6 @@ const EditAppointment = props => {
     const [showUpdateSuccessPopup, setShowUpdateSuccessPopup] = useState(false);
     const [currentStartTime, setCurrentStartTime] = useState();
     const [currentEndTime, setCurrentEndTime] = useState();
-    const [showUpdateOptions, setShowUpdateOptions] = useState(false);
     const [originalAppointmentDate, setOriginalAppointmentDate] = useState(undefined);
     const [originalRecurringEndDate, setOriginalRecurringEndDate] = useState(undefined);
     const [originalOccurrences, setOriginalOccurrences] = useState(undefined);
@@ -155,12 +154,8 @@ const EditAppointment = props => {
             serviceUuid: appointmentDetails.service && appointmentDetails.service.value.uuid,
             serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.value &&
                 appointmentDetails.serviceType.value.uuid,
-            startDateTime: isRecurringAppointment()
-                ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.startTime)
-                : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
-            endDateTime: isRecurringAppointment()
-                ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.endTime)
-                : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
+            startDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
+            endDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
             appointmentKind: appointmentDetails.appointmentKind,
@@ -301,7 +296,6 @@ const EditAppointment = props => {
             setCurrentStartTime(moment(new Date(appointmentResponse.startDateTime)).format('hh:mm a'));
             setCurrentEndTime(moment(new Date(appointmentResponse.endDateTime)).format('hh:mm a'));
             if (isRecurringAppointment()) {
-                setShowUpdateOptions(false);
                 setOriginalRecurringEndDate(recurringPattern.endDate && moment(new Date(recurringPattern.endDate)));
                 setOriginalOccurrences(recurringPattern.frequency);
                 updateAppointmentDetails({
@@ -373,15 +367,13 @@ const EditAppointment = props => {
                 <div className={classNames(recurringContainerLeft)}>
                     <div data-testid="date-selector">
                         <div className={classNames(dateHeading)}><Label translationKey='CHANGE_DATE_TO_LABEL'
-                                                                        defaultValue={`Change ${moment(appointmentDetails.appointmentDate).format('Do MMM')} to`}/></div>
+                                                                        defaultValue={`Change ${moment(originalAppointmentDate).format('Do MMM')} to`}/></div>
                         <AppointmentDatePicker
                             onChange={date => {
-                                setShowUpdateOptions(false);
                                 updateAppointmentDetails({appointmentDate: date});
                                 updateErrorIndicators({appointmentDateError: !date});
                             }}
                             onClear={() => {
-                                setShowUpdateOptions(false);
                                 updateAppointmentDetails({appointmentDate: undefined})
                             }}
                             defaultValue={appointmentDetails.appointmentDate}
@@ -445,7 +437,6 @@ const EditAppointment = props => {
                                             {capitalize(moment(appointmentDetails.recurringEndDate).format("dddd"))}
                                         </span>
                                         <span><CalendarPicker onChange={date => {
-                                            setShowUpdateOptions(false);
                                             updateAppointmentDetails({recurringEndDate: date});
                                         }} date={appointmentDetails.recurringEndDate}/></span>
                                     </div>
