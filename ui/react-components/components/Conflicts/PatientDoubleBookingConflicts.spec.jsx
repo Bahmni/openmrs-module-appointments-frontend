@@ -10,7 +10,7 @@ describe('PatientDoubleBookingConflicts', () => {
         const {container, getByText} = renderWithReactIntl(<PatientDoubleBookingConflicts
             conflicts={conflicts.PATIENT_DOUBLE_BOOKING} service={service}/>);
 
-        getByText('The recurring appointments you are trying to book overlaps with the following dates');
+        getByText('The appointment you are trying to book overlaps with the following dates');
         getByText('5th December ‘19 | Thursday | 4:00 PM');
         expect(container.querySelector('.conflictMessage').innerHTML).toContain('Current Orthopedic request');
         expect(container.querySelector('.boldContent').innerHTML).toContain('conflicts with Dressing');
