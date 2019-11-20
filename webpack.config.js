@@ -75,6 +75,7 @@ module.exports = {
         }),
         new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/),
         new CopyPlugin([
+            {from: __dirname + '/src/appointmentRequestHelper.js', to: distDirPath + '/appointmentRequestHelper.js'},
             {from: __dirname + '/i18n/', to: distDirPath + '/i18n'},
             {from: __dirname + '/constants/', to: distDirPath + '/constants'},
         ])

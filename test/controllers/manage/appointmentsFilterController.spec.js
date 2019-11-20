@@ -396,8 +396,8 @@ describe('AppointmentsFilterController', function () {
         providerService.list.and.returnValue(specUtil.simplePromise(providers));
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
-        expect(scope.statusList.length).toBe(5);
         expect(scope.locations.length).toBe(2);
+        expect(scope.statusList.length).toBe(6);
         expect(scope.providers.length).toBe(2);
     });
 
@@ -498,11 +498,12 @@ describe('AppointmentsFilterController', function () {
         state.current = { tabName: "calendar" };
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
-        expect(scope.statusList.length).toBe(4);
-        expect(scope.statusList[0].name).toBe("Scheduled");
-        expect(scope.statusList[1].name).toBe("CheckedIn");
-        expect(scope.statusList[2].name).toBe("Completed");
-        expect(scope.statusList[3].name).toBe("Missed");
+        expect(scope.statusList.length).toBe(5);
+        expect(scope.statusList[0].name).toBe("Requested");
+        expect(scope.statusList[1].name).toBe("Scheduled");
+        expect(scope.statusList[2].name).toBe("CheckedIn");
+        expect(scope.statusList[3].name).toBe("Completed");
+        expect(scope.statusList[4].name).toBe("Missed");
     });
 
     it("should remove cancel status from statusList and selectedStatusList when user navigates to calendar view from list view", function () {
@@ -513,11 +514,12 @@ describe('AppointmentsFilterController', function () {
         scope.$digest();
         state.current.tabName = "calendar";
         scope.$digest();
-        expect(scope.statusList.length).toBe(4);
-        expect(scope.statusList[0].name).toBe("Scheduled");
-        expect(scope.statusList[1].name).toBe("CheckedIn");
-        expect(scope.statusList[2].name).toBe("Completed");
-        expect(scope.statusList[3].name).toBe("Missed");
+        expect(scope.statusList.length).toBe(5);
+        expect(scope.statusList[0].name).toBe("Requested");
+        expect(scope.statusList[1].name).toBe("Scheduled");
+        expect(scope.statusList[2].name).toBe("CheckedIn");
+        expect(scope.statusList[3].name).toBe("Completed");
+        expect(scope.statusList[4].name).toBe("Missed");
         expect(scope.selectedStatusList.length).toBe(1);
         expect(scope.selectedStatusList[0].name).toBe("Scheduled");
     });
@@ -530,12 +532,13 @@ describe('AppointmentsFilterController', function () {
         scope.selectedStatusList = [{name: "Cancelled", value: "Cancelled"} , { name: "Scheduled", value: "Scheduled"}];
         state.current.tabName = "list";
         scope.$digest();
-        expect(scope.statusList.length).toBe(5);
-        expect(scope.statusList[0].name).toBe("Scheduled");
-        expect(scope.statusList[1].name).toBe("CheckedIn");
-        expect(scope.statusList[2].name).toBe("Completed");
-        expect(scope.statusList[3].name).toBe("Cancelled");
-        expect(scope.statusList[4].name).toBe("Missed");
+        expect(scope.statusList.length).toBe(6);
+        expect(scope.statusList[0].name).toBe("Requested");
+        expect(scope.statusList[1].name).toBe("Scheduled");
+        expect(scope.statusList[2].name).toBe("CheckedIn");
+        expect(scope.statusList[3].name).toBe("Completed");
+        expect(scope.statusList[4].name).toBe("Cancelled");
+        expect(scope.statusList[5].name).toBe("Missed");
     });
 
     it('should have "No Provider" in providers and should have providerUuids in selectedProviders when providerUuids are present in filterParams', function () {

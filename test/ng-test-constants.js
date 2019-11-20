@@ -108,7 +108,7 @@ window.Bahmni.Appointments.Constants = {
   "angularCalendarDaysOfWeek": [0, 1, 2, 3, 4, 5, 6],
   "defaultWeekStartDayName": "Sunday",
   "minDurationForAppointment": 30,
-  "appointmentStatusList": ["Scheduled", "CheckedIn", "Completed", "Cancelled", "Missed"],
+  "appointmentStatusList": ["Requested", "Scheduled", "CheckedIn", "Completed", "Cancelled", "Missed"],
   "regexForTime": "(?:(?:1[0-2]|0?[1-9]):[0-5]\\d\\s*[AaPp][Mm])?",
   "privilegeManageAppointments": "app:appointments:manageAppointmentsTab",
   "privilegeForAdmin": "app:appointments:adminTab",
@@ -123,6 +123,14 @@ window.Bahmni.Appointments.Constants = {
     "Friday": 5,
     "Saturday": 6,
     "Sunday": 7
+  },
+  "appointmentStatuses": {
+    "Requested": "Requested",
+    "Scheduled": "Scheduled",
+    "CheckedIn": "CheckedIn",
+    "Completed": "Completed",
+    "Missed": "Missed",
+    "Cancelled": "Cancelled"
   },
   "providerResponses": {
     "ACCEPTED": "ACCEPTED",
