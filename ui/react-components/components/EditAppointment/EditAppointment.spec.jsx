@@ -302,7 +302,7 @@ describe('Edit Appointment', () => {
 
         getByTextInDom('Occurrences');
 
-        //change service
+        //change occurrences
         fireEvent.click(getByTestIdInDom('left-arrow'));
         expect(containerInDom.querySelector('.updateOptions')).toBeNull();
 
@@ -310,8 +310,91 @@ describe('Edit Appointment', () => {
         fireEvent.click(getByTextInDom('Update'));
 
         expect(containerInDom.querySelector('.updateOptions')).not.toBeNull();
-        expect(recurringConflictsApiSpy).toHaveBeenCalledTimes(1);
+        expect(recurringConflictsApiSpy).toHaveBeenCalledTimes(0);
 
     });
 
+    it('should display error message when start date is cleared and click on update', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        let getAllByTitleInDom = undefined;
+        const config = {
+            "enableSpecialities": true
+        };
+        act(() => {
+            const {getByText, container, getByTestId, getAllByTitle} = renderWithReactIntl(<EditAppointment
+                appointmentUuid={'DAY'} isRecurring="false" appConfig={config}/>);
+            getByTextInDom = getByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+            getAllByTitleInDom = getAllByTitle;
+        });
+        await flushPromises();
+
+        //clear date
+        fireEvent.click(containerInDom.querySelector('.rc-calendar-clear-btn'));
+
+        fireEvent.click(getByTextInDom('Update'));
+        getByTextInDom('Please select date');
+
+        expect(conflictsForSpy).not.toHaveBeenCalled();
+    });
+
+    it('should display error message when start time or end time is cleared', async () => {
+        let getByTextInDom = undefined;
+        let getAllByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        let getAllByTitleInDom = undefined;
+        const config = {
+            "enableSpecialities": true
+        };
+        act(() => {
+            const {getByText, getAllByText, container, getByTestId, getAllByTitle} = renderWithReactIntl(<EditAppointment
+                appointmentUuid={'DAY'} isRecurring="true" appConfig={config}/>);
+            getByTextInDom = getByText;
+            getAllByTextInDom = getAllByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+            getAllByTitleInDom = getAllByTitle;
+        });
+        await flushPromises();
+
+        getByTextInDom('04:30 am');
+        getByTextInDom('05:00 am');
+        //clear time
+        containerInDom.querySelectorAll('.rc-time-picker-clear-icon').forEach(a => fireEvent.click(a))
+
+        expect(getAllByTextInDom('Please select time').length).toBe(2);
+        expect(conflictsForSpy).not.toHaveBeenCalled();
+    });
+
+    it('should display error message when occurrences is cleared', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        const config = {
+            "enableSpecialities": true
+        };
+        act(() => {
+            const {getByText, container, getByTestId} = renderWithReactIntl(<EditAppointment
+                appointmentUuid={'DAY'} isRecurring="true" appConfig={config}/>);
+            getByTextInDom = getByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+        });
+        await flushPromises();
+
+        getByTextInDom('Occurrences');
+
+        //clear occurrences
+        const zeroOccurrences = "0";
+        const inputBoxService = getByTestIdInDom("input-box");
+        fireEvent.change(inputBoxService, {target: {value: zeroOccurrences}});
+
+        getByTextInDom('Please select valid occurrences');
+        expect(conflictsForSpy).not.toHaveBeenCalled();
+
+    });
 });
