@@ -8,11 +8,15 @@
   .recurringDetailsEdit {
     > div {
       margin-bottom: 35px;
-      span {
-        font-size: 16px;
+      .recurringTerminationDetails {
+        span {
+          font-size: 16px;
+        }
+        div {
+          margin-bottom: 15px;
+        }
       }
       div {
-        margin-bottom: 15px;
         margin-left: 0;
       }
     }
