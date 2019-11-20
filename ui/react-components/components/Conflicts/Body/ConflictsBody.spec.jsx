@@ -42,7 +42,8 @@ describe('Conflicts Body', () => {
 
     it('should render patient double booking conflicts content', () => {
         const conflicts = {PATIENT_DOUBLE_BOOKING: [{service: {name: "Dressing"}, startDateTime: 1575561600000}]};
-        const {container, getByText} = renderWithReactIntl(<ConflictsBody conflicts={conflicts} service={service}/>);
+        const {container, getByText} = renderWithReactIntl(<ConflictsBody conflicts={conflicts} service={service}
+                                                                            isRecurring={true}/>);
 
         getByText('The recurring appointments you are trying to book overlaps with the following dates');
         getByText('5th December ‘19 | Thursday | 4:00 PM');
