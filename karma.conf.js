@@ -13,6 +13,7 @@ module.exports = (config) => {
             {pattern: 'node_modules/q/q.js', watched: false},
             {pattern: 'dist/appointment.js', watched: false},
             {pattern: 'node_modules/angular-mocks/angular-mocks.js', watched: false},
+            {pattern: 'src/appointmentRequestHelper.js', watched: false},
 
             {pattern: 'test/ng-test-constants.js', watched: false},
             {pattern: 'test/support/*.js', watched: false},

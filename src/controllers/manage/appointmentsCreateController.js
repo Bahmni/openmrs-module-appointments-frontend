@@ -14,6 +14,7 @@ angular.module('bahmni.appointments')
             $scope.timeRegex = Bahmni.Appointments.Constants.regexForTime;
             $scope.warning = {};
             $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
+            const isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
 
             var providerListForCurrentUser = function (providers) {
                 if (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges)) {
@@ -122,6 +123,12 @@ angular.module('bahmni.appointments')
                 }
 
                 $scope.validatedAppointment = Bahmni.Appointments.Appointment.create($scope.appointment);
+                if (isAppointmentRequestEnabled){
+                    Bahmni.Appointments.AppointmentRequestHelper.updateStatusAndProviderResponse(
+                        $scope.validatedAppointment, $scope.appointment, $scope.currentProvider
+                    );
+                }
+
                 var conflictingAppointments = getConflictingAppointments($scope.validatedAppointment);
                 if (conflictingAppointments.length === 0) {
                     return saveAppointment($scope.validatedAppointment);

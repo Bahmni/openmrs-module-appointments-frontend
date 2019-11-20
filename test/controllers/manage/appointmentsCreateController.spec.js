@@ -25,6 +25,9 @@ describe("AppointmentsCreateController", function () {
                 if (input === "patientSearchUrl") {
                     return "patientSearchUrl";
                 }
+                if (input === "enableAppointmentRequests"){
+                    return false;
+                }
                 else
                     return true;
             },
