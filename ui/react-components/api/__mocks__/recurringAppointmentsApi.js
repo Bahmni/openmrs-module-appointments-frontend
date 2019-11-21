@@ -25,8 +25,8 @@ const dailyRecurringAppointment = {
             "serviceType": {"duration": 30, "name": "1 session", "uuid": "50ac6a9c-158a-4743-a6b5-a4f9c9317007"},
             "provider": null,
             "location": {"name": "Operating Theatre", "uuid": "8debb630-20e0-11e7-a53f-000c29e530d2"},
-            "startDateTime": 1570768200000,
-            "endDateTime": 1570770000000,
+            "startDateTime": 253400569200000,
+            "endDateTime": 253400571000000,
             "appointmentKind": "Scheduled",
             "status": "Scheduled",
             "comments": "comments",
@@ -74,8 +74,8 @@ const weeklyRecurringAppointment = {
             "serviceType": {"duration": 30, "name": "1 session", "uuid": "50ac6a9c-158a-4743-a6b5-a4f9c9317007"},
             "provider": null,
             "location": {"name": "Operating Theatre", "uuid": "8debb630-20e0-11e7-a53f-000c29e530d2"},
-            "startDateTime": 1570768200000,
-            "endDateTime": 1570770000000,
+            "startDateTime": 253400569200000,
+            "endDateTime": 253400571000000,
             "appointmentKind": "Scheduled",
             "status": "Scheduled",
             "comments": "comments",
@@ -91,7 +91,7 @@ const weeklyRecurringAppointment = {
         "recurringPattern": {
             "type": "WEEK",
             "period": 2,
-            "endDate": 1570770000000,
+            "endDate": 253400571000000,
             "daysOfWeek": ["SUNDAY", "MONDAY", "TUESDAY"],
         }
     }
