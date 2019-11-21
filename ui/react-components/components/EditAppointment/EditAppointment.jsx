@@ -4,16 +4,17 @@ import {injectIntl} from "react-intl";
 import classNames from "classnames";
 import {
     appointmentEditor,
+    appointmentPlanContainer,
+    dateHeading,
     recurringContainer,
     recurringContainerLeft,
     recurringContainerRight,
     searchFieldsContainer,
-    searchFieldsContainerLeft,
-    dateHeading,
-    appointmentPlanContainer
+    searchFieldsContainerLeft
 } from "../AddAppointment/AddAppointment.module.scss";
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
-import AppointmentEditorCommonFieldsWrapper from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
+import AppointmentEditorCommonFieldsWrapper
+    from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import {getRecurringAppointment} from "../../api/recurringAppointmentsApi";
 import {getAppointment} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
@@ -44,17 +45,18 @@ import {capitalize} from "lodash/string";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
 import {
-    getAppointmentConflicts, getRecurringAppointmentsConflicts,
-    saveAppointment, updateRecurring
+    getAppointmentConflicts,
+    getRecurringAppointmentsConflicts,
+    saveAppointment,
+    updateRecurring
 } from "../../services/AppointmentsService/AppointmentsService";
 import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
 import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
 import UpdateConfirmationModal from "../UpdateConfirmationModal/UpdateConfirmationModal.jsx";
-import {getComponentsDisableStatus} from "./DisableComponentsHelper";
+import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
 import {isEqual} from "lodash";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
-
 
 
 const EditAppointment = props => {
@@ -367,7 +369,9 @@ const EditAppointment = props => {
                                              appointmentType: isWalkInAppointment()
                                                  ? undefined : WALK_IN_APPOINTMENT_TYPE
                                          }) : undefined
-                                     }/>
+                                     }
+                                    isRecurringDisabled={componentsDisableStatus.recurring}
+                                    isWalkInDisabled={componentsDisableStatus.walkIn}/>
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
