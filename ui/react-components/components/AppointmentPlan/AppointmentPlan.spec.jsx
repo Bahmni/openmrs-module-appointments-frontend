@@ -4,7 +4,7 @@ import AppointmentPlan from "./AppointmentPlan.jsx";
 import {fireEvent} from '@testing-library/react';
 
 
-describe('Recurring plan', () => {
+describe('Appointment plan', () => {
     it('should render the Recurring plan component', () => {
         const {container, getByText} = renderWithReactIntl(<AppointmentPlan onChange={jest.fn()}/>);
         expect(getByText('Plan')).not.toBeNull();
@@ -19,11 +19,6 @@ describe('Recurring plan', () => {
         const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
         expect(onChangeSpy).toHaveBeenCalled();
-    });
-
-    it('should disable the checkbox when isEdit is true', () => {
-        const {container} = renderWithReactIntl(<AppointmentPlan isEdit={true}/>);
-        expect(container.querySelector('.rc-checkbox-disabled')).not.toBeUndefined();
     });
 
     it('should display walk-in appointment', () => {
@@ -60,8 +55,10 @@ describe('Recurring plan', () => {
         expect(container.querySelectorAll('.rc-checkbox-input')[1].checked).toBeFalsy();
     });
 
-    it('should disable the walk in appointment when the appointment is recurring and isEdit is true', () => {
-        const {container} = renderWithReactIntl(<AppointmentPlan isEdit={true} appointmentType="Recurring"/>);
+    it('should disable the walk in appointment when isWalkInDisabled and isRecurringDisabled are true', () => {
+        const {container} = renderWithReactIntl(<AppointmentPlan isRecurringDisabled={true} isWalkInDisabled={true}/>);
+        expect(container.querySelectorAll('.rc-checkbox-disabled')[0]).not.toBeUndefined();
+        expect(container.querySelectorAll('.disabledLabelContainer')[0]).not.toBeUndefined();
         expect(container.querySelectorAll('.rc-checkbox-disabled')[1]).not.toBeUndefined();
         expect(container.querySelectorAll('.disabledLabelContainer')[1]).not.toBeUndefined();
     });

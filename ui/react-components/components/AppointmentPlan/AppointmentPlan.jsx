@@ -1,6 +1,6 @@
 import React from "react";
 import Label from "../Label/Label.jsx";
-import {checkbox, checkboxContainer, planLabel, container} from "./AppointmentPlan.module.scss";
+import {checkbox, checkboxContainer, container, planLabel} from "./AppointmentPlan.module.scss";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
@@ -10,7 +10,7 @@ import {RECURRING_APPOINTMENT_TYPE, WALK_IN_APPOINTMENT_TYPE} from "../../consta
 
 const AppointmentPlan = props => {
 
-    const {onChange, isEdit, appointmentType} = props;
+    const {onChange, appointmentType, isWalkInDisabled, isRecurringDisabled} = props;
 
     return (<div className={classNames(container)}>
         <span className={classNames(planLabel)}><Label className={classNames(planLabel)} translationKey="PLAN_LABEL"
@@ -22,11 +22,11 @@ const AppointmentPlan = props => {
                 className={classNames(checkbox)}
                 id="recurrence-selection-checkbox"
                 checked={appointmentType === RECURRING_APPOINTMENT_TYPE}
-                disabled={isEdit}
+                disabled={isRecurringDisabled}
                 name={RECURRING_APPOINTMENT_TYPE}
             />
             <Label forInput="recurrence-selection-checkbox" translationKey="RECURRING_APPOINTMENT_LABEL"
-                   defaultValue="Recurring Appointment" disabled={isEdit}/>
+                   defaultValue="Recurring Appointment" disabled={isRecurringDisabled}/>
         </div>
 
         <div className={classNames(checkboxContainer)} data-test-id="walk-in-appointment">
@@ -37,19 +37,20 @@ const AppointmentPlan = props => {
                 onChange={onChange}
                 checked={appointmentType === WALK_IN_APPOINTMENT_TYPE}
                 name={WALK_IN_APPOINTMENT_TYPE}
-                disabled={isEdit && appointmentType === RECURRING_APPOINTMENT_TYPE}
+                disabled={isWalkInDisabled}
             />
             <Label forInput="walk-in-selection-checkbox" translationKey="WALK_IN_APPOINTMENT_LABEL"
                    defaultValue="Walk-in Appointment"
-                   disabled={isEdit && appointmentType === RECURRING_APPOINTMENT_TYPE}/>
+                   disabled={isWalkInDisabled}/>
         </div>
     </div>)
 };
 
 AppointmentPlan.propTypes = {
     onChange: PropTypes.func,
-    isEdit: PropTypes.bool,
-    appointmentType: PropTypes.string
+    appointmentType: PropTypes.string,
+    isWalkInDisabled: PropTypes.bool,
+    isRecurringDisabled: PropTypes.bool
 };
 
 export default injectIntl(AppointmentPlan);
