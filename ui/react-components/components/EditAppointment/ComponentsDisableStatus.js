@@ -12,7 +12,9 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
         startDate: true,
         time: true,
         occurrences: true,
-        endDate: true
+        endDate: true,
+        walkIn: true,
+        recurring: true
     };
 
     const isPastAppointment = appointment.startDateTime && moment(appointment.startDateTime).startOf('day')
@@ -32,6 +34,7 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
         componentDisableStatus.time = false;
         componentDisableStatus.occurrences = false;
         componentDisableStatus.endDate = false;
+        componentDisableStatus.walkIn = appointment.recurring;
     }
     return componentDisableStatus;
 };
