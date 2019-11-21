@@ -1,10 +1,12 @@
 'use strict';
 
 describe("Patient Search", function () {
-    var patientService, compile, appointmentsService, spinner, scope, httpBackend, state;
+    var patientService, compile, appointmentsService, spinner, scope, httpBackend, state, $location;
 
     beforeEach(module('bahmni.appointments', function ($provide) {
-        patientService = jasmine.createSpyObj('patientService', ['search']);
+        $location = jasmine.createSpyObj('$location', ['search']);
+        $location.search.and.returnValue({});
+        patientService = jasmine.createSpyObj('patientService', ['search','getPatient']);
         patientService.search.and.returnValue(specUtil.simplePromise({data: {}}));
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         spinner.forPromise.and.callFake(function (param) {
@@ -21,6 +23,7 @@ describe("Patient Search", function () {
         $provide.value('spinner', spinner);
         $provide.value('$state', state);
         $provide.value('appointmentsService', appointmentsService);
+        $provide.value('$location', $location);
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
@@ -99,4 +102,19 @@ describe("Patient Search", function () {
             expect(response[0].label).toEqual("testOne (GAN2018)");
             expect(response[1].label).toEqual("testTwo (GAN2017)");
      });
+
+    it('should search for patient if query params has patient on init', function () {
+        $location.search.and.returnValue({patient: "patient-uuid"});
+        patientService.getPatient.and.returnValue(specUtil.simplePromise({data: {uuid: 'patient-uuid', display: 'name - id'}}));
+
+        let element = createElement();
+        let compiledScope = element.isolateScope();
+
+        expect(patientService.getPatient.calls.argsFor(0)[0]).toBe('patient-uuid');
+        expect(compiledScope.isSearchEnabled).toBe(true);
+        expect(compiledScope.isFilterOpen).toBe(false);
+        expect(compiledScope.patient).toBe('id (name)');
+        expect(state.params.patient.uuid).toBe('patient-uuid');
+        expect(state.params.patient.display).toBe('name - id');
+    });
 });
