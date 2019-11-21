@@ -367,7 +367,9 @@ const EditAppointment = props => {
                                      onChange={(e) => e.target.name === WALK_IN_APPOINTMENT_TYPE ?
                                          updateAppointmentDetails({
                                              appointmentType: isWalkInAppointment()
-                                                 ? undefined : WALK_IN_APPOINTMENT_TYPE
+                                                 ? undefined : WALK_IN_APPOINTMENT_TYPE,
+                                             appointmentKind: isWalkInAppointment()
+                                             ? SCHEDULED_APPOINTMENT_TYPE : WALK_IN_APPOINTMENT_TYPE
                                          }) : undefined
                                      }
                                     isRecurringDisabled={componentsDisableStatus.recurring}
