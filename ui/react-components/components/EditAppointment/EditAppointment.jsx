@@ -21,7 +21,12 @@ import {getPatientForDropdown} from "../../mapper/patientMapper";
 import moment from "moment";
 import 'moment-timezone';
 import {getDuration, getYesterday} from "../../helper";
-import {MINUTES, RECURRING_APPOINTMENT_TYPE, WALK_IN_APPOINTMENT_TYPE} from "../../constants";
+import {
+    MINUTES,
+    RECURRING_APPOINTMENT_TYPE,
+    SCHEDULED_APPOINTMENT_TYPE,
+    WALK_IN_APPOINTMENT_TYPE
+} from "../../constants";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import Label from "../Label/Label.jsx";
 import {
@@ -51,7 +56,7 @@ import {
     updateRecurring
 } from "../../services/AppointmentsService/AppointmentsService";
 import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
-import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
+import UpdateSuccessModal from "../SuccessModal/UpdateSuccessModal.jsx";
 import UpdateConfirmationModal from "../UpdateConfirmationModal/UpdateConfirmationModal.jsx";
 import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
 import {isEqual} from "lodash";
@@ -143,17 +148,14 @@ const EditAppointment = props => {
         }
     };
 
-    const savePopup = <CustomPopup style={customPopup}
-                                   popupContent={
-                                       <SuccessConfirmation isEdit={true} patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}/>}/>;
+    const updateSuccessPopup = <CustomPopup style={customPopup} popupContent={<UpdateSuccessModal
+        updateSeries={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE && applyForAll}/>}/>;
 
     const updateConfirmPopup = <CustomPopup style={customPopup} onClose={() => setShowUpdateConfirmPopup(false)}
                                             popupContent={
                                                 <UpdateConfirmationModal
-                                                    isRecurring={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE}
-                                                    save={() => {
-                                                        saveAppointments();
-                                                    }}/>}/>;
+                                                    updateSeries={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE && applyForAll}
+                                                    save={saveAppointments}/>}/>;
 
     const getAppointmentRequest = () => {
         let appointment = {
@@ -230,12 +232,12 @@ const EditAppointment = props => {
         if (isValidRecurringAppointment()) {
             const recurringRequest = getRecurringAppointmentRequest(applyForAllInd);
             const response = await getRecurringAppointmentsConflicts(recurringRequest);
-                if (response.status === 204) {
-                    setShowUpdateConfirmPopup(true);
-                }
-                response.status === 200 && setConflicts(response.data);
+            if (response.status === 204) {
+                setShowUpdateConfirmPopup(true);
             }
-        };
+            response.status === 200 && setConflicts(response.data);
+        }
+    };
 
 
     const isValidAppointment = () => {
@@ -253,7 +255,7 @@ const EditAppointment = props => {
         appointmentDateError: !appointmentDetails.appointmentDate
     });
 
-    const   isValidRecurringAppointment = () => {
+    const isValidRecurringAppointment = () => {
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
 
         updateCommonErrorIndicators(startTimeBeforeEndTime);
@@ -391,13 +393,17 @@ const EditAppointment = props => {
                         <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                     </div>
                     <div>
-                        <div className={classNames(dateHeading)} ><Label translationKey="CURRENT_TIME_SLOT_LABEL" defaultValue="Current time slot"/></div>
+                        <div className={classNames(dateHeading)}>
+                            <Label translationKey="CURRENT_TIME_SLOT_LABEL" defaultValue="Current time slot"/>
+                        </div>
                         <div className={classNames(currentTimeSlot)}>
                             <span>{currentStartTime}</span>
                             <span> to </span>
                             <span>{currentEndTime}</span>
                         </div>
-                        <div className={classNames(dateHeading)} ><Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/></div>
+                        <div className={classNames(dateHeading)}>
+                            <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
+                        </div>
                         <div data-testid="start-time-selector">
                             <TimeSelector {...appointmentStartTimeProps}
                                           onChange={time => {
@@ -426,7 +432,9 @@ const EditAppointment = props => {
                     {isRecurringAppointment() ?
                         <div className={classNames(recurringDetailsEdit)}>
                             <div>
-                                <div className={classNames(dateHeading)}><Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats every"/></div>
+                                <div className={classNames(dateHeading)}>
+                                    <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats every"/>
+                                </div>
                                 <div class={classNames(recurringTerminationDetails)}>
                                     <span>{moment.localeData().ordinal(appointmentDetails.period)} &nbsp; {appointmentDetails.recurrenceType === 'WEEK'
                                         ? <Label translationKey="WEEK_LABEL" defaultValue="Week"/>
@@ -508,7 +516,7 @@ const EditAppointment = props => {
                          popupContent={<Conflicts saveAnyway={saveAppointments}
                                                   modifyInformation={() => setConflicts(undefined)}
                                                   conflicts={conflicts} service={appointmentDetails.service}/>}/>}
-            {showUpdateSuccessPopup ? React.cloneElement(savePopup, {
+            {showUpdateSuccessPopup ? React.cloneElement(updateSuccessPopup, {
                 open: true,
                 closeOnDocumentClick: false,
                 closeOnEscape: false
