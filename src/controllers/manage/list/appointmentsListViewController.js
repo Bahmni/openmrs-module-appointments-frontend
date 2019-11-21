@@ -194,10 +194,14 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            function isNullOrEmpty(obj) {
+                return obj === null || obj === undefined || Object.keys(obj).length === 0;
+            }
+
             $scope.$watch(function () {
                 return $stateParams.filterParams;
             }, function (newValue, oldValue) {
-                if (newValue !== oldValue) {
+                if (newValue !== oldValue && !isNullOrEmpty(oldValue)) {
                     $scope.filteredAppointments = appointmentsFilter($scope.appointments || $state.params.appointmentsData, $stateParams.filterParams);
                 }
             }, true);
