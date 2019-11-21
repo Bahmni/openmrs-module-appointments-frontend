@@ -93,7 +93,6 @@ const EditAppointment = props => {
         appointmentKind: undefined,
         appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE : undefined,
         status: undefined,
-        recurringStartDate: undefined,
         recurringEndDate: undefined,
         notes: undefined,
         recurrenceType: undefined,
@@ -273,7 +272,7 @@ const EditAppointment = props => {
             })
         }
         return appointmentDetails.service && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime
-            && appointmentDetails.recurringStartDate && isValidEndDate();
+            && appointmentDetails.appointmentDate && isValidEndDate();
     };
 
     const isValidEndDate = () => appointmentDetails.recurringEndDate || (appointmentDetails.occurrences && appointmentDetails.occurrences > 0);
@@ -311,7 +310,6 @@ const EditAppointment = props => {
                 setOriginalOccurrences(recurringPattern.frequency);
                 updateAppointmentDetails({
                     recurrenceType: recurringPattern.type,
-                    recurringStartDate: moment(new Date(appointmentResponse.startDateTime)),
                     recurringEndDate: recurringPattern.endDate && moment(new Date(recurringPattern.endDate)),
                     occurrences: recurringPattern.frequency,
                     period: recurringPattern.period,
@@ -480,7 +478,8 @@ const EditAppointment = props => {
                                                         updateErrorIndicators({endDateError: !date});
                                                 }}
                                                 date={appointmentDetails.recurringEndDate}
-                                                isDisabled={componentsDisableStatus.endDate}/>
+                                                isDisabled={componentsDisableStatus.endDate}
+                                                startDate={appointmentDetails.appointmentDate}/>
                                         </span>
                                     </div>
                                     <ErrorMessage message={errors.endDateError ? errorTranslations.dateErrorMessage : undefined}/>
