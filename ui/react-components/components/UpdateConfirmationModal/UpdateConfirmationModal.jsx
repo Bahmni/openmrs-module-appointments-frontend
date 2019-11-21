@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 
 const UpdateConfirmationModal = (props) => {
 
-    const {intl, close, save, isRecurring} = props;
+    const {intl, close, save, updateSeries} = props;
 
     return (
         <div className={classNames(updateConfirmationModal)}>
@@ -27,8 +27,12 @@ const UpdateConfirmationModal = (props) => {
                     <FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_TITLE'} defaultMessage={'Kindly Confirm'}/>
                 </h1>
                 <div className={classNames(updateConfirmationModalBody)}>
-                    <FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_TEXT_RECURRING_APPT'}
-                                      defaultMessage={'This will update the new details on the entire scheduled series. This can not be reversed'}/>
+                    {updateSeries ?
+                        <FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_TEXT_RECURRING_APPOINTMENT'}
+                                          defaultMessage={'This will update the details of the entire appointment series. This cannot be reversed!'}/> :
+                        <FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_TEXT_SINGLE_APPOINTMENT'}
+                                          defaultMessage={'This will update the details of the selected appointment. This cannot be reversed!'}/>
+                    }
                 </div>
                 <div>
                     <button className={classNames(button, no)} data-testid="cancel-update-button" onClick={() => {close();}}>
@@ -46,7 +50,7 @@ const UpdateConfirmationModal = (props) => {
 UpdateConfirmationModal.propTypes = {
     close: PropTypes.func,
     save: PropTypes.func,
-    isRecurring: PropTypes.bool
+    updateSeries: PropTypes.bool
 };
 
 

@@ -37,16 +37,19 @@ const SuccessModal = (props) => {
                 <h1 className={classNames(saveModalTitle)}>
                     <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_TITLE'} defaultMessage={isEdit ? 'Update Successful!' : 'Save successful'}/>
                 </h1>
+
                 <div className={classNames(saveModalBody)}>
                     <span>{`${saveConfirmationTextPartOne} "${patientDetails}" ${saveConfirmationTextPartTwo}`}</span>
                     <br/><br/>
                     <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_TEXT_PART_3'}
                                       defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
                 </div>
+
                 <div className={classNames(saveConfirmationFooter)}>
                     <button className={classNames(button)} data-testid="save-close-button" onClick={() => onBack()}>
                         <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_CLOSE'} defaultMessage={'Close'}/>
                     </button>
+
                     <span className={classNames(newAppointmentLink)}>
                         <a  data-testid="save-new-appointment-link" onClick={() => window.location.reload()}>
                          <FormattedMessage id={'ADD_NEW_APPOINTMENT'} defaultMessage={'Add New Appointment'}/>
