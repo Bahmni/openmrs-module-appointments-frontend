@@ -1254,4 +1254,30 @@ describe("AppointmentsCreateController", function () {
             expect($scope.isFieldEditNotAllowed()).toBeTruthy();
         });
     });
+
+    describe('save', function () {
+        it('should update the appointment status and provider responses if the AppointmentRequest is Enabled', function () {
+            appDescriptor.getConfigValue = function (input) {
+                return input === "enableAppointmentRequests" ? true : undefined;
+            };
+            $scope.createAppointmentForm = {$invalid: false};
+            createController();
+            $scope.patientAppointments = [];
+            $state.params = {};
+            $scope.currentProvider = {uuid:'xyz0'};
+            $scope.appointment = {
+                service: {name: 'Cardiology', initialAppointmentStatus:'Requested'},
+                patient: {uuid: 'patientUuid'},
+                date: new Date('1970-01-01T11:30:00.000Z'),
+                startTime: '10:15:00',
+                endTime: '12:20:00',
+                status: 'Scheduled',
+                providers: [{uuid:'xyz1', response:'ACCEPTED'}, {uuid:'xyz2', response:'ACCEPTED'}]
+            };
+            $scope.save();
+            expect($scope.validatedAppointment.status).toBe('Requested');
+            expect($scope.validatedAppointment.providers[0].response).toBe('AWAITING');
+            expect($scope.validatedAppointment.providers[1].response).toBe('AWAITING');
+        })
+    });
 });

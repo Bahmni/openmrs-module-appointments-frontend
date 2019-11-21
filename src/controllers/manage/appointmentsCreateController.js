@@ -108,6 +108,20 @@ angular.module('bahmni.appointments')
                 }
             };
 
+            function updateAppointmentStatusAndProviderResponse() {
+                const allAppointmentDetails = _.cloneDeep($scope.appointment);
+                const updateStatusAndProviderResponse = Bahmni.Appointments.AppointmentRequestHelper
+                    .getUpdatedStatusAndProviderResponse(allAppointmentDetails, $scope.currentProvider.uuid);
+
+                $scope.validatedAppointment.status = updateStatusAndProviderResponse.status;
+                _.each($scope.validatedAppointment.providers, function (validatedAppointmentProvider) {
+                    const updatedProvider = _.find(updateStatusAndProviderResponse.providers, function (providerWithUpdatedResponse) {
+                        return providerWithUpdatedResponse.uuid === validatedAppointmentProvider.uuid;
+                    });
+                    validatedAppointmentProvider.response = updatedProvider.response;
+                });
+            }
+
             $scope.save = function () {
                 var message;
                 if ($scope.createAppointmentForm.$invalid) {
@@ -124,9 +138,7 @@ angular.module('bahmni.appointments')
 
                 $scope.validatedAppointment = Bahmni.Appointments.Appointment.create($scope.appointment);
                 if (isAppointmentRequestEnabled){
-                    Bahmni.Appointments.AppointmentRequestHelper.updateStatusAndProviderResponse(
-                        $scope.validatedAppointment, $scope.appointment, $scope.currentProvider
-                    );
+                    updateAppointmentStatusAndProviderResponse();
                 }
 
                 var conflictingAppointments = getConflictingAppointments($scope.validatedAppointment);
