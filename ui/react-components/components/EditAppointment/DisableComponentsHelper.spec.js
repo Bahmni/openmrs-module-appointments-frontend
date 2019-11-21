@@ -81,4 +81,21 @@ describe('Disable components helper', () => {
         expect(componentStatus.occurrences).toBeFalsy();
         expect(componentStatus.endDate).toBeFalsy();
     });
+
+    it('should disable location, providers, service, speciality, service type start date, time, occurrences ' +
+        'and end date when appointment status is checked in', () => {
+        const componentStatus = getComponentsDisableStatus(
+            {status: CHECKED_IN_APPOINTMENT_STATUS,
+            //year 2007
+            startDateTime: new Date(1174166254)}
+            );
+
+        expect(componentStatus.serviceType).toBeTruthy();
+        expect(componentStatus.providers).toBeTruthy();
+        expect(componentStatus.location).toBeTruthy();
+        expect(componentStatus.startDate).toBeTruthy();
+        expect(componentStatus.time).toBeTruthy();
+        expect(componentStatus.occurrences).toBeTruthy();
+        expect(componentStatus.endDate).toBeTruthy();
+    });
 });

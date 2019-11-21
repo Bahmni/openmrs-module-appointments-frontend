@@ -1,29 +1,37 @@
 import {isAppointmentScheduledOrCheckedIn} from "../../utils/AppointmentUtil";
+import moment from "moment";
 
 export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEditable) => {
     const componentDisableStatus = {
-        patient: false,
-        speciality: false,
-        service: false,
-        serviceType: false,
-        providers: false,
-        location: false,
-        startDate: false,
-        time: false,
-        occurrences: false,
-        endDate: false
+        patient: true,
+        speciality: true,
+        service: true,
+        serviceType: true,
+        providers: true,
+        location: true,
+        startDate: true,
+        time: true,
+        occurrences: true,
+        endDate: true
     };
 
+    const isPastAppointment = appointment.startDateTime && moment(appointment.startDateTime).startOf('day')
+        .isBefore(moment().startOf('day'));
+
+    if (isPastAppointment)
+        return componentDisableStatus;
+
     const scheduledOrCheckedInAppointment = isAppointmentScheduledOrCheckedIn(appointment);
-    componentDisableStatus.patient = true;
-    componentDisableStatus.service = !(scheduledOrCheckedInAppointment && isServiceOnAppointmentEditable);
-    componentDisableStatus.speciality = componentDisableStatus.service;
-    componentDisableStatus.serviceType = !scheduledOrCheckedInAppointment;
-    componentDisableStatus.providers = !scheduledOrCheckedInAppointment;
-    componentDisableStatus.location = !scheduledOrCheckedInAppointment;
-    componentDisableStatus.startDate = !scheduledOrCheckedInAppointment;
-    componentDisableStatus.time = !scheduledOrCheckedInAppointment;
-    componentDisableStatus.occurrences = !scheduledOrCheckedInAppointment;
-    componentDisableStatus.endDate = !scheduledOrCheckedInAppointment;
+    if (scheduledOrCheckedInAppointment) {
+        componentDisableStatus.service = !(scheduledOrCheckedInAppointment && isServiceOnAppointmentEditable);
+        componentDisableStatus.speciality = componentDisableStatus.service;
+        componentDisableStatus.serviceType = false;
+        componentDisableStatus.providers = false;
+        componentDisableStatus.location = false;
+        componentDisableStatus.startDate = false;
+        componentDisableStatus.time = false;
+        componentDisableStatus.occurrences = false;
+        componentDisableStatus.endDate = false;
+    }
     return componentDisableStatus;
 };
