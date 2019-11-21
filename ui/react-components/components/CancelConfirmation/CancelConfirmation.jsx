@@ -29,7 +29,7 @@ const CancelConfirmation = (props) => {
                 <div className={classNames(cancelModalBody)}>
                     {isEdit ? (
                         <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT_EDIT'}
-                                          defaultMessage={'Are you sure you want to cancel updating the new appointment?This will erase everything you have filled. Nothing will be updated.'}/>
+                                          defaultMessage={'Are you sure you want to cancel editing the appointment? This will not save any of the changes made.'}/>
 
                     ) : (
                         <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT'}
