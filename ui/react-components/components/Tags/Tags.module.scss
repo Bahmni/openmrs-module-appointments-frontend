@@ -46,5 +46,14 @@
       background-color: #0000004d;
     }
   }
+
+  .disable {
+    cursor: not-allowed;
+    opacity: 0.8;
+    i {
+      pointer-events: none;
+    }
+  }
+
 }
 
