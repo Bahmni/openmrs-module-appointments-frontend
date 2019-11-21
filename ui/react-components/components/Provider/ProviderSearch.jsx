@@ -55,7 +55,7 @@ const ProviderSearch = props => {
                 onChange={onProviderSelect}
                 selectedValue={selectedProvider}
             />
-            <Tags selectedTags={selectedProviders} onChange={onProviderRemove}/>
+            <Tags selectedTags={selectedProviders} onChange={onProviderRemove} isDisabled={isDisabled}/>
         </div>
     );
 };
