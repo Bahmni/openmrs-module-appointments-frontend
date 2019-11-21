@@ -14,12 +14,19 @@ import classNames from "classnames";
 
 const CalendarPicker = (props) => {
 
-    const {date, onChange, isDisabled} = props;
+    const {date, onChange, isDisabled, startDate} = props;
 
     let styles = [appointmentDatePicker];
     date ? styles.push(appointmentDatePickerSelected)
         : styles.push(appointmentDatePickerNotSelected);
-    const calendar = (<Calendar showToday={false} className={classNames(styles)}/>);
+
+    const disablePastDates = (current) => {
+        if (startDate)
+            return current.isBefore(startDate);
+        return current;
+    };
+
+    const calendar = (<Calendar showToday={false} disabledDate={disablePastDates} className={classNames(styles)} />);
 
     return (
         <div className={classNames(isDisabled ? disable : '')}>
@@ -36,7 +43,8 @@ const CalendarPicker = (props) => {
 
 CalendarPicker.propTypes = {
     date: PropTypes.object,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    startDate: PropTypes.object
 };
 
 export default CalendarPicker;
