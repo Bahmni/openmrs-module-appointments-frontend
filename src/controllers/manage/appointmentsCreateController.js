@@ -577,7 +577,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.isEditAllowed = function () {
-                return $scope.isPastAppointment ? false : ($scope.appointment.status === 'Scheduled' || $scope.appointment.status === 'CheckedIn');
+                return $scope.isPastAppointment ? false : (_.includes(['Requested' ,'Scheduled', 'CheckedIn'], $scope.appointment.status));
             };
 
             $scope.navigateToPreviousState = function () {

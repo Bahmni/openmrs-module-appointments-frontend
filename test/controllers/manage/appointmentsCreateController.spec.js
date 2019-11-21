@@ -982,6 +982,12 @@ describe("AppointmentsCreateController", function () {
             expect($scope.isEditAllowed()).toBeTruthy();
         });
 
+        it('should allow edit for requested appointment if is of future date', function () {
+            appointmentContext.appointment = {startDateTime: moment().add(1, 'day').toDate(), status: 'Requested', uuid: 'appointmentUuid'};
+            createController();
+            expect($scope.isEditAllowed()).toBeTruthy();
+        });
+
         it('should allow edit for checked-in appointment if is of future date', function () {
             appointmentContext.appointment = {startDateTime: moment().add(1, 'day').toDate(), status: 'CheckedIn', uuid: 'appointmentUuid'};
             createController();
