@@ -35,5 +35,13 @@ describe('Tags', () => {
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
 
+    it('should have disable class for all tags', () => {
+        const tags = [{label: 'One', value: '1'}, {label: 'Two', value: '2'}, {label: 'Three', value: '3'}];
+        const onChangeSpy = jest.fn();
+        const {container} = render(<Tags selectedTags={tags} onChange={onChangeSpy} isDisabled={true}/>);
+
+        expect(container.querySelectorAll('.disable').length).toBe(3);
+    });
+
 });
 
