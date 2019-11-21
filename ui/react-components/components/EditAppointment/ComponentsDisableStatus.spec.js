@@ -1,4 +1,4 @@
-import {getComponentsDisableStatus} from "./DisableComponentsHelper";
+import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
 import {CHECKED_IN_APPOINTMENT_STATUS, SCHEDULED_APPOINTMENT_STATUS} from "../../constants";
 
 describe('Disable components helper', () => {
@@ -97,5 +97,64 @@ describe('Disable components helper', () => {
         expect(componentStatus.time).toBeTruthy();
         expect(componentStatus.occurrences).toBeTruthy();
         expect(componentStatus.endDate).toBeTruthy();
+    });
+
+    it('should disable walkIn and recurring for past appointment', () => {
+        const componentStatus = getComponentsDisableStatus(
+            {   //year 2007
+                startDateTime: new Date(1174166254)
+            }
+        );
+
+        expect(componentStatus.walkIn).toBeTruthy();
+        expect(componentStatus.recurring).toBeTruthy();
+    });
+
+    it('should enable walkIn and disable recurring for normal appointment', () => {
+        const componentStatus = getComponentsDisableStatus(
+            {
+                status: SCHEDULED_APPOINTMENT_STATUS,
+                recurring: false
+            }
+        );
+
+        expect(componentStatus.walkIn).toBeFalsy();
+        expect(componentStatus.recurring).toBeTruthy();
+    });
+
+    it('should enable walkIn and disable recurring for walkIn appointment', () => {
+        const componentStatus = getComponentsDisableStatus(
+            {
+                status: SCHEDULED_APPOINTMENT_STATUS,
+                recurring: false,
+            }
+        );
+
+        expect(componentStatus.walkIn).toBeFalsy();
+        expect(componentStatus.recurring).toBeTruthy();
+    });
+
+    it('should disable walkIn and recurring recurring for scheduled recurring appointment', () => {
+        const componentStatus = getComponentsDisableStatus(
+            {
+                status: SCHEDULED_APPOINTMENT_STATUS,
+                recurring: true,
+            }
+        );
+
+        expect(componentStatus.walkIn).toBeTruthy();
+        expect(componentStatus.recurring).toBeTruthy();
+    });
+
+    it('should disable walkIn and recurring recurring for missed appointment', () => {
+        const componentStatus = getComponentsDisableStatus(
+            {
+                status: "Missed",
+                recurring: true,
+            }
+        );
+
+        expect(componentStatus.walkIn).toBeTruthy();
+        expect(componentStatus.recurring).toBeTruthy();
     });
 });
