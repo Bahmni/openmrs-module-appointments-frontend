@@ -20,6 +20,8 @@ const ServiceTypeSearch = props => {
         if (serviceUuid) {
             setServiceTypes(getServiceType(serviceUuid));
             setIsServiceNotSelected(false);
+        } else {
+            setIsServiceNotSelected(true);
         }
     }, [serviceUuid]);
 
