@@ -35,7 +35,8 @@ import {
     editAppointment,
     recurringDetailsEdit,
     recurringEndDateContainer,
-    recurringTerminationDetails
+    recurringTerminationDetails,
+    weekDaySelector
 } from './EditAppointment.module.scss'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import InputNumber from "../InputNumber/InputNumber.jsx";
@@ -62,11 +63,14 @@ import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
 import {isEqual} from "lodash";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
+import {AppContext} from "../AppContext/AppContext";
 
 
 const EditAppointment = props => {
 
     const {appConfig, appointmentUuid, isRecurring, intl} = props;
+
+    const {setViewDate} = React.useContext(AppContext);
 
     const [errors, setErrors] = useState({
         serviceError: false,
@@ -166,7 +170,7 @@ const EditAppointment = props => {
             startDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
             endDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
             providers: appointmentDetails.providers,
-            locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
+            locationUuid: appointmentDetails.location && appointmentDetails.location.value && appointmentDetails.location.value.uuid,
             appointmentKind: appointmentDetails.appointmentKind,
             comments: appointmentDetails.notes
         };
@@ -207,7 +211,10 @@ const EditAppointment = props => {
         }
     };
 
-    const showSuccessPopUp = () => setShowUpdateSuccessPopup(true);
+    const showSuccessPopUp = startDate => {
+        setViewDate(startDate.startOf('day').toDate());
+        setShowUpdateSuccessPopup(true);
+    }
 
     const save = async appointmentRequest => {
         const response = await saveAppointment(appointmentRequest);
@@ -223,7 +230,8 @@ const EditAppointment = props => {
         if (response.status === 200) {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
-            setShowUpdateSuccessPopup(true);
+            showSuccessPopUp(appointmentDetails.appointmentDate);
+
         }
     };
 
@@ -440,7 +448,7 @@ const EditAppointment = props => {
                                         ? <Label translationKey="WEEK_LABEL" defaultValue="Week"/>
                                         : <Label translationKey="DAY_LABEL" defaultValue="Day"/>}</span>
                                 </div>
-                                <div>
+                                <div className={classNames(weekDaySelector)}>
                                     {appointmentDetails.recurrenceType === 'WEEK'
                                         ? <ButtonGroup buttonsList={appointmentDetails.weekDays}/>
                                         : undefined}
