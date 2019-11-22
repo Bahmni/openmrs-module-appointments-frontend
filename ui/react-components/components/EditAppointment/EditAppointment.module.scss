@@ -12,12 +12,15 @@
         span {
           font-size: 16px;
         }
-        div {
+        > div {
           margin-bottom: 15px;
         }
       }
       div {
         margin-left: 0;
+      }
+      .weekDaySelector {
+        margin-top: 10px;
       }
     }
 
