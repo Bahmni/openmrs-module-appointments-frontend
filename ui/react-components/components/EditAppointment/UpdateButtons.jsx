@@ -1,12 +1,16 @@
 import classNames from "classnames";
 import {updateOptions, updateOneButton, updateAllButton, save} from "../EditAppointment/UpdateButtons.module.scss";
 import {FormattedMessage} from "react-intl";
-import React from "react";
+import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 
 const UpdateButtons = (props) => {
 
-    const {checkAndSave} = props;
+    const {updateOptionsVisibleStatus, checkAndSave} = props;
+
+    useEffect(() => {
+        return () => updateOptionsVisibleStatus(false);
+    });
 
     return (
         <div className={classNames(updateOptions)}>
