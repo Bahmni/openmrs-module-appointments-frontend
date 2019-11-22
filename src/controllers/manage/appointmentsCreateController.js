@@ -110,7 +110,7 @@ angular.module('bahmni.appointments')
 
             function updateAppointmentStatusAndProviderResponse() {
                 const allAppointmentDetails = _.cloneDeep($scope.appointment);
-                const updateStatusAndProviderResponse = Bahmni.Appointments.AppointmentRequestHelper
+                const updateStatusAndProviderResponse = Bahmni.Appointments.AppointmentStatusHandler
                     .getUpdatedStatusAndProviderResponse(allAppointmentDetails, $scope.currentProvider.uuid);
 
                 $scope.validatedAppointment.status = updateStatusAndProviderResponse.status;
