@@ -7,24 +7,32 @@ import {forEach} from 'lodash';
 
 const ServiceSearch = (props) => {
 
-    const {intl, onChange, specialityUuid, value, isDisabled} = props;
+    const {intl, onChange, specialityUuid, value, isDisabled, specialityEnabled} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SERVICE', defaultMessage: 'Service'
     });
     const [services, setServices] = useState([]);
+    const [dropdownOptions, setDropdownOptions] = useState([]);
 
     useEffect(() => { setServices(loadServices()) },[]);
 
+    useEffect(() => {
+            setDropdownOptions(createDropdownOptions(services))
+            }, [specialityUuid]);
+
+
     const loadServices = async () => {
         const services = await getAllServices();
-        setServices(createDropdownOptions(services));
+        // setServices(createDropdownOptions(services));
 
+        setServices(services);
+        setDropdownOptions(createDropdownOptions(services))
     };
 
     const createDropdownOptions = (results) => {
         const options = [];
         forEach(results, function (service) {
-            if (!specialityUuid || specialityUuid === service.speciality.uuid)
+            if ((!specialityEnabled || !specialityUuid || (service.speciality && specialityUuid === service.speciality.uuid)))
                 options.push({
                     value: service,
                     label: service.name
@@ -35,7 +43,7 @@ const ServiceSearch = (props) => {
 
     return (
         <Dropdown data-testid="service-search"
-                  options={Object.values(services)}
+                  options={Object.values(dropdownOptions)}
                   placeholder={placeHolder}
                   onChange={onChange}
                   selectedValue={value}
@@ -49,7 +57,8 @@ ServiceSearch.propTypes = {
     onChange: PropTypes.func.isRequired,
     specialityUuid: PropTypes.string,
     value: PropTypes.object,
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    specialityEnabled: PropTypes.func
 };
 
 export default injectIntl(ServiceSearch);
