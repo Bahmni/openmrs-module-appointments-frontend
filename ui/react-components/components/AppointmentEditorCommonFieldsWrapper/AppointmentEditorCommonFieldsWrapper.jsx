@@ -42,13 +42,14 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     </div>
                     <div data-testid="service-search">
                         <ServiceSearch value={appointmentDetails.service} onChange={(optionSelected) => {
-                            updateAppointmentDetails({service: optionSelected});
+                            updateAppointmentDetails({service: optionSelected, serviceType: null});
                             updateErrorIndicators({serviceError: !optionSelected});
                             endTimeBasedOnService(appointmentDetails.startTime, optionSelected.value, undefined);
-                        }} specAsynialityUuid={appointmentDetails.speciality && appointmentDetails.speciality.value
+                        }} specialityUuid={appointmentDetails.speciality && appointmentDetails.speciality.value
                         && appointmentDetails.speciality.value.uuid}
                                        isDisabled={componentsDisableStatus.service}
-                        />
+                                       specialityEnabled = {isSpecialitiesEnabled(appConfig)}
+                    />
                         <ErrorMessage
                             message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
                     </div>
@@ -63,7 +64,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     {isSpecialitiesEnabled(appConfig) ?
                         <div data-testid="speciality-search">
                             <SpecialitySearch value={appointmentDetails.speciality}
-                                              onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected})}
+                                              onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected, service: null, serviceType: null})}
                                               isDisabled={componentsDisableStatus.speciality}/>
                         </div> : null
                     }

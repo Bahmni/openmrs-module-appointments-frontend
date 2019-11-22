@@ -13,14 +13,6 @@ const Dropdown = props => {
     const {options, placeholder, onChange, isDisabled, intl, selectedValue} = props;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'No Options'});
 
-    const [value, setValue] = useState(selectedValue);
-    useEffect(() => {
-        if (selectedValue) {
-            setValue(selectedValue);
-            onChange(selectedValue);
-        }
-    },[selectedValue]);
-
     const isComponentDisabled = () => isUndefined(isDisabled) ? false :  isDisabled;
 
     return (
@@ -34,7 +26,7 @@ const Dropdown = props => {
                 placeholder={placeholder}
                 onChange={onChange}
                 isDisabled={isDisabled}
-                value={value}
+                value={selectedValue}
             />
         </div>
     );
