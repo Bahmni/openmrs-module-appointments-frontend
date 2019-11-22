@@ -52,7 +52,7 @@ const AppointmentEditorFooter = props => {
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
                     </span>
                     </button>}
-                {isOptionsRequired && showUpdateButtons ? <UpdateButtons checkAndSave={applyForAll =>  checkAndSave(applyForAll)} /> : undefined}
+                {isOptionsRequired && showUpdateButtons ? <UpdateButtons updateOptionsVisibleStatus={setShowUpdateButtons} checkAndSave={applyForAll =>  checkAndSave(applyForAll)} /> : undefined}
 
             </div>
         </div>
