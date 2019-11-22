@@ -54,7 +54,10 @@
 }
 
 .appointmentDatePickerSelected {
-  td[class*='rc-calendar-selected'] {
+  td[class*='rc-calendar-selected-day'] {
+    border: none;
+  }
+  td[class*='rc-calendar-selected-date'] {
     > div {
       &:hover {
         background: $primary-color-1;
@@ -85,15 +88,8 @@
       border: 1px solid $primary-color-1;
     }
   }
-  td[class*='rc-calendar-selected'] {
-    > div {
-      &:hover {
-        background: #ebfaff;
-      }
-      background: transparent;
-      background: var(--color-primary-1);
-      color: var(--color-secondary-1);
-    }
+  td[class*='rc-calendar-selected-day'] {
+    border: none;
   }
   td[class*='rc-calendar-disabled'] {
     > div {
