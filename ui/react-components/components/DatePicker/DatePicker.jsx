@@ -37,8 +37,8 @@ const AppointmentDatePicker = (props) => {
                 disabledDate={disablePastDates}
                 className={classNames(styles)}
                 dateInputPlaceholder="mm/dd/yyyy"
-                onChange={onChange}
-                value={value}
+                onSelect={onChange}
+                selectedValue={value}
             />
         </div>
     );
