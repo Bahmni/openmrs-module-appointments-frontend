@@ -1285,5 +1285,55 @@ describe("AppointmentsCreateController", function () {
             expect($scope.validatedAppointment.providers[0].response).toBe('AWAITING');
             expect($scope.validatedAppointment.providers[1].response).toBe('AWAITING');
         })
+
+        it('should not update the appointment status and provider responses for edits if time is not changed', function () {
+            appDescriptor.getConfigValue = function (input) {
+                return input === "enableAppointmentRequests" ? true : undefined;
+            };
+            appointmentContext.appointment = { uuid: 'appointmentUuid', startDateTime: 1574566860000, endDateTime:1574568660000};
+            $scope.createAppointmentForm = {$invalid: false};
+            createController();
+            $state.params = {};
+            $scope.currentProvider = {uuid:'xyz0'};
+            $scope.appointment = {
+                uuid: 'appointmentUuid',
+                service: {name: 'Cardiology', initialAppointmentStatus:'Requested'},
+                patient: {uuid: 'patientUuid'},
+                date: new Date('2019-11-24T03:41:00.000Z'),
+                startTime: '09:11 am',
+                endTime: '09:41 am',
+                status: 'Scheduled',
+                providers: [{uuid:'xyz1', response:'ACCEPTED'}, {uuid:'xyz2', response:'ACCEPTED'}]
+            };
+            $scope.save();
+            expect($scope.validatedAppointment.status).toBeUndefined();
+            expect($scope.validatedAppointment.providers[0].response).toBe('ACCEPTED');
+            expect($scope.validatedAppointment.providers[1].response).toBe('ACCEPTED');
+        });
+
+        it('should update the appointment status and provider responses for edits if time has been changed', function () {
+            appDescriptor.getConfigValue = function (input) {
+                return input === "enableAppointmentRequests" ? true : undefined;
+            };
+            appointmentContext.appointment = { uuid: 'appointmentUuid', startDateTime: 1574566860000, endDateTime:1574568660000};
+            $scope.createAppointmentForm = {$invalid: false};
+            createController();
+            $state.params = {};
+            $scope.currentProvider = {uuid:'xyz0'};
+            $scope.appointment = {
+                uuid: 'appointmentUuid',
+                service: {name: 'Cardiology', initialAppointmentStatus:'Requested'},
+                patient: {uuid: 'patientUuid'},
+                date: new Date('2019-11-24T03:41:00.000Z'),
+                startTime: '09:00 am',
+                endTime: '09:30 am',
+                status: 'Scheduled',
+                providers: [{uuid:'xyz1', response:'ACCEPTED'}, {uuid:'xyz2', response:'ACCEPTED'}]
+            };
+            $scope.save();
+            expect($scope.validatedAppointment.status).toBe('Requested');
+            expect($scope.validatedAppointment.providers[0].response).toBe('AWAITING');
+            expect($scope.validatedAppointment.providers[1].response).toBe('AWAITING');
+        })
     });
 });
