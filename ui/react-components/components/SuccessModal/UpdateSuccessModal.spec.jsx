@@ -10,7 +10,7 @@ describe('Update Success Modal', () => {
         const {container, getByText} = renderWithReactIntl(<UpdateSuccessModal />);
         expect(container.querySelectorAll('.saveModal').length).toBe(1);
         expect(container.querySelectorAll('.saveModalCloseIcon').length).toBe(1);
-        getByText('Update successful!');
+        getByText('Update Successful!');
         getByText('Details are successfully updated for the selected appointment.');
         getByText('Close');
         expect(container.querySelectorAll('.button').length).toBe(1);
