@@ -103,6 +103,11 @@ const AddAppointment = props => {
     });
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
+    const cancelConfirmationMessage = {
+        translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT',
+        defaultMessage: 'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'
+    };
+
     useEffect(() => {
         if (appointmentDetails.occurrences === undefined)
             updateAppointmentDetails({occurrences: getDefaultOccurrences(appConfig)});
@@ -462,8 +467,9 @@ const AddAppointment = props => {
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
-            <AppointmentEditorFooter checkAndSave={isRecurringAppointment()
-                ? checkAndSaveRecurringAppointments : checkAndSave}/>
+            <AppointmentEditorFooter
+              checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
+              cancelConfirmationMessage={cancelConfirmationMessage}/>
             {conflicts &&
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
