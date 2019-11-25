@@ -45,7 +45,7 @@ describe('CancelConfirmation ', () => {
         expect(container.querySelectorAll('.cancelModal').length).toBe(1);
         expect(container.querySelectorAll('.cancelModalCloseIcon').length).toBe(1);
         getByText('Wait!');
-        getByText('Are you sure you want to cancel updating the new appointment?This will erase everything you have filled. Nothing will be updated.');
+        getByText('Are you sure you want to cancel editing the appointment? This will not save any of the changes made.');
         getByText('Yes');
         getByText('No');
         expect(container.querySelectorAll('.button').length).toBe(2);
