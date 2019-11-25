@@ -3,7 +3,7 @@
 describe("AppointmentsCreateController", function () {
     var $scope, rootScope, controller, appointmentsServiceService, q, $window, appService, ngDialog, messagingService, $state,
         spinner, appointmentsService, patientService, $translate, appDescriptor, $stateParams, appointmentCreateConfig,
-        appointmentContext, $http;
+        appointmentContext, $http, $location;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -38,12 +38,15 @@ describe("AppointmentsCreateController", function () {
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
-        patientService = jasmine.createSpyObj('patientService', ['search']);
+        patientService = jasmine.createSpyObj('patientService', ['search', 'getPatient']);
         $translate = jasmine.createSpyObj('$translate', ['']);
         $state = jasmine.createSpyObj('$state', ['go']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise', 'forAjaxPromise']);
         $window = jasmine.createSpyObj('$window', ['open']);
         $http = jasmine.createSpyObj('$http', ['get']);
+        $location = jasmine.createSpyObj('$location', ['search']);
+        $location.search.and.returnValue({});
+
         $stateParams = {};
         appointmentCreateConfig = {};
         appointmentContext = {};
@@ -75,7 +78,8 @@ describe("AppointmentsCreateController", function () {
             $stateParams: $stateParams,
             appointmentCreateConfig: appointmentCreateConfig,
             appointmentContext: appointmentContext,
-            $http: $http
+            $http: $http,
+            $location: $location
         }
         );
     };
@@ -83,6 +87,20 @@ describe("AppointmentsCreateController", function () {
     it('should init appointment with defaultAppointmentKind if there is no appointment in appointmentContext', function () {
         createController();
         expect($scope.appointment.appointmentKind).toBe('Scheduled');
+    });
+
+    it('should init with patient data based on query param', function () {
+        let mockPatientResponse = {data: {uuid: "patient-uuid", display: "name - id"}};
+        $location.search.and.returnValue({patient: "patient-uuid"});
+        patientService.getPatient.and.returnValue(specUtil.simplePromise(mockPatientResponse));
+        appointmentsService.search.and.returnValue(specUtil.simplePromise({}));
+
+        createController();
+
+        expect(patientService.getPatient.calls.argsFor(0)[0]).toBe('patient-uuid');
+        expect($scope.appointment.patient.uuid).toBe('patient-uuid');
+        expect($scope.appointment.patient.label).toBe('id (name)');
+        expect($scope.appointment.patient.value).toBe('id (name)');
     });
 
     it('should init appointment with appointment in appointmentContext', function () {

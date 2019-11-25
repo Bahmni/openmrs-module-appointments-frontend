@@ -3,9 +3,11 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsCreateController', ['$scope', '$rootScope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
         'appointmentsService', 'appointmentsServiceService', 'messagingService', 'appointmentCommonService',
-        'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig', 'appointmentContext', '$http', 'sessionService',
+        'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig', 'appointmentContext',
+        '$http', 'sessionService','$location',
         function ($scope, $rootScope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
-                  messagingService, appointmentCommonService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext, $http, sessionService) {
+                  messagingService, appointmentCommonService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext,
+                  $http, sessionService,$location) {
             $scope.isFilterOpen = $stateParams.isFilterOpen;
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
@@ -46,6 +48,12 @@ angular.module('bahmni.appointments')
                     return selectedProvider.uuid === provider.uuid;
                 }));
             };
+
+            function patientDisplayLabel(displayText) {
+                let displays = displayText.split(' - ');
+                return displays[1] + " (" + displays[0] + ")";
+            }
+
             var init = function () {
                 wireAutocompleteEvents();
                 if (!_.isEmpty(appointmentContext) && !_.isEmpty(appointmentContext.appointment) && !_.isEmpty(appointmentContext.appointment.provider)) {
@@ -59,6 +67,18 @@ angular.module('bahmni.appointments')
                 $scope.appointment.newProvider = null;
                 $scope.selectedService = appointmentCreateConfig.selectedService;
                 $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
+
+
+                if ($location.search()["patient"]) {
+                    const uuid = $location.search()["patient"];
+                    patientService.getPatient(uuid).then(function (res) {
+                        console.log(res);
+                        const patient = res.data;
+                        let searchBoxText = patientDisplayLabel(patient.display);
+                        $scope.appointment.patient = {uuid: patient.uuid, label: searchBoxText, value: searchBoxText};
+                    });
+                }
+
                 if ($scope.appointment.patient) {
                     $scope.onSelectPatient($scope.appointment.patient);
                 }
