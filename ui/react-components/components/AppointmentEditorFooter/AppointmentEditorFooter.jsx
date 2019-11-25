@@ -18,14 +18,14 @@ import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit, isOptionsRequired, disableUpdateButton} = props;
+    const {checkAndSave, isEdit, isOptionsRequired, disableUpdateButton, cancelConfirmationMessage} = props;
     const[showUpdateButtons, setShowUpdateButtons] = useState(false);
 
     const getUpdateButtons =() =>{
         setShowUpdateButtons(!showUpdateButtons);
     };
 
-    const popupContent = <CancelConfirmation isEdit={isEdit} onBack={React.useContext(AppContext).onBack}/>;
+    const popupContent = <CancelConfirmation {...cancelConfirmationMessage} onBack={React.useContext(AppContext).onBack}/>;
 
     const cancelButton = <button className={classNames(button)} data-testid="cancel">
                             <i className={classNames("fa", "fa-times")}/>
@@ -63,7 +63,11 @@ AppointmentEditorFooter.propTypes = {
     checkAndSave: PropTypes.func,
     isEdit: PropTypes.bool,
     isOptionsRequired: PropTypes.bool,
-    disableUpdateButton: PropTypes.bool
+    disableUpdateButton: PropTypes.bool,
+    cancelConfirmationMessage: PropTypes.shape({
+      translationKey: PropTypes.string.isRequired,
+      defaultMessage: PropTypes.string.isRequired
+    })
 };
 
 export default AppointmentEditorFooter;

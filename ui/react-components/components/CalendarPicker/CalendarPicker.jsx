@@ -20,13 +20,9 @@ const CalendarPicker = (props) => {
     date ? styles.push(appointmentDatePickerSelected)
         : styles.push(appointmentDatePickerNotSelected);
 
-    const disablePastDates = (current) => {
-        if (startDate)
-            return current.isBefore(startDate);
-        return current;
-    };
-
-    const calendar = (<Calendar showToday={false} disabledDate={disablePastDates} className={classNames(styles)} />);
+    const calendar = (
+      <Calendar showToday={false} disabledDate={date => startDate ? date.isBefore(startDate) : date}
+                className={classNames(styles)}/>);
 
     return (
         <div className={classNames(isDisabled ? disable : '')}>
