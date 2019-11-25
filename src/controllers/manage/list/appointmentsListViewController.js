@@ -195,7 +195,7 @@ angular.module('bahmni.appointments')
             $scope.$watch(function () {
                 return $stateParams.filterParams;
             }, function (newValue, oldValue) {
-                if (newValue !== oldValue && !isNullOrEmpty(oldFilter)) {
+                if (newValue !== oldValue && !isNullOrEmpty(oldValue)) {
                     $scope.filteredAppointments = appointmentsFilter($scope.appointments || $state.params.appointmentsData, $stateParams.filterParams);
                 }
             }, true);
