@@ -23,8 +23,6 @@ const ServiceSearch = (props) => {
 
     const loadServices = async () => {
         const services = await getAllServices();
-        // setServices(createDropdownOptions(services));
-
         setServices(services);
         setDropdownOptions(createDropdownOptions(services))
     };

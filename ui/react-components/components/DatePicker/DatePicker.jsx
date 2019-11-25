@@ -18,12 +18,6 @@ const AppointmentDatePicker = (props) => {
         setValue(defaultValue);
     }, [defaultValue]);
 
-    const disablePastDates = (current) => {
-        if(minDate)
-            return current.isBefore(minDate);
-        return current;
-    };
-
     let styles = [appointmentDatePicker];
     value ? styles.push(appointmentDatePickerSelected)
         : styles.push(appointmentDatePickerNotSelected);
@@ -34,7 +28,7 @@ const AppointmentDatePicker = (props) => {
                 showOk={false}
                 showToday={false}
                 onClear={onClear}
-                disabledDate={disablePastDates}
+                disabledDate={date => minDate ? date.isBefore(minDate) : date}
                 className={classNames(styles)}
                 dateInputPlaceholder="mm/dd/yyyy"
                 onSelect={onChange}

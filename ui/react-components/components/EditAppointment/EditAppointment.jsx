@@ -9,8 +9,7 @@ import {
     recurringContainer,
     recurringContainerLeft,
     recurringContainerRight,
-    searchFieldsContainer,
-    searchFieldsContainerLeft
+    searchFieldsContainer
 } from "../AddAppointment/AddAppointment.module.scss";
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import AppointmentEditorCommonFieldsWrapper
@@ -22,10 +21,10 @@ import moment from "moment";
 import 'moment-timezone';
 import {getDuration, getYesterday} from "../../helper";
 import {
-    MINUTES,
+    MINUTES, RECURRENCE_TERMINATION_AFTER, RECURRENCE_TERMINATION_ON,
     RECURRING_APPOINTMENT_TYPE,
     SCHEDULED_APPOINTMENT_TYPE,
-    WALK_IN_APPOINTMENT_TYPE
+    WALK_IN_APPOINTMENT_TYPE, weekRecurrenceType
 } from "../../constants";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import Label from "../Label/Label.jsx";
@@ -123,6 +122,10 @@ const EditAppointment = props => {
 
     const errorTranslations = getErrorTranslations(intl);
 
+    const cancelConfirmationMessage = {
+        translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT_EDIT',
+        defaultMessage: 'Are you sure you want to cancel editing the appointment? This will not save any of the changes made.'
+    };
 
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {
         return {...prevErrors, ...errorIndicators}
@@ -194,11 +197,13 @@ const EditAppointment = props => {
             period: appointmentDetails.period
         };
         appointmentDetails.endDateType === "After" ? recurringPattern.frequency = appointmentDetails.occurrences : recurringPattern.endDate = appointmentDetails.recurringEndDate;
-        if (appointmentDetails.recurrenceType === 'WEEK') {
+        if (isWeeklyRecurringAppointment()) {
             recurringPattern.daysOfWeek = getSelectedWeekDays(appointmentDetails.weekDays);
         }
         return recurringPattern;
     };
+
+    const isWeeklyRecurringAppointment = () => appointmentDetails.recurrenceType === weekRecurrenceType;
 
     const checkAndSave = async () => {
         if (isValidAppointment()) {
@@ -268,9 +273,8 @@ const EditAppointment = props => {
         updateCommonErrorIndicators(startTimeBeforeEndTime);
         updateErrorIndicators({
             recurrencePeriodError: !appointmentDetails.period || appointmentDetails.period < 1
-
-    });
-        if (appointmentDetails.endDateType === 'On') {
+        });
+        if (appointmentDetails.endDateType === RECURRENCE_TERMINATION_ON) {
             updateErrorIndicators({
                 endDateError: !appointmentDetails.recurringEndDate
             })
@@ -322,7 +326,7 @@ const EditAppointment = props => {
                     occurrences: recurringPattern.frequency,
                     period: recurringPattern.period,
                     weekDays: recurringPattern.daysOfWeek && selectWeekDays(getWeekDays(appConfig && appConfig.startOfWeek), recurringPattern.daysOfWeek),
-                    endDateType: recurringPattern.endDate ? 'On' : 'After'
+                    endDateType: recurringPattern.endDate ? RECURRENCE_TERMINATION_ON : RECURRENCE_TERMINATION_AFTER
                 });
             }
         }
@@ -341,18 +345,26 @@ const EditAppointment = props => {
         defaultTime: appointmentDetails.endTime
     };
 
-    const isStartDateModified = () => !isEqual(moment(originalAppointmentDate).format('DMYYYY'), moment(appointmentDetails.appointmentDate).format('DMYYYY'));
+    const isStartDateModified = () => isDateModified(originalAppointmentDate, appointmentDetails.appointmentDate);
 
-    const isEndDateModified = () => !isEqual(moment(originalRecurringEndDate).format('DMYYYY'), moment(appointmentDetails.recurringEndDate).format('DMYYYY'));
+    const isEndDateModified = () => isDateModified(originalRecurringEndDate, appointmentDetails.recurringEndDate);
 
-    const isOccurrencesModified = () => originalOccurrences !== appointmentDetails.occurrences
+    const isDateModified = (originalDate, modifiedDate) => !isEqual(moment(originalDate).format('DMYYYY'), moment(modifiedDate).format('DMYYYY'));
 
-    const isApplicableForAll = () => {
-        if (isStartDateModified())
-            return false;
-        else if (isEndDateModified() || isOccurrencesModified())
-            return false;
-        return true;
+    const isOccurrencesModified = () => originalOccurrences !== appointmentDetails.occurrences;
+
+    const isApplicableForAll = () => !(isStartDateModified() || isEndDateModified() || isOccurrencesModified());
+
+    const updateAppointments = (applyForAllInd) => {
+        if (isRecurringAppointment()) {
+            if (applyForAllInd === undefined) {
+                applyForAllInd = !isStartDateModified();
+            }
+            setApplyForAll(applyForAllInd);
+            checkAndUpdateRecurringAppointments(applyForAllInd).then();
+        } else {
+            checkAndSave().then();
+        }
     };
 
     useEffect(() => {
@@ -444,17 +456,17 @@ const EditAppointment = props => {
                                     <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats every"/>
                                 </div>
                                 <div class={classNames(recurringTerminationDetails)}>
-                                    <span>{moment.localeData().ordinal(appointmentDetails.period)} &nbsp; {appointmentDetails.recurrenceType === 'WEEK'
+                                    <span>{moment.localeData().ordinal(appointmentDetails.period)} &nbsp; {isWeeklyRecurringAppointment()
                                         ? <Label translationKey="WEEK_LABEL" defaultValue="Week"/>
                                         : <Label translationKey="DAY_LABEL" defaultValue="Day"/>}</span>
                                 </div>
                                 <div className={classNames(weekDaySelector)}>
-                                    {appointmentDetails.recurrenceType === 'WEEK'
+                                    {isWeeklyRecurringAppointment()
                                         ? <ButtonGroup buttonsList={appointmentDetails.weekDays}/>
                                         : undefined}
                                 </div>
                             </div>
-                            {appointmentDetails.endDateType === 'After'
+                            {appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER
                                 ? (<div>
                                     <div className={classNames(dateHeading)}>
                                         <Label translationKey="NUMBER_OF_OCCURRENCE_LABEL"
@@ -503,20 +515,11 @@ const EditAppointment = props => {
                 </div>
             </div>
             <AppointmentEditorFooter
-                checkAndSave={applyForAllInd => {
-                    if (isRecurringAppointment()) {
-                        if (applyForAllInd === undefined) {
-                            applyForAllInd = !isStartDateModified();
-                        }
-                        setApplyForAll(applyForAllInd);
-                        checkAndUpdateRecurringAppointments(applyForAllInd).then();
-                    } else {
-                        checkAndSave().then();
-                    }
-                }}
+                checkAndSave={applyForAllInd => updateAppointments(applyForAllInd)}
                 isEdit={true}
                 isOptionsRequired={isRecurringAppointment() && isApplicableForAll()}
                 disableUpdateButton={isStartDateModified() && (isEndDateModified() || isOccurrencesModified())}
+                cancelConfirmationMessage={cancelConfirmationMessage}
             />
             {conflicts &&
             <CustomPopup style={conflictsPopup} open={true}

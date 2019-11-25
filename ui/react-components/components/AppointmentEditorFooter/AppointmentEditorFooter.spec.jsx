@@ -4,22 +4,32 @@ import {renderWithReactIntl} from "../../utils/TestUtil";
 import {fireEvent} from "@testing-library/react";
 
 describe('Appointment editor Footer Search', () => {
+
+    let cancelConfirmationMessage;
+
+    beforeEach(() => {
+       cancelConfirmationMessage = {
+           translationKey: 'TRANSLATION_KEY',
+           defaultMessage: 'Default Message'
+       }
+    });
+
     it('should render Check and Save and Cancel buttons', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter checkAndSave={() => jest.fn()}/>);
+        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} checkAndSave={() => jest.fn()}/>);
         getByText('Cancel');
         getByText('Check and Save');
         expect(container.querySelectorAll('.button').length).toBe(2);
     });
 
     it('should render Update and Cancel buttons', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter isEdit={true}/>);
+        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true}/>);
         getByText('Cancel');
         getByText('Update');
         expect(container.querySelectorAll('.button').length).toBe(2);
     });
 
     it('should render update options on click of update button', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter isEdit={true} isOptionsRequired={true}/>);
+        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} isOptionsRequired={true}/>);
         const update = getByText('Update');
         fireEvent.click(update);
         expect(container.hasChildNodes()).toBeTruthy();
@@ -28,7 +38,7 @@ describe('Appointment editor Footer Search', () => {
 
     it('should not render update options and checkAndSave should be called on click of update button', () => {
         const checkAndSaveSpy = jest.fn();
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter isEdit={true} isOptionsRequired={false} checkAndSave={checkAndSaveSpy}/>);
+        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} isOptionsRequired={false} checkAndSave={checkAndSaveSpy}/>);
         const update = getByText('Update');
         fireEvent.click(update);
         expect(container.querySelector('.updateOptions')).toBeNull();
@@ -36,7 +46,7 @@ describe('Appointment editor Footer Search', () => {
     });
 
     it('should render update options on click of update button and hide update options on reclick', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter isEdit={true} isOptionsRequired={true}/>);
+        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} isOptionsRequired={true}/>);
         const update = getByText('Update');
         fireEvent.click(update);
         fireEvent.click(update);
@@ -45,13 +55,13 @@ describe('Appointment editor Footer Search', () => {
     });
 
     it('should disable update button', () => {
-        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter isEdit={true} disableUpdateButton={true} />);
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} disableUpdateButton={true} />);
         const update = getByTestId('check-and-save');
         expect(update.disabled).toBe(true);
     });
 
     it('should not disable update button', () => {
-        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter isEdit={true} disableUpdateButton={false} />);
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} disableUpdateButton={false} />);
         const update = getByTestId('check-and-save');
         expect(update.disabled).toBe(false);
     });

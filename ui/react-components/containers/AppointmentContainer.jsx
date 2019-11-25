@@ -43,7 +43,7 @@ class AppointmentContainer extends Component {
 AppointmentContainer .propTypes = {
     onBack: PropTypes.func.isRequired,
     appointmentUuid: PropTypes.string,
-    isRecurring: PropTypes.bool,
+    isRecurring: PropTypes.string,
     setViewDate: PropTypes.func.isRequired,
     state: PropTypes.object.isRequired,
     isCancel: PropTypes.bool
