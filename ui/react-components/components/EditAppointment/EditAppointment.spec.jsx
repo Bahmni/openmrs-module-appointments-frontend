@@ -177,7 +177,7 @@ describe('Edit Appointment', () => {
         let getAllByTitleInDom = undefined;
         let getByTestIdInDom = undefined;
         const config = {
-            "enableSpecialities": true
+            "enableSpecialities": false
         };
         act(() => {
             const {getByText, container, getAllByTitle, getByTestId} = renderWithReactIntl(<EditAppointment
@@ -215,7 +215,7 @@ describe('Edit Appointment', () => {
         let getAllByTitleInDom = undefined;
         let getByTestIdInDom = undefined;
         const config = {
-            "enableSpecialities": true
+            "enableSpecialities": false
         };
         act(() => {
             const {getByText, container, getAllByTitle, getByTestId} = renderWithReactIntl(<EditAppointment

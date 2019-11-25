@@ -11,7 +11,7 @@ describe('Update Confirmation Modal ', () => {
             expect(container.querySelectorAll('.updateConfirmationModal').length).toBe(1);
             expect(container.querySelectorAll('.updateConfirmationModalCloseIcon').length).toBe(1);
             getByText('Kindly Confirm');
-            getByText('This will update the new details on the entire scheduled series. This can not be reversed');
+            getByText('This will update the details of the selected appointment. This cannot be reversed!');
             getByText('No, go back');
             getByText('Yes, I confirm');
             expect(container.querySelectorAll('.button').length).toBe(2);

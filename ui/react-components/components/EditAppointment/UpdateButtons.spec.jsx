@@ -7,7 +7,8 @@ import UpdateButtons from "./UpdateButtons";
 describe('Update Buttons', () => {
     it('should call checkAndSave method by passing false on click of Update one Appointment button', () => {
         const checkAndSaveSpy = jest.fn();
-        const {container, getByText} = renderWithReactIntl(<UpdateButtons checkAndSave={checkAndSaveSpy}/>);
+        const updateOptionsVisibleStatusSpy = jest.fn();
+        const {container, getByText} = renderWithReactIntl(<UpdateButtons checkAndSave={checkAndSaveSpy} updateOptionsVisibleStatus={updateOptionsVisibleStatusSpy}/>);
         const update = getByText('Update for today\'s date');
         fireEvent.click(update);
         expect(checkAndSaveSpy).toHaveBeenCalledWith(false);
@@ -15,7 +16,8 @@ describe('Update Buttons', () => {
 
     it('should call checkAndSave method by passing true on click of Update all Appointments button', () => {
         const checkAndSaveSpy = jest.fn();
-        const {container, getByText} = renderWithReactIntl(<UpdateButtons checkAndSave={checkAndSaveSpy}/>);
+        const updateOptionsVisibleStatusSpy = jest.fn();
+        const {container, getByText} = renderWithReactIntl(<UpdateButtons checkAndSave={checkAndSaveSpy} updateOptionsVisibleStatus={updateOptionsVisibleStatusSpy}/>);
         const update = getByText('Auto Update all occurrences');
         fireEvent.click(update);
         expect(checkAndSaveSpy).toHaveBeenCalledWith(true);
