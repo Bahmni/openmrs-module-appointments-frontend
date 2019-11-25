@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 
 const CancelConfirmation = (props) => {
 
-    const {close, onBack, isEdit} = props;
+    const {close, onBack, translationKey, defaultMessage} = props;
 
     return (
         <div className={classNames(cancelModal)}>
@@ -27,15 +27,7 @@ const CancelConfirmation = (props) => {
                     <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TITLE'} defaultMessage={'Wait!'}/>
                 </h1>
                 <div className={classNames(cancelModalBody)}>
-                    {isEdit ? (
-                        <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT_EDIT'}
-                                          defaultMessage={'Are you sure you want to cancel editing the appointment? This will not save any of the changes made.'}/>
-
-                    ) : (
-                        <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT'}
-                                          defaultMessage={'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'}/>
-
-                    )}
+                    <FormattedMessage id={translationKey} defaultMessage={defaultMessage}/>
                 </div>
                 <div>
                     <button className={classNames(button, no)} data-testid="cancel-no" onClick={close}>
@@ -53,7 +45,8 @@ const CancelConfirmation = (props) => {
 CancelConfirmation.propTypes = {
     close: PropTypes.func,
     onBack: PropTypes.func,
-    isEdit: PropTypes.bool
+    translationKey: PropTypes.string.isRequired,
+    defaultMessage: PropTypes.string.isRequired,
 };
 
 export default CancelConfirmation;

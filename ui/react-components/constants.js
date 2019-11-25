@@ -36,3 +36,6 @@ export const SCHEDULED_APPOINTMENT_TYPE = "Scheduled";
 
 export const SCHEDULED_APPOINTMENT_STATUS = "Scheduled";
 export const CHECKED_IN_APPOINTMENT_STATUS = "CheckedIn";
+
+export const RECURRENCE_TERMINATION_AFTER = "After";
+export const RECURRENCE_TERMINATION_ON = "On";
