@@ -11,7 +11,8 @@ import {
     searchFieldsContainerRight,
     timeSelector,
     weekDaysContainer,
-    appointmentPlanContainer
+    appointmentPlanContainer,
+    apiErrorContainer
 } from './AddAppointment.module.scss';
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
@@ -100,7 +101,8 @@ const AddAppointment = props => {
         endTimeError: false,
         recurrencePeriodError: false,
         startTimeBeforeEndTimeError: false,
-        weekDaysError: false
+        weekDaysError: false,
+        noContentError: false
     });
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
@@ -230,7 +232,10 @@ const AddAppointment = props => {
         const response = await saveRecurring(recurringAppointmentRequest);
         if (response.status === 200) {
             setConflicts(undefined);
+            updateErrorIndicators({noContentError: false});
             showSuccessPopUp(appointmentDetails.recurringStartDate);
+        } else if (response.status === 204) {
+            updateErrorIndicators({noContentError: true});
         }
     };
 
@@ -465,6 +470,9 @@ const AddAppointment = props => {
                     <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/></div>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
+            </div>
+            <div className={classNames(apiErrorContainer)}>
+                <ErrorMessage message={errors.noContentError && errorTranslations.noContentErrorMessage}/>
             </div>
             <AppointmentEditorFooter
               checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
