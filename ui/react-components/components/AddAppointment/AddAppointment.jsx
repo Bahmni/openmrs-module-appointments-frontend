@@ -171,11 +171,12 @@ const AddAppointment = props => {
     const isValidRecurringAppointment = () => {
         const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.value.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
+        const selectedWeekDays = getSelectedWeekDays(appointmentDetails.weekDays);
         updateCommonErrorIndicators(isValidPatient, startTimeBeforeEndTime);
         updateErrorIndicators({
             recurrencePeriodError: !appointmentDetails.period || appointmentDetails.period < 1,
             endDateTypeError: !appointmentDetails.endDateType,
-            weekDaysError: appointmentDetails.recurrenceType === 'WEEK' && isEmpty(getSelectedWeekDays(appointmentDetails.weekDays)),
+            weekDaysError: appointmentDetails.recurrenceType === 'WEEK' && isEmpty(selectedWeekDays),
             startDateError: !appointmentDetails.startDateType || !appointmentDetails.recurringStartDate
         });
         if (appointmentDetails.endDateType) {
@@ -184,8 +185,10 @@ const AddAppointment = props => {
                 occurrencesError: appointmentDetails.endDateType === "After" && (!appointmentDetails.occurrences || appointmentDetails.occurrences < 1)
             })
         }
-        return isValidPatient && appointmentDetails.service && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime &&
-            appointmentDetails.recurrenceType && appointmentDetails.period && appointmentDetails.period > 0 && appointmentDetails.recurringStartDate && isValidEndDate();
+        return isValidPatient && appointmentDetails.service && appointmentDetails.startTime
+            && appointmentDetails.endTime && startTimeBeforeEndTime && appointmentDetails.recurrenceType
+            && appointmentDetails.period && appointmentDetails.period > 0 && appointmentDetails.recurringStartDate
+            && isValidEndDate() && !isEmpty(selectedWeekDays);
     };
 
     const updateCommonErrorIndicators = (isValidPatient, startTimeBeforeEndTime) => updateErrorIndicators({
