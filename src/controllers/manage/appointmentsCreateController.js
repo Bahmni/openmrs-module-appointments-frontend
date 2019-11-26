@@ -18,6 +18,7 @@ angular.module('bahmni.appointments')
             $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
             const isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
             let appointmentTimeBeforeEdit = {};
+            let existingProvidersUuids = [];
 
             var providerListForCurrentUser = function (providers) {
                 if (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges)) {
@@ -53,6 +54,9 @@ angular.module('bahmni.appointments')
                 let displays = displayText.split(' - ');
                 return displays[1] + " (" + displays[0] + ")";
             }
+            const isActiveProvider = function (provider) {
+                return provider.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
+            };
 
             var init = function () {
                 wireAutocompleteEvents();
@@ -82,20 +86,20 @@ angular.module('bahmni.appointments')
                 if ($scope.appointment.patient) {
                     $scope.onSelectPatient($scope.appointment.patient);
                 }
-                if ($scope.isEditMode()){
+                if ($scope.isEditMode()) {
                     appointmentTimeBeforeEdit = {
                         date: $scope.appointment.date,
                         startTime: $scope.appointment.startTime,
                         endTime: $scope.appointment.endTime,
                     };
+                    existingProvidersUuids = _.filter($scope.appointment.providers, isActiveProvider)
+                        .map(provider => provider.uuid);
                 }
             };
 
             $scope.allowProviderAddition = function () {
                 if ($scope.appointment.providers != undefined) {
-                    return $scope.appointment.providers.filter(function (p) {
-                        return p.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
-                    }).length < $scope.maxAppointmentProviders;
+                    return $scope.appointment.providers.filter(isActiveProvider).length < $scope.maxAppointmentProviders;
                 } else {
                     return $scope.maxAppointmentProviders > 0;
                 }
@@ -136,8 +140,8 @@ angular.module('bahmni.appointments')
                 }
             };
 
-            const isAtSameTime = function(appointmentTimeBeforeEdit){
-                if (!moment($scope.appointment.date).isSame(moment(appointmentTimeBeforeEdit.date))){
+            const noChangeInAppointmentTime = function (appointmentTimeBeforeEdit) {
+                if (!moment($scope.appointment.date).isSame(moment(appointmentTimeBeforeEdit.date))) {
                     return false;
                 }
                 const newStart = moment($scope.appointment.startTime, 'hh:mm a');
@@ -149,22 +153,47 @@ angular.module('bahmni.appointments')
                     && newEnd.isSame(previousEnd, 'minutes')
             };
 
-            function updateAppointmentStatusAndProviderResponse() {
-                if ($scope.isEditMode() && isAtSameTime(appointmentTimeBeforeEdit)){
-                    return;
+            const isNewProvider = function (existingProvidersUuids) {
+                return function (provider) {
+                    const isPresentInExistingProviders = _.includes(existingProvidersUuids, provider.uuid);
+                    return isActiveProvider(provider) && !(isPresentInExistingProviders);
+                }
+            };
+
+            const updateResponsesForNewProviders = function (updatedProviders) {
+                _.each($scope.validatedAppointment.providers, function (providerInAppointment) {
+                    const updatedProvider = _.find(updatedProviders, function (providerWithUpdatedResponse) {
+                        return providerWithUpdatedResponse.uuid === providerInAppointment.uuid;
+                    });
+                    if (!_.isUndefined(updatedProvider)){
+                        providerInAppointment.response = updatedProvider.response;
+                    }
+                });
+            };
+
+            const handleNewProvidersAddition = function (existingProvidersUuids) {
+                const newProviders = _.filter($scope.validatedAppointment.providers, isNewProvider(existingProvidersUuids));
+                if (!_.isEmpty(newProviders)) {
+                    const responseForNewProviders = Bahmni.Appointments.AppointmentStatusHandler
+                        .getResponseForNewProviders(_.cloneDeep(newProviders), _.cloneDeep($scope.appointment), $scope.currentProvider.uuid);
+                    updateResponsesForNewProviders(responseForNewProviders);
+                }
+            };
+
+            const updateAppointmentStatusAndProviderResponse = function () {
+                if ($scope.isEditMode()) {
+                    if (noChangeInAppointmentTime(appointmentTimeBeforeEdit)) {
+                        handleNewProvidersAddition(existingProvidersUuids);
+                        return;
+                    }
                 }
                 const allAppointmentDetails = _.cloneDeep($scope.appointment);
-                const updateStatusAndProviderResponse = Bahmni.Appointments.AppointmentStatusHandler
+                const updatedStatusAndProviderResponse = Bahmni.Appointments.AppointmentStatusHandler
                     .getUpdatedStatusAndProviderResponse(allAppointmentDetails, $scope.currentProvider.uuid);
 
-                $scope.validatedAppointment.status = updateStatusAndProviderResponse.status;
-                _.each($scope.validatedAppointment.providers, function (validatedAppointmentProvider) {
-                    const updatedProvider = _.find(updateStatusAndProviderResponse.providers, function (providerWithUpdatedResponse) {
-                        return providerWithUpdatedResponse.uuid === validatedAppointmentProvider.uuid;
-                    });
-                    validatedAppointmentProvider.response = updatedProvider.response;
-                });
-            }
+                $scope.validatedAppointment.status = updatedStatusAndProviderResponse.status;
+                updateResponsesForNewProviders(updatedStatusAndProviderResponse.providers);
+            };
 
             $scope.save = function () {
                 var message;
@@ -172,7 +201,7 @@ angular.module('bahmni.appointments')
                     message = $scope.createAppointmentForm.$error.pattern
                         ? 'INVALID_TIME_ERROR_MESSAGE' : 'INVALID_SERVICE_FORM_ERROR_MESSAGE';
                 } else if (!moment($scope.appointment.startTime, 'hh:mm a')
-                        .isBefore(moment($scope.appointment.endTime, 'hh:mm a'), 'minutes')) {
+                    .isBefore(moment($scope.appointment.endTime, 'hh:mm a'), 'minutes')) {
                     message = 'TIME_SEQUENCE_ERROR_MESSAGE';
                 }
                 if (message) {
@@ -181,7 +210,7 @@ angular.module('bahmni.appointments')
                 }
 
                 $scope.validatedAppointment = Bahmni.Appointments.Appointment.create($scope.appointment);
-                if (isAppointmentRequestEnabled){
+                if (isAppointmentRequestEnabled) {
                     updateAppointmentStatusAndProviderResponse();
                 }
 
@@ -282,11 +311,11 @@ angular.module('bahmni.appointments')
                 if ($scope.weeklyAvailabilityOnSelectedDate && $scope.weeklyAvailabilityOnSelectedDate.length) {
                     return _.find($scope.weeklyAvailabilityOnSelectedDate, function (availability) {
                         return !(moment(appointmentTime, 'hh:mm a').isBefore(moment(availability.startTime, 'hh:mm a')) ||
-                        moment(availability.endTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a')));
+                            moment(availability.endTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a')));
                     });
                 } else if ($scope.allowedStartTime || $scope.allowedEndTime) {
                     return !(moment(appointmentTime, 'hh:mm a').isBefore(moment($scope.allowedStartTime, 'hh:mm a')) ||
-                    moment($scope.allowedEndTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a')));
+                        moment($scope.allowedEndTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a')));
                 }
                 return true;
             };
@@ -298,7 +327,7 @@ angular.module('bahmni.appointments')
                 if ($scope.weeklyAvailabilityOnSelectedDate && $scope.weeklyAvailabilityOnSelectedDate.length) {
                     return _.find($scope.weeklyAvailabilityOnSelectedDate, function (availability) {
                         return (moment(availability.startTime, 'hh:mm a') <= moment(appointmentStartTime, 'hh:mm a')) &&
-                        (moment(appointmentEndTime, 'hh:mm a') <= moment(availability.endTime, 'hh:mm a'));
+                            (moment(appointmentEndTime, 'hh:mm a') <= moment(availability.endTime, 'hh:mm a'));
                     });
                 }
                 return true;
@@ -394,7 +423,7 @@ angular.module('bahmni.appointments')
                 }
             };
 
-            function setMinDuration () {
+            function setMinDuration() {
                 $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
                 $scope.minDuration = $scope.appointment.serviceType ? $scope.appointment.serviceType.duration || $scope.minDuration
                     : $scope.appointment.service ? $scope.appointment.service.durationMins || $scope.minDuration : $scope.minDuration;
@@ -503,7 +532,7 @@ angular.module('bahmni.appointments')
             });
 
             var getSlotsForWeeklyAvailability = function (dayOfWeek, weeklyAvailability, durationInMin) {
-                var slots = { startTime: [], endTime: [] };
+                var slots = {startTime: [], endTime: []};
                 var dayAvailability = _.filter(weeklyAvailability, function (o) {
                     return o.dayOfWeek === dayOfWeek;
                 });
@@ -525,7 +554,7 @@ angular.module('bahmni.appointments')
                 var endTime = getFormattedTime(endTimeString);
 
                 var result = [];
-                var slots = { startTime: [], endTime: [] };
+                var slots = {startTime: [], endTime: []};
                 var current = moment(startTime);
 
                 while (current.valueOf() <= endTime.valueOf()) {
@@ -630,7 +659,7 @@ angular.module('bahmni.appointments')
 
             $scope.canManageOwnAppointmentOnly = function () {
                 return (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeOwnAppointments, $rootScope.currentUser.privileges) &&
-                        !appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges));
+                    !appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges));
             };
 
             $scope.isUserAllowedToRemoveProvider = function (providerUuid) {
@@ -643,9 +672,9 @@ angular.module('bahmni.appointments')
 
             $scope.doesAppointmentHaveProvider = function () {
                 return $scope.appointment.providers.length === 0
-                || _.isUndefined(_.find($scope.appointment.providers, function (provider) {
-                    return provider.response === Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
-                }));
+                    || _.isUndefined(_.find($scope.appointment.providers, function (provider) {
+                        return provider.response === Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
+                    }));
             };
 
             var isAppointmentWithSomeProviderButNotCurrentUser = function () {
