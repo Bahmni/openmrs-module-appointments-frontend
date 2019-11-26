@@ -26,6 +26,9 @@ export const getErrorTranslations = intl => {
         }),
         weekDaysErrorMessage: intl.formatMessage({
             id: 'RECURRENCE_WEEKDAYS_ERROR_MESSAGE', defaultMessage: 'Please select the day(s)'
+        }),
+        noContentErrorMessage: intl.formatMessage({
+            id: 'NO_CONTENT_ERROR_MESSAGE', defaultMessage: 'Selected days do not fall under the end date selected'
         })
     };
 };
