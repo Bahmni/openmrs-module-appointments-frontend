@@ -39,3 +39,13 @@ export const CHECKED_IN_APPOINTMENT_STATUS = "CheckedIn";
 
 export const RECURRENCE_TERMINATION_AFTER = "After";
 export const RECURRENCE_TERMINATION_ON = "On";
+
+export const CANCEL_CONFIRMATION_MESSAGE_ADD = {
+  translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT',
+  defaultMessage: 'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'
+};
+
+export const CANCEL_CONFIRMATION_MESSAGE_EDIT = {
+  translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT_EDIT',
+  defaultMessage: 'Are you sure you want to cancel editing the appointment? This will not save any of the changes made.'
+};

@@ -37,6 +37,7 @@ import StartDateRadioGroup from "../RadioGroup/StartDateRadioGroup.jsx";
 import EndDateRadioGroup from "../RadioGroup/EndDateRadioGroup.jsx";
 import RecurrenceTypeRadioGroup from "../RadioGroup/RecurrenceTypeRadioGroup.jsx";
 import {
+    CANCEL_CONFIRMATION_MESSAGE_ADD,
     dayRecurrenceType,
     FROM,
     MINUTES,
@@ -102,11 +103,6 @@ const AddAppointment = props => {
         weekDaysError: false
     });
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-
-    const cancelConfirmationMessage = {
-        translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT',
-        defaultMessage: 'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'
-    };
 
     useEffect(() => {
         if (appointmentDetails.occurrences === undefined)
@@ -469,7 +465,7 @@ const AddAppointment = props => {
             </div>
             <AppointmentEditorFooter
               checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
-              cancelConfirmationMessage={cancelConfirmationMessage}/>
+              cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}/>
             {conflicts &&
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}

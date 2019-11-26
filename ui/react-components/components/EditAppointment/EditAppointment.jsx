@@ -21,6 +21,7 @@ import moment from "moment";
 import 'moment-timezone';
 import {getDuration, getYesterday} from "../../helper";
 import {
+    CANCEL_CONFIRMATION_MESSAGE_EDIT,
     MINUTES, RECURRENCE_TERMINATION_AFTER, RECURRENCE_TERMINATION_ON,
     RECURRING_APPOINTMENT_TYPE,
     SCHEDULED_APPOINTMENT_TYPE,
@@ -121,11 +122,6 @@ const EditAppointment = props => {
     const [componentsDisableStatus, setComponentsDisableStatus] = useState({});
 
     const errorTranslations = getErrorTranslations(intl);
-
-    const cancelConfirmationMessage = {
-        translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT_EDIT',
-        defaultMessage: 'Are you sure you want to cancel editing the appointment? This will not save any of the changes made.'
-    };
 
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {
         return {...prevErrors, ...errorIndicators}
@@ -519,7 +515,7 @@ const EditAppointment = props => {
                 isEdit={true}
                 isOptionsRequired={isRecurringAppointment() && isApplicableForAll()}
                 disableUpdateButton={isStartDateModified() && (isEndDateModified() || isOccurrencesModified())}
-                cancelConfirmationMessage={cancelConfirmationMessage}
+                cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_EDIT}
             />
             {conflicts &&
             <CustomPopup style={conflictsPopup} open={true}

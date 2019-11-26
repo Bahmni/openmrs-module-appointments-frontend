@@ -15,7 +15,7 @@ angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
 });
 
 angular.module('bahmni.appointments').run(['$templateCache', function ($templateCache) {
-    $templateCache.put('templateId', '<cancel-confirmation-wrapper close="onClose" on-back="onBack">');
+    $templateCache.put('templateId', '<cancel-confirmation-wrapper appointment-uuid="appointmentUuid" close="onClose" on-back="onBack">');
 }]);
 
 reactAddAppointmentController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
