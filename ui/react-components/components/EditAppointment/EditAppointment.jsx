@@ -80,8 +80,7 @@ const EditAppointment = props => {
         startTimeError: false,
         endTimeError: false,
         recurrencePeriodError: false,
-        startTimeBeforeEndTimeError: false,
-        weekDaysError: false
+        startTimeBeforeEndTimeError: false
     });
 
     const initialAppointmentState = {
