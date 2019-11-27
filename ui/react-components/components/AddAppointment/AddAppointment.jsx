@@ -471,9 +471,9 @@ const AddAppointment = props => {
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
-            <div className={classNames(apiErrorContainer)}>
-                <ErrorMessage message={errors.noContentError && errorTranslations.noContentErrorMessage}/>
-            </div>
+            {errors.noContentError && <div className={classNames(apiErrorContainer)}>
+                <ErrorMessage message={errorTranslations.noContentErrorMessage}/>
+            </div>}
             <AppointmentEditorFooter
               checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
               cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}/>
