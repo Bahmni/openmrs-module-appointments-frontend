@@ -515,6 +515,7 @@ const EditAppointment = props => {
             <CustomPopup style={conflictsPopup} open={true}
                          closeOnDocumentClick={false}
                          closeOnEscape={true}
+                         onClose={() => setConflicts(undefined)}
                          popupContent={<Conflicts saveAnyway={saveAppointments}
                                                   modifyInformation={() => setConflicts(undefined)}
                                                   conflicts={conflicts} service={appointmentDetails.service}/>}/>}
