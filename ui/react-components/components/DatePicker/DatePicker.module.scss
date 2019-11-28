@@ -60,6 +60,9 @@
 .appointmentDatePickerSelected {
   td[class*='rc-calendar-selected-day'] {
     border: none;
+    div {
+      background: none;
+    }
   }
   td[class*='rc-calendar-selected-date'] {
     > div {
@@ -94,6 +97,9 @@
   }
   td[class*='rc-calendar-selected-day'] {
     border: none;
+    div {
+      background: none;
+    }
   }
   td[class*='rc-calendar-disabled'] {
     > div {
