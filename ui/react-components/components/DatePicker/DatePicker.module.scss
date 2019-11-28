@@ -9,6 +9,10 @@
     height: auto;
   }
 
+  span[class*='rc-calendar-clear-btn'] {
+    z-index: 0;
+  }
+
   td[class*='rc-calendar-disabled'] {
     > div {
       cursor: not-allowed;
