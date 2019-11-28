@@ -50,6 +50,23 @@ describe('Patient Search', () => {
         expect(getPatientByLocationSpy).not.toHaveBeenCalled();
     });
 
+    it('should search for patients only when the user enters the given number of characters', async () => {
+        const {container} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}
+                                                                          minCharLengthToTriggerPatientSearch={4}/>);
+        const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.change(inputBox, { target: { value: "abc" } });
+        await waitForElement(
+            () => (container.querySelector('.react-select__menu'))
+        );
+        expect(getPatientByLocationSpy).not.toHaveBeenCalled();
+
+        fireEvent.change(inputBox, { target: { value: "abcd" } });
+        await waitForElement(
+            () => (container.querySelector('.react-select__menu'))
+        );
+        expect(getPatientByLocationSpy).toHaveBeenCalled();
+    });
+
     it('should display placeholder as "Patient ID"', async () => {
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const {container, getByText} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}/>);
