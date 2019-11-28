@@ -32,6 +32,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     <div data-testid="patient-search">
                         <PatientSearch
                             value={appointmentDetails.patient}
+                            minCharLengthToTriggerPatientSearch={appConfig && appConfig.minCharLengthToTriggerPatientSearch}
                             onChange={(optionSelected) => {
                                 const newValue = optionSelected ? optionSelected : undefined;
                                 updateAppointmentDetails({patient: newValue});
