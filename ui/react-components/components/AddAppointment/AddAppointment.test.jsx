@@ -317,5 +317,24 @@ describe('Appointment Editor', () => {
         expect(container.querySelectorAll('.rc-checkbox-input')[0].checked).toBeFalsy();
         expect(container.querySelectorAll('.rc-checkbox-input')[1].checked).toBeTruthy();
     });
+
+    it('should display location based on service', async () => {
+        const {container, getByText} = renderWithReactIntl(<AddAppointment/>);
+        //select service
+        const targetService = 'Physiotherapy OPD';
+        const inputBoxService = container.querySelectorAll('.react-select__input input')[1];
+        fireEvent.change(inputBoxService, {target: {value: "Phy"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        const optionService = getByText(targetService);
+        fireEvent.click(optionService);
+        let singleValueService;
+        await waitForElement(
+            () =>
+                (singleValueService = container.querySelector(
+                    '.react-select__single-value'
+                ))
+        );
+        getByText('Physiotherapy');
+    });
 });
 
