@@ -38,7 +38,7 @@ const ServiceTypeSearch = props => {
         forEach(results, function (serviceType) {
             options.push({
                 value: serviceType,
-                label: serviceType.name
+                label: `${serviceType.name} [${serviceType.duration} min]`
             })
         });
         return options;
