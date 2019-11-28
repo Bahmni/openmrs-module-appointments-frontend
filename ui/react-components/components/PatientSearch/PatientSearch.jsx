@@ -5,17 +5,19 @@ import {currentLocation} from '../../utils/CookieUtil';
 import AsyncDropdown from "../Dropdown/AsyncDropdown.jsx";
 import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
+import {MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH} from "../../constants";
 
 const PatientSearch = (props) => {
 
-    const {intl, onChange, value, isDisabled} = props;
+    const {intl, onChange, value, isDisabled, minCharLengthToTriggerPatientSearch} = props;
 
     const createDropdownOptions = (patients) => {
         return patients.map(patient => getPatientForDropdown(patient));
     };
 
     const loadPatients = async (searchString) => {
-        if (searchString.length < 3) {
+        const minCharLength = minCharLengthToTriggerPatientSearch || MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH;
+        if (searchString.length < minCharLength) {
             return [];
         } else {
             const patients = await getPatientsByLocation(currentLocation().uuid, searchString);
@@ -38,7 +40,8 @@ PatientSearch.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.object,
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    minCharLengthToTriggerPatientSearch: PropTypes.number
 };
 
 export default injectIntl(PatientSearch);
