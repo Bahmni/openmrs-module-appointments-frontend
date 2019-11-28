@@ -9,7 +9,8 @@ import {
     recurringContainer,
     recurringContainerLeft,
     recurringContainerRight,
-    searchFieldsContainer
+    searchFieldsContainer,
+    isRecurring
 } from "../AddAppointment/AddAppointment.module.scss";
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import AppointmentEditorCommonFieldsWrapper
@@ -369,7 +370,8 @@ const EditAppointment = props => {
     }, [appConfig]);
 
     return (<Fragment>
-        <div data-testid="appointment-editor" className={classNames(appointmentEditor, editAppointment)}>
+        <div data-testid="appointment-editor"
+             className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails} errors={errors}
                                                   updateErrorIndicators={updateErrorIndicators}
                                                   endTimeBasedOnService={endTimeBasedOnService}
