@@ -2,76 +2,111 @@ window.Bahmni = window.Bahmni || {};
 Bahmni.Appointments = Bahmni.Appointments || {};
 
 Bahmni.Appointments.AppointmentStatusHandler = (function () {
-    const mapProvidersToResponse = function (providers, response) {
-        return _.map(providers, function (provider) {
-            return {uuid: provider.uuid, response: response};
+    const mapNewProvidersToGivenResponse = function (appointment, existingProvidersUuids, response) {
+        return _.map(appointment.providers, function (provider) {
+            if (_.includes(existingProvidersUuids, provider.uuid)) {
+                return {uuid: provider.uuid, response: provider.response};
+            } else {
+                return {uuid: provider.uuid, response: response};
+            }
         });
     };
 
-    const mapResponseBasedOnCurrentProvider = function (providers, currentProvider) {
-        return _.map(providers, function (provider) {
-            if (provider.uuid !== currentProvider.uuid) {
-                return {uuid: provider.uuid, response: Bahmni.Appointments.Constants.providerResponses.AWAITING};
-            } else {
-                return {uuid: provider.uuid, response: Bahmni.Appointments.Constants.providerResponses.ACCEPTED};
-            }
-        })
+    const isStatusRequested = function (status) {
+        return status === Bahmni.Appointments.Constants.appointmentStatuses.Requested;
     };
 
-    const updateStatusAndResponseAsRequested = function (appointment) {
-        const statusAndProviderResponse = {};
+    const isStatusScheduled = function (status) {
+        return status === Bahmni.Appointments.Constants.appointmentStatuses.Scheduled;
+    };
 
-        statusAndProviderResponse.status = Bahmni.Appointments.Constants.appointmentStatuses.Requested;
-        statusAndProviderResponse.providers = mapProvidersToResponse(appointment.providers, Bahmni.Appointments.Constants.providerResponses.AWAITING);
+    const isNewAppointment = function (appointment) {
+        return !appointment.uuid;
+    };
+
+    const updateAs = function (appointment, existingProvidersUuids, newStatus, response) {
+        const statusAndProviderResponse = {};
+        if (isNewAppointment(appointment)) {
+            statusAndProviderResponse.status = newStatus;
+        } else {
+            statusAndProviderResponse.status = appointment.status;
+        }
+        statusAndProviderResponse.providers = mapNewProvidersToGivenResponse(appointment, existingProvidersUuids,
+            response);
         return statusAndProviderResponse;
     };
 
-    function getCurrentProviderInAppointment(appointment, currentProviderUuid) {
-        const isCurrentProvider = function (provider) {
-            return provider.uuid === currentProviderUuid &&
-                provider.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
-        };
-        return _.find(appointment.providers, isCurrentProvider);
+
+    const updateAsScheduledAndAccepted = function (appointment, existingProvidersUuids) {
+        return updateAs(appointment, existingProvidersUuids,
+            Bahmni.Appointments.Constants.appointmentStatuses.Scheduled, Bahmni.Appointments.Constants.providerResponses.ACCEPTED);
+
+    };
+
+    const updateAsRequestedAndAwaiting = function (appointment, existingProvidersUuids) {
+        return updateAs(appointment, existingProvidersUuids,
+            Bahmni.Appointments.Constants.appointmentStatuses.Requested, Bahmni.Appointments.Constants.providerResponses.AWAITING);
+    };
+
+    function updateForCurrentProvider(statusAndProviderResponse, currentProviderUuid, appointment) {
+        const currentProviderInAppointment = _.find(statusAndProviderResponse.providers, provider => provider.uuid === currentProviderUuid);
+        if (currentProviderInAppointment) {
+            currentProviderInAppointment.response = Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
+            if (isNewAppointment(appointment) || isStatusRequested(appointment.status)) {
+                statusAndProviderResponse.status = Bahmni.Appointments.Constants.appointmentStatuses.Scheduled;
+            } else {
+                statusAndProviderResponse.status = appointment.status;
+            }
+        }
     }
 
-    const updateStatusAndResponseForCurrentProvider = function (appointment, currentProviderUuid) {
-        const currentProviderInAppointment = getCurrentProviderInAppointment(appointment, currentProviderUuid);
-        if (_.isUndefined(currentProviderInAppointment)) {
-            return updateStatusAndResponseAsRequested(appointment);
-        }
-        const statusAndProviderResponse = {};
-        statusAndProviderResponse.status = Bahmni.Appointments.Constants.appointmentStatuses.Scheduled;
-        statusAndProviderResponse.providers = mapResponseBasedOnCurrentProvider(appointment.providers, currentProviderInAppointment);
-        return statusAndProviderResponse;
-    };
+    function handleRescheduledAppointment(statusAndProviderResponse, appointment, currentProviderUuid) {
+        //this is an special edit
+        // in this case we don't keep the existing appointment status and responses
+        statusAndProviderResponse.status = Bahmni.Appointments.Constants.appointmentStatuses.Requested;
+        statusAndProviderResponse.providers = _.map(appointment.providers, function (provider) {
+            return {uuid: provider.uuid, response: Bahmni.Appointments.Constants.providerResponses.AWAITING}
+        });
 
-    const updatedStatusAndProviderResponse = function (appointment, currentProviderUuid) {
-        const statusAndProviderResponse = {};
-
-        const isInitialStatusRequested = appointment.service.initialAppointmentStatus === Bahmni.Appointments.Constants.appointmentStatuses.Requested;
-        if (!isInitialStatusRequested || _.isEmpty(appointment.providers)) {
+        const currentProviderInAppointment = _.find(statusAndProviderResponse.providers, provider => provider.uuid === currentProviderUuid);
+        if (currentProviderInAppointment) {
             statusAndProviderResponse.status = Bahmni.Appointments.Constants.appointmentStatuses.Scheduled;
-            statusAndProviderResponse.providers = mapProvidersToResponse(appointment.providers, Bahmni.Appointments.Constants.providerResponses.ACCEPTED);
-            return statusAndProviderResponse;
+            currentProviderInAppointment.response = Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
         }
-        return updateStatusAndResponseForCurrentProvider(appointment, currentProviderUuid);
-    };
+    }
 
-    const getResponseForNewProviders = function (newProviders, appointment, currentProviderUuid) {
-        const isInitialStatusRequested = appointment.service.initialAppointmentStatus === Bahmni.Appointments.Constants.appointmentStatuses.Requested;
+    function handleAtleastOneAccept(statusAndProviderResponse) {
+        const hasAtleastOneAccept = _.some(statusAndProviderResponse.providers, function (provider) {
+            return provider.response === Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
+        });
+        if (hasAtleastOneAccept) {
+            if (isStatusRequested(statusAndProviderResponse.status)) {
+                statusAndProviderResponse.status = Bahmni.Appointments.Constants.appointmentStatuses.Scheduled;
+            }
+        } else {
+            if (isStatusScheduled(statusAndProviderResponse.status)) {
+                statusAndProviderResponse.status = Bahmni.Appointments.Constants.appointmentStatuses.Requested;
+            }
+        }
+    }
 
-        if (!isInitialStatusRequested) {
-            return mapProvidersToResponse(newProviders, Bahmni.Appointments.Constants.providerResponses.ACCEPTED);
+    const getUpdatedStatusAndProviderResponse = function (appointment, currentProviderUuid, existingProvidersUuids, isRescheduled) {
+        const isInitialStatusRequested = (appointment.service.initialAppointmentStatus === Bahmni.Appointments.Constants.appointmentStatuses.Requested);
+        if (!isInitialStatusRequested || _.isEmpty(appointment.providers)) {
+            return updateAsScheduledAndAccepted(appointment, existingProvidersUuids);
         }
-        const currentProviderInAppointment = getCurrentProviderInAppointment(appointment, currentProviderUuid);
-        if (_.isUndefined(currentProviderInAppointment)) {
-            return mapProvidersToResponse(newProviders, Bahmni.Appointments.Constants.providerResponses.AWAITING);
+        const statusAndProviderResponse = updateAsRequestedAndAwaiting(appointment, existingProvidersUuids);
+
+        updateForCurrentProvider(statusAndProviderResponse, currentProviderUuid, appointment);
+        handleAtleastOneAccept(statusAndProviderResponse);
+
+        if (isRescheduled){
+            handleRescheduledAppointment(statusAndProviderResponse, appointment, currentProviderUuid);
         }
-        return mapResponseBasedOnCurrentProvider(newProviders, currentProviderInAppointment);
+        return statusAndProviderResponse;
     };
 
     return {
-        getUpdatedStatusAndProviderResponse: updatedStatusAndProviderResponse,
-        getResponseForNewProviders: getResponseForNewProviders
+        getUpdatedStatusAndProviderResponse: getUpdatedStatusAndProviderResponse,
     }
 })();
