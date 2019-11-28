@@ -26,7 +26,7 @@ describe('Service Type Search', () => {
     });
 
     it('should allow user to search and select a service type', async () => {
-        const targetServiceType = 'Maxillo-facial dressing';
+        const targetServiceType = 'Maxillo-facial dressing [15 min]';
         const uuid = "74d43c99-fee1-4097-904a-e2292711b27f";
         const {container, getByText} = renderWithReactIntl(<ServiceTypeSearch onChange={jest.fn()}
                                                                               serviceUuid={uuid}/>);
@@ -53,7 +53,7 @@ describe('Service Type Search', () => {
     });
 
     it('should call onChange when option is selected', async () => {
-        const targetServiceType = 'Maxillo-facial dressing';
+        const targetServiceType = 'Maxillo-facial dressing [15 min]';
         const uuid = "74d43c99-fee1-4097-904a-e2292711b27f";
         const onChangeSpy = jest.fn();
         const {container, getByText} = renderWithReactIntl(<ServiceTypeSearch onChange={onChangeSpy}
