@@ -12,7 +12,8 @@ import {
     timeSelector,
     weekDaysContainer,
     appointmentPlanContainer,
-    apiErrorContainer
+    apiErrorContainer,
+    isRecurring
 } from './AddAppointment.module.scss';
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
@@ -307,7 +308,7 @@ const AddAppointment = props => {
     };
 
     return (<Fragment>
-        <div data-testid="appointment-editor" className={classNames(appointmentEditor)}>
+        <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring: '')}>
             <SearchFieldsContainer updateAppointmentDetails={updateAppointmentDetails} updateErrorIndicators={updateErrorIndicators}
                                    appointmentDetails={appointmentDetails} endTimeBasedOnService={endTimeBasedOnService} appConfig={appConfig} errors={errors}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
