@@ -16,7 +16,7 @@ import ProviderSearch from "../Provider/ProviderSearch.jsx";
 import React from "react";
 import {injectIntl} from "react-intl";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
-import {includes, filter} from "lodash";
+import {includes, filter, isEmpty} from "lodash";
 
 const AppointmentEditorCommonFieldsWrapper = props => {
 
@@ -24,6 +24,16 @@ const AppointmentEditorCommonFieldsWrapper = props => {
     const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl} = props;
     const componentsDisableStatus = props.componentsDisableStatus || {};
     const errorTranslations = getErrorTranslations(intl);
+
+    const updateLocationBasedOnService = (selectedService) => {
+        isEmpty(selectedService.value.location) ? updateAppointmentDetails({location: null})
+            : updateAppointmentDetails({
+                location: {
+                    value: selectedService.value.location,
+                    label: selectedService.value.location.name
+                }
+            });
+    };
 
     return (
         <Fragment>
@@ -46,6 +56,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                             updateAppointmentDetails({service: optionSelected, serviceType: null});
                             updateErrorIndicators({serviceError: !optionSelected});
                             endTimeBasedOnService(appointmentDetails.startTime, optionSelected.value, undefined);
+                            updateLocationBasedOnService(optionSelected);
                         }} specialityUuid={appointmentDetails.speciality && appointmentDetails.speciality.value
                         && appointmentDetails.speciality.value.uuid}
                                        isDisabled={componentsDisableStatus.service}
