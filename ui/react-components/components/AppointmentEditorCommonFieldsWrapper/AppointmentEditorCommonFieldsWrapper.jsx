@@ -68,7 +68,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     <div data-testid="service-type-search">
                         <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
                             updateAppointmentDetails({serviceType: optionSelected});
-                            endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected);
+                            endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
                         }}
                                            serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
                                            isDisabled={componentsDisableStatus.serviceType}/>
