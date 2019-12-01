@@ -90,6 +90,23 @@ describe('AppointmentsService', function () {
             'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
         }, params);
     });
+
+    it('should change the provider status for given provider', function () {
+        var appointment = {status: 'Scheduled',
+            uuid: "7d162c29-3f12-11e4-adec-0800271c1b75",
+            providers:[{uuid:'xyz1', response: 'AWAITING'}]
+        };
+        var changeProviderResponseUrl = Bahmni.Appointments.Constants.changeProviderResponseUrl;
+        changeProviderResponseUrl.replace('{{appointmentUuid}}', appointment.uuid);
+        appDescriptor.formatUrl.and.returnValue(changeProviderResponseUrl);
+
+        appointmentsService.changeProviderResponse(appointment.uuid, 'xyz1', 'ACCEPTED');
+
+        var headers = {"Content-Type": "application/json"};
+        var data = {uuid: 'xyz1', response: 'ACCEPTED'};
+        var params = {withCredentials: true, headers: headers};
+        expect(mockHttp.post).toHaveBeenCalledWith(changeProviderResponseUrl, data, params);
+    });
 });
 
 

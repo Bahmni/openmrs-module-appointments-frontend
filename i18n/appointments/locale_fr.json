@@ -148,5 +148,7 @@
   "INVITED_PROVIDERS": "Invités",
   "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Retirer",
   "INITIAL_APPOINTMENT_STATUS_KEY": "Statut de rendez-vous initial",
-  "PLACEHOLDER_APPOINTMENT_REQUEST": "Sélectionnez statut rendez-vous"
+  "PLACEHOLDER_APPOINTMENT_REQUEST": "Sélectionnez statut rendez-vous",
+  "ACCEPT_APPOINTMENT_REQUEST": "Acceptez",
+  "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Invitation à le rendez-vous acceptée avec succès."
 }

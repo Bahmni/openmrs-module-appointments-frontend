@@ -66,4 +66,13 @@ angular.module('bahmni.appointments')
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });
             };
+
+            this.changeProviderResponse = function (appointmentUuid, providerUuid, providerResponse) {
+                var data = {uuid: providerUuid, response: providerResponse};
+                var changeStatusUrl = appService.getAppDescriptor().formatUrl(Bahmni.Appointments.Constants.changeProviderResponseUrl, {appointmentUuid: appointmentUuid});
+                return $http.post(changeStatusUrl, data, {
+                    withCredentials: true,
+                    headers: {"Content-Type": "application/json"}
+                });
+            };
         }]);

@@ -148,5 +148,7 @@
   "INVITED_PROVIDERS": "Convidamos",
   "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Remover",
   "INITIAL_APPOINTMENT_STATUS_KEY": "Status do Compromisso Inicial",
-  "PLACEHOLDER_APPOINTMENT_REQUEST": "Selecionar status do compromisso"
+  "PLACEHOLDER_APPOINTMENT_REQUEST": "Selecionar status do compromisso",
+  "ACCEPT_APPOINTMENT_REQUEST": "Aceitar",
+  "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Convite para compromisso aceito com sucesso."
 }

@@ -17,7 +17,7 @@ describe('CalendarViewPopUp', function () {
             $state = jasmine.createSpyObj('$state', ['go']);
             confirmBox = jasmine.createSpy('confirmBox');
             $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
-            appointmentsService = jasmine.createSpyObj('appointmentsService', ['changeStatus']);
+            appointmentsService = jasmine.createSpyObj('appointmentsService', ['changeStatus','changeProviderResponse']);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -252,6 +252,23 @@ describe('CalendarViewPopUp', function () {
         popUpScope.confirmAction(appointment, toStatus);
     });
 
+    it('should show popup with accept button if appointment request is enabled and provider has a AWAITING invite', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            return value === 'enableAppointmentRequests';
+        });
+        var appointments = [
+            {
+                patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"}
+            }
+        ];
+        var config = {scope: {appointments: appointments}};
+        calendarViewPopUp(config);
+
+        let args = ngDialog.open.calls.allArgs()[0][0];
+        let expectedSubstring = "{{::'ACCEPT_APPOINTMENT_REQUEST' | translate}}";
+        expect(args.template).toContain(expectedSubstring);
+    });
+
     describe('isAllowedAction', function () {
         it('should init with empty array if config is undefined', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
@@ -341,7 +358,7 @@ describe('CalendarViewPopUp', function () {
         it('should return false if no appointment is selected', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
                 if (value === 'allowedActionsByStatus') {
-                    return { CheckedIn: ['Completed'] };
+                    return {CheckedIn: ['Completed']};
                 }
                 return value;
             });
@@ -421,6 +438,78 @@ describe('CalendarViewPopUp', function () {
             });
             calendarViewPopUp(rootScope.config);
             expect(popUpScope.isEditAllowed()).toBe(false);
+        });
+    });
+
+    describe('isResponseAwaitingForCurrentProvider', function () {
+        it('should return false if current provider is not of appointment', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return value === 'enableAppointmentRequests';
+            });
+            var appointments = [{
+                patient: {identifier: "GAN203012",name: "patient1",uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                providers:[{uuid:'xyz1', response:'AWAITING'}]
+            }];
+            rootScope.currentProvider = {uuid:'xyz0'};
+            var config = {scope: {appointments: appointments}};
+
+            calendarViewPopUp(config);
+            expect(popUpScope.isResponseAwaitingForCurrentProvider(appointments[0])).toBe(false);
+        });
+
+        it('should return true if current provider has got an invite for appointment', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return value === 'enableAppointmentRequests';
+            });
+            var appointments = [{
+                patient: {identifier: "GAN203012",name: "patient1",uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                providers:[{uuid:'xyz1', response:'AWAITING'}]
+            }];
+            rootScope.currentProvider = {uuid:'xyz1'};
+            var config = {scope: {appointments: appointments}};
+
+            calendarViewPopUp(config);
+            expect(popUpScope.isResponseAwaitingForCurrentProvider(appointments[0])).toBe(true);
+        });
+
+        it('should return false if current has already accepted the appointment invite', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return value === 'enableAppointmentRequests';
+            });
+            var appointments = [{
+                patient: {identifier: "GAN203012",name: "patient1",uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                providers:[{uuid:'xyz1', response:'ACCEPTED'}]
+            }];
+            rootScope.currentProvider = {uuid:'xyz0'};
+            var config = {scope: {appointments: appointments}};
+
+            calendarViewPopUp(config);
+            expect(popUpScope.isResponseAwaitingForCurrentProvider(appointments[0])).toBe(false);
+        });
+    });
+
+    describe('acceptAppointmentInviteForCurrentProvider', function () {
+        it('should change provider response when click on ACCEPT', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return value === 'enableAppointmentRequests';
+            });
+            var appointments = [{
+                patient: {identifier: "GAN203012",name: "patient1",uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                providers:[{uuid:'xyz1', response:'AWAITING'}],
+                uuid:'abc1'
+            }];
+            rootScope.currentProvider = {uuid:'xyz1'};
+            var config = {scope: {appointments: appointments}};
+
+            var message = "Successfully Accepted the appointment invite.";
+            appointmentsService.changeProviderResponse.and.returnValue(specUtil.simplePromise({}));
+            $translate.instant.and.returnValue(message);
+
+            calendarViewPopUp(config);
+            popUpScope.acceptAppointmentInviteForCurrentProvider(appointments[0]);
+
+            expect(appointmentsService.changeProviderResponse).toHaveBeenCalledWith(appointments[0].uuid, 'xyz1', 'ACCEPTED');
+            expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
         });
     });
 

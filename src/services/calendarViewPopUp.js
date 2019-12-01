@@ -19,6 +19,7 @@ angular.module('bahmni.appointments')
                 popUpScope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
                 popUpScope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
                 popUpScope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
+                popUpScope.isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
 
                 popUpScope.navigateTo = function (state, appointment) {
                     var params = $state.params;
@@ -106,6 +107,31 @@ angular.module('bahmni.appointments')
                     return _.includes(popUpScope.allowedActions, action);
                 };
 
+                const findCurrentProviderInAppointment = function(appointment) {
+                    return _.find(appointment.providers, function (provider) {
+                        return provider.uuid === currentProviderUuId;
+                    });
+                };
+
+                popUpScope.isResponseAwaitingForCurrentProvider = function(appointment){                    
+                    //todo: A way to check with provider for which it is clicked
+                    if (!popUpScope.isAppointmentRequestEnabled || !appointment) return false;
+                    const currentProviderInAppointment = findCurrentProviderInAppointment(appointment);
+                    return !(_.isUndefined(currentProviderInAppointment)) &&
+                        currentProviderInAppointment.response === Bahmni.Appointments.Constants.providerResponses.AWAITING;
+                };
+
+                popUpScope.acceptAppointmentInviteForCurrentProvider = function(appointment){
+                    if (!popUpScope.isAppointmentRequestEnabled || !appointment) return false;
+                    const currentProviderInAppointment = findCurrentProviderInAppointment(appointment);
+
+                    const message = $translate.instant('PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE');
+                    return appointmentsService.changeProviderResponse(appointment.uuid, currentProviderInAppointment.uuid,
+                        Bahmni.Appointments.Constants.providerResponses.ACCEPTED).then(function () {
+                            messagingService.showMessage('info', message);
+                    });
+                };
+
                 popUpScope.isValidActionAndIsUserAllowedToPerformEdit = function (appointment, action) {
                     return !appointment ? false :
                         !appointmentCommonService.isUserAllowedToPerformEdit(appointmentProviders, currentUserPrivileges, currentProviderUuId)
@@ -122,7 +148,7 @@ angular.module('bahmni.appointments')
                         var providerNames = appointment.providers.filter(function (p) {
                             return p.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
                         }).map(function (p) {
-                            return p.name;
+                            return popUpScope.isAppointmentRequestEnabled ? p.name + "(" + p.response + ")" : p.name;
                         }).join(', ');
                         return providerNames;
                     }
