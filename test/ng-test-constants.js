@@ -98,6 +98,7 @@ window.Bahmni.Appointments.Constants = {
   "searchAppointmentUrl": "/openmrs/ws/rest/v1/appointment/search",
   "searchAppointmentsUrl": "/openmrs/ws/rest/v1/appointments/search",
   "getAppointmentsSummaryUrl": "/openmrs/ws/rest/v1/appointment/appointmentSummary",
+  "changeProviderResponseUrl": "/openmrs/ws/rest/v1/appointments/{{appointmentUuid}}/providerResponse",
   "defaultServiceTypeDuration": 15,
   "defaultCalendarSlotLabelInterval": "01:00",
   "defaultCalendarSlotDuration": "00:30",

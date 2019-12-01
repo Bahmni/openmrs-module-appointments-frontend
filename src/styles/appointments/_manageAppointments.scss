@@ -545,6 +545,7 @@
         @extend .appBtn;
         border: none;
         color: #fff;
+        margin-bottom: 0.5em;
 
         &:disabled {
           cursor: not-allowed;

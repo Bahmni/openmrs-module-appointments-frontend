@@ -162,5 +162,7 @@
   "INVITED_PROVIDERS": "Invitees",
   "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Remove",
   "INITIAL_APPOINTMENT_STATUS_KEY": "Initial Appointment Status",
-  "PLACEHOLDER_APPOINTMENT_REQUEST": "Select Appointment Status"
+  "PLACEHOLDER_APPOINTMENT_REQUEST": "Select Appointment Status",
+  "ACCEPT_APPOINTMENT_REQUEST": "Accept",
+  "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Appointment invitation accepted successfully."
 }

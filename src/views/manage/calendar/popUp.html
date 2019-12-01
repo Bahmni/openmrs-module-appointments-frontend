@@ -25,6 +25,12 @@
         {{scope.appointments[0].endDateTime | bahmniTime}}</p>
     <p class="app-dialog-btn-wrap">
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #039BE5"
+                ng-show="isAppointmentRequestEnabled"
+                ng-disabled="!appointment || !isEditAllowed() || !isResponseAwaitingForCurrentProvider(appointment)"
+                ng-click="acceptAppointmentInviteForCurrentProvider(appointment)">
+            {{::'ACCEPT_APPOINTMENT_REQUEST' | translate}}
+        </button>
+        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #039BE5"
                 ng-disabled="!appointment || !isEditAllowed()"
                 ng-click="navigateTo('edit', appointment)">
             {{::'EDIT_APPOINTMENT' | translate}}
