@@ -27,6 +27,7 @@ const Dropdown = props => {
                 onChange={onChange}
                 isDisabled={isDisabled}
                 value={selectedValue}
+                isClearable
             />
         </div>
     );
