@@ -11,6 +11,8 @@ const ServiceTypeSearch = props => {
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SERVICE_APP_TYPE', defaultMessage: 'Service App Type'
     });
+    const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SERVICE_APPOINTMENTS_TYPE',
+        defaultMessage: 'Select a service appointment type'});
     const [isServiceNotSelected, setIsServiceNotSelected] = useState(true);
     const [serviceTypes, setServiceTypes] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
@@ -25,15 +27,19 @@ const ServiceTypeSearch = props => {
         }
     }, [serviceUuid]);
 
+
     const getServiceType = async (serviceUuid) => {
         const service = await getService(serviceUuid);
         const serviceTypes = service.serviceTypes;
-        setServiceTypes(createDropdownOptions(serviceTypes));
+        if(serviceTypes.length === 0) {
+            setIsServiceNotSelected(true);
+        }
+        else {
+            setServiceTypes(createDropdownOptions(serviceTypes));
+        }
     };
 
     const createDropdownOptions = (results) => {
-        const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SERVICE_APPOINTMENTS_TYPE',
-            defaultMessage: 'Select a service appointment type'});
         const options = [{value: null, label: defaultOption}];
         forEach(results, function (serviceType) {
             options.push({
