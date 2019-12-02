@@ -212,17 +212,17 @@ const EditAppointment = props => {
         }
     };
 
-    const showSuccessPopUp = startDate => {
+    const setViewDateAndShowSuccessPopup = startDate => {
         setViewDate(startDate.startOf('day').toDate());
         setShowUpdateSuccessPopup(true);
-    }
+    };
 
     const save = async appointmentRequest => {
         const response = await saveAppointment(appointmentRequest);
         if (response.status === 200) {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
-            showSuccessPopUp(appointmentDetails.appointmentDate);
+            setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
         }
     };
 
@@ -231,8 +231,7 @@ const EditAppointment = props => {
         if (response.status === 200) {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
-            showSuccessPopUp(appointmentDetails.appointmentDate);
-
+            setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
         }
     };
 
