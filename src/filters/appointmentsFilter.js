@@ -30,6 +30,15 @@ angular.module('bahmni.appointments')
             });
         };
 
+        var filterAppointmentsByLocations = function (appointments, locationUuids) {
+            if (_.isEmpty(locationUuids)) {
+              return appointments;
+            }
+            return _.filter(appointments, function (appointment) {
+              return _.includes(locationUuids, appointment.location.uuid);
+            });
+        };
+
         var filterAppointmentsByStatus = function (appointments, statusList) {
             if (_.isEmpty(statusList)) {
                 return appointments;
@@ -45,12 +54,14 @@ angular.module('bahmni.appointments')
             }
             if ((_.isEmpty(filters.serviceUuids) && _.isEmpty(filters.serviceTypeUuids))) {
                 var appointmentsFilteredByProviders = filterAppointmentsByProviders(appointments, filters.providerUuids);
-                return filterAppointmentsByStatus(appointmentsFilteredByProviders, filters.statusList);
+                var appointmentsFilteredByLocations = filterAppointmentsByLocations(appointmentsFilteredByProviders, filters.locationUuids);
+                return filterAppointmentsByStatus(appointmentsFilteredByLocations, filters.statusList);
             }
             var appointmentsFilteredByService = filterAppointmentsByService(appointments, filters.serviceUuids);
             var appointmentsFilteredByServiceType = filterAppointmentsByServiceType(appointments, filters.serviceTypeUuids);
             var appointmentsFilteredBySpeciality = appointmentsFilteredByService.concat(appointmentsFilteredByServiceType);
             var appointmentsFilteredByProviders = filterAppointmentsByProviders(appointmentsFilteredBySpeciality, filters.providerUuids);
-            return filterAppointmentsByStatus(appointmentsFilteredByProviders, filters.statusList);
+            var appointmentsFilteredByLocations = filterAppointmentsByLocations(appointmentsFilteredByProviders, filters.locationUuids);
+            return filterAppointmentsByStatus(appointmentsFilteredByLocations, filters.statusList);
         };
     }]);

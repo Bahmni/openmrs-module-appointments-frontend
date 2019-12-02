@@ -56,6 +56,17 @@
                 auto-complete-min-length="1"></multi-select-autocomplete>
 
     </div>
+    <div class="appointment-filter-items location-block">
+        <label>{{::'APPOINTMENT_LOCATION' |translate}}</label>
+        <multi-select-autocomplete
+                input-items="locations"
+                selected-values="selectedLocations"
+                display-property="'name'"
+                key-property="'name'"
+                placeholder="::'APPOINTMENT_ENTER_LOCATION_NAME_KEY'"
+                load-on-down-arrow="true"
+                auto-complete-min-length="1"></multi-select-autocomplete>
+    </div>
     <div class="appointment-filter-items status-block">
         <label>{{::'APPOINTMENT_STATUS_KEY' |translate}}</label>
         <multi-select-autocomplete
