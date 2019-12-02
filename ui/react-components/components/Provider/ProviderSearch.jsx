@@ -5,7 +5,7 @@ import Tags from "../Tags/Tags.jsx";
 import {forEach, find} from 'lodash';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
-
+import {sortBy} from "lodash";
 
 const ProviderSearch = props => {
 
@@ -35,7 +35,7 @@ const ProviderSearch = props => {
                 response: "ACCEPTED"
             })
         );
-        return options;
+        return sortBy(options, providerOption => providerOption.label);
     };
 
     const onProviderSelect = selectedProviderOption => {
