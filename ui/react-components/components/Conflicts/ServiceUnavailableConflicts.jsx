@@ -16,12 +16,12 @@ const ServiceUnavailableConflicts = props => {
         });
         return conflictList;
     };
-    const defaultMessage = `The ${props.service.label} service you had selected for the appointment(s) is not 
-                                available during below listed dates`;
+    const defaultMessage = 'The {label} service you had selected for the appointment(s) is not available during below listed dates';
+
     return (
         <div>
             <div className={classNames(conflictsHeading)}>
-                <FormattedMessage id="NO_SERVICE_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage}/>
+                <FormattedMessage id="NO_SERVICE_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage} values={{label: props.service.label}}/>
             </div>
             <div className={classNames(conflictsList)}>
                 <ul>{getConflictsList()}</ul>
