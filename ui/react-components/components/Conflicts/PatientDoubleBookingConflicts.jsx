@@ -14,15 +14,18 @@ import {getAppointmentConflictDetails} from "./ConflictsUtil";
 
 const PatientDoubleBookingConflicts = props => {
 
+    const doubleBookingConflictMessage = 'Current {currentAppointmentService} request conflicts with {existingAppointmentService} appointment on and';
+
     const getDoubleBookingAppointmentConflictMessage = conflict => {
         const currentAppointmentService = props.service.label;
         const existingAppointmentService = conflict.service.name;
-        return (
-            <div className={classNames(conflictMessage)}>Current {currentAppointmentService} request
-                <span className={classNames(boldContent)}> conflicts with {existingAppointmentService} </span>
-                appointment on
-            </div>
-        );
+      let formattedMessage = <FormattedMessage id="PATIENT_DOUBLE_BOOKING_CONFLICT_MESSAGE"
+                                               defaultMessage={doubleBookingConflictMessage}
+                                               values={{
+                                                 currentAppointmentService,
+                                                 existingAppointmentService: <strong>{existingAppointmentService}</strong>
+                                               }}/>;
+      return (<div className={classNames(conflictMessage)}>{formattedMessage}</div>);
     };
 
     const getConflictsList = () => {
@@ -42,9 +45,9 @@ const PatientDoubleBookingConflicts = props => {
     return (
         <div>
             <div className={classNames(conflictsHeading)}>
-            {props.isRecurring 
+            {props.isRecurring
                 ? <FormattedMessage id="RECURRING_OVERLAPPING_CONFLICTS_DEFAULT_TEXT" defaultMessage={recurringDefaultMessage}/>
-                : <FormattedMessage id="OVERLAPPING_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage}/> 
+                : <FormattedMessage id="OVERLAPPING_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage}/>
             }
             </div>
             <div className={classNames(conflictsList)}>

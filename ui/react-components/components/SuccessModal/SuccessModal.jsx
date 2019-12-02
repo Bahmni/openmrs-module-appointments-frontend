@@ -18,13 +18,7 @@ const SuccessModal = (props) => {
     const {intl, patientDetails, isEdit} = props;
     const {onBack} = React.useContext(AppContext);
 
-    const saveConfirmationTextPartOne = intl.formatMessage({
-        id: 'APPOINTMENT_SAVE_CONFIRMATION_TEXT_PART_1', defaultMessage: 'The new appointment for the patient'
-    });
-
-    const saveConfirmationTextPartTwo = intl.formatMessage({
-        id: 'APPOINTMENT_SAVE_CONFIRMATION_TEXT_PART_2', defaultMessage: 'has been saved.'
-    });
+    const defaultSaveSuccessMessage = 'The new appointment for the patient {patientDetails} has been saved.';
 
     return (
         <div className={classNames(saveModal)}>
@@ -35,19 +29,19 @@ const SuccessModal = (props) => {
             </div>
             <div>
                 <h1 className={classNames(saveModalTitle)}>
-                    <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_TITLE'} defaultMessage={isEdit ? 'Update Successful!' : 'Save successful'}/>
+                    <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TITLE'} defaultMessage={isEdit ? 'Update Successful!' : 'Save successful'}/>
                 </h1>
 
                 <div className={classNames(saveModalBody)}>
-                    <span>{`${saveConfirmationTextPartOne} "${patientDetails}" ${saveConfirmationTextPartTwo}`}</span>
+                    <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TEXT'} defaultMessage={defaultSaveSuccessMessage} values={{patientDetails}} />
                     <br/><br/>
-                    <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_TEXT_PART_3'}
+                    <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_HELP_TEXT'}
                                       defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
                 </div>
 
                 <div className={classNames(saveConfirmationFooter)}>
                     <button className={classNames(button)} data-testid="save-close-button" onClick={() => onBack()}>
-                        <FormattedMessage id={'APPOINTMENT_SAVE_CONFIRMATION_CLOSE'} defaultMessage={'Close'}/>
+                        <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_CLOSE'} defaultMessage={'Close'}/>
                     </button>
 
                     <span className={classNames(newAppointmentLink)}>
