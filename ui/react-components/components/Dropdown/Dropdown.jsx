@@ -10,9 +10,8 @@ import {injectIntl} from "react-intl";
 import {isUndefined} from "lodash";
 
 const Dropdown = props => {
-    const {options, placeholder, onChange, isDisabled, intl, selectedValue} = props;
+    const {options, placeholder, onChange, isDisabled, intl, selectedValue, isClearable} = props;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'No Options'});
-
     const isComponentDisabled = () => isUndefined(isDisabled) ? false :  isDisabled;
 
     return (
@@ -27,6 +26,7 @@ const Dropdown = props => {
                 onChange={onChange}
                 isDisabled={isDisabled}
                 value={selectedValue}
+                isClearable={isClearable}
             />
         </div>
     );

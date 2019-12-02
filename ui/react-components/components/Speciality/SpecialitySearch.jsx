@@ -13,8 +13,8 @@ const SpecialitySearch = (props) => {
     }, []);
 
     const createDropdownOptions = (specialities) => {
-        const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SPECIALITY', defaultMessage: 'Select a speciality'});
-        const options = [{value: null, label: defaultOption}];
+        //const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SPECIALITY', defaultMessage: 'Select a speciality'});
+        const options = [];
         forEach(specialities, function (speciality) {
             options.push({
                 value: speciality,
@@ -41,6 +41,7 @@ const SpecialitySearch = (props) => {
             placeholder={placeholder}
             selectedValue={value}
             isDisabled={isDisabled}
+            isClearable={true}
         />);
 };
 

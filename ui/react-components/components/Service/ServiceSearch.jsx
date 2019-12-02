@@ -46,6 +46,7 @@ const ServiceSearch = (props) => {
                   onChange={onChange}
                   selectedValue={value}
                   isDisabled={isDisabled}
+                  isClearable={false}
         />
     );
 };

@@ -32,9 +32,9 @@ const ServiceTypeSearch = props => {
     };
 
     const createDropdownOptions = (results) => {
-        const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SERVICE_APPOINTMENTS_TYPE',
-            defaultMessage: 'Select a service appointment type'});
-        const options = [{value: null, label: defaultOption}];
+//         const defaultOption = intl.formatMessage({id: 'PLACEHOLDER_SERVICE_APPOINTMENTS_TYPE',
+//             defaultMessage: 'Select a service appointment type'});
+        const options = [];
         forEach(results, function (serviceType) {
             options.push({
                 value: serviceType,
@@ -52,12 +52,13 @@ const ServiceTypeSearch = props => {
     return (
         <div>
             <Dropdown
-                isDisabled={isServiceNotSelected || isDisabled}
+                isDisabled={isServiceNotSelected || isDisabled || (Object.values(serviceTypes).length===0)}
                 options={Object.values(serviceTypes)}
                 placeholder={placeHolder}
                 value={selectedOption}
                 onChange={updateSelection}
                 selectedValue={value}
+                isClearable={true}
             />
         </div>
     );
