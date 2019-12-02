@@ -425,7 +425,7 @@ describe('AppointmentsFilterController', function () {
         expect(scope.locations.length).toBe(2)
     });
 
-    it('should set the selectedLocations', function () {
+    it('should set the filter params as selectedLocations', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         state.params.filterParams.locationUuids = ["0b3fa14c-2402-468a-bdc3-e0c8c67e9522"];
         createController();
