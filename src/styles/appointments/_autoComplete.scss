@@ -31,7 +31,7 @@
 .appointment-filter-items {
   margin-bottom: 5px;
   padding: 0 20px 10px;
-  &.provider-block, &.status-block {
+  &.provider-block,  &.location-block, &.status-block {
     label {
       color: #292929;
       font-weight: bold;
