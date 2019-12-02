@@ -31,7 +31,7 @@ const ServiceTypeSearch = props => {
     const getServiceType = async (serviceUuid) => {
         const service = await getService(serviceUuid);
         const serviceTypes = service.serviceTypes;
-        if(serviceTypes.length === 0) {
+        if(serviceTypes && serviceTypes.length === 0) {
             setIsServiceNotSelected(true);
         }
         else {
