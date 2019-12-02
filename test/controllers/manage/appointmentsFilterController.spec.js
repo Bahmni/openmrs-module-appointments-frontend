@@ -1,7 +1,8 @@
 'use strict';
 
 describe('AppointmentsFilterController', function () {
-    var controller, scope, state, location, appService, appDescriptor, appointmentsServiceService, ivhTreeviewMgr, q, translate;
+    var controller, scope, state, appService, appDescriptor, appointmentsServiceService, ivhTreeviewMgr, q, translate;
+    var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     var providerService = jasmine.createSpyObj('providerService', ['list']);
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
@@ -60,6 +61,28 @@ describe('AppointmentsFilterController', function () {
         }
     };
 
+    var locations = {
+        data: {
+            results: [
+                {
+                    display: "OPD",
+                    uuid: "ea24073e-2fab-4d44-a000-785a6c0b3328",
+                    name: "OPD",
+                    description: null,
+                    address1: null
+                },
+                {
+                    display: "IPD",
+                    uuid: "0b3fa14c-2402-468a-bdc3-e0c8c67e9522",
+                    name: "IPD",
+                    description: null,
+                    address1: null
+                }
+
+            ]
+        }
+    };
+
     beforeEach(function () {
         module('bahmni.appointments');
         inject(function ($controller, $rootScope, $httpBackend) {
@@ -68,7 +91,6 @@ describe('AppointmentsFilterController', function () {
             state = jasmine.createSpyObj('state', ['go']);
             q = jasmine.createSpyObj('$q', ['all']);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-            location = jasmine.createSpyObj('$location', ['url']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getAllServicesWithServiceTypes']);
             ivhTreeviewMgr = jasmine.createSpyObj('ivhTreeviewMgr', ['deselectAll', 'selectEach', 'collapseRecursive']);
@@ -82,9 +104,10 @@ describe('AppointmentsFilterController', function () {
             $httpBackend.expectGET('./i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>')
             $httpBackend.expectGET('/openmrs/ws/rest/v1/provider?v=custom:(display,person,uuid,retired,attributes:(attributeType:(display),value,voided))').respond('<div></div>')
+            $httpBackend.expectGET ('/openmrs/ws/rest/v1/location?operator=ALL&s=byTags&tags=Appointment+Location&v=default').respond('<div></div>')
         });
     });
-
+    locationService.getAllByTag.and.returnValue(specUtil.simplePromise(locations));
     providerService.list.and.returnValue(specUtil.simplePromise(providers));
 
     var createController = function () {
@@ -92,15 +115,12 @@ describe('AppointmentsFilterController', function () {
             $scope: scope,
             appService: appService,
             appointmentsServiceService: appointmentsServiceService,
-            $location: location,
             $state: state,
             ivhTreeviewMgr: ivhTreeviewMgr,
             $q: q,
             $translate: translate
         });
     };
-
-
 
     it("should get tabName from state.current", function () {
         state = {
@@ -111,7 +131,7 @@ describe('AppointmentsFilterController', function () {
                 tabName: 'calendar'
             }
         };
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         var tabName = scope.getCurrentAppointmentTabName();
         expect(tabName).toBe("calendar");
@@ -140,7 +160,7 @@ describe('AppointmentsFilterController', function () {
                     uuid: "de849ecd-47ad-4610-8080-20e7724b2df6"
                 }]
         }]}));
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         translate.instant.and.returnValue("min");
         createController();
         expect(scope.selectedSpecialities[0].label).toBe("Cardiology");
@@ -150,7 +170,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it("should map selected services to state params", function(){
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({data:[{
             appointmentServiceId: 1,
             name: "ortho",
@@ -213,7 +233,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should set service types to state params', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({}));
         createController();
         state.params = {};
@@ -260,7 +280,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should select service types only when the service is not selected', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({}));
         createController();
         state.params = {};
@@ -311,7 +331,7 @@ describe('AppointmentsFilterController', function () {
     it('should reset ivh Tree, reset the filter and apply them on appointments', function () {
         state.params={};
         state.params.filterParams = {serviceUuids: ["someServiceUuid"], serviceTypeUuid: ["serviceTypeUuid"], providerUuids: [], statusList: []};
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({ data: [{
             appointmentServiceId: 1,
             name: "ortho",
@@ -361,6 +381,7 @@ describe('AppointmentsFilterController', function () {
         expect(state.params.filterParams.serviceTypeUuids.length).toBe(0);
         expect(state.params.filterParams.serviceUuids.length).toBe(0);
         expect(state.params.filterParams.providerUuids.length).toBe(0);
+        expect(state.params.filterParams.locationUuids.length).toBe(0);
         expect(state.params.filterParams.statusList.length).toBe(0);
         expect(scope.selectedStatusList.length).toBe(0);
         expect(scope.selectedProviders.length).toBe(0);
@@ -370,18 +391,19 @@ describe('AppointmentsFilterController', function () {
         expect(ivhTreeviewMgr.deselectAll).toHaveBeenCalledWith(scope.selectedSpecialities, false);
     });
 
-    it('should get providers, statusList and specialities', function () {
+    it('should get providers, locations, statusList and specialities', function () {
         appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise(servicesWithTypes));
         providerService.list.and.returnValue(specUtil.simplePromise(providers));
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         expect(scope.statusList.length).toBe(5);
+        expect(scope.locations.length).toBe(2);
         expect(scope.providers.length).toBe(2);
     });
 
     it('should preselect the services to filter when services are not empty in filterParams', function () {
         translate.instant.and.returnValue("min");
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         state.params.filterParams.serviceUuids = ["d3f5062e-b92d-4c70-8d22-b199dcb65a2c"];
         createController();
         expect(scope.selectedSpecialities[0].label).toBe("Cardiology");
@@ -391,14 +413,27 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should set the selectedStatusList', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         state.params.filterParams.statusList = ["Completed", "Scheduled"];
         createController();
         expect(scope.selectedStatusList.length).toBe(2);
     });
 
+    it("should get all available appointment locations", function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
+        createController();
+        expect(scope.locations.length).toBe(2)
+    });
+
+    it('should set the selectedLocations', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
+        state.params.filterParams.locationUuids = ["0b3fa14c-2402-468a-bdc3-e0c8c67e9522"];
+        createController();
+        expect(scope.selectedLocations.length).toBe(1);
+    });
+
     it('should return false when filters are empty without serviceUuids, serviceTypeUuids and providerUuids', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         state.params.filterParams = {};
         createController();
         var filterApplied = scope.isFilterApplied();
@@ -406,23 +441,23 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should return false when filters are empty', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
-        state.params.filterParams = {serviceUuids:[], providerUuids:[], statusList:[]};
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
+        state.params.filterParams = {serviceUuids:[], providerUuids:[], statusList:[], locationUuids: []};
         createController();
         var filterApplied = scope.isFilterApplied();
         expect(filterApplied).toBeFalsy();
     });
 
     it('should return true when filters are not empty', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
-        state.params.filterParams = {serviceUuids:["someServiceUuid"], providerUuids:[], statusList:[]};
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
+        state.params.filterParams = {serviceUuids:["someServiceUuid"], providerUuids:[], statusList:[], locationUuids: []};
         createController();
         var filterApplied = scope.isFilterApplied();
         expect(filterApplied).toBeTruthy();
     });
 
     it('should filter all the selected services when clicked on show selected toggle', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         scope.showSelected = true;
         scope.filterSelected();
@@ -430,7 +465,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should show all the service when clicked on all toggle', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         scope.showSelected = false;
         scope.filterSelected();
@@ -438,7 +473,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should set state params when filter is expanded', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         scope.showSelected = false;
         state.params.isFilterOpen = false;
@@ -449,7 +484,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should reset state params when filter is minimized', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         scope.showSelected = true;
         state.params.isFilterOpen = true;
@@ -461,7 +496,7 @@ describe('AppointmentsFilterController', function () {
 
     it("if calender is open then statusList should not include cancelled", function () {
         state.current = { tabName: "calendar" };
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         expect(scope.statusList.length).toBe(4);
         expect(scope.statusList[0].name).toBe("Scheduled");
@@ -471,7 +506,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it("should remove cancel status from statusList and selectedStatusList when user navigates to calendar view from list view", function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         state.current = { tabName: "list" };
         scope.selectedStatusList = [{name: "Cancelled", value: "Cancelled"} , { name: "Scheduled", value: "Scheduled"}];
@@ -488,7 +523,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it("should set statusList to default statusList when user navigates to list view from calender view", function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         state.current = { tabName: "calender" };
         scope.$digest();
@@ -504,7 +539,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should have "No Provider" in providers and should have providerUuids in selectedProviders when providerUuids are present in filterParams', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         state.params.filterParams = {statusList: [], providerUuids: ['uuid1', 'no-provider-uuid']};
         createController();
         expect(scope.providers.length).toEqual(2);
@@ -515,7 +550,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should reset searchText to undefined', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}, locations]));
        scope.searchText = "SomeText";
        createController();
        scope.resetSearchText();
@@ -523,14 +558,14 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should have isSpecialitiesEnable and isServiceTypeEnabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}, locations]));
         createController();
         expect(scope.isSpecialityEnabled).toBeTruthy();
         expect(scope.isServiceTypeEnabled).toBeTruthy();
     });
 
     it('should not inclued specialities in ivhTreeView when specialities are not enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}, locations]));
         appDescriptor.getConfigValue.and.returnValue(false);
         createController();
         expect(scope.selectedSpecialities[0].label).toEqual('ortho');
@@ -538,7 +573,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should not inclued specialities in ivhTreeView when specialities are not enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}, locations]));
         appDescriptor.getConfigValue.and.returnValue(false);
         createController();
         scope.isSpecialityEnabled = false;
@@ -576,7 +611,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should not inclued serviceTypes and should include specialities in ivhTreeView when service types are not enabled and specialities are enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}, locations]));
         appDescriptor.getConfigValue.and.returnValue(true);
         createController();
         scope.isSpecialityEnabled = true;
@@ -618,7 +653,7 @@ describe('AppointmentsFilterController', function () {
 
 
     it('should inclued serviceTypes and specialities in ivhTreeView when service types and specialities are enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}, locations]));
         appDescriptor.getConfigValue.and.returnValue(true);
         createController();
         scope.isSpecialityEnabled = true;
@@ -671,7 +706,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should not inclued specialities in ivhTreeView when specialities are not enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}, locations]));
         appDescriptor.getConfigValue.and.returnValue(true);
         createController();
         scope.isSpecialityEnabled = false;
@@ -712,7 +747,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should not include specialities and service types in ivhTreeView when specialities and service types are not enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}, locations]));
         appDescriptor.getConfigValue.and.returnValue(true);
         createController();
         scope.isSpecialityEnabled = false;
@@ -735,7 +770,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it("should get providers only who are available for appointments", function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         expect(scope.providers.length).toBe(2)
     });
@@ -750,7 +785,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it("should not include retired providers", function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         expect(scope.providers.length).toBe(2)
     });
