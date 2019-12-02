@@ -207,8 +207,8 @@ const AddAppointment = props => {
     const isValidEndDate = () => (appointmentDetails.endDateType === "On" && appointmentDetails.recurringEndDate) ||
         (appointmentDetails.endDateType === "After" && appointmentDetails.occurrences && appointmentDetails.occurrences > 0);
 
-    const showSuccessPopUp = startDate => {
-        setViewDate(startDate.startOf('day').toDate());
+    const setViewDateAndShowSuccessPopup = startDate => {
+        setViewDate(moment(startDate).startOf('day').toDate());
         setShowSuccessPopup(true);
     };
 
@@ -216,7 +216,7 @@ const AddAppointment = props => {
         const response = await saveAppointment(appointmentRequest);
         if (response.status === 200) {
             setConflicts(undefined);
-            showSuccessPopUp(appointmentDetails.appointmentDate);
+            setViewDateAndShowSuccessPopup(response.startDateTime);
         }
     };
 
@@ -236,7 +236,8 @@ const AddAppointment = props => {
         if (response.status === 200) {
             setConflicts(undefined);
             updateErrorIndicators({noContentError: false});
-            showSuccessPopUp(appointmentDetails.recurringStartDate);
+            const immediateAppointment = response.data[0];
+            setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
         } else if (response.status === 204) {
             updateErrorIndicators({noContentError: true});
         }
