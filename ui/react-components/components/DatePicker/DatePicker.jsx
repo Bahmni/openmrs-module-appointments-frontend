@@ -9,11 +9,12 @@ import {
 } from './DatePicker.module.scss';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import {getLocale} from "../../utils/LocalStorageUtil.js";
+import moment from 'moment';
 
 const AppointmentDatePicker = (props) => {
     const {minDate, defaultValue, onClear, onChange, isDisabled} = props;
     const [value, setValue] = useState(defaultValue);
-
     useEffect(() => {
         setValue(defaultValue);
     }, [defaultValue]);
@@ -33,6 +34,7 @@ const AppointmentDatePicker = (props) => {
                 dateInputPlaceholder="mm/dd/yyyy"
                 onSelect={onChange}
                 selectedValue={value}
+                defaultValue={moment().locale(getLocale())}
             />
         </div>
     );
