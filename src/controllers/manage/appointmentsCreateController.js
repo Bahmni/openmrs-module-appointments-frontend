@@ -148,8 +148,9 @@ angular.module('bahmni.appointments')
                 const newEnd = moment($scope.appointment.endTime, 'hh:mm a');
                 const previousEnd = moment(appointmentTimeBeforeEdit.endTime, 'hh:mm a');
 
-                return !(newStart.isSame(previousStart, 'minutes')
-                    && newEnd.isSame(previousEnd, 'minutes'));
+                const isSameStart = newStart.isSame(previousStart, 'minutes');
+                const isSameEnd = newEnd.isSame(previousEnd, 'minutes');
+                return !(isSameStart && isSameEnd);
             };
 
             const updateProviderResponse = function (updatedProviders) {
@@ -174,6 +175,7 @@ angular.module('bahmni.appointments')
                 $scope.validatedAppointment.status = updatedStatusAndProviderResponse.status;
                 updateProviderResponse(updatedStatusAndProviderResponse.providers);
             };
+
             const checkAndUpdateAppointmentStatus = function () {
                 if (!$scope.isEditMode()){
                     updateStatusAndProviderResponse();
