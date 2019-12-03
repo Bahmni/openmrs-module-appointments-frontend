@@ -41,9 +41,8 @@ describe('Success Confirmation', () => {
 
     it('should call reload of window.location on click of add new appointment', () => {
         const spy = jest.fn();
-        delete window.location;
-        window.location = {reload: spy};
-        const {getByText} = renderWithReactIntl(<SuccessModal patientDetails="patientDetails"/>);
+        const {getByText} = renderWithReactIntl(<SuccessModal patientDetails="patientDetails"
+                                                              resetAppointmentModal={spy}/>);
         fireEvent.click(getByText('Add New Appointment'));
         expect(spy).toHaveBeenCalledTimes(1);
     });

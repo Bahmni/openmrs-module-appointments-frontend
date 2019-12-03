@@ -15,7 +15,7 @@ import {AppContext} from "../AppContext/AppContext";
 
 const SuccessModal = (props) => {
 
-    const {intl, patientDetails} = props;
+    const {intl, patientDetails, resetAppointmentModal} = props;
     const {onBack} = React.useContext(AppContext);
 
     const defaultSaveSuccessMessage = 'The new appointment for the patient {patientDetails} has been saved.';
@@ -47,7 +47,7 @@ const SuccessModal = (props) => {
                     </button>
 
                     <span className={classNames(newAppointmentLink)}>
-                        <a  data-testid="save-new-appointment-link" onClick={() => window.location.reload()}>
+                        <a  data-testid="save-new-appointment-link" onClick={resetAppointmentModal}>
                          <FormattedMessage id={'ADD_NEW_APPOINTMENT'} defaultMessage={'Add New Appointment'}/>
                         </a>
                     </span>
@@ -58,7 +58,8 @@ const SuccessModal = (props) => {
 };
 
 SuccessModal.propTypes = {
-    patientDetails: PropTypes.string.isRequired
+    patientDetails: PropTypes.string.isRequired,
+    resetAppointmentModal: PropTypes.func.isRequired
 };
 
 export default injectIntl(SuccessModal);

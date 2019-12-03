@@ -77,30 +77,6 @@ describe('Add Appointment', () => {
         expect(getByTestId('datePicker')).not.toBeNull();
     });
 
-    it('should display error message when patient search value is changed and no new value selected', async () => {
-        const placeholder = 'placeholder';
-        const onChnageSpy = jest.fn();
-        const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
-        const {container, getByText, querySelector} = renderWithReactIntl(
-            <AddAppointment />);
-        const inputBox = container.querySelector('.react-select__input input');
-        fireEvent.change(inputBox, { target: { value: "abc" } });
-        await waitForElement(
-            () => (container.querySelector('.react-select__menu'))
-        );
-        const option = getByText(targetPatient);
-        fireEvent.click(option);
-        let singleValue;
-        await waitForElement(
-            () =>
-                (singleValue = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
-        fireEvent.change(inputBox, { target: { value: "def" } });
-        getByText('Please select patient');
-    });
-
     it('should display error messages when checkAndSave is clicked and required fields are not selected', () => {
         const {getByText, getAllByText} = renderWithReactIntl(<AddAppointment/>);
         const button = getByText('Check and Save');
