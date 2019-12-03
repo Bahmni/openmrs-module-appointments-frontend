@@ -2,10 +2,17 @@
 
 describe('AppointmentCommonService', function () {
     var appointmentCommonService;
-
+    const mockState = { params: { filterParams: {} } };
+    const mockLocation = jasmine.createSpyObj('$location', ['search']);
+    
     beforeEach(function () {
         module('bahmni.appointments');
     });
+
+    beforeEach(module(function ($provide) {
+        $provide.value('$location', mockLocation);
+        $provide.value('$state', mockState);
+    }));
 
     beforeEach(inject(['appointmentCommonService', function (appointmentCommonServiceInjected) {
         appointmentCommonService = appointmentCommonServiceInjected;
@@ -82,5 +89,53 @@ describe('AppointmentCommonService', function () {
         });
     });
 
+    describe('addProviderToFilterFromQueryString', function() {
+        it('should assign provider uuid to state params filter', function(){
+            mockLocation.search.and.returnValue({'provider': 'test-provider-id'})
+            
+            appointmentCommonService.addProviderToFilterFromQueryString();
+            
+            expect(mockState.params.filterParams.providerUuids[0]).toBe('test-provider-id');
+        });
+
+        it('should not assign provider uuid to state params filter when querystring does not have', function(){
+            mockState.params.filterParams.providerUuids = [];
+            mockLocation.search.and.returnValue({});
+
+            appointmentCommonService.addProviderToFilterFromQueryString();
+
+            expect(mockState.params.filterParams.providerUuids.length).toBe(0);
+        });
+
+        it('should adds provider uuid to existing state params filter', function(){
+            mockState.params.filterParams.providerUuids = ['existing-provider'];
+            mockLocation.search.and.returnValue({'provider': 'test-provider-id'})
+            
+            appointmentCommonService.addProviderToFilterFromQueryString();
+            
+            expect(mockState.params.filterParams.providerUuids[0]).toBe('existing-provider');
+            expect(mockState.params.filterParams.providerUuids[1]).toBe('test-provider-id');
+        });
+
+        it('should not add provider uuid to filter if already exists', function(){
+            mockState.params.filterParams.providerUuids = ['existing-provider'];
+            mockLocation.search.and.returnValue({'provider': 'existing-provider'})
+            
+            appointmentCommonService.addProviderToFilterFromQueryString();
+            
+            expect(mockState.params.filterParams.providerUuids.length).toBe(1);
+            expect(mockState.params.filterParams.providerUuids[0]).toBe('existing-provider');
+        });
+
+        it('should initialize providerUuids list', function(){
+            mockState.params.filterParams.providerUuids = undefined;
+            mockLocation.search.and.returnValue({'provider': 'existing-provider'})
+            
+            appointmentCommonService.addProviderToFilterFromQueryString();
+            
+            expect(mockState.params.filterParams.providerUuids.length).toBe(1);
+            expect(mockState.params.filterParams.providerUuids[0]).toBe('existing-provider');
+        });
+    });
 });
 

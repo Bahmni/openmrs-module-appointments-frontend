@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .service('appointmentCommonService', ['$rootScope', 'ngDialog', '$state', '$translate', 'appointmentsService',
-        'confirmBox', 'checkinPopUp', 'appService', 'messagingService',
-        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp, appService, messagingService) {
+    .service('appointmentCommonService', ['$state', '$location',
+        function ($state, $location) {
             this.isCurrentUserHavingPrivilege = function (privilege, currentUserPrivileges) {
                 return !_.isUndefined(_.find(currentUserPrivileges, function (userPrivilege) {
                     return userPrivilege.name === privilege;
@@ -24,4 +23,19 @@ angular.module('bahmni.appointments')
                     ? true : this.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeOwnAppointments, currentUserPrivileges)
                         ? isOwnPrivilegedUserAllowedToPerformEdit(appointmentProviders, currentProviderUuId) : false;
             };
+
+            this.addProviderToFilterFromQueryString = function () {
+                if ($location.search()["provider"]) {
+                    let fitlers = $state.params.filterParams;
+                    const provider = $location.search()["provider"];
+                    
+                    if (!Array.isArray(fitlers.providerUuids))  {
+                        fitlers.providerUuids = [];
+                    }
+
+                    if(fitlers.providerUuids.indexOf(provider) < 0) {
+                        fitlers.providerUuids.push(provider);
+                    }
+                }
+            }
         }]);
