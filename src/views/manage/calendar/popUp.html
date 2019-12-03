@@ -18,8 +18,14 @@
             {{appointment.status}}</p>
     </div>
     <p ng-if="scope.appointments[0].providers">
-        <b>{{::'APPOINTMENT_PROVIDER' | translate}}:</b> {{getAppointmentProviderNames(scope.appointments[0])}}
+        <b>{{::'APPOINTMENT_PROVIDER' | translate}}:</b>
+        <span ng-if="!isAppointmentRequestEnabled">{{getAppointmentProviderNames(scope.appointments[0])}}</span>
+        <span ng-if="isAppointmentRequestEnabled" ng-repeat="appProvider in scope.appointments[0].providers"
+          class="provider-name {{appProvider.response}}" ng-show="{{appProvider.response != 'CANCELLED'}}">
+            {{appProvider.name}}
+        </span>
     </p>
+
     <p><b>{{::'APPOINTMENT_DATE' | translate}}:</b> {{scope.appointments[0].startDateTime | bahmniDate}}</p>
     <p><b>{{::'APPOINTMENT_SLOT' | translate}}:</b> {{scope.appointments[0].startDateTime | bahmniTime}} -
         {{scope.appointments[0].endDateTime | bahmniTime}}</p>

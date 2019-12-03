@@ -449,6 +449,19 @@
       min-width: 540px;
       max-width: 540px;
     }
+
+    label.provider-name{
+      &:after, &:before {
+        font-family: FontAwesome;
+        content: "";
+      }
+      &.AWAITING:before {
+        content: "\f059";
+      }
+      &.ACCEPTED:before {
+        content: "\f00c";
+      }
+    }
   }
   thead {
     position: absolute;
@@ -629,5 +642,21 @@
   &.bed-accom:before {
     content: "\f236";
     right: 20px;
+  }
+}
+
+.confirm-box {
+  span.provider-name {
+    margin-right: 0.5em;
+    &:after, &:before {
+      font-family: FontAwesome;
+      content: "";
+    }
+    &.AWAITING:before {
+      content: "\f059";
+    }
+    &.ACCEPTED:before {
+      content: "\f00c";
+    }
   }
 }

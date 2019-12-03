@@ -147,7 +147,7 @@ angular.module('bahmni.appointments')
                         var providerNames = appointment.providers.filter(function (p) {
                             return p.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
                         }).map(function (p) {
-                            return popUpScope.isAppointmentRequestEnabled ? p.name + "(" + p.response + ")" : p.name;
+                            return p.name;
                         }).join(', ');
                         return providerNames;
                     }
