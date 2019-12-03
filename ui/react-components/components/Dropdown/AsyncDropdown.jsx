@@ -21,13 +21,9 @@ const AsyncDropdown = (props) => {
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_TYPE_TO_SEARCH_MESSAGE', defaultMessage: 'Type to search'});
     const loadingMessage = intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'});
 
-
     useEffect(() => {
-        if (selectedValue) {
-            setValue(selectedValue);
-            onChange(selectedValue);
-        }
-    },[selectedValue]);
+        setValue(selectedValue);
+    }, [selectedValue]);
 
     const handleOnChange = (event) => {
         setInputValue('');
@@ -51,7 +47,7 @@ const AsyncDropdown = (props) => {
         }
     };
     const handleFocus = () => {
-        value && setInputValue(inputValue !== '' ? inputValue : value.label);
+        setInputValue(inputValue !== '' ? inputValue : value && value.label);
     };
 
     const isComponentDisabled = () => isUndefined(isDisabled) ? false :  isDisabled;

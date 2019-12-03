@@ -55,7 +55,7 @@ import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/W
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty} from 'lodash';
-import SearchFieldsContainer from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
+import AppointmentEditorCommonFieldsWrapper from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
 
 const AddAppointment = props => {
@@ -65,11 +65,11 @@ const AddAppointment = props => {
     const errorTranslations = getErrorTranslations(intl);
 
     const initialAppointmentState = {
-        patient: undefined,
+        patient: null,
         providers: [],
-        service: undefined,
-        serviceType: undefined,
-        location: undefined,
+        service: null,
+        serviceType: null,
+        location: null,
         speciality: undefined,
         appointmentDate: undefined,
         recurringStartDate: undefined,
@@ -87,9 +87,7 @@ const AddAppointment = props => {
         selectedRecurringStartDate: undefined
     };
 
-    const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
-    const [conflicts, setConflicts] = useState();
-    const [errors, setErrors] = useState({
+    const initialErrorsState = {
         patientError: false,
         serviceError: false,
         appointmentDateError: false,
@@ -103,7 +101,11 @@ const AddAppointment = props => {
         startTimeBeforeEndTimeError: false,
         weekDaysError: false,
         noContentError: false
-    });
+    };
+
+    const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
+    const [conflicts, setConflicts] = useState();
+    const [errors, setErrors] = useState(initialErrorsState);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     useEffect(() => {
@@ -111,6 +113,16 @@ const AddAppointment = props => {
             updateAppointmentDetails({occurrences: getDefaultOccurrences(appConfig)});
         updateAppointmentDetails({weekDays: getWeekDays(appConfig && appConfig.startOfWeek)});
     }, [appConfig]);
+
+    const reInitialiseComponent = () => {
+        updateAppointmentDetails({
+            ...initialAppointmentState,
+            weekDays: getWeekDays(appConfig && appConfig.startOfWeek)
+        });
+        updateErrorIndicators(initialErrorsState);
+        setConflicts(undefined);
+        setShowSuccessPopup(false);
+    };
 
     const getRecurringPattern = () => {
         const recurringPattern = {
@@ -256,8 +268,9 @@ const AddAppointment = props => {
             ? saveRecurringAppointments(getRecurringAppointmentRequest()) : save(getAppointmentRequest());
     };
 
-    const savePopup = <CustomPopup style={customPopup}
-        popupContent={<SuccessConfirmation patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}/>}/>;
+    const savePopup = <CustomPopup style={customPopup} popupContent={<SuccessConfirmation
+      resetAppointmentModal={reInitialiseComponent}
+      patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}/>}/>;
 
     const endTimeBasedOnService = (time, service, serviceType) => {
         const currentTime = moment(time);
@@ -297,8 +310,11 @@ const AddAppointment = props => {
 
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring: '')}>
-            <SearchFieldsContainer updateAppointmentDetails={updateAppointmentDetails} updateErrorIndicators={updateErrorIndicators}
-                                   appointmentDetails={appointmentDetails} endTimeBasedOnService={endTimeBasedOnService} appConfig={appConfig} errors={errors}/>
+            <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
+                                   updateAppointmentDetails={updateAppointmentDetails}
+                                   updateErrorIndicators={updateErrorIndicators}
+                                   endTimeBasedOnService={endTimeBasedOnService}
+                                   appConfig={appConfig} errors={errors}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
