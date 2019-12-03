@@ -32,7 +32,9 @@
                 <td class="table-mid-width">
                     <ul>
                         <li ng-repeat="appProvider in appointment.providers">
-                            <label ng-show="appProvider.response != 'CANCELLED'">{{appProvider.name}}</label>
+                            <label ng-show="appProvider.response != 'CANCELLED'">
+                                {{isAppointmentRequestEnabled ? appProvider.name + " (" + appProvider.response + ")" : appProvider.name;}}
+                            </label>
                         </li>
                     </ul>
                 </td>
@@ -66,6 +68,12 @@
                 ng-disabled="!isResetAppointmentStatusAllowed()"
                 ng-click="reset()">
             {{::'RESET_APPOINTMENT' | translate}}
+        </button>
+        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
+                ng-if="isAppointmentRequestEnabled"
+                ng-disabled="!isSelectedAppointmentAwaitingForCurrentProvider(appointment)"
+                ng-click="acceptInviteForCurrentProvider()">
+            {{::'ACCEPT_APPOINTMENT_REQUEST' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
                 ng-show="isAllowedAction('CheckedIn')"
