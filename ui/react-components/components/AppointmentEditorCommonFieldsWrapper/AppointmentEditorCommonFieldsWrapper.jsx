@@ -51,6 +51,13 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         <ErrorMessage
                             message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
                     </div>
+                    {isSpecialitiesEnabled(appConfig) ?
+                        <div data-testid="speciality-search">
+                            <SpecialitySearch value={appointmentDetails.speciality}
+                                              onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected, service: null, serviceType: null})}
+                                              isDisabled={componentsDisableStatus.speciality}/>
+                        </div> : null
+                    }
                     <div data-testid="service-search">
                         <ServiceSearch value={appointmentDetails.service} onChange={(optionSelected) => {
                             updateAppointmentDetails({service: optionSelected, serviceType: null});
@@ -73,13 +80,6 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                            serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
                                            isDisabled={componentsDisableStatus.serviceType}/>
                     </div>
-                    {isSpecialitiesEnabled(appConfig) ?
-                        <div data-testid="speciality-search">
-                            <SpecialitySearch value={appointmentDetails.speciality}
-                                              onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected, service: null, serviceType: null})}
-                                              isDisabled={componentsDisableStatus.speciality}/>
-                        </div> : null
-                    }
                     <div data-testid="location-search">
                         <LocationSearch value={appointmentDetails.location}
                                         onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
