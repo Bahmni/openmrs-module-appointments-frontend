@@ -47,6 +47,7 @@ angular.module('bahmni.appointments')
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
+                appointmentCommonService.addProviderToFilterFromQueryString();
             };
 
             var setAppointments = function (params) {
