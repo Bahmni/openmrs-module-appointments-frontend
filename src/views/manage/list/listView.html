@@ -32,8 +32,9 @@
                 <td class="table-mid-width">
                     <ul>
                         <li ng-repeat="appProvider in appointment.providers">
-                            <label ng-show="appProvider.response != 'CANCELLED'">
-                                {{isAppointmentRequestEnabled ? appProvider.name + " (" + appProvider.response + ")" : appProvider.name;}}
+                            <label ng-show="appProvider.response != 'CANCELLED'"
+                                   class="provider-name" ng-class="isAppointmentRequestEnabled && appProvider.response">
+                                {{appProvider.name}}
                             </label>
                         </li>
                     </ul>
