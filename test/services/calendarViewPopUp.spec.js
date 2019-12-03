@@ -500,16 +500,20 @@ describe('CalendarViewPopUp', function () {
             }];
             rootScope.currentProvider = {uuid:'xyz1'};
             var config = {scope: {appointments: appointments}};
-
             var message = "Successfully Accepted the appointment invite.";
             appointmentsService.changeProviderResponse.and.returnValue(specUtil.simplePromise({}));
             $translate.instant.and.returnValue(message);
 
+            confirmBox.and.callFake(function (config) {
+                var close = jasmine.createSpy('close');
+                config.scope.yes(close).then(function () {
+                    expect(appointmentsService.changeProviderResponse).toHaveBeenCalledWith(appointments[0].uuid, 'xyz1', 'ACCEPTED');
+                    expect(close).toHaveBeenCalled();
+                    expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
+                });
+            });
             calendarViewPopUp(config);
             popUpScope.acceptAppointmentInviteForCurrentProvider(appointments[0]);
-
-            expect(appointmentsService.changeProviderResponse).toHaveBeenCalledWith(appointments[0].uuid, 'xyz1', 'ACCEPTED');
-            expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
         });
     });
 

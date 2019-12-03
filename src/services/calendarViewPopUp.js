@@ -120,14 +120,26 @@ angular.module('bahmni.appointments')
                         currentProviderInAppointment.response === Bahmni.Appointments.Constants.providerResponses.AWAITING;
                 };
 
-                popUpScope.acceptAppointmentInviteForCurrentProvider = function(appointment){
-                    if (!popUpScope.isAppointmentRequestEnabled || !appointment) return;
+                const acceptAppointmentInvite = function(appointment, closeConfirmBox){
                     const currentProviderInAppointment = findCurrentProviderInAppointment(appointment);
 
                     const message = $translate.instant('PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE');
-                    appointmentsService.changeProviderResponse(appointment.uuid, currentProviderInAppointment.uuid,
+                    return appointmentsService.changeProviderResponse(appointment.uuid, currentProviderInAppointment.uuid,
                         Bahmni.Appointments.Constants.providerResponses.ACCEPTED).then(function () {
+                            closeConfirmBox();
                             messagingService.showMessage('info', message);
+                    });
+                };
+
+                popUpScope.acceptAppointmentInviteForCurrentProvider = function(appointment){
+                    var scope = {};
+                    scope.message = $translate.instant('APPOINTMENT_ACCEPT_CONFIRM_MESSAGE');
+                    scope.no = closeConfirmBox;
+                    scope.yes = _.partial(acceptAppointmentInvite, appointment, _);
+                    return confirmBox({
+                        scope: scope,
+                        actions: [{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}],
+                        className: "ngdialog-theme-default"
                     });
                 };
 

@@ -617,6 +617,9 @@
   &.Completed:after {
      content: "\f00c";
    }
+  &.Requested:after {
+     content: "\f059";
+   }
   &.Missed:after {
     content: "\f05e";
   }

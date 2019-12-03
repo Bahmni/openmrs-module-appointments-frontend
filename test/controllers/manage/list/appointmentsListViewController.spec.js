@@ -1533,7 +1533,7 @@ describe('AppointmentsListViewController', function () {
     });
 
     describe('acceptInviteForCurrentProvider', function () {
-        it('should change provider response when click on ACCEPT', function () {
+        it('should change provider response when click on ACCEPT confirm', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
                 return value === 'enableAppointmentRequests';
             });
@@ -1552,8 +1552,14 @@ describe('AppointmentsListViewController', function () {
             createController();
             scope.acceptInviteForCurrentProvider();
 
-            expect(appointmentsService.changeProviderResponse).toHaveBeenCalledWith(appointment.uuid, 'xyz1', 'ACCEPTED');
-            expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
+            confirmBox.and.callFake(function (config) {
+                var close = jasmine.createSpy('close');
+                config.scope.yes(close).then(function () {
+                    expect(appointmentsService.changeProviderResponse).toHaveBeenCalledWith(appointment.uuid, 'xyz1', 'ACCEPTED');
+                    expect(close).toHaveBeenCalled();
+                    expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
+                });
+            });
         });
 
     });

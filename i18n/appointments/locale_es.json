@@ -150,5 +150,6 @@
   "INITIAL_APPOINTMENT_STATUS_KEY": "Estado de cita inicial",
   "PLACEHOLDER_APPOINTMENT_REQUEST": "Seleccionar estado de cita",
   "ACCEPT_APPOINTMENT_REQUEST": "Aceptar",
-  "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Invitación de cita aceptada con éxito."
+  "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Invitación de cita aceptada con éxito.",
+  "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "¿Estás seguro de que quieres aceptar la invitación a la cita?"
 }
