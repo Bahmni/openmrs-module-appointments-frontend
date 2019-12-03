@@ -44,9 +44,6 @@ li[class*='react-tabs__tab'][aria-selected="true"] {
   color: $secondary-color-2;
   .conflictMessage {
     padding: 1% 0 1% 0;
-    .boldContent {
-      font-weight: 600;
-    }
   }
   .conflictDetails {
     padding-top: 0.5%;

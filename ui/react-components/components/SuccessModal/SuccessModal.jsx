@@ -15,7 +15,7 @@ import {AppContext} from "../AppContext/AppContext";
 
 const SuccessModal = (props) => {
 
-    const {intl, patientDetails, isEdit} = props;
+    const {intl, patientDetails} = props;
     const {onBack} = React.useContext(AppContext);
 
     const defaultSaveSuccessMessage = 'The new appointment for the patient {patientDetails} has been saved.';
@@ -29,11 +29,13 @@ const SuccessModal = (props) => {
             </div>
             <div>
                 <h1 className={classNames(saveModalTitle)}>
-                    <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TITLE'} defaultMessage={isEdit ? 'Update Successful!' : 'Save successful'}/>
+                    <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TITLE'} defaultMessage={'Save successful'}/>
                 </h1>
 
                 <div className={classNames(saveModalBody)}>
-                    <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TEXT'} defaultMessage={defaultSaveSuccessMessage} values={{patientDetails}} />
+                    <span>
+                        <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TEXT'} defaultMessage={defaultSaveSuccessMessage} values={{patientDetails: <strong>{patientDetails}</strong>}} />
+                    </span>
                     <br/><br/>
                     <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_HELP_TEXT'}
                                       defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
@@ -56,8 +58,7 @@ const SuccessModal = (props) => {
 };
 
 SuccessModal.propTypes = {
-    patientDetails: PropTypes.string.isRequired,
-    isEdit: PropTypes.bool
+    patientDetails: PropTypes.string.isRequired
 };
 
 export default injectIntl(SuccessModal);
