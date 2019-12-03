@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsFilter', '$rootScope', '$interval', 'appService',
-        function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope, $interval, appService) {
+    .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsFilter', '$rootScope', '$interval', 'appService', 'appointmentCommonService',
+        function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope, $interval, appService, appointmentCommonService) {
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
@@ -21,6 +21,7 @@ angular.module('bahmni.appointments')
                 var weekStartDay = appService.getAppDescriptor().getConfigValue('startOfWeek')
                     || Bahmni.Appointments.Constants.defaultWeekStartDayName;
                 $scope.weekStart = Bahmni.Appointments.Constants.weekDays[weekStartDay];
+                appointmentCommonService.addProviderToFilterFromQueryString();
             };
 
             var createProviderEventForAppointment = function (provider, appointment, eventList) {
