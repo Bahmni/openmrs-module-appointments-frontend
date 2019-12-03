@@ -57,7 +57,6 @@ import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty} from 'lodash';
 import SearchFieldsContainer from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
-import {WEEK} from "../../../app/components/moment/src/lib/units/constants";
 
 const AddAppointment = props => {
 
