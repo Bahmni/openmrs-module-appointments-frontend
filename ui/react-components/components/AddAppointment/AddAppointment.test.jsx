@@ -13,7 +13,7 @@ const serviceApi = require('../../api/serviceApi');
 let getPatientByLocationSpy;
 let getAllServicesSpy;
 
-describe('Appointment Editor', () => {
+describe('Add Appointment', () => {
 
     beforeEach(() => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
