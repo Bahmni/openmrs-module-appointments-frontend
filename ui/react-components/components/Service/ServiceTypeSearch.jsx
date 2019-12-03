@@ -62,6 +62,7 @@ const ServiceTypeSearch = props => {
                 value={selectedOption}
                 onChange={updateSelection}
                 selectedValue={value}
+                isClearable={true}
             />
         </div>
     );

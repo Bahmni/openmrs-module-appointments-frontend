@@ -40,6 +40,7 @@ const LocationSearch = (props) => {
             onChange={onChange}
             placeholder={placeholder}
             selectedValue={value}
+            isClearable={true}
         />);
 };
 
