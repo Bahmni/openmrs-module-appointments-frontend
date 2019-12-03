@@ -44,9 +44,9 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                             value={appointmentDetails.patient}
                             minCharLengthToTriggerPatientSearch={appConfig && appConfig.minCharLengthToTriggerPatientSearch}
                             onChange={(optionSelected) => {
-                                const newValue = optionSelected ? optionSelected : undefined;
+                                const newValue = optionSelected ? optionSelected : null;
                                 updateAppointmentDetails({patient: newValue});
-                                updateErrorIndicators({patientError: !newValue});
+                                errors.patientError && optionSelected && updateErrorIndicators({patientError: !newValue});
                             }} isDisabled={componentsDisableStatus.patient}/>
                         <ErrorMessage
                             message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
