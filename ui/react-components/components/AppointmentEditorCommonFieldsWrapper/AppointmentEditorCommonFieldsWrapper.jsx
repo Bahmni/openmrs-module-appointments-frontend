@@ -55,8 +55,8 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         <ServiceSearch value={appointmentDetails.service} onChange={(optionSelected) => {
                             updateAppointmentDetails({service: optionSelected, serviceType: null});
                             updateErrorIndicators({serviceError: !optionSelected});
-                            endTimeBasedOnService(appointmentDetails.startTime, optionSelected.value, undefined);
-                            updateLocationBasedOnService(optionSelected);
+                            optionSelected && endTimeBasedOnService(appointmentDetails.startTime, optionSelected.value, undefined);
+                            optionSelected && updateLocationBasedOnService(optionSelected);
                         }} specialityUuid={appointmentDetails.speciality && appointmentDetails.speciality.value
                         && appointmentDetails.speciality.value.uuid}
                                        isDisabled={componentsDisableStatus.service}
@@ -68,7 +68,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     <div data-testid="service-type-search">
                         <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
                             updateAppointmentDetails({serviceType: optionSelected});
-                            endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
+                            optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
                         }}
                                            serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
                                            isDisabled={componentsDisableStatus.serviceType}/>
