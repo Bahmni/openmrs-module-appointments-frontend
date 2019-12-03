@@ -12,7 +12,6 @@ const AppointmentTimePicker = (props) => {
     const placeholder = intl.formatMessage({
         id: placeHolderTranslationKey, defaultMessage: placeHolderDefaultMessage
     });
-
     return (
         <TimePicker data-testid="time-selector"
             value={defaultTime}
@@ -21,7 +20,8 @@ const AppointmentTimePicker = (props) => {
             use12Hours
             placeholder={placeholder}
             className={classNames(appointmentTimePicker)}
-            disabled={isDisabled} />
+            disabled={isDisabled}
+            focusOnOpen={true} />
     );
 };
 
