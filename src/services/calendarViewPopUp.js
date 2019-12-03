@@ -114,7 +114,6 @@ angular.module('bahmni.appointments')
                 };
 
                 popUpScope.isResponseAwaitingForCurrentProvider = function(appointment){                    
-                    //todo: A way to check with provider for which it is clicked
                     if (!popUpScope.isAppointmentRequestEnabled || !appointment) return false;
                     const currentProviderInAppointment = findCurrentProviderInAppointment(appointment);
                     return !(_.isUndefined(currentProviderInAppointment)) &&
@@ -122,11 +121,11 @@ angular.module('bahmni.appointments')
                 };
 
                 popUpScope.acceptAppointmentInviteForCurrentProvider = function(appointment){
-                    if (!popUpScope.isAppointmentRequestEnabled || !appointment) return false;
+                    if (!popUpScope.isAppointmentRequestEnabled || !appointment) return;
                     const currentProviderInAppointment = findCurrentProviderInAppointment(appointment);
 
                     const message = $translate.instant('PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE');
-                    return appointmentsService.changeProviderResponse(appointment.uuid, currentProviderInAppointment.uuid,
+                    appointmentsService.changeProviderResponse(appointment.uuid, currentProviderInAppointment.uuid,
                         Bahmni.Appointments.Constants.providerResponses.ACCEPTED).then(function () {
                             messagingService.showMessage('info', message);
                     });

@@ -14,7 +14,7 @@ describe('AppointmentsListViewController', function () {
             controller = $controller;
             stateparams = $stateParams;
             _appointmentsFilter = jasmine.createSpy('appointmentsFilter');
-            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus', 'undoCheckIn']);
+            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus', 'undoCheckIn', 'changeProviderResponse']);
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
@@ -1455,6 +1455,105 @@ describe('AppointmentsListViewController', function () {
                     expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
                 });
             });
+        });
+
+    });
+
+    describe('isResponseAwaitingForCurrentProvider', function () {
+        it('should return true when provider is part of appointment with a AWAITING invite', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return value === 'enableAppointmentRequests';
+            });
+
+
+            var appointment = {
+                    patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                    status: 'Requested',
+                    providers:[{uuid:'xyz1', response:'AWAITING'}]};
+
+            scope.selectedAppointment = appointment;
+            rootScope.currentProvider = {uuid:'xyz1'};
+            createController();
+
+            expect(scope.isSelectedAppointmentAwaitingForCurrentProvider()).toBe(true);
+
+        })
+
+        it('should return false when current provider has accepted the appointment invite', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return value === 'enableAppointmentRequests';
+            });
+
+            var appointment = {
+                    patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                    status: 'Requested',
+                    providers:[{uuid:'xyz1', response:'ACCEPTED'}]};
+
+            scope.selectedAppointment = appointment;
+            rootScope.currentProvider = {uuid:'xyz1'};
+
+            createController();
+
+            expect(scope.isSelectedAppointmentAwaitingForCurrentProvider()).toBe(false);
+
+        });
+
+        it('should return false when current provider is not part of appointment', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return value === 'enableAppointmentRequests';
+            });
+
+            var appointment = {
+                    patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                    status: 'Requested',
+                    providers:[{uuid:'xyz1', response:'ACCEPTED'}]};
+
+            scope.selectedAppointment = appointment;
+            rootScope.currentProvider = {uuid:'xyz2'};
+
+            createController();
+
+            expect(scope.isSelectedAppointmentAwaitingForCurrentProvider()).toBe(false);
+
+        });
+
+        it('should return false when no appointments are selected ', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return value === 'enableAppointmentRequests';
+            });
+
+            scope.selectedAppointment = undefined;
+            rootScope.currentProvider = {uuid:'xyz2'};
+
+            createController();
+
+            expect(scope.isSelectedAppointmentAwaitingForCurrentProvider()).toBe(false);
+
+        });
+    });
+
+    describe('acceptInviteForCurrentProvider', function () {
+        it('should change provider response when click on ACCEPT', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return value === 'enableAppointmentRequests';
+            });
+            var appointment = {
+                patient: {identifier: "GAN203012",name: "patient1",uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                providers:[{uuid:'xyz1', response:'AWAITING'}],
+                uuid:'abc1'
+            };
+            rootScope.currentProvider = {uuid:'xyz1'};
+            scope.selectedAppointment= appointment;
+
+            var message = "Successfully Accepted the appointment invite.";
+            appointmentsService.changeProviderResponse.and.returnValue(specUtil.simplePromise({}));
+            $translate.instant.and.returnValue(message);
+
+            createController();
+            scope.acceptInviteForCurrentProvider();
+
+            expect(appointmentsService.changeProviderResponse).toHaveBeenCalledWith(appointment.uuid, 'xyz1', 'ACCEPTED');
+            expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
         });
 
     });
