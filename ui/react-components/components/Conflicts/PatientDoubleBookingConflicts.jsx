@@ -1,11 +1,10 @@
 import classNames from "classnames";
 import {
-    appointmentConflict,
-    boldContent,
-    conflictDetails,
-    conflictMessage,
-    conflictsHeading,
-    conflictsList
+  appointmentConflict,
+  conflictDetails,
+  conflictMessage,
+  conflictsHeading,
+  conflictsList
 } from "./Body/ConflictsBody.module.scss";
 import {FormattedMessage} from "react-intl";
 import React from "react";

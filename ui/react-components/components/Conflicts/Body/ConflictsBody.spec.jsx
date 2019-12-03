@@ -48,7 +48,7 @@ describe('Conflicts Body', () => {
         getByText('The recurring appointments you are trying to book overlaps with the following dates');
         getByText('5th December ‘19 | Thursday | 4:00 PM');
         expect(container.querySelector('.conflictMessage').innerHTML).toContain('Current Orthopedic request');
-        expect(container.querySelector('.boldContent').innerHTML).toContain('conflicts with Dressing');
+        expect(container.querySelector('strong').innerHTML).toContain('Dressing');
     });
 
     it('should render service conflicts content', () => {
