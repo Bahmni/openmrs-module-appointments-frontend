@@ -50,3 +50,17 @@ export const CANCEL_CONFIRMATION_MESSAGE_EDIT = {
   translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT_EDIT',
   defaultMessage: 'Are you sure you want to cancel editing the appointment? This will not save any of the changes made.'
 };
+
+const appointmentTimeProps = {
+    translationKey: 'APPOINTMENT_TIME_FROM_LABEL',
+    placeHolderTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', placeHolderDefaultMessage: 'hh:mm am/pm'
+};
+
+export const appointmentStartTimeProps = startTime => {
+    return {...appointmentTimeProps, defaultValue: 'From', defaultTime: startTime}
+};
+
+export const appointmentEndTimeProps = endTime => {
+    return {...appointmentTimeProps, defaultValue: 'To', defaultTime: endTime}
+};
+

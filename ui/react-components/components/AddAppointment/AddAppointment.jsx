@@ -1,8 +1,11 @@
 import React, {Fragment, useEffect, useState} from "react";
 import classNames from 'classnames';
 import {
+    apiErrorContainer,
     appointmentEditor,
+    appointmentPlanContainer,
     dateHeading,
+    isRecurring,
     recurringContainer,
     recurringContainerLeft,
     recurringContainerRight,
@@ -10,10 +13,7 @@ import {
     searchFieldsContainerLeft,
     searchFieldsContainerRight,
     timeSelector,
-    weekDaysContainer,
-    appointmentPlanContainer,
-    apiErrorContainer,
-    isRecurring
+    weekDaysContainer
 } from './AddAppointment.module.scss';
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
@@ -39,6 +39,8 @@ import StartDateRadioGroup from "../RadioGroup/StartDateRadioGroup.jsx";
 import EndDateRadioGroup from "../RadioGroup/EndDateRadioGroup.jsx";
 import RecurrenceTypeRadioGroup from "../RadioGroup/RecurrenceTypeRadioGroup.jsx";
 import {
+    appointmentEndTimeProps,
+    appointmentStartTimeProps,
     CANCEL_CONFIRMATION_MESSAGE_ADD,
     dayRecurrenceType,
     FROM,
@@ -48,11 +50,7 @@ import {
     WALK_IN_APPOINTMENT_TYPE
 } from "../../constants";
 import moment from "moment";
-import {
-    getDefaultOccurrences,
-    getDuration,
-    getYesterday
-} from "../../helper.js";
+import {getDefaultOccurrences, getDuration, getYesterday} from "../../helper.js";
 import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/WeekDaysService";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
@@ -262,18 +260,6 @@ const AddAppointment = props => {
     const savePopup = <CustomPopup style={customPopup}
         popupContent={<SuccessConfirmation patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}/>}/>;
 
-    const appointmentStartTimeProps = {
-        translationKey: 'APPOINTMENT_TIME_FROM_LABEL', defaultValue: 'From',
-        placeHolderTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', placeHolderDefaultMessage: 'Enter time as hh:mm am/pm',
-        defaultTime: appointmentDetails.startTime
-    };
-
-    const appointmentEndTimeProps = {
-        translationKey: 'APPOINTMENT_TIME_TO_LABEL', defaultValue: 'To',
-        placeHolderTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', placeHolderDefaultMessage: 'Enter time as hh:mm am/pm',
-        defaultTime: appointmentDetails.endTime
-    };
-
     const endTimeBasedOnService = (time, service, serviceType) => {
         const currentTime = moment(time);
         const duration = getDuration(service, serviceType);
@@ -408,7 +394,7 @@ const AddAppointment = props => {
                             <div className={classNames(timeSelector)}>
                                 <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
                                 <div data-testid="start-time-selector">
-                                    <TimeSelector {...appointmentStartTimeProps}
+                                    <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                                   onChange={time => {
                                                       updateAppointmentDetails({startTime: time});
                                                       endTimeBasedOnService(time, appointmentDetails.service, appointmentDetails.serviceType);
@@ -417,7 +403,7 @@ const AddAppointment = props => {
                                     <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                                 </div>
                                 <div data-testid="end-time-selector">
-                                    <TimeSelector {...appointmentEndTimeProps}
+                                    <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
                                                   onChange={time => {
                                                       updateAppointmentDetails({endTime: time});
                                                       updateErrorIndicators({
@@ -450,7 +436,7 @@ const AddAppointment = props => {
                         <div>
                             <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/></div>
                             <div data-testid="start-time-selector">
-                                <TimeSelector {...appointmentStartTimeProps}
+                                <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                               onChange={time => {
                                                   updateAppointmentDetails({startTime: time});
                                                   endTimeBasedOnService(time, appointmentDetails.service, appointmentDetails.serviceType);
@@ -459,7 +445,7 @@ const AddAppointment = props => {
                                 <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                             </div>
                             <div data-testid="end-time-selector">
-                                <TimeSelector {...appointmentEndTimeProps}
+                                <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
                                               onChange={time => {
                                                   updateAppointmentDetails({endTime: time});
                                                   updateErrorIndicators({
