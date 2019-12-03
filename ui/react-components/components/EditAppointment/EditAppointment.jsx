@@ -22,6 +22,8 @@ import moment from "moment";
 import 'moment-timezone';
 import {getDuration, getYesterday} from "../../helper";
 import {
+    appointmentEndTimeProps,
+    appointmentStartTimeProps,
     CANCEL_CONFIRMATION_MESSAGE_EDIT,
     MINUTES, RECURRENCE_TERMINATION_AFTER, RECURRENCE_TERMINATION_ON,
     RECURRING_APPOINTMENT_TYPE,
@@ -329,18 +331,6 @@ const EditAppointment = props => {
         callback(appointmentResponse);
     };
 
-    const appointmentStartTimeProps = {
-        translationKey: 'APPOINTMENT_TIME_FROM_LABEL', defaultValue: 'From',
-        placeHolderTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', placeHolderDefaultMessage: 'Enter time as hh:mm am/pm',
-        defaultTime: appointmentDetails.startTime
-    };
-
-    const appointmentEndTimeProps = {
-        translationKey: 'APPOINTMENT_TIME_TO_LABEL', defaultValue: 'To',
-        placeHolderTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', placeHolderDefaultMessage: 'Enter time as hh:mm am/pm',
-        defaultTime: appointmentDetails.endTime
-    };
-
     const isStartDateModified = () => isDateModified(originalAppointmentDate, appointmentDetails.appointmentDate);
 
     const isEndDateModified = () => isDateModified(originalRecurringEndDate, appointmentDetails.recurringEndDate);
@@ -424,7 +414,7 @@ const EditAppointment = props => {
                             <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
                         </div>
                         <div data-testid="start-time-selector">
-                            <TimeSelector {...appointmentStartTimeProps}
+                            <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                           onChange={time => {
                                               updateAppointmentDetails({startTime: time});
                                               endTimeBasedOnService(time, appointmentDetails.service, appointmentDetails.serviceType);
@@ -434,7 +424,7 @@ const EditAppointment = props => {
                             <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                         </div>
                         <div data-testid="end-time-selector">
-                            <TimeSelector {...appointmentEndTimeProps}
+                            <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
                                           onChange={time => {
                                               updateAppointmentDetails({endTime: time});
                                               updateErrorIndicators({
