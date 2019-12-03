@@ -249,7 +249,7 @@ describe('Edit Appointment', () => {
 
     });
 
-    it.skip('should not render update options and check for conflicts when startDate is edited for recurring appointment', async () => {
+    it('should not render update options and check for conflicts when startDate is edited for recurring appointment', async () => {
         let getByTextInDom = undefined;
         let containerInDom = undefined;
         let getByTestIdInDom = undefined;
@@ -281,7 +281,7 @@ describe('Edit Appointment', () => {
         fireEvent.click(getByTextInDom('Update'));
 
         expect(containerInDom.querySelector('.updateOptions')).toBeNull();
-        expect(recurringConflictsApiSpy).toHaveBeenCalledTimes(1);
+        expect(conflictsForSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should not render update options and check for conflicts when occurrences is edited for recurring appointment', async () => {

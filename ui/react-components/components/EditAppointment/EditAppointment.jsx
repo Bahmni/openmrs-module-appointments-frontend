@@ -238,7 +238,8 @@ const EditAppointment = props => {
     const checkAndUpdateRecurringAppointments = async (applyForAllInd) => {
         if (isValidRecurringAppointment()) {
             const recurringRequest = getRecurringAppointmentRequest(applyForAllInd);
-            const response = await getRecurringAppointmentsConflicts(recurringRequest);
+            const response = applyForAllInd ? await getRecurringAppointmentsConflicts(recurringRequest) :
+                await getAppointmentConflicts(recurringRequest.appointmentRequest);
             if (response.status === 204) {
                 setShowUpdateConfirmPopup(true);
             }
@@ -348,7 +349,9 @@ const EditAppointment = props => {
 
     const isOccurrencesModified = () => originalOccurrences !== appointmentDetails.occurrences;
 
-    const isApplicableForAll = () => !(isStartDateModified() || isEndDateModified() || isOccurrencesModified());
+    const isApplicableForAll = () => {
+       return  !(isStartDateModified() || isEndDateModified() || isOccurrencesModified())
+    };
 
     const updateAppointments = (applyForAllInd) => {
         if (isRecurringAppointment()) {
