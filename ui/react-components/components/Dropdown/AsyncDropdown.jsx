@@ -66,7 +66,7 @@ const AsyncDropdown = (props) => {
                 defaultOptions
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"
-                components={{IndicatorSeparator, ValueContainer, DropdownIndicator}}
+                components={{IndicatorSeparator, ValueContainer, DropdownIndicator:() => null}}
                 loadOptions={loadOptions}
                 noOptionsMessage={() => noOptionsMessage}
                 onChange={handleOnChange}
