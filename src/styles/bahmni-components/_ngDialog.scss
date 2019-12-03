@@ -147,7 +147,6 @@ div.ngdialog-close {
 }
 .ngdialog-react-popup {
     .ngdialog-content {
-        position: relative;
         background: rgb(255, 255, 255);
         width: 482px;
         border: 1px solid rgb(187, 187, 187);
@@ -155,9 +154,12 @@ div.ngdialog-close {
         border-radius: 0;
         font-size: 14px !important;
         font-family: OpenSans, Arial, sans-serif, Arial, sans-serif;
-        top: 100px;
-        left: 479px;
         line-height: 1.1em;
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 7% auto auto auto;
+        height: fit-content;
     }
 }
 .ngdialog-theme-default{
