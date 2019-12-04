@@ -1,7 +1,8 @@
 'use strict';
 
 describe('AppointmentsDayCalendarController', function () {
-    var element,controller, scope, rootScope, appService, appDescriptor, $compile, httpBackend, $state, calendarViewPopUp;
+    var element,controller, scope, rootScope, appService, appDescriptor, $compile, httpBackend, $state,
+        calendarViewPopUp, $location, appointmentsService;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -18,6 +19,9 @@ describe('AppointmentsDayCalendarController', function () {
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             $state = jasmine.createSpyObj('$state', ['go']);
             calendarViewPopUp = jasmine.createSpy('calendarViewPopUp');
+            $location = jasmine.createSpyObj('$location',[ 'search']);
+            appointmentsService = jasmine.createSpyObj('appointmentsService',[ 'getAppointmentByUuid']);
+
         });
     });
 
@@ -36,12 +40,15 @@ describe('AppointmentsDayCalendarController', function () {
             $rootScope: rootScope,
             appService: appService,
             $state: $state,
-            calendarViewPopUp: calendarViewPopUp
+            calendarViewPopUp: calendarViewPopUp,
+            $location: $location,
+            appointmentsService: appointmentsService
         });
     };
 
     beforeEach(function () {
         scope.appointments = {events: [{title: 'event1'}]};
+        $location.search.and.returnValue({});
     });
 
     it('should init events and eventSources and uiConfig with default values if not configured', function () {
@@ -188,6 +195,23 @@ describe('AppointmentsDayCalendarController', function () {
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
             scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : false },
+            className: "ngdialog-theme-default delete-program-popup app-dialog-container"
+        });
+    });
+
+    it('should call calendarView popup  if url contains appointment uuid', function () {
+        $location.search.and.returnValue({appointment: "appointment-uuid"});
+        const data = {
+            uuid: "appointment-uuid",
+            patient: {}
+        };
+        appointmentsService.getAppointmentByUuid.and.returnValue(specUtil.simplePromise({data: data}));
+        createController();
+        scope.date = moment().toDate();
+        var event = {appointments: [{}]};
+
+        expect(calendarViewPopUp).toHaveBeenCalledWith({
+            scope: {appointments: [data], enableCreateAppointment: true},
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
