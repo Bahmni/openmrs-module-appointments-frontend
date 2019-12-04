@@ -457,9 +457,11 @@
       }
       &.AWAITING:before {
         content: "\f059";
+        color: darkgray;
       }
       &.ACCEPTED:before {
         content: "\f00c";
+        color: darkgreen;
       }
     }
   }
@@ -654,9 +656,11 @@
     }
     &.AWAITING:before {
       content: "\f059";
+      color: darkgray;
     }
     &.ACCEPTED:before {
       content: "\f00c";
+      color: darkgreen;
     }
   }
 }
