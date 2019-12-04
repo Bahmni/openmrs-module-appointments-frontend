@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsDayCalendarController', ['$scope', '$rootScope', '$state', 'uiCalendarConfig', 'appService', 'calendarViewPopUp', 'checkinPopUp',
-        function ($scope, $rootScope, $state, uiCalendarConfig, appService, calendarViewPopUp, checkinPopUp) {
+    .controller('AppointmentsDayCalendarController', ['$scope', '$rootScope', '$state', 'uiCalendarConfig', 'appService',
+        'calendarViewPopUp', 'checkinPopUp', '$location', 'appointmentsService',
+        function ($scope, $rootScope, $state, uiCalendarConfig, appService, calendarViewPopUp, checkinPopUp,
+        $location, appointmentsService) {
             $scope.eventSources = [];
             var init = function () {
                 $scope.events = $scope.appointments.events;
@@ -24,7 +26,6 @@ angular.module('bahmni.appointments')
                         className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                     });
                 };
-
                 $scope.alertOnDrop = function (event, delta, revertFunc, jsEvent, ui, view) {
                     $scope.alertMessage = ('Event Dropped to make dayDelta ' + delta);
                 };
@@ -84,6 +85,17 @@ angular.module('bahmni.appointments')
                     return !(Bahmni.Common.Util.DateUtil.isBeforeDate($scope.date, moment().startOf('day')));
                 };
 
+                const openPopupIfAppointmentInUrl = function(){
+                    if (!$location.search()["appointment"]) return;
+                    let uuid = $location.search()["appointment"];
+                    appointmentsService.getAppointmentByUuid(uuid).then(function (response) {
+                        calendarViewPopUp({
+                            scope: {appointments: [response.data],enableCreateAppointment: isSelectable()},
+                            className: "ngdialog-theme-default delete-program-popup app-dialog-container"
+                        });
+                    })
+                };
+
                 $scope.uiConfig = {
                     calendar: {
                         height: document.getElementsByClassName('app-calendar-container')[0].clientHeight,
@@ -115,6 +127,7 @@ angular.module('bahmni.appointments')
                 };
 
                 $scope.eventSources = [$scope.events];
+                openPopupIfAppointmentInUrl()
             };
 
             var resetEvents = function () {
