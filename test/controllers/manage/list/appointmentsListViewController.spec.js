@@ -1533,7 +1533,7 @@ describe('AppointmentsListViewController', function () {
     });
 
     describe('acceptInviteForCurrentProvider', function () {
-        it('should change provider response when click on ACCEPT confirm', function () {
+        it('should change provider response when click on ACCEPT and confirm button', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
                 return value === 'enableAppointmentRequests';
             });
@@ -1549,17 +1549,18 @@ describe('AppointmentsListViewController', function () {
             appointmentsService.changeProviderResponse.and.returnValue(specUtil.simplePromise({}));
             $translate.instant.and.returnValue(message);
 
-            createController();
-            scope.acceptInviteForCurrentProvider();
-
             confirmBox.and.callFake(function (config) {
                 var close = jasmine.createSpy('close');
                 config.scope.yes(close).then(function () {
                     expect(appointmentsService.changeProviderResponse).toHaveBeenCalledWith(appointment.uuid, 'xyz1', 'ACCEPTED');
+                    expect(appointment.providers[0].response).toBe("ACCEPTED");
                     expect(close).toHaveBeenCalled();
                     expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
                 });
             });
+
+            createController();
+            scope.acceptInviteForCurrentProvider();
         });
 
     });

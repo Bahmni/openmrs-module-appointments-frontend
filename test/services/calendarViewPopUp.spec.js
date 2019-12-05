@@ -508,6 +508,7 @@ describe('CalendarViewPopUp', function () {
                 var close = jasmine.createSpy('close');
                 config.scope.yes(close).then(function () {
                     expect(appointmentsService.changeProviderResponse).toHaveBeenCalledWith(appointments[0].uuid, 'xyz1', 'ACCEPTED');
+                    expect(appointments[0].providers[0].response).toBe("ACCEPTED");
                     expect(close).toHaveBeenCalled();
                     expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
                 });

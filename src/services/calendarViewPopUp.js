@@ -126,6 +126,7 @@ angular.module('bahmni.appointments')
                     const message = $translate.instant('PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE');
                     return appointmentsService.changeProviderResponse(appointment.uuid, currentProviderInAppointment.uuid,
                         Bahmni.Appointments.Constants.providerResponses.ACCEPTED).then(function () {
+                            currentProviderInAppointment.response = Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
                             closeConfirmBox();
                             messagingService.showMessage('info', message);
                     });

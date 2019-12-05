@@ -295,12 +295,14 @@ angular.module('bahmni.appointments')
                     currentProviderInAppointment.response === Bahmni.Appointments.Constants.providerResponses.AWAITING;
             };
 
-            function acceptAppointmentInvite() {
+            function acceptAppointmentInvite(closeConfirmBox) {
                 const currentProviderInAppointment = findCurrentProviderInAppointment($scope.selectedAppointment);
 
                 const message = $translate.instant('PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE');
                 return appointmentsService.changeProviderResponse($scope.selectedAppointment.uuid, currentProviderInAppointment.uuid,
                     Bahmni.Appointments.Constants.providerResponses.ACCEPTED).then(function () {
+                    currentProviderInAppointment.response = Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
+                    closeConfirmBox();
                     messagingService.showMessage('info', message);
                 });
             }
