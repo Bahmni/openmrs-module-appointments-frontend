@@ -26,7 +26,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
     const errorTranslations = getErrorTranslations(intl);
 
     const updateLocationBasedOnService = (selectedService) => {
-        isEmpty(selectedService.value.location) ? updateAppointmentDetails({location: null})
+        selectedService && isEmpty(selectedService.value.location) ? updateAppointmentDetails({location: null})
             : updateAppointmentDetails({
                 location: {
                     value: selectedService.value.location,
