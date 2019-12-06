@@ -60,7 +60,7 @@ import Conflicts from "../Conflicts/Conflicts.jsx";
 
 const AddAppointment = props => {
 
-    const {appConfig, intl} = props;
+    const {appConfig, intl, appointmentParams} = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
 
@@ -71,11 +71,11 @@ const AddAppointment = props => {
         serviceType: null,
         location: null,
         speciality: undefined,
-        appointmentDate: undefined,
+        appointmentDate: appointmentParams.appointment !== null ? moment(appointmentParams.appointment.startDateTime).format("MM/DD/YYYY") : undefined,
         recurringStartDate: undefined,
         recurringEndDate: undefined,
-        startTime: undefined,
-        endTime: undefined,
+        startTime: appointmentParams.appointment !== null ? moment(appointmentParams.appointment.startDateTime) : undefined,
+        endTime: appointmentParams.appointment !== null ? moment(appointmentParams.appointment.endDateTime) : undefined,
         appointmentType: undefined,
         notes: undefined,
         startDateType: undefined,
@@ -505,6 +505,7 @@ const AddAppointment = props => {
 AddAppointment.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object,
+    appointmentParams: PropTypes.object
 };
 
 export default injectIntl(AddAppointment);
