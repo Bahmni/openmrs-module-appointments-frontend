@@ -32,6 +32,7 @@ export const getTranslations = async ({appName, locale, shouldMerge = true}) => 
     const fileURL = `${appName}/locale_${locale}.json`;
     const bahmniTranslations = await loadBahmniTranslations(fileURL);
     const customTranslations = await loadCustomTranslations(fileURL);
-    const messages = await mergeTranslations(bahmniTranslations.data, customTranslations.data, shouldMerge);
+    const messages = await mergeTranslations(bahmniTranslations && bahmniTranslations.data,
+        customTranslations && customTranslations.data, shouldMerge);
     return messages;
 };

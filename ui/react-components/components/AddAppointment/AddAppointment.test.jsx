@@ -7,21 +7,26 @@ import moment from "moment";
 
 jest.mock('../../api/patientApi');
 jest.mock('../../api/serviceApi');
+jest.mock('../../api/specialityApi');
 jest.mock('../../utils/CookieUtil');
 const patientApi = require('../../api/patientApi');
 const serviceApi = require('../../api/serviceApi');
+const specialityApi = require('../../api/specialityApi');
 let getPatientByLocationSpy;
 let getAllServicesSpy;
+let getAllSpecialitiesSpy;
 
 describe('Add Appointment', () => {
 
     beforeEach(() => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
         getAllServicesSpy = jest.spyOn(serviceApi, 'getAllServices');
+        getAllSpecialitiesSpy = jest.spyOn(specialityApi, 'getAllSpecialities');
     });
     afterEach(() => {
         getPatientByLocationSpy.mockRestore();
         getAllServicesSpy.mockRestore();
+        getAllSpecialitiesSpy = jest.spyOn(specialityApi, 'getAllSpecialities');
     });
 
     it('should render an editor', () => {
@@ -311,6 +316,55 @@ describe('Add Appointment', () => {
                 ))
         );
         getByText('Physiotherapy');
+    });
+
+    it('should clear service service type and location when speciality is changed', async () => {
+        const config = {enableSpecialities: true};
+        const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        //select speciality
+        const targetSpeciality = 'Cardiology';
+        const inputBoxSpeciality = container.querySelectorAll('.react-select__input input')[1];
+        fireEvent.change(inputBoxSpeciality, {target: {value: "Card"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        const optionSpeciality = getByText(targetSpeciality);
+        fireEvent.click(optionSpeciality);
+        let singleValueSpeciality;
+        await waitForElement(
+            () =>
+                (singleValueSpeciality = container.querySelector(
+                    '.react-select__single-value'
+                ))
+        );
+        //select service
+        const targetService = 'Physiotherapy OPD';
+        const inputBoxService = container.querySelectorAll('.react-select__input input')[2];
+        fireEvent.change(inputBoxService, {target: {value: "Phy"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        const optionService = getByText(targetService);
+        fireEvent.click(optionService);
+        let singleValueService;
+        await waitForElement(
+            () =>
+                (singleValueService = container.querySelector(
+                    '.react-select__single-value'
+                ))
+        );
+        getByText('Physiotherapy');
+        // change speciality
+        fireEvent.change(inputBoxSpeciality, {target: {value: "Neu"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        fireEvent.click(getByText("Neurology"));
+
+        await waitForElement(
+            () =>
+                (singleValueSpeciality = container.querySelector(
+                    '.react-select__single-value'
+                ))
+        );
+
+        expect(queryByText('Cardiology')).toBeNull();
+        expect(queryByText('Physiotherapy OPD')).toBeNull();
+        expect(queryByText('Physiotherapy')).toBeNull();
     });
 });
 
