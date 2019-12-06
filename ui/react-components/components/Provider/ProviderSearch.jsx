@@ -35,7 +35,7 @@ const ProviderSearch = props => {
                 response: "ACCEPTED"
             })
         );
-        return sortBy(options, providerOption => providerOption.label);
+        return sortBy(options, providerOption => providerOption.label.toLowerCase());
     };
 
     const onProviderSelect = selectedProviderOption => {
