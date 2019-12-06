@@ -417,10 +417,11 @@ const EditAppointment = props => {
                             <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                           onChange={time => {
                                               updateAppointmentDetails({startTime: time});
-                                              endTimeBasedOnService(time, appointmentDetails.service, appointmentDetails.serviceType);
+                                              endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
+                                                  appointmentDetails.serviceType && appointmentDetails.serviceType.value);
                                               updateErrorIndicators({startTimeError: !time});
                                           }}
-                                          isDisabled={componentsDisableStatus.time} />
+                                          isDisabled={componentsDisableStatus.time}/>
                             <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                         </div>
                         <div data-testid="end-time-selector">
