@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import Calendar from 'rc-calendar';
-import 'rc-calendar/assets/index.css';
+import Calendar from 'react-calendar';
+// import 'rc-calendar/assets/index.css';
 import {
     appointmentDatePicker,
     appointmentDatePickerNotSelected,
@@ -9,7 +9,7 @@ import {
 } from './DatePicker.module.scss';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {getLocale} from "../../utils/LocalStorageUtil.js";
+// import {getLocale} from "../../utils/LocalStorageUtil.js";
 import moment from 'moment';
 
 const AppointmentDatePicker = (props) => {
@@ -25,17 +25,18 @@ const AppointmentDatePicker = (props) => {
 
     return (
         <div data-testid="datePicker" className={classNames(isDisabled ? disable : '')}>
-            <Calendar
-                showOk={false}
-                showToday={false}
-                onClear={onClear}
-                disabledDate={date => minDate ? date.isBefore(minDate) : date}
-                className={classNames(styles)}
-                dateInputPlaceholder="mm/dd/yyyy"
-                onSelect={onChange}
-                selectedValue={value}
-                defaultValue={moment().locale(getLocale())}
-            />
+            <Calendar value={defaultValue && defaultValue.toDate()}/>
+            {/*<Calendar*/}
+                {/*showOk={false}*/}
+                {/*showToday={false}*/}
+                {/*onClear={onClear}*/}
+                {/*disabledDate={date => minDate ? date.isBefore(minDate) : date}*/}
+                {/*className={classNames(styles)}*/}
+                {/*dateInputPlaceholder="mm/dd/yyyy"*/}
+                {/*onSelect={onChange}*/}
+                {/*selectedValue={value}*/}
+                {/*defaultValue={moment().locale(getLocale())}*/}
+            {/*/>*/}
         </div>
     );
 };

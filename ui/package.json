@@ -27,7 +27,8 @@
     "react2angular": "^4.0.6",
     "reactjs-popup": "^1.5.0",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "react-calendar": "^2.19.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
