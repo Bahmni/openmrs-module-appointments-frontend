@@ -18,6 +18,8 @@ export const recurringAppointmentsSaveUrl = `${restWestV1}/recurring-appointment
 export const appointmentConflictsUrl = `${appointmentsSaveUrl}/conflicts`;
 export const recurringAppointmentsConflictsUrl = `${recurringAppointmentsSaveUrl}/conflicts`;
 
+export const i18nConfigPath = '/bahmni_config/openmrs/i18n/';
+
 export const appName = 'appointments';
 
 export const BAHMNI_CONFIG_URL = `${hostUrl}/bahmni_config/openmrs/apps`;
