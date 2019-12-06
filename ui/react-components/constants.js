@@ -54,15 +54,14 @@ export const CANCEL_CONFIRMATION_MESSAGE_EDIT = {
 };
 
 const appointmentTimeProps = {
-    translationKey: 'APPOINTMENT_TIME_FROM_LABEL',
     placeHolderTranslationKey: 'CHOOSE_TIME_PLACE_HOLDER', placeHolderDefaultMessage: 'hh:mm am/pm'
 };
 
 export const appointmentStartTimeProps = startTime => {
-    return {...appointmentTimeProps, defaultValue: 'From', defaultTime: startTime}
+    return {...appointmentTimeProps, defaultValue: 'From', defaultTime: startTime, translationKey: 'APPOINTMENT_TIME_FROM_LABEL'}
 };
 
 export const appointmentEndTimeProps = endTime => {
-    return {...appointmentTimeProps, defaultValue: 'To', defaultTime: endTime}
+    return {...appointmentTimeProps, defaultValue: 'To', defaultTime: endTime, translationKey: 'APPOINTMENT_TIME_TO_LABEL'}
 };
 
