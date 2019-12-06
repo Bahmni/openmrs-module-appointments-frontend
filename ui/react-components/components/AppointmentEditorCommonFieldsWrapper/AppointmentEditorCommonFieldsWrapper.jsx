@@ -54,7 +54,12 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     {isSpecialitiesEnabled(appConfig) ?
                         <div data-testid="speciality-search">
                             <SpecialitySearch value={appointmentDetails.speciality}
-                                              onChange={(optionSelected) => updateAppointmentDetails({speciality: optionSelected, service: null, serviceType: null})}
+                                              onChange={(optionSelected) => updateAppointmentDetails({
+                                                  speciality: optionSelected,
+                                                  service: null,
+                                                  serviceType: null,
+                                                  location: null
+                                              })}
                                               isDisabled={componentsDisableStatus.speciality}/>
                         </div> : null
                     }

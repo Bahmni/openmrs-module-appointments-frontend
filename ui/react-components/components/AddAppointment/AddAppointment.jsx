@@ -412,7 +412,8 @@ const AddAppointment = props => {
                                     <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                                   onChange={time => {
                                                       updateAppointmentDetails({startTime: time});
-                                                      endTimeBasedOnService(time, appointmentDetails.service, appointmentDetails.serviceType);
+                                                      endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
+                                                          appointmentDetails.serviceType && appointmentDetails.serviceType.value);
                                                       updateErrorIndicators({startTimeError: !time});
                                                   }}/>
                                     <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
@@ -454,7 +455,8 @@ const AddAppointment = props => {
                                 <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                               onChange={time => {
                                                   updateAppointmentDetails({startTime: time});
-                                                  endTimeBasedOnService(time, appointmentDetails.service, appointmentDetails.serviceType);
+                                                  endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
+                                                      appointmentDetails.serviceType && appointmentDetails.serviceType.value);
                                                   updateErrorIndicators({startTimeError: !time});
                                               }}/>
                                 <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
