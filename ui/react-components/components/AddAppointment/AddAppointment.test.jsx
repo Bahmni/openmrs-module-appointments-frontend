@@ -366,5 +366,29 @@ describe('Add Appointment', () => {
         expect(queryByText('Physiotherapy OPD')).toBeNull();
         expect(queryByText('Physiotherapy')).toBeNull();
     });
+
+    it('should populate the start date, start time and end time coming as props for normal appointment', function () {
+        const appointmentParams = {
+            startDateTime: 1575777600000,
+            endDateTime: 1575779400000,
+        };
+        const {container} = renderWithReactIntl(<AddAppointment appointmentParams={appointmentParams}/>);
+        expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe("4:00 am");
+        expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe("4:30 am");
+        expect(container.querySelector('.rc-calendar-input').value).toBe("12/8/2019");
+    });
+
+    it('should populate the start date, start time and end time coming as prop for recurring appointment', function () {
+        const appointmentParams = {
+            startDateTime: 1575777600000,
+            endDateTime: 1575779400000,
+        };
+        const {container} = renderWithReactIntl(<AddAppointment appointmentParams={appointmentParams}/>);
+        const checkBoxService = container.querySelector('.rc-checkbox-input');
+        fireEvent.click(checkBoxService);
+        expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe("4:00 am");
+        expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe("4:30 am");
+        expect(container.querySelector('.rc-calendar-input').value).toBe("12/8/2019");
+    });
 });
 
