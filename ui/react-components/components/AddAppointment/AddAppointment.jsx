@@ -60,7 +60,7 @@ import Conflicts from "../Conflicts/Conflicts.jsx";
 
 const AddAppointment = props => {
 
-    const {appConfig, intl} = props;
+    const {appConfig, intl, appointmentParams} = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
 
@@ -71,20 +71,20 @@ const AddAppointment = props => {
         serviceType: null,
         location: null,
         speciality: undefined,
-        appointmentDate: undefined,
-        recurringStartDate: undefined,
+        appointmentDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
+        recurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
         recurringEndDate: undefined,
-        startTime: undefined,
-        endTime: undefined,
+        startTime: appointmentParams && moment(appointmentParams.startDateTime),
+        endTime: appointmentParams && moment(appointmentParams.endDateTime),
         appointmentType: undefined,
         notes: undefined,
-        startDateType: undefined,
+        startDateType: appointmentParams && moment(new Date(appointmentParams.startDateTime)) ? FROM : undefined,
         endDateType: undefined,
         recurrenceType: dayRecurrenceType,
         occurrences: undefined,
         period: undefined,
         weekDays: undefined,
-        selectedRecurringStartDate: undefined
+        selectedRecurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime))
     };
 
     const initialErrorsState = {
@@ -225,7 +225,7 @@ const AddAppointment = props => {
         const response = await saveAppointment(appointmentRequest);
         if (response.status === 200) {
             setConflicts(undefined);
-            setViewDateAndShowSuccessPopup(response.startDateTime);
+            setViewDateAndShowSuccessPopup(response.data.startDateTime);
         }
     };
 
@@ -507,6 +507,7 @@ const AddAppointment = props => {
 AddAppointment.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object,
+    appointmentParams: PropTypes.object
 };
 
 export default injectIntl(AddAppointment);
