@@ -294,7 +294,10 @@ const AddAppointment = props => {
             updateAppointmentDetails({recurringStartDate: moment()});
             updateErrorIndicators({startDateError: false});
         } else {
-            updateAppointmentDetails({recurringEndDate: undefined});
+            updateAppointmentDetails({
+                recurringEndDate: undefined,
+                recurringStartDate: appointmentDetails.selectedRecurringStartDate
+            });
             updateErrorIndicators({startDateError: !appointmentDetails.recurringStartDate});
         }
     };
