@@ -32,3 +32,12 @@ export const getErrorTranslations = intl => {
         })
     };
 };
+
+export const getMaxAppointmentProvidersErrorMessage = (intl, maxAppointmentProviders) => {
+    return {
+        providerErrorMessage: intl.formatMessage({
+            id: 'PROVIDER_ERROR_MESSAGE',
+            defaultMessage: 'Please select only a maximum of {maxAppointmentProviders} provider(s)',
+        }, {maxAppointmentProviders: maxAppointmentProviders})
+    }
+};

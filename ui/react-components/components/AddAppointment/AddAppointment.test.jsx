@@ -8,25 +8,30 @@ import moment from "moment";
 jest.mock('../../api/patientApi');
 jest.mock('../../api/serviceApi');
 jest.mock('../../api/specialityApi');
+jest.mock('../../api/providerApi');
 jest.mock('../../utils/CookieUtil');
 const patientApi = require('../../api/patientApi');
 const serviceApi = require('../../api/serviceApi');
 const specialityApi = require('../../api/specialityApi');
+const providerApi = require('../../api/providerApi');
 let getPatientByLocationSpy;
 let getAllServicesSpy;
 let getAllSpecialitiesSpy;
+let getAllProvidersSpy;
 
 describe('Add Appointment', () => {
-
     beforeEach(() => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
         getAllServicesSpy = jest.spyOn(serviceApi, 'getAllServices');
         getAllSpecialitiesSpy = jest.spyOn(specialityApi, 'getAllSpecialities');
+        getAllProvidersSpy = jest.spyOn(providerApi, 'getAllProviders');
+        jest.useFakeTimers();
     });
     afterEach(() => {
         getPatientByLocationSpy.mockRestore();
         getAllServicesSpy.mockRestore();
-        getAllSpecialitiesSpy = jest.spyOn(specialityApi, 'getAllSpecialities');
+        getAllSpecialitiesSpy.mockRestore();
+        getAllProvidersSpy.mockRestore();
     });
 
     it('should render an editor', () => {
@@ -52,7 +57,7 @@ describe('Add Appointment', () => {
         expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
         expect(container.querySelector('.searchFieldsContainerLeft').children.length).toBe(4);
         expect(container.querySelector('.searchFieldsContainerRight')).not.toBeNull();
-        expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(1);
+        expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(2);
         expect(getAllByTestId('select').length).toBe(4);
     });
 
@@ -65,7 +70,7 @@ describe('Add Appointment', () => {
         expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
         expect(container.querySelector('.searchFieldsContainerLeft').children.length).toBe(5);
         expect(container.querySelector('.searchFieldsContainerRight')).not.toBeNull();
-        expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(1);
+        expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(2);
         expect(getAllByTestId('select').length).toBe(5);
     });
 
@@ -163,7 +168,7 @@ describe('Add Appointment', () => {
         getByTestId('start-time-selector');
         getByTestId('end-time-selector');
         getByTestId('notes');
-        expect(getAllByTestId('error-message').length).toBe(7);
+        expect(getAllByTestId('error-message').length).toBe(8);
     });
 
     it('should display recurring plan', () => {
@@ -209,7 +214,7 @@ describe('Add Appointment', () => {
         expect(getAllByText('Please select time').length).toBe(2);
         expect(getAllByText('Please select date').length).toBe(1);
         expect(getAllByText('Please select recurrence end type').length).toBe(1);
-        expect(getAllByTestId('error-message').length).toBe(10);
+        expect(getAllByTestId('error-message').length).toBe(11);
         expect(saveAppointmentSpy).not.toHaveBeenCalled();
 
     });
@@ -390,5 +395,44 @@ describe('Add Appointment', () => {
         expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe("4:30 am");
         expect(container.querySelector('.rc-calendar-input').value).toBe("12/8/2019");
     });
-});
 
+    it('should not add second provider when maxAppointmentProvidersAllowed is 1', async () => {
+        const config = {maxAppointmentProviders: 1};
+        const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        let selectedProvider = "Provider One";
+        const inputBox = container.querySelectorAll('.react-select__input input')[4];
+        fireEvent.change(inputBox, {target: {value: "One"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        const optionOne = getByText(selectedProvider);
+        fireEvent.click(optionOne);
+        fireEvent.change(inputBox, {target: {value: "Two"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        selectedProvider = "Provider Two";
+        const optionTwo = getByText(selectedProvider);
+        fireEvent.click(optionTwo);
+        expect(queryByText("Provider One")).not.toBeNull();
+        expect(queryByText("Provider Two")).toBeNull();
+    });
+
+    it('should display error message and disappear after 3 seconds when second provider is selected and ' +
+        'maxAppointmentProvidersAllowed is 1', async () => {
+        const config = {maxAppointmentProviders: 1};
+        const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        let selectedProvider = "Provider One";
+        const inputBox = container.querySelectorAll('.react-select__input input')[4];
+        fireEvent.change(inputBox, {target: {value: "One"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        const optionOne = getByText(selectedProvider);
+        fireEvent.click(optionOne);
+        fireEvent.change(inputBox, {target: {value: "Two"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        selectedProvider = "Provider Two";
+        const optionTwo = getByText(selectedProvider);
+        fireEvent.click(optionTwo);
+        expect(queryByText("Provider One")).not.toBeNull();
+        getByText("Please select only a maximum of 1 provider(s)");
+        expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);
+        jest.runAllTimers();
+        expect(queryByText("Please select only a maximum of 1 provider(s)")).toBeNull();
+    });
+});

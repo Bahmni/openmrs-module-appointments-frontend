@@ -15,8 +15,9 @@ import LocationSearch from "../Location/LocationSearch.jsx";
 import ProviderSearch from "../Provider/ProviderSearch.jsx";
 import React from "react";
 import {injectIntl} from "react-intl";
-import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
+import {getErrorTranslations, getMaxAppointmentProvidersErrorMessage} from "../../utils/ErrorTranslationsUtil";
 import {includes, filter, isEmpty} from "lodash";
+import {DEFAULT_MAX_APPOINTMENT_PROVIDERS, PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL} from "../../constants";
 
 const AppointmentEditorCommonFieldsWrapper = props => {
 
@@ -94,13 +95,24 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                 </div>
                 <div className={classNames(searchFieldsContainerRight)} data-testid="provider-search">
                     <ProviderSearch
-                        onChange={selectedProvider => includes(appointmentDetails.providers, selectedProvider)
-                            || updateAppointmentDetails({providers: [...appointmentDetails.providers, selectedProvider]})
-                        }
+                        onChange={selectedProvider => {
+                            if (appointmentDetails.providers.length < maxAppointmentProvidersAllowed(appConfig)) {
+                                includes(appointmentDetails.providers, selectedProvider)
+                                || updateAppointmentDetails({providers: [...appointmentDetails.providers, selectedProvider]})
+                            } else {
+                                if (!appointmentDetails.providerError) {
+                                    updateErrorIndicators({providerError: true});
+                                    setTimeout(function () {
+                                        updateErrorIndicators({providerError: false});
+                                    }, PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+                                }
+                            }
+                        }}
                         onProviderRemove={providerIdentifier => updateAppointmentDetails({providers: filter(appointmentDetails.providers, provider => provider.value !== providerIdentifier)})}
                         selectedProviders={appointmentDetails.providers}
-                        maxAppointmentProvidersAllowed={maxAppointmentProvidersAllowed(appConfig)}
                         isDisabled={componentsDisableStatus.providers}/>
+                    <ErrorMessage message={errors.providerError && getMaxAppointmentProvidersErrorMessage(intl,
+                        appConfig && appConfig.maxAppointmentProviders || DEFAULT_MAX_APPOINTMENT_PROVIDERS).providerErrorMessage}/>
                 </div>
             </div>
         </Fragment>

@@ -100,7 +100,8 @@ const AddAppointment = props => {
         recurrencePeriodError: false,
         startTimeBeforeEndTimeError: false,
         weekDaysError: false,
-        noContentError: false
+        noContentError: false,
+        providerError: false
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
