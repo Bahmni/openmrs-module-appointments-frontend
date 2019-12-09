@@ -1,4 +1,4 @@
-import {minDurationForAppointment} from "./constants";
+import {DEFAULT_MAX_APPOINTMENT_PROVIDERS, minDurationForAppointment} from "./constants";
 import moment from "moment";
 
 export const isSpecialitiesEnabled = appConfig => {
@@ -15,7 +15,7 @@ export const getDefaultOccurrences = appConfig => {
 export const maxAppointmentProvidersAllowed = appConfig => {
     if (appConfig && appConfig.maxAppointmentProviders)
         return appConfig.maxAppointmentProviders;
-    return 1;
+    return DEFAULT_MAX_APPOINTMENT_PROVIDERS;
 };
 
 export const getDuration = (service, serviceType) => (serviceType && serviceType.duration)

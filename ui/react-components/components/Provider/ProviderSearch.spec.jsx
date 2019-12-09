@@ -55,23 +55,5 @@ describe('Provider Search', () => {
         expect(getAllProviders).toHaveBeenCalled();
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
-
-    it('should not trigger onChange function when maxAppointmentProvidersAllowed is 1 and 2nd provider is selected', async () => {
-        const selectedProviders = [{
-            comments: null, label: "Name 1", response: "ACCEPTED", value: "8e459c7d-20e0-11e7-a53f-000c29e530d1"
-        }];
-        const selectedProvider = "Provider One";
-        const onChangeSpy = jest.fn();
-        const {container, getByText} = renderWithReactIntl(
-            <ProviderSearch onChange={onChangeSpy} maxAppointmentProvidersAllowed = {1}
-                            selectedProviders={selectedProviders} onProviderRemove={jest.fn()}/>);
-        const inputBox = container.querySelector('.react-select__input input');
-        fireEvent.change(inputBox, {target: {value: "One"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
-        const option = getByText(selectedProvider);
-        fireEvent.click(option);
-        expect(getAllProviders).toHaveBeenCalled();
-        expect(onChangeSpy).not.toHaveBeenCalled();
-    });
 });
 

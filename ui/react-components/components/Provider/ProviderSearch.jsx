@@ -9,7 +9,7 @@ import {sortBy} from "lodash";
 
 const ProviderSearch = props => {
 
-    const {intl, selectedProviders, onChange, onProviderRemove, maxAppointmentProvidersAllowed, isDisabled} = props;
+    const {intl, selectedProviders, onChange, onProviderRemove, isDisabled} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PROVIDER', defaultMessage: 'Choose Provider'
     });
@@ -40,10 +40,8 @@ const ProviderSearch = props => {
 
     const onProviderSelect = selectedProviderOption => {
         setSelectedProvider(null);
-        if (selectedProviders.length < maxAppointmentProvidersAllowed) {
-            const selectedProviderObj = find(providers, ["value", selectedProviderOption.value]);
-            onChange(selectedProviderObj);
-        }
+        const selectedProviderObj = find(providers, ["value", selectedProviderOption.value]);
+        onChange(selectedProviderObj);
     };
 
     return (
@@ -64,7 +62,6 @@ ProviderSearch.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     onProviderRemove: PropTypes.func.isRequired,
-    maxAppointmentProvidersAllowed: PropTypes.number.isRequired,
     selectedProviders: PropTypes.array,
     isDisabled: PropTypes.bool
 };
