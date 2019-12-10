@@ -25,3 +25,7 @@ export const getDuration = (service, serviceType) => (serviceType && serviceType
 export const getYesterday = () => {
     return moment().subtract('1', 'days').endOf('day');
 };
+
+export const isServiceTypeEnabled = appConfig => {
+    return appConfig && appConfig.enableServiceTypes;
+};

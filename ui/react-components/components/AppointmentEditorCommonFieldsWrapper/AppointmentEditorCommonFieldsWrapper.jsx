@@ -9,7 +9,7 @@ import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
 import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
-import {isSpecialitiesEnabled, maxAppointmentProvidersAllowed} from "../../helper";
+import {isServiceTypeEnabled, isSpecialitiesEnabled, maxAppointmentProvidersAllowed} from "../../helper";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import LocationSearch from "../Location/LocationSearch.jsx";
 import ProviderSearch from "../Provider/ProviderSearch.jsx";
@@ -78,14 +78,15 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         <ErrorMessage
                             message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
                     </div>
-                    <div data-testid="service-type-search">
-                        <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
-                            updateAppointmentDetails({serviceType: optionSelected});
-                            optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
-                        }}
-                                           serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
-                                           isDisabled={componentsDisableStatus.serviceType}/>
-                    </div>
+                    {isServiceTypeEnabled(appConfig) ?
+                        <div data-testid="service-type-search">
+                            <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
+                                updateAppointmentDetails({serviceType: optionSelected});
+                                optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
+                            }}
+                                               serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
+                                               isDisabled={componentsDisableStatus.serviceType}/>
+                        </div> : undefined}
                     <div data-testid="location-search">
                         <LocationSearch value={appointmentDetails.location}
                                         onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}

@@ -51,7 +51,10 @@ describe('Add Appointment', () => {
     });
 
     it('should display the all components search except speciality', function () {
-        const {container, getAllByTestId} = renderWithReactIntl(<AddAppointment/>);
+        const config = {
+            "enableServiceTypes": true
+        };
+        const {container, getAllByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
 
         expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
@@ -63,7 +66,8 @@ describe('Add Appointment', () => {
 
     it('should display the all components search', function () {
         const config = {
-            "enableSpecialities": "true"
+            "enableSpecialities": true,
+            "enableServiceTypes": true
         };
         const {container, getAllByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
@@ -154,7 +158,8 @@ describe('Add Appointment', () => {
 
     it('should display all the child components', () => {
         const config = {
-            "enableSpecialities": "true"
+            "enableSpecialities": true,
+            "enableServiceTypes": true
         };
         const {getByText, getByTestId, getAllByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         const checkAndSaveButton = getByText('Check and Save');
@@ -400,7 +405,7 @@ describe('Add Appointment', () => {
         const config = {maxAppointmentProviders: 1};
         const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         let selectedProvider = "Provider One";
-        const inputBox = container.querySelectorAll('.react-select__input input')[4];
+        const inputBox = container.querySelectorAll('.react-select__input input')[3];
         fireEvent.change(inputBox, {target: {value: "One"}});
         await waitForElement(() => (container.querySelector('.react-select__menu')));
         const optionOne = getByText(selectedProvider);
@@ -419,7 +424,7 @@ describe('Add Appointment', () => {
         const config = {maxAppointmentProviders: 1};
         const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         let selectedProvider = "Provider One";
-        const inputBox = container.querySelectorAll('.react-select__input input')[4];
+        const inputBox = container.querySelectorAll('.react-select__input input')[3];
         fireEvent.change(inputBox, {target: {value: "One"}});
         await waitForElement(() => (container.querySelector('.react-select__menu')));
         const optionOne = getByText(selectedProvider);
@@ -434,5 +439,20 @@ describe('Add Appointment', () => {
         expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);
         jest.runAllTimers();
         expect(queryByText("Please select only a maximum of 1 provider(s)")).toBeNull();
+    });
+
+    it('should hide service appointment type if enableServiceTypes is undefined', () => {
+        const {queryByText} = renderWithReactIntl(<AddAppointment/>);
+        expect(queryByText("Service App Type")).toBeNull();
+    });
+
+    it('should hide service appointment type if enableServiceTypes is false', () => {
+        const {queryByText} = renderWithReactIntl(<AddAppointment/>);
+        expect(queryByText("Service App Type")).toBeNull();
+    });
+
+    it('should display service appointment type if enableServiceTypes is true', () => {
+        const {getByText} = renderWithReactIntl(<AddAppointment appConfig={{enableServiceTypes: true}}/>);
+        getByText("Service App Type");
     });
 });
