@@ -35,7 +35,7 @@ angular.module('bahmni.appointments')
               return appointments;
             }
             return _.filter(appointments, function (appointment) {
-              return _.includes(locationUuids, appointment.location.uuid);
+              return _.includes(locationUuids, appointment.location && appointment.location.uuid);
             });
         };
 
