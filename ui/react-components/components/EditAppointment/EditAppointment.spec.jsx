@@ -57,7 +57,8 @@ describe('Edit Appointment', () => {
         let getByTextInDom = undefined;
         let containerInDom = undefined;
         const config = {
-            "enableSpecialities": true
+            "enableSpecialities": true,
+            "enableServiceTypes": true
         };
         act(() => {
             const {getByText, container} = renderWithReactIntl(<EditAppointment
@@ -86,7 +87,8 @@ describe('Edit Appointment', () => {
         let containerInDom = undefined;
         let getByTestIdInDom = undefined;
         const config = {
-            "enableSpecialities": true
+            "enableSpecialities": true,
+            "enableServiceTypes": true
         };
         act(() => {
             const {getByText, container, getByTestId} = renderWithReactIntl(<EditAppointment
@@ -120,7 +122,8 @@ describe('Edit Appointment', () => {
         let containerInDom = undefined;
         let getByTestIdInDom = undefined;
         const config = {
-            "enableSpecialities": true
+            "enableSpecialities": true,
+            "enableServiceTypes": true
         };
         act(() => {
             const {getByText, container, getByTestId} = renderWithReactIntl(<EditAppointment
