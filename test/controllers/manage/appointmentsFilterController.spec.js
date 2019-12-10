@@ -776,7 +776,15 @@ describe('AppointmentsFilterController', function () {
     });
 
     it("should apply filter when selectedSpecialities is set", function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes,
+            {
+                data: {
+                    results: [{
+                        name: "someProvider", person: {display: "someProvider"},
+                        uuid: "someProviderUuid", display: "someProvider"
+                    }]
+                }
+            }, locations]));
         appDescriptor.getConfigValue.and.returnValue(true);
         createController();
         spyOn(scope,'applyFilter');

@@ -31,6 +31,12 @@ angular.module('bahmni.appointments')
                     }
                 });
 
+                $scope.$watch("selectedLocations", function (selectedLocations) {
+                    if (!_.isUndefined($scope.selectedSpecialities)) {
+                        $scope.applyFilter();
+                    }
+                });
+
                 $scope.$watch("selectedStatusList", function (selectedStatusList) {
                     if (!_.isUndefined($scope.selectedSpecialities)) {
                         $scope.applyFilter();
