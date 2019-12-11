@@ -344,9 +344,9 @@ const AddAppointment = props => {
                                 onChange={date => {
                                     updateAppointmentDetails({
                                         recurringStartDate: date,
-                                        selectedRecurringStartDate: date,
-                                        recurringEndDate: undefined
+                                        selectedRecurringStartDate: date
                                     });
+                                    !date.isBefore(appointmentDetails.recurringEndDate) && updateAppointmentDetails({recurringEndDate: undefined});
                                     updateErrorIndicators({startDateError: !date});
                                 }}
                                 onClear={() => updateAppointmentDetails({recurringStartDate: undefined})}
