@@ -1,8 +1,8 @@
 {
-  "name": "bahmni.apps",
+  "name": "react-appointments-frontend",
   "version": "0.0.1",
-  "description": "Bahmni Apps",
-  "main": "app/app.js",
+  "description": "React Appointments Frontend",
+  "main": "dist/reactAngularAdaptor.js",
   "directories": {
     "test": "test"
   },
