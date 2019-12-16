@@ -13,7 +13,7 @@ const DateSelector = props => {
         <div>
             <Label translationKey={translationKey} defaultValue={defaultValue}/>
             <div className={classNames(appointmentDatePicker)}>
-                <AppointmentDatePicker onChange={onChange} onClear={onClear}/>
+                <AppointmentDatePicker onChange={onChange} onClear={onClear} />
             </div>
         </div>
     )

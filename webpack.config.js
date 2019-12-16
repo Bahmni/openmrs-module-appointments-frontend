@@ -6,6 +6,7 @@ const path = require('path');
 const distDirPath = __dirname + '/dist';
 
 module.exports = {
+    devtool:'source-map',
     context: __dirname + "/src",
     entry: './init.js',
     output: {

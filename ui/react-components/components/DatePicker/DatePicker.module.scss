@@ -113,13 +113,13 @@
 }
 
 .disable {
-  cursor: not-allowed;
-  div:first-child {
-    pointer-events: none;
-    opacity: 0.9;
-  }
-  i:first-child {
-    pointer-events: none;
-    opacity: 0.7;
-  }
+ div[class*='react-datepicker__week']{
+   background-color: #ccc;
+ }
+}
+
+.disabledDate {
+  pointer-events: none;
+  background-color: #ccc;
+  margin: 0;
 }

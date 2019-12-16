@@ -204,7 +204,7 @@ module.exports = function (webpackEnv) {
                 }
             ]
         },
-        devtool: isEnvDevelopment ?  "#inline-source-map" : 'none',
+        devtool: isEnvDevelopment ?  "source-map" : 'none',
         mode: isEnvDevelopment?'development': 'production',
     };
 };

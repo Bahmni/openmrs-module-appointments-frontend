@@ -23,7 +23,7 @@ export const getDuration = (service, serviceType) => (serviceType && serviceType
     || minDurationForAppointment;
 
 export const getYesterday = () => {
-    return moment().subtract('1', 'days').endOf('day');
+    return moment().subtract('1', 'days').endOf('day').toDate();
 };
 
 export const isServiceTypeEnabled = appConfig => {

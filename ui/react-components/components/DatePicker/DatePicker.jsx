@@ -1,40 +1,36 @@
-import React, {useEffect, useState} from 'react';
-import Calendar from 'rc-calendar';
+import React from 'react';
 import 'rc-calendar/assets/index.css';
 import {
     appointmentDatePicker,
     appointmentDatePickerNotSelected,
     appointmentDatePickerSelected,
-    disable
+    disable,
+    disabledDate
 } from './DatePicker.module.scss';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {getLocale} from "../../utils/LocalStorageUtil.js";
-import moment from 'moment';
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AppointmentDatePicker = (props) => {
-    const {minDate, defaultValue, onClear, onChange, isDisabled} = props;
-    const [value, setValue] = useState(defaultValue);
-    useEffect(() => {
-        setValue(defaultValue);
-    }, [defaultValue]);
-
-    let styles = [appointmentDatePicker];
-    value ? styles.push(appointmentDatePickerSelected)
-        : styles.push(appointmentDatePickerNotSelected);
-
+    const {minDate, value, onClear, onChange, isDisabled} = props;
+    // let styles = [appointmentDatePicker];
+    // value ? styles.push(appointmentDatePickerSelected)
+    //     : styles.push(appointmentDatePickerNotSelected);
+    let calendarStyles =[];
+    isDisabled && calendarStyles.push(disable);
+    console.log('min date', minDate)
     return (
         <div data-testid="datePicker" className={classNames(isDisabled ? disable : '')}>
-            <Calendar
-                showOk={false}
-                showToday={false}
-                onClear={onClear}
-                disabledDate={date => minDate ? date.isBefore(minDate) : date}
-                className={classNames(styles)}
-                dateInputPlaceholder="mm/dd/yyyy"
-                onSelect={onChange}
-                selectedValue={value}
-                defaultValue={moment().locale(getLocale())}
+            <DatePicker
+                selected={value}
+                onChange={onChange}
+                inline
+                readOnly={isDisabled}
+                dayClassName={() => isDisabled ? classNames(disabledDate) : ''}
+                calendarClassName={calendarStyles}
+                minDate={minDate}
             />
         </div>
     );
@@ -43,7 +39,7 @@ const AppointmentDatePicker = (props) => {
 AppointmentDatePicker.propTypes = {
     onChange: PropTypes.func,
     onClear: PropTypes.func,
-    defaultValue: PropTypes.object,
+    value: PropTypes.object.isRequired,
     minDate: PropTypes.object,
     isDisabled: PropTypes.bool
 };

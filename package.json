@@ -4,7 +4,7 @@
     "description": "An appointment app for bahmni/openmrs.",
     "license": "AGPLv3",
     "scripts": {
-        "build": "webpack --mode=development",
+        "build": "webpack --mode=development --watch",
         "bundle": "webpack --mode=production",
         "dev": "webpack-dev-server --mode=development",
         "test": "npm run build && karma start"

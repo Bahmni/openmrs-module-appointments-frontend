@@ -57,12 +57,14 @@ import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty} from 'lodash';
 import AppointmentEditorCommonFieldsWrapper from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
+import {getLocale} from "../../utils/LocalStorageUtil.js";
 
 const AddAppointment = props => {
 
     const {appConfig, intl, appointmentParams} = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
+    const dateToday = moment().locale(getLocale()).toDate();
 
     const initialAppointmentState = {
         patient: null,
@@ -71,9 +73,9 @@ const AddAppointment = props => {
         serviceType: null,
         location: null,
         speciality: undefined,
-        appointmentDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
-        recurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
-        recurringEndDate: undefined,
+        appointmentDate: (appointmentParams && moment(new Date(appointmentParams.startDateTime))) || dateToday,
+        recurringStartDate: (appointmentParams && moment(new Date(appointmentParams.startDateTime))),
+        recurringEndDate:  undefined,
         startTime: appointmentParams && moment(appointmentParams.startDateTime),
         endTime: appointmentParams && moment(appointmentParams.endDateTime),
         appointmentType: undefined,
@@ -84,7 +86,7 @@ const AddAppointment = props => {
         occurrences: undefined,
         period: undefined,
         weekDays: undefined,
-        selectedRecurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime))
+        selectedRecurringStartDate: (appointmentParams && moment(new Date(appointmentParams.startDateTime)))
     };
 
     const initialErrorsState = {
@@ -130,7 +132,8 @@ const AddAppointment = props => {
             type: appointmentDetails.recurrenceType,
             period: appointmentDetails.period
         };
-        appointmentDetails.endDateType === "After" ? recurringPattern.frequency = appointmentDetails.occurrences : recurringPattern.endDate = appointmentDetails.recurringEndDate;
+        appointmentDetails.endDateType === "After" ? recurringPattern.frequency = appointmentDetails.occurrences
+            : recurringPattern.endDate = appointmentDetails.recurringEndDate;
         if (appointmentDetails.recurrenceType === 'WEEK') {
             recurringPattern.daysOfWeek = getSelectedWeekDays(appointmentDetails.weekDays);
         }
@@ -292,7 +295,7 @@ const AddAppointment = props => {
     const startDateOnChange = value => {
         updateAppointmentDetails({startDateType: value});
         if (value === TODAY) {
-            updateAppointmentDetails({recurringStartDate: moment()});
+            updateAppointmentDetails({recurringStartDate: dateToday});
             updateErrorIndicators({startDateError: false});
         } else {
             updateAppointmentDetails({
@@ -311,7 +314,7 @@ const AddAppointment = props => {
             updateErrorIndicators({endDateError: appointmentDetails.recurringStartDate && !appointmentDetails.recurringEndDate, occurrencesError: false});
         }
     };
-
+    console.log(appointmentDetails.appointmentDate, appointmentDetails.recurringStartDate, appointmentDetails.recurringEndDate);
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring: '')}>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
@@ -350,8 +353,8 @@ const AddAppointment = props => {
                                     updateErrorIndicators({startDateError: !date});
                                 }}
                                 onClear={() => updateAppointmentDetails({recurringStartDate: undefined})}
-                                defaultValue={appointmentDetails.startDateType === FROM ? appointmentDetails.selectedRecurringStartDate : appointmentDetails.recurringStartDate}
-                                minDate={appointmentDetails.startDateType === FROM ? getYesterday() : undefined}/>
+                                value={(appointmentDetails.startDateType === FROM ? appointmentDetails.selectedRecurringStartDate : appointmentDetails.recurringStartDate)}
+                                minDate={appointmentDetails.startDateType === FROM ? dateToday : undefined}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div data-testid="end-date-group">
@@ -365,11 +368,11 @@ const AddAppointment = props => {
                                 endDateType={appointmentDetails.endDateType}/>
                             <AppointmentDatePicker
                                 onChange={date => {
-                                    updateAppointmentDetails({recurringEndDate: moment(date).endOf('day')});
+                                    updateAppointmentDetails({recurringEndDate: moment(date).endOf('day').toDate()});
                                     updateErrorIndicators({endDateError: !date});
                                 }}
                                 onClear={() => updateAppointmentDetails({recurringEndDate: undefined})}
-                                defaultValue={appointmentDetails.recurringEndDate}
+                                value={appointmentDetails.recurringEndDate}
                                 minDate={appointmentDetails.endDateType === "On" ?  appointmentDetails.recurringStartDate : undefined}/>
                             <ErrorMessage message={getEndDateTypeErrorMessage()}/>
                         </div>
@@ -449,8 +452,8 @@ const AddAppointment = props => {
                                     updateErrorIndicators({appointmentDateError: !date});
                                 }}
                                 onClear={() => updateAppointmentDetails({appointmentDate: undefined})}
-                                defaultValue={appointmentDetails.appointmentDate}
-                                minDate={getYesterday()}/>
+                                value={appointmentDetails.appointmentDate}
+                                minDate={dateToday}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div>
