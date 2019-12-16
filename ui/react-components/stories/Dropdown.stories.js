@@ -1,5 +1,6 @@
 import React from 'react';
 import Dropdown from '../components/Dropdown/Dropdown';
+import {IntlProvider} from "react-intl";
 
 export default { title: 'Dropdown' };
 
@@ -14,6 +15,16 @@ const colourOptions = [
     {value: 'silver', label: 'Silver'}
 ];
 
-export const withPlaceholder = () => <Dropdown placeholder="Sample placeholder"></Dropdown>;
+const withReactIntl = (DropDown) => {
+    return (props) =>{
+        return <IntlProvider locale='en' messages={{'DROPDOWN_NO_OPTIONS_MESSAGE': 'no option'}}>
+            <Dropdown {...props}/>
+        </IntlProvider>
+    }
+}
 
-export const withOptions = () => <Dropdown placeholder="Select color" options={colourOptions}></Dropdown>;
+const InternationalizedDropDown = withReactIntl(Dropdown);
+
+export const withPlaceholder = () => <InternationalizedDropDown placeholder="Sample placeholder"></InternationalizedDropDown>;
+
+export const withOptions = () => <InternationalizedDropDown placeholder="Select color" options={colourOptions}></InternationalizedDropDown>;
