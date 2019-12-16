@@ -481,4 +481,17 @@ describe('Add Appointment', () => {
         expect(queryByText("Provider Two")).not.toBeNull();
         expect(queryAllByText("Provider Two").length).toBe(1);
     });
+
+    it('should change appointment date when a new date is selected', () =>{
+        const {getByTestId, getAllByTitle, container} = renderWithReactIntl(<AddAppointment/>);
+        const getCellByTitle = (getAllByTitle, title) => {
+            const querySelector = getAllByTitle(title);
+            return querySelector[0].children[0];
+        };
+        const tomorrow = moment().add(1, "days").format("MMMM D, YYYY");
+        const dateCell = getCellByTitle(getAllByTitle, tomorrow);
+        fireEvent.click(dateCell);
+       expect(container.querySelector('.rc-calendar-selected-day').title).toBe(tomorrow);
+        expect(getByTestId('datePicker')).not.toBeNull();
+    })
 });

@@ -13,12 +13,7 @@ import {getLocale} from "../../utils/LocalStorageUtil.js";
 import moment from 'moment';
 
 const AppointmentDatePicker = (props) => {
-    const {minDate, defaultValue, onClear, onChange, isDisabled} = props;
-    const [value, setValue] = useState(defaultValue);
-    useEffect(() => {
-        setValue(defaultValue);
-    }, [defaultValue]);
-
+    const {minDate, value, onClear, onChange, isDisabled} = props;
     let styles = [appointmentDatePicker];
     value ? styles.push(appointmentDatePickerSelected)
         : styles.push(appointmentDatePickerNotSelected);

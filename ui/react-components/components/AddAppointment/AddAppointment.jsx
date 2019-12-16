@@ -57,6 +57,7 @@ import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty} from 'lodash';
 import AppointmentEditorCommonFieldsWrapper from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
+import {getLocale} from "../../utils/LocalStorageUtil";
 
 const AddAppointment = props => {
 
@@ -373,7 +374,7 @@ const AddAppointment = props => {
                                     updateErrorIndicators({startDateError: !date});
                                 }}
                                 onClear={() => updateAppointmentDetails({recurringStartDate: undefined})}
-                                defaultValue={appointmentDetails.startDateType === FROM ? appointmentDetails.selectedRecurringStartDate : appointmentDetails.recurringStartDate}
+                                value={appointmentDetails.startDateType === FROM ? appointmentDetails.selectedRecurringStartDate : appointmentDetails.recurringStartDate}
                                 minDate={appointmentDetails.startDateType === FROM ? getYesterday() : undefined}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
@@ -392,7 +393,7 @@ const AddAppointment = props => {
                                     updateErrorIndicators({endDateError: !date});
                                 }}
                                 onClear={() => updateAppointmentDetails({recurringEndDate: undefined})}
-                                defaultValue={appointmentDetails.recurringEndDate}
+                                value={appointmentDetails.recurringEndDate}
                                 minDate={appointmentDetails.endDateType === "On" ?  appointmentDetails.recurringStartDate : undefined}/>
                             <ErrorMessage message={getEndDateTypeErrorMessage()}/>
                         </div>
@@ -472,7 +473,7 @@ const AddAppointment = props => {
                                     updateErrorIndicators({appointmentDateError: !date});
                                 }}
                                 onClear={() => updateAppointmentDetails({appointmentDate: undefined})}
-                                defaultValue={appointmentDetails.appointmentDate}
+                                value={appointmentDetails.appointmentDate}
                                 minDate={getYesterday()}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
