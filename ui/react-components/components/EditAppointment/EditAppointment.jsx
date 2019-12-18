@@ -20,7 +20,7 @@ import {getAppointment} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
 import moment from "moment";
 import 'moment-timezone';
-import {getDuration, getYesterday} from "../../helper";
+import {getDuration, getValidProviders, getYesterday} from "../../helper";
 import {
     appointmentEndTimeProps,
     appointmentStartTimeProps,
@@ -170,7 +170,7 @@ const EditAppointment = props => {
                 appointmentDetails.serviceType.value.uuid,
             startDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
             endDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
-            providers: appointmentDetails.providers,
+            providers: getValidProviders(appointmentDetails.providers),
             locationUuid: appointmentDetails.location && appointmentDetails.location.value && appointmentDetails.location.value.uuid,
             appointmentKind: appointmentDetails.appointmentKind,
             comments: appointmentDetails.notes

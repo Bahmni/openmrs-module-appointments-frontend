@@ -6,6 +6,8 @@ import {forEach, find} from 'lodash';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import {sortBy} from "lodash";
+import {getValidProviders} from "../../helper";
+import {PROVIDER_RESPONSES} from "../../constants";
 
 const ProviderSearch = props => {
 
@@ -32,7 +34,7 @@ const ProviderSearch = props => {
                 value: provider.uuid,
                 label: provider.person.display,
                 comments: null,
-                response: "ACCEPTED"
+                response: PROVIDER_RESPONSES.ACCEPTED
             })
         );
         return sortBy(options, providerOption => providerOption.label.toLowerCase());
@@ -53,7 +55,8 @@ const ProviderSearch = props => {
                 onChange={onProviderSelect}
                 selectedValue={selectedProvider}
             />
-            <Tags selectedTags={selectedProviders} onChange={onProviderRemove} isDisabled={isDisabled}/>
+            <Tags onChange={onProviderRemove} isDisabled={isDisabled}
+                  selectedTags={getValidProviders(selectedProviders)}/>
         </div>
     );
 };

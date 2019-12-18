@@ -1,4 +1,4 @@
-import {DEFAULT_MAX_APPOINTMENT_PROVIDERS, minDurationForAppointment} from "./constants";
+import {DEFAULT_MAX_APPOINTMENT_PROVIDERS, minDurationForAppointment, PROVIDER_RESPONSES} from "./constants";
 import moment from "moment";
 
 export const isSpecialitiesEnabled = appConfig => {
@@ -28,4 +28,8 @@ export const getYesterday = () => {
 
 export const isServiceTypeEnabled = appConfig => {
     return appConfig && appConfig.enableServiceTypes;
+};
+
+export const getValidProviders = providers => {
+    return providers && providers.filter(provider => provider.response === PROVIDER_RESPONSES.ACCEPTED);
 };

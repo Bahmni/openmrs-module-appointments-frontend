@@ -9,15 +9,18 @@ import moment from "moment";
 jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/recurringAppointmentsApi');
 jest.mock('../../api/serviceApi');
+jest.mock('../../api/providerApi');
 const appointmentsApi = require('../../api/appointmentsApi');
 const recurringAppointmentsApi = require('../../api/recurringAppointmentsApi');
 const serviceApi = require('../../api/serviceApi');
+const providerApi = require('../../api/providerApi');
 let appointmentsApiSpy;
 let recurringAppointmentsApiSpy;
 let appointmentsUpdateApiSpy;
 let getAllServicesSpy;
 let conflictsForSpy;
 let recurringConflictsApiSpy;
+let getAllProvidersSpy;
 
 describe('Edit Appointment', () => {
     const flushPromises = () => new Promise(setImmediate);
@@ -29,7 +32,7 @@ describe('Edit Appointment', () => {
         getAllServicesSpy = jest.spyOn(serviceApi, 'getAllServices');
         conflictsForSpy = jest.spyOn(appointmentsApi, 'conflictsFor');
         recurringConflictsApiSpy = jest.spyOn(recurringAppointmentsApi, 'recurringConflictsFor');
-
+        getAllProvidersSpy = jest.spyOn(providerApi, 'getAllProviders');
     });
     afterEach(() => {
         appointmentsApiSpy.mockRestore();
@@ -38,6 +41,7 @@ describe('Edit Appointment', () => {
         getAllServicesSpy.mockRestore();
         conflictsForSpy.mockRestore();
         recurringConflictsApiSpy.mockRestore();
+        getAllProvidersSpy.mockRestore();
     });
 
     it('should call getAppointment when isRecurring is false', () => {
@@ -399,5 +403,54 @@ describe('Edit Appointment', () => {
         getByTextInDom('Please select valid occurrences');
         expect(conflictsForSpy).not.toHaveBeenCalled();
 
+    });
+
+    it('should not display providers with cancelled status', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let queryByTextInDom = undefined;
+
+        const config = {
+            "enableSpecialities": true,
+            "enableServiceTypes": true
+        };
+        act(() => {
+            const {getByText, container, queryByText} = renderWithReactIntl(<EditAppointment
+                appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} isRecurring="false" appConfig={config}/>);
+            getByTextInDom = getByText;
+            containerInDom = container;
+            queryByTextInDom = queryByText;
+        });
+        await flushPromises();
+        getByTextInDom("Abeer Abusamour");
+        expect(queryByTextInDom("Provider Two")).toBeNull();
+    });
+
+    it('should  display selected providers from drop down', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let queryByTextInDom = undefined;
+
+        const config = {
+            "enableServiceTypes": true,
+            "maxAppointmentProviders": 2
+        };
+        act(() => {
+            const {getByText, container, queryByText} = renderWithReactIntl(<EditAppointment
+                appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} isRecurring="false" appConfig={config}/>);
+            getByTextInDom = getByText;
+            containerInDom = container;
+            queryByTextInDom = queryByText;
+        });
+        await flushPromises();
+        let selectedProvider = "Provider Two";
+
+        const inputBox = containerInDom.querySelectorAll('.react-select__input input')[4];
+        fireEvent.change(inputBox, {target: {value: "Two"}});
+        await waitForElement(() => (containerInDom.querySelector('.react-select__menu')));
+
+        const optionOne = getByTextInDom(selectedProvider);
+        fireEvent.click(optionOne);
+        getByTextInDom("Provider Two");
     });
 });

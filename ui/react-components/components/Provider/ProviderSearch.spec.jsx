@@ -55,5 +55,19 @@ describe('Provider Search', () => {
         expect(getAllProviders).toHaveBeenCalled();
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
+
+    it('should render only providers with response as Accepted', async () => {
+        const selectedProviders = [{
+            comments: null, label: "Name 1", response: "ACCEPTED", value: "8e459c7d-20e0-11e7-a53f-000c29e530d1"
+        },{
+            comments: null, label: "Name 3", response: "CANCELLED", value: "8e459c7d-20e0-11e7-a53f-000c29e530d3"
+        }];
+        const onChangeSpy = jest.fn();
+        const {queryByText, getByText} = renderWithReactIntl(
+            <ProviderSearch onChange={onChangeSpy} maxAppointmentProvidersAllowed = {5}
+                            selectedProviders={selectedProviders} onProviderRemove={jest.fn()}/>);
+        getByText("Name 1");
+        expect(queryByText("Name 3")).toBeNull();
+    });
 });
 

@@ -455,4 +455,30 @@ describe('Add Appointment', () => {
         const {getByText} = renderWithReactIntl(<AddAppointment appConfig={{enableServiceTypes: true}}/>);
         getByText("Service App Type");
     });
+
+    it('should not add provider if selected twice', async () => {
+        const config = {maxAppointmentProviders: 2};
+        const {container, getByText, queryByText, queryAllByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        let selectedProvider = "Provider One";
+
+        const inputBox = container.querySelectorAll('.react-select__input input')[3];
+        fireEvent.change(inputBox, {target: {value: "One"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+
+        const optionOne = getByText(selectedProvider);
+        fireEvent.click(optionOne);
+        fireEvent.change(inputBox, {target: {value: "Two"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+
+        selectedProvider = "Provider Two";
+        const optionTwo = getByText(selectedProvider);
+        fireEvent.click(optionTwo);
+
+        const optionThree = getByText(selectedProvider);
+        fireEvent.click(optionThree);
+
+        expect(queryByText("Provider One")).not.toBeNull();
+        expect(queryByText("Provider Two")).not.toBeNull();
+        expect(queryAllByText("Provider Two").length).toBe(1);
+    });
 });

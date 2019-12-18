@@ -9,15 +9,24 @@ import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
 import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
-import {isServiceTypeEnabled, isSpecialitiesEnabled, maxAppointmentProvidersAllowed} from "../../helper";
+import {
+    getValidProviders,
+    isServiceTypeEnabled,
+    isSpecialitiesEnabled,
+    maxAppointmentProvidersAllowed
+} from "../../helper";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import LocationSearch from "../Location/LocationSearch.jsx";
 import ProviderSearch from "../Provider/ProviderSearch.jsx";
 import React from "react";
 import {injectIntl} from "react-intl";
 import {getErrorTranslations, getMaxAppointmentProvidersErrorMessage} from "../../utils/ErrorTranslationsUtil";
-import {includes, filter, isEmpty} from "lodash";
-import {DEFAULT_MAX_APPOINTMENT_PROVIDERS, PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL} from "../../constants";
+import {filter, isEmpty} from "lodash";
+import {
+    DEFAULT_MAX_APPOINTMENT_PROVIDERS,
+    PROVIDER_RESPONSES,
+    PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL
+} from "../../constants";
 
 const AppointmentEditorCommonFieldsWrapper = props => {
 
@@ -34,6 +43,19 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     label: selectedService.value.location.name
                 }
             });
+    };
+
+    const addOrUpdateProvider = selectedProvider => {
+        if (appointmentDetails.providers.filter(provider => provider.value === selectedProvider.value).length > 0) {
+            updateAppointmentDetails({
+                providers: appointmentDetails.providers.map(provider => {
+                    provider.response = provider.value === selectedProvider.value ? PROVIDER_RESPONSES.ACCEPTED : provider.response;
+                    return provider;
+                })
+            });
+        } else {
+            updateAppointmentDetails({providers: [...appointmentDetails.providers, selectedProvider]})
+        }
     };
 
     return (
@@ -97,9 +119,8 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                 <div className={classNames(searchFieldsContainerRight)} data-testid="provider-search">
                     <ProviderSearch
                         onChange={selectedProvider => {
-                            if (appointmentDetails.providers.length < maxAppointmentProvidersAllowed(appConfig)) {
-                                includes(appointmentDetails.providers, selectedProvider)
-                                || updateAppointmentDetails({providers: [...appointmentDetails.providers, selectedProvider]})
+                            if (getValidProviders(appointmentDetails.providers).length < maxAppointmentProvidersAllowed(appConfig)) {
+                                addOrUpdateProvider(selectedProvider);
                             } else {
                                 if (!appointmentDetails.providerError) {
                                     updateErrorIndicators({providerError: true});
