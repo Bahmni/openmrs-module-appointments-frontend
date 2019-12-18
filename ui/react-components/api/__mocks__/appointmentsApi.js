@@ -30,6 +30,11 @@ const appointmentResponse = {"data" : {
         "comments": null,
         "response": "ACCEPTED",
         "name": "Abeer Abusamour"
+    },{
+        "uuid": "ef3643ff-b6f7-4f27-8189-16689a821a9e",
+        "comments": null,
+        "response": "CANCELLED",
+        "name": "Provider Two"
     }],
     "recurring": false
 }};
