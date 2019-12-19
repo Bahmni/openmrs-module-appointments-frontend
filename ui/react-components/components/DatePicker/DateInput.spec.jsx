@@ -149,4 +149,24 @@ describe('Date Input', ()=>{
         fireEvent.blur(inputField);
         expect(inputField.value).toBe(formatedMinDate);
     })
+
+    it('should not allow the value to be editable if disabled is true',()=>{
+        const {container, getByPlaceholderText, getByText} = render(<DateInput value='' onBlur={onBlurSpy}
+                                                                               isDisabled={true}/>);
+        const inputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(inputField.disabled).toBe(true);
+    })
+
+    it('should  allow the value to be editable if disabled is false',()=>{
+        const {container, getByPlaceholderText, getByText} = render(<DateInput value='' onBlur={onBlurSpy}
+                                                                               isDisabled={false}/>);
+        const inputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(inputField.disabled).toBe(false);
+    })
+
+    it('should  allow the value to be editable if disabled is not passed',()=>{
+        const {container, getByPlaceholderText, getByText} = render(<DateInput value='' onBlur={onBlurSpy}/>);
+        const inputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(inputField.disabled).toBe(false);
+    })
 })
