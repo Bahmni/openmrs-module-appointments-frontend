@@ -22,6 +22,12 @@ let conflictsForSpy;
 let recurringConflictsApiSpy;
 let getAllProvidersSpy;
 
+const Wrapper = (props) => {
+    return  <div>
+        {props.children}
+    </div>
+}
+
 describe('Edit Appointment', () => {
     const flushPromises = () => new Promise(setImmediate);
 
@@ -452,5 +458,32 @@ describe('Edit Appointment', () => {
         const optionOne = getByTextInDom(selectedProvider);
         fireEvent.click(optionOne);
         getByTextInDom("Provider Two");
+    });
+
+    it('should display Invalid date and Invalid day when end date is cleared', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        let baseElementInDom = undefined;
+        const config = {
+            "enableSpecialities": true,
+            "enableServiceTypes": true
+        };
+        act(() => {
+            const {getByText, container, getByTestId, baseElement} = renderWithReactIntl(<Wrapper><EditAppointment
+                appointmentUuid={'WEEK'} isRecurring="true" appConfig={config}/></Wrapper>);
+            getByTextInDom = getByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+            baseElementInDom = baseElement;
+        });
+        await flushPromises();
+        const calendar = baseElementInDom.querySelector('.fa-calendar');
+        fireEvent.click(calendar);
+        var closeButton = baseElementInDom.querySelectorAll('.rc-calendar-clear-btn')[1];
+        fireEvent.click(closeButton);
+
+        getByTextInDom('Invalid date');
+        getByTextInDom('Invalid day');
     });
 });
