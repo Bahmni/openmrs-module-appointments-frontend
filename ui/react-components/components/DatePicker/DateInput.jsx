@@ -23,7 +23,7 @@ const DateInput = (props) =>{
         }
         return isDateFormatValid;
     }
-    const {value, onBlur, minDate, maxDate} = props;
+    const {value, onBlur, minDate, maxDate, isDisabled} = props;
     const [componentValue, setComponentValue] = useState(validateDate({dateValue: value, minDate,maxDate})? value:'');
     useEffect(() => {
         setComponentValue(validateDate({dateValue: value, minDate,maxDate})?value:'');
@@ -47,6 +47,7 @@ const DateInput = (props) =>{
         <div>
             <input placeholder="mm/dd/yyyy" onChange={(e) => setComponentValue(e.target.value)}
                    className={classNames(dateInputBox)}
+                   disabled={isDisabled}
                    onBlur={handleBlur} value={componentValue}/>
              <span className={classNames(dateInputClose)} onClick={handleClear}>x</span>
         </div>
@@ -58,6 +59,7 @@ DateInput.propTypes = {
     value: PropTypes.string,
     minDate: PropTypes.instanceOf(Date),
     maxDate: PropTypes.instanceOf(Date),
+    isDisabled: PropTypes.bool
 };
 
 export default DateInput;
