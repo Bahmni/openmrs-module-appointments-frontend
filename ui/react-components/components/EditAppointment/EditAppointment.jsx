@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, {Fragment, useEffect, useState} from "react";
-import {injectIntl} from "react-intl";
+import {FormattedMessage, injectIntl} from "react-intl";
 import classNames from "classnames";
 import {
     appointmentEditor,
@@ -480,7 +480,9 @@ const EditAppointment = props => {
                                     <div class={classNames(recurringTerminationDetails)}>
                                         <span>{moment(appointmentDetails.recurringEndDate).format("Do MMMM YYYY")}</span>
                                         <span className={classNames(dateText)}>
-                                            {capitalize(moment(appointmentDetails.recurringEndDate).format("dddd"))}
+                                            {appointmentDetails.recurringEndDate
+                                                ? capitalize(moment(appointmentDetails.recurringEndDate).format("dddd"))
+                                                : <FormattedMessage id="INVALID_DAY" defaultMessage="Invalid day"/>}
                                         </span>
                                         <span>
                                             <CalendarPicker

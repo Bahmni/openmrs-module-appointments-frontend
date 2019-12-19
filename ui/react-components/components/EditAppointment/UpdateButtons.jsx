@@ -17,13 +17,13 @@ const UpdateButtons = (props) => {
             <button className={classNames(updateOneButton, save)} onClick={() => checkAndSave(false)}
                     data-testid="check-and-save">
                 <span>
-                        <FormattedMessage id={'APPOINTMENT_UPDATE_ONE_LABEL'} defaultMessage={"Update for today's date"}/>
+                        <FormattedMessage id={'APPOINTMENT_UPDATE_ONE_LABEL'} defaultMessage={"Update this occurrence"}/>
                 </span>
             </button>
             <button className={classNames(updateAllButton, save)} onClick={() => checkAndSave(true)}
                     data-testid="check-and-save">
                 <span>
-                    <FormattedMessage id={'APPOINTMENT_UPDATE_ALL_LABEL'} defaultMessage={'Auto Update all occurrences'}/>
+                    <FormattedMessage id={'APPOINTMENT_UPDATE_ALL_LABEL'} defaultMessage={'Update all occurrences'}/>
                 </span>
             </button>
         </div>);
