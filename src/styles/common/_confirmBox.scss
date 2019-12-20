@@ -1,14 +1,29 @@
-.confirm-box{
-  .message{
-    padding-bottom: 15px;
-  }
-  .actions{
-    button{
-      background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
-      color: $white;
-      border:1px solid darken($bahmniSecondaryColor, 15%);
-      margin-right: 10px;
-      text-transform: capitalize;
+.ngdialog.ngdialog-theme-default.ng-scope {
+  .ngdialog-content {
+    width: 454px;
+    .confirm-box{
+      .recurrence-indication-message {
+        padding-bottom: 10px;
+        font-size: 12px;
+        font-style: italic;
+        color: grey;
+      }
+      .message{
+        padding-bottom: 15px;
+      }
+      .actions{
+        button{
+          background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
+          color: $white;
+          border:1px solid darken($bahmniSecondaryColor, 15%);
+          margin-right: 10px;
+          text-transform: capitalize;
+          &.right {
+            float: right;
+            margin-right: 0px;
+          }
+        }
+      }
     }
   }
 }

@@ -54,11 +54,11 @@ angular.module('bahmni.appointments')
                         appointmentCommonService.isUserAllowedToPerformEdit(appointmentProviders, currentUserPrivileges, currentProviderUuId);
                 };
 
-                var changeStatus = function (appointment, toStatus, onDate, closeConfirmBox) {
+                var changeStatus = function (appointment, toStatus, onDate, closeConfirmBox, applyForAll) {
                     var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
                         toStatus: toStatus
                     });
-                    return appointmentsService.changeStatus(appointment.uuid, toStatus, onDate).then(function () {
+                    return appointmentsService.changeStatus(appointment.uuid, toStatus, onDate, applyForAll).then(function () {
                         appointment.status = toStatus;
                         closeConfirmBox();
                         messagingService.showMessage('info', message);
@@ -79,14 +79,25 @@ angular.module('bahmni.appointments')
 
                 popUpScope.confirmAction = function (appointment, toStatus) {
                     var scope = {};
-                    scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
-                        toStatus: toStatus
-                    });
                     scope.no = closeConfirmBox;
                     scope.yes = _.partial(changeStatus, appointment, toStatus, undefined, _);
+                    var actions = [{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}];
+                    if (toStatus === 'Cancelled' && appointment.recurring) {
+                        scope.message = $translate.instant('APPOINTMENT_STATUS_CANCEL_CONFIRM_MESSAGE', {
+                            toStatus: toStatus
+                        });
+                        scope.yes_all = _.partial(changeStatus, appointment, toStatus, undefined, _, "true");
+                        actions = [{name: 'yes', display: 'RECURRENCE_THIS_APPOINTMENT'},
+                            {name: 'yes_all', display: 'RECURRENCE_ALL_APPOINTMENTS'},
+                            {name: 'no', display: 'DONT_CANCEL_KEY', class: 'right'}];
+                    }
+                    else
+                        scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
+                            toStatus: toStatus
+                        });
                     confirmBox({
                         scope: scope,
-                        actions: [{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}],
+                        actions: actions,
                         className: "ngdialog-theme-default"
                     });
                 };
