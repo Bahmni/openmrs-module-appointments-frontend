@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import{
-    dateInputClose,
-    dateInputBox
+    dateInputClear,
+    dateInputBox,
+    disable
 } from './DateInput.module.scss'
 import classNames from 'classnames';
 import {isValidUSDate} from '../../utils/DateUtil'
@@ -50,15 +51,22 @@ const DateInput = (props) =>{
            inputRef.current.blur();
         }
     }
+
+    const inputClearStyles= [dateInputClear];
+    isDisabled && inputClearStyles.push(disable);
+
+    const inputFieldStyles= [dateInputBox];
+    isDisabled && inputFieldStyles.push(disable);
+
     return(
         <div>
             <input placeholder="mm/dd/yyyy" onChange={(e) => setComponentValue(e.target.value)}
-                   className={classNames(dateInputBox)}
+                   className={classNames(inputFieldStyles)}
                    onKeyDown={handleKeyDown}
                    ref={inputRef}
                    disabled={isDisabled}
                    onBlur={handleBlur} value={componentValue}/>
-             <span className={classNames(dateInputClose)} onClick={handleClear}>x</span>
+             <span className={classNames(inputClearStyles)} onClick={handleClear}>x</span>
         </div>
     )
 }
