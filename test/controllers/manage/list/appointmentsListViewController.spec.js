@@ -883,6 +883,32 @@ describe('AppointmentsListViewController', function () {
         expect(confirmBox).toHaveBeenCalled();
     });
 
+
+    it('should show a pop up with option to cancel all appointments on confirmAction', function () {
+        var toStatus = 'Cancelled';
+        var translatedMessage = 'This is a recurring appointment. You can cancel either the selected appointment or the entire series';
+
+        $translate.instant.and.callFake(function (value) {
+            if (value === 'APPOINTMENT_STATUS_CANCEL_CONFIRM_MESSAGE')
+                return translatedMessage;
+        });
+        confirmBox.and.callFake(function (config) {
+            expect($translate.instant.calls.allArgs()).toEqual( [[ 'APPOINTMENT_STATUS_CANCEL_CONFIRM_MESSAGE', { toStatus : toStatus } ]]);
+            expect(config.scope.message).toEqual(translatedMessage);
+            expect(config.scope.no).toEqual(jasmine.any(Function));
+            expect(config.scope.yes).toEqual(jasmine.any(Function));
+            expect(config.scope.yes_all).toEqual(jasmine.any(Function));
+            expect(config.actions).toEqual([{name: 'yes', display: 'RECURRENCE_THIS_APPOINTMENT'},
+                {name: 'yes_all', display: 'RECURRENCE_ALL_APPOINTMENTS'},
+                {name: 'no', display: 'DONT_CANCEL_KEY', class: 'right'}]);
+            expect(config.className).toEqual('ngdialog-theme-default');
+        });
+        createController();
+        scope.selectedAppointment = {uuid: 'appointmentUuid', recurring: 'false' };
+        scope.confirmAction(toStatus);
+        expect(confirmBox).toHaveBeenCalled();
+    });
+
     it('should change status and show success message on confirmation on confirmAction', function () {
         var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
         var toStatus = 'Cancelled';
@@ -895,7 +921,7 @@ describe('AppointmentsListViewController', function () {
         confirmBox.and.callFake(function (config) {
             var close = jasmine.createSpy('close');
             config.scope.yes(close).then(function () {
-                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus, undefined);
+                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus, undefined, 'false');
                 expect(scope.selectedAppointment.status).toEqual(appointmentResponse.status);
                 expect(close).toHaveBeenCalled();
                 expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);

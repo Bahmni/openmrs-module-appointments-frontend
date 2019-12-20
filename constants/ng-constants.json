@@ -92,6 +92,7 @@
       "createAppointmentUrl": "/openmrs/ws/rest/v1/appointment",
       "getAppointmentsForServiceTypeUrl": "/openmrs/ws/rest/v1/appointment/futureAppointmentsForServiceType/",
       "changeAppointmentStatusUrl": "/openmrs/ws/rest/v1/appointments/{{appointmentUuid}}/status-change",
+      "changeRecurringAppointmentsStatusUrl": "/openmrs/ws/rest/v1/recurring-appointments/{{appointmentUuid}}/changeStatus",
       "getAppointmentByUuid": "/openmrs/ws/rest/v1/appointment/",
       "getAllAppointmentsUrl": "/openmrs/ws/rest/v1/appointment/all",
       "searchAppointmentUrl": "/openmrs/ws/rest/v1/appointment/search",

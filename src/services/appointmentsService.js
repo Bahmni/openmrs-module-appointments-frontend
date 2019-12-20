@@ -57,9 +57,10 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            this.changeStatus = function (appointmentUuid, toStatus, onDate) {
-                var params = {toStatus: toStatus, onDate: onDate};
-                var changeStatusUrl = appService.getAppDescriptor().formatUrl(Bahmni.Appointments.Constants.changeAppointmentStatusUrl, {appointmentUuid: appointmentUuid});
+            this.changeStatus = function (appointmentUuid, toStatus, onDate, applyForAll) {
+                var params = {toStatus: toStatus, onDate: onDate, applyForAll:applyForAll, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone};
+                var changeStatusConstantUrl = applyForAll === "true" ? Bahmni.Appointments.Constants.changeRecurringAppointmentsStatusUrl : Bahmni.Appointments.Constants.changeAppointmentStatusUrl;
+                var changeStatusUrl = appService.getAppDescriptor().formatUrl(changeStatusConstantUrl, {appointmentUuid: appointmentUuid});
                 return $http.post(changeStatusUrl, params, {
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
