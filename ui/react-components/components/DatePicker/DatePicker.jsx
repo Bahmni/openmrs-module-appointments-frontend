@@ -1,36 +1,47 @@
 import React, {useEffect, useState} from 'react';
-import Calendar from 'rc-calendar';
-import 'rc-calendar/assets/index.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import {
     appointmentDatePicker,
-    appointmentDatePickerNotSelected,
-    appointmentDatePickerSelected,
-    disable
+    disable,
+    disabledDate
 } from './DatePicker.module.scss';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {getLocale} from "../../utils/LocalStorageUtil.js";
 import moment from 'moment';
+import DateInput from './DateInput.jsx'
 
+const datetoMomentDate = (date) => date==='' || date===null || date === undefined ? date
+    : moment(date,'MM/DD/YYYY' );
 const AppointmentDatePicker = (props) => {
-    const {minDate, value, onClear, onChange, isDisabled} = props;
-    let styles = [appointmentDatePicker];
-    value ? styles.push(appointmentDatePickerSelected)
-        : styles.push(appointmentDatePickerNotSelected);
+    const {minDate, value, onChange,isDisabled} = props;
+    let calendarStyles =[appointmentDatePicker];
+    isDisabled && calendarStyles.push(disable);
+    const selectedDate = value?  value.toDate() : value;
+
+    let containerStyles=[];
+    isDisabled && containerStyles.push(disable);
+
+    const handleBlurOfDateInput = (date) =>{
+        const valueEntered= datetoMomentDate(date);
+        onChange(valueEntered)
+    };
 
     return (
-        <div data-testid="datePicker" className={classNames(isDisabled ? disable : '')}>
-            <Calendar
-                showOk={false}
-                showToday={false}
-                onClear={onClear}
-                disabledDate={date => minDate ? date.isBefore(minDate) : date}
-                className={classNames(styles)}
-                dateInputPlaceholder="mm/dd/yyyy"
-                onSelect={onChange}
-                selectedValue={value}
-                defaultValue={moment().locale(getLocale())}
-            />
+        <div data-testid="datePicker" className={classNames(containerStyles)}>
+           <DateInput value={value && value!=='' ? value.format('MM/DD/YYYY') : value}
+                      minDate={minDate && minDate.toDate()}
+                      isDisabled={isDisabled}
+                      onBlur={handleBlurOfDateInput}/>
+           <div disabled={isDisabled} data-testid="datePicker-Calendar"> <DatePicker
+                selected={selectedDate}
+                onChange={(date) =>onChange(datetoMomentDate(date))}
+                inline
+                readOnly={true}
+                calendarClassName={calendarStyles}
+                minDate={minDate && minDate.toDate()}
+                dayClassName={() => {if(isDisabled) return classNames(disabledDate)}}
+           /></div>
         </div>
     );
 };
@@ -38,8 +49,8 @@ const AppointmentDatePicker = (props) => {
 AppointmentDatePicker.propTypes = {
     onChange: PropTypes.func,
     onClear: PropTypes.func,
-    defaultValue: PropTypes.object,
-    minDate: PropTypes.object,
+    value: PropTypes.instanceOf(moment),
+    minDate: PropTypes.instanceOf(moment),
     isDisabled: PropTypes.bool
 };
 

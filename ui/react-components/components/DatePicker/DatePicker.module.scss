@@ -1,125 +1,43 @@
 @import '../../variables.scss';
 
 .appointmentDatePicker {
-  width: 100%;
-  margin-top: 20px;
+  width:84.3%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
 
-  div[class*='calendar-body'] {
-    padding: 0;
-    height: auto;
-  }
-
-  span[class*='rc-calendar-clear-btn'] {
-    z-index: 0;
+  div[class*='react-datepicker__day--selected']{
+    background-color:var(--color-primary-1);
   }
 
-  td[class*='rc-calendar-disabled'] {
-    > div {
-      cursor: not-allowed;
-      color: #bcbcbc;
-      background: #f3f3f3;
-      border-radius: 0;
-      width: auto;
+  div[class*='react-datepicker__day--today']{
+    border-radius: 0.3rem;
+    border:1px solid var(--color-primary-1) ;
+  }
+  div[class*='react-datepicker__day']{
+    margin-right: 0.6rem;
+    &:hover {
+      background-color: var(--color-primary-1-lighter);
     }
+  }
+  div[class*='react-datepicker__day-name']{
+    margin-right: 0.6rem;
+  }
+  div[class*='react-datepicker__time-name']{
+    margin-right: 0.6rem;
   }
 
-  div[class*='rc-calendar-header'] {
-    a {
-      &:hover {
-        color: $primary-color-1;
-      }
-    }
-  }
-
-  div[class*='panel-header'] {
-    a {
-      color: $primary-color-1;
-      &:hover {
-        color: $primary-color-1;
-      }
-    }
-  }
-
-  div[class*='panel-body'] {
-    padding: 0;
-    tbody[class*='panel-tbody'] {
-      td[class*='panel-selected-cell'] {
-        a {
-          background: $primary-color-1;
-          color: $secondary-color-1;
-          &:hover {
-            background: $primary-color-1;
-            color: $secondary-color-1;
-          }
-        }
-      }
-    }
-  }
-}
-
-.appointmentDatePickerSelected {
-  td[class*='rc-calendar-selected-day'] {
-    border: none;
-    div {
-      background: none;
-    }
-  }
-  td[class*='rc-calendar-selected-date'] {
-    > div {
-      &:hover {
-        background: $primary-color-1;
-      }
-      background: $primary-color-1;
-      color: $secondary-color-1;
-    }
-  }
-  td[class*='rc-calendar-today'] {
-    > div {
-      border: 1px solid $primary-color-1;
-    }
-  }
-  td[class*='rc-calendar-disabled'] {
-    > div {
-      cursor: not-allowed;
-      color: #bcbcbc;
-      background: #f3f3f3;
-      border-radius: 0;
-      width: auto;
-    }
-  }
-}
-
-.appointmentDatePickerNotSelected {
-  td[class*='rc-calendar-today'] {
-    > div {
-      border: 1px solid $primary-color-1;
-    }
-  }
-  td[class*='rc-calendar-selected-day'] {
-    border: none;
-    div {
-      background: none;
-    }
-  }
-  td[class*='rc-calendar-disabled'] {
-    > div {
-      cursor: not-allowed;
-      color: #bcbcbc;
-      background: #f3f3f3;
-      border-radius: 0;
-      width: auto;
-    }
+  div[class*='react-datepicker__month-container']{
+    width:100%;
   }
 }
 
 .disable {
   cursor: not-allowed;
-  div:first-child {
-    pointer-events: none;
-    opacity: 0.9;
-  }
-  i:first-child {
-    pointer-events: none;
-    opacity: 0.7;
-  }
+  width: 100%;
+}
+
+.disabledDate {
+  pointer-events: none;
+  color: #cccccc;
 }

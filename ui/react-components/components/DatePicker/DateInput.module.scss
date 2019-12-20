@@ -1,6 +1,6 @@
 @import '../../variables.scss';
 
-.dateInputClose{
+.dateInputClear{
   position: relative;
   left: -12px;
   &:hover{
@@ -9,11 +9,19 @@
 }
 
 .dateInputBox{
-  width: 70%;
+  width: 85%;
   padding: 6px 10px;
   display: inline-block;
   border: 1px solid #ccc;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   box-sizing: border-box;
+}
+
+.disable {
+  width: 85.1%;
+  cursor: not-allowed;
+  &:hover {
+    cursor: not-allowed;
+  }
 }
