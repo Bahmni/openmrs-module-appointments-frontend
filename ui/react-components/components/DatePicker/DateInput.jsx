@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import{
     dateInputClose,
     dateInputBox
@@ -23,6 +23,7 @@ const DateInput = (props) =>{
         }
         return isDateFormatValid;
     }
+    const inputRef = useRef(null);
     const {value, onBlur, minDate, maxDate, isDisabled} = props;
     const [componentValue, setComponentValue] = useState(validateDate({dateValue: value, minDate,maxDate})? value:'');
     useEffect(() => {
@@ -31,7 +32,7 @@ const DateInput = (props) =>{
 
     const handleBlur=(e) =>{
         const inputValue = e.target.value;
-        const isValidDate = validateDate({dateValue: inputValue, minDate,maxDate})
+        const isValidDate = validateDate({dateValue: inputValue, minDate,maxDate});
         if(isValidDate){
             onBlur(componentValue);
         }else {
@@ -43,10 +44,18 @@ const DateInput = (props) =>{
         setComponentValue('')
         onBlur('')
     }
+
+    const handleKeyDown= (e) => {
+        if (e.key === 'Enter') {
+           inputRef.current.blur();
+        }
+    }
     return(
         <div>
             <input placeholder="mm/dd/yyyy" onChange={(e) => setComponentValue(e.target.value)}
                    className={classNames(dateInputBox)}
+                   onKeyDown={handleKeyDown}
+                   ref={inputRef}
                    disabled={isDisabled}
                    onBlur={handleBlur} value={componentValue}/>
              <span className={classNames(dateInputClose)} onClick={handleClear}>x</span>
