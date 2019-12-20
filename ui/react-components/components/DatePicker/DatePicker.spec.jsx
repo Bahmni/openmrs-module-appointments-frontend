@@ -129,4 +129,17 @@ describe('DatePicker', () => {
         expect(dateCalendarContainer).not.toHaveAttribute('disabled');
     })
 
+    it('should not have any value when the component is disabled', () =>{
+        const fiveDaysFromToday = moment().add(5, 'days');
+        const {container, getByPlaceholderText, getByTestId} = render(<AppointmentDatePicker value={fiveDaysFromToday}
+                                                                                             isDisabled={true}/>);
+        let dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(dateInputField.disabled).toBe(true);
+        const dateCalendarContainer = getByTestId('datePicker-Calendar');
+        expect(dateCalendarContainer).toHaveAttribute('disabled');
+        expect(dateInputField.value).toBe('');
+        const  dateSelectedField = container.querySelector('.react-datepicker__day--selected');
+        expect(dateSelectedField).toBeNull();
+    })
+
 });
