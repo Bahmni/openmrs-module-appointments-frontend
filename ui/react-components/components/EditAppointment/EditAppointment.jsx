@@ -493,7 +493,7 @@ const EditAppointment = props => {
                                                 }}
                                                 date={appointmentDetails.recurringEndDate}
                                                 isDisabled={componentsDisableStatus.endDate}
-                                                startDate={appointmentDetails.appointmentDate}/>
+                                                startDate={moment()}/>
                                         </span>
                                     </div>
                                     <ErrorMessage message={errors.endDateError ? errorTranslations.dateErrorMessage : undefined}/>
