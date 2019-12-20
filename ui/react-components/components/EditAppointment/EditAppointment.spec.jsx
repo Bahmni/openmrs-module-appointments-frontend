@@ -486,4 +486,27 @@ describe('Edit Appointment', () => {
         getByTextInDom('Invalid date');
         getByTextInDom('Invalid day');
     });
+
+    it('should enable all days after today in end date calendar', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        let baseElementInDom = undefined;
+        const config = {
+            "enableServiceTypes": true
+        };
+        act(() => {
+            const {getByText, container, getByTestId, baseElement} = renderWithReactIntl(<Wrapper><EditAppointment
+                appointmentUuid={'future'} isRecurring="true" appConfig={config}/></Wrapper>);
+            getByTextInDom = getByText;
+            containerInDom = container;
+            baseElementInDom = baseElement;
+            getByTestIdInDom = getByTestId;
+        });
+        await flushPromises();
+        const calendar = baseElementInDom.querySelector('.fa-calendar');
+        fireEvent.click(calendar);
+
+        expect(containerInDom.querySelector(".rc-calendar-today div").getAttribute('aria-disabled')).toBe("false");
+    });
 });
