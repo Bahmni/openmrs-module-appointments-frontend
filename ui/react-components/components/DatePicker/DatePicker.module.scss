@@ -22,6 +22,9 @@
   }
   div[class*='react-datepicker__day-name']{
     margin-right: 0.6rem;
+    &:hover {
+      background:none;
+    }
   }
   div[class*='react-datepicker__time-name']{
     margin-right: 0.6rem;
