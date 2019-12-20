@@ -164,5 +164,10 @@
   "INVITED_PROVIDERS": "Invitees",
   "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Remove",
   "DROPDOWN_NO_OPTIONS_MESSAGE" : "Type to search",
-  "DROPDOWN_LOADING_MESSAGE" : "Loading..."
+  "DROPDOWN_LOADING_MESSAGE" : "Loading...",
+  "RECURRENCE_THIS_APPOINTMENT": "Cancel Occurrence",
+  "RECURRENCE_ALL_APPOINTMENTS" : "Cancel All",
+  "DONT_CANCEL_KEY": "Don't Cancel",
+  "APPOINTMENT_STATUS_CANCEL_CONFIRM_MESSAGE": "This is a recurring appointment. You can cancel either the selected appointment or the entire series",
+  "RECURRENCE_INDICATION_MESSAGE": "This is a recurring appointment"
 }
