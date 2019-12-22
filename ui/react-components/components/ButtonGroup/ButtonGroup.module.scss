@@ -17,9 +17,6 @@
       border-radius: 0 4px 4px 0;
       border-right: 1px solid $border-color;
     }
-    &:focus {
-      outline: 0;
-    }
     &.selected {
       background: $primary-color-1;
       color: $secondary-color-1;

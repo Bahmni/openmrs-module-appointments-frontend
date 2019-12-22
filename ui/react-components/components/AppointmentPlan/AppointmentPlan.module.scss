@@ -37,7 +37,9 @@
       &:focus {
         + {
           span[class*='checkbox-inner'] {
-            border-color: $primary-color-1;
+            outline:none;
+            border-color: #2f9cf5;
+            box-shadow:0 0 5px #2f9cf5;
           }
         }
       }
@@ -50,7 +52,9 @@
       border-color: $primary-color-1;
 
       &:focus {
-        border-color: $primary-color-1;
+        outline:none;
+        border-color: #2f9cf5;
+        box-shadow:0 0 5px #2f9cf5;
       }
     }
 
