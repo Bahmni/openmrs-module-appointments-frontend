@@ -19,6 +19,13 @@ let getAllServicesSpy;
 let getAllSpecialitiesSpy;
 let getAllProvidersSpy;
 
+const clickOnFirstDayOfNextMonth = (container) => {
+    const nextMonth = moment().add(1, 'months');
+    const nextButton = container.querySelector('.react-datepicker__navigation--next');
+    fireEvent.click(nextButton);
+    fireEvent.click(container.querySelector('.react-datepicker__day--001'));
+    return nextMonth;
+}
 describe('Add Appointment', () => {
     beforeEach(() => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
@@ -105,7 +112,7 @@ describe('Add Appointment', () => {
     });
 
     it('should display time error message when time is not selected and remaining fields are selected ', async () => {
-        const {container, getByText, queryByText, getAllByTitle, getAllByText} = renderWithReactIntl(<AddAppointment/>);
+        const {container, getByText, queryByText, getByPlaceholderText, getAllByText} = renderWithReactIntl(<AddAppointment/>);
 
         //select patient
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
@@ -144,9 +151,15 @@ describe('Add Appointment', () => {
             const querySelector = getAllByTitle(title);
             return querySelector[0].children[0];
         };
-        const tomorrow = moment().add(1, "days").format("MMMM D, YYYY");
-        const dateCell = getCellByTitle(getAllByTitle, tomorrow);
-        fireEvent.click(dateCell);
+
+        const nextMonth = clickOnFirstDayOfNextMonth(container);
+
+        const selectedDate = nextMonth.startOf('month');
+        const dateSelectedField = container.querySelector('.react-datepicker__day--selected');
+        expect(dateSelectedField.textContent).toBe(selectedDate.date().toFixed(0));
+
+        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
 
         fireEvent.click(getByText('Check and Save'));
 
@@ -378,27 +391,38 @@ describe('Add Appointment', () => {
     });
 
     it('should populate the start date, start time and end time coming as props for normal appointment', function () {
+        const today = moment();
+        const todayInMilliseconds = today.toDate().getTime();
+        const addTwoHoursFromNow = moment().add(2, 'hours');
+        const addTwoHoursFromNowInMilliseconds = addTwoHoursFromNow.toDate().getTime();
         const appointmentParams = {
-            startDateTime: 1575777600000,
-            endDateTime: 1575779400000,
+            startDateTime: todayInMilliseconds,
+            endDateTime: addTwoHoursFromNowInMilliseconds,
         };
-        const {container} = renderWithReactIntl(<AddAppointment appointmentParams={appointmentParams}/>);
-        expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe("4:00 am");
-        expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe("4:30 am");
-        expect(container.querySelector('.rc-calendar-input').value).toBe("12/8/2019");
+        const {container, getByPlaceholderText} = renderWithReactIntl(<AddAppointment appointmentParams={appointmentParams}/>);
+        expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe(today.format('h:mm A').toLowerCase());
+        expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe(addTwoHoursFromNow.format('h:mm A').toLowerCase());
+        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
     });
 
     it('should populate the start date, start time and end time coming as prop for recurring appointment', function () {
+        const today = moment();
+        const todayInMilliseconds = today.toDate().getTime();
+        const addTwoHoursFromNow = moment().add(2, 'hours');
+        const addTwoHoursFromNowInMilliseconds = addTwoHoursFromNow.toDate().getTime();
         const appointmentParams = {
-            startDateTime: 1575777600000,
-            endDateTime: 1575779400000,
+            startDateTime: todayInMilliseconds,
+            endDateTime: addTwoHoursFromNowInMilliseconds,
         };
-        const {container} = renderWithReactIntl(<AddAppointment appointmentParams={appointmentParams}/>);
+        const {container, getAllByPlaceholderText} = renderWithReactIntl(<AddAppointment appointmentParams={appointmentParams}/>);
         const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
-        expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe("4:00 am");
-        expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe("4:30 am");
-        expect(container.querySelector('.rc-calendar-input').value).toBe("12/8/2019");
+        expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe(today.format('h:mm A').toLowerCase());
+        expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe(addTwoHoursFromNow.format('h:mm A').toLowerCase());
+        const dateInputField = getAllByPlaceholderText('mm/dd/yyyy')[0];
+
+        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
     });
 
     it('should not add second provider when maxAppointmentProvidersAllowed is 1', async () => {
@@ -482,16 +506,17 @@ describe('Add Appointment', () => {
         expect(queryAllByText("Provider Two").length).toBe(1);
     });
 
-    it('should change appointment date when a new date is selected', () =>{
-        const {getByTestId, getAllByTitle, container} = renderWithReactIntl(<AddAppointment/>);
-        const getCellByTitle = (getAllByTitle, title) => {
-            const querySelector = getAllByTitle(title);
-            return querySelector[0].children[0];
-        };
-        const tomorrow = moment().add(1, "days").format("MMMM D, YYYY");
-        const dateCell = getCellByTitle(getAllByTitle, tomorrow);
-        fireEvent.click(dateCell);
-       expect(container.querySelector('.rc-calendar-selected-day').title).toBe(tomorrow);
-        expect(getByTestId('datePicker')).not.toBeNull();
+    it('should change appointment date when a new date is selected', async () =>{
+        const today = moment();
+        const {container, getByPlaceholderText, queryByText} = renderWithReactIntl(<AddAppointment/>);
+        const nextMonth = clickOnFirstDayOfNextMonth(container);
+
+        const selectedDate = nextMonth.startOf('month');
+        const dateSelectedField = container.querySelector('.react-datepicker__day--selected');
+        expect(dateSelectedField.textContent).toBe(selectedDate.date().toFixed(0));
+
+       const dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
+
     })
 });

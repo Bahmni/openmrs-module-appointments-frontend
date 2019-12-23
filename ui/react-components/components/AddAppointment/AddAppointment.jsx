@@ -54,7 +54,7 @@ import {getDefaultOccurrences, getDuration, getYesterday} from "../../helper.js"
 import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/WeekDaysService";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
-import {isEmpty} from 'lodash';
+import {isEmpty, isNil} from 'lodash';
 import AppointmentEditorCommonFieldsWrapper from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
 import {getLocale} from "../../utils/LocalStorageUtil";
@@ -336,6 +336,8 @@ const AddAppointment = props => {
         }
     };
 
+
+    const on = "On";
     return (<Fragment>
         <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring: '')}>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
@@ -373,9 +375,9 @@ const AddAppointment = props => {
                                     !date.isBefore(appointmentDetails.recurringEndDate) && updateAppointmentDetails({recurringEndDate: undefined});
                                     updateErrorIndicators({startDateError: !date});
                                 }}
-                                onClear={() => updateAppointmentDetails({recurringStartDate: undefined})}
+                                isDisabled={ appointmentDetails.startDateType !==FROM }
                                 value={appointmentDetails.startDateType === FROM ? appointmentDetails.selectedRecurringStartDate : appointmentDetails.recurringStartDate}
-                                minDate={appointmentDetails.startDateType === FROM ? getYesterday() : undefined}/>
+                                minDate={moment()}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div data-testid="end-date-group">
@@ -392,9 +394,9 @@ const AddAppointment = props => {
                                     updateAppointmentDetails({recurringEndDate: moment(date).endOf('day')});
                                     updateErrorIndicators({endDateError: !date});
                                 }}
-                                onClear={() => updateAppointmentDetails({recurringEndDate: undefined})}
+                                isDisabled={appointmentDetails.endDateType !== on || (appointmentDetails.endDateType === on && _.isNil(appointmentDetails.recurringStartDate))}
                                 value={appointmentDetails.recurringEndDate}
-                                minDate={appointmentDetails.endDateType === "On" ?  appointmentDetails.recurringStartDate : undefined}/>
+                                minDate={appointmentDetails.recurringStartDate}/>
                             <ErrorMessage message={getEndDateTypeErrorMessage()}/>
                         </div>
                         <div data-testid="recurrence-type-group">
@@ -472,9 +474,12 @@ const AddAppointment = props => {
                                     updateAppointmentDetails({appointmentDate: date});
                                     updateErrorIndicators({appointmentDateError: !date});
                                 }}
-                                onClear={() => updateAppointmentDetails({appointmentDate: undefined})}
+                                onClear={() => {
+                                    console.log('clear clear')
+                                    updateAppointmentDetails({appointmentDate: undefined})}
+                                }
                                 value={appointmentDetails.appointmentDate}
-                                minDate={getYesterday()}/>
+                                minDate={moment()}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div>
