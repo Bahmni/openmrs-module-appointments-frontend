@@ -76,7 +76,6 @@ describe('AppointmentsService', function () {
         var appointment = {status: 'Scheduled', uuid: "7d162c29-3f12-11e4-adec-0800271c1b75"};
         var toStatus = "CheckedIn";
         var applyForAll = "true";
-        var timeZone = "Asia/Calcutta";
         var onDate = new Date();
         var changeStatusUrl = Bahmni.Appointments.Constants.changeAppointmentStatusUrl;
         changeStatusUrl.replace('{{appointmentUuid}}', appointment.uuid);
@@ -88,7 +87,7 @@ describe('AppointmentsService', function () {
             'toStatus': toStatus,
             'onDate': onDate,
             'applyForAll': applyForAll,
-            'timeZone': timeZone
+            'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
         }, params);
     });
 });
