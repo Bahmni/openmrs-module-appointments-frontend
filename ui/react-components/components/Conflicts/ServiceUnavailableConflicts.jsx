@@ -4,12 +4,14 @@ import {FormattedMessage} from "react-intl";
 import React from "react";
 import PropTypes from "prop-types";
 import {getAppointmentConflictDetails} from "./ConflictsUtil";
+import {sortBy} from "lodash";
 
 const ServiceUnavailableConflicts = props => {
 
     const getConflictsList = () => {
         let conflictList = [];
-        props.conflicts.forEach((conflict, index) => {
+        const conflicts = sortBy(props.conflicts, conflict => conflict.startDateTime);
+        conflicts.forEach((conflict, index) => {
             conflictList.push(<div className={classNames(appointmentConflict)} key={index}>
                 <div className={classNames(conflictDetails)}>{getAppointmentConflictDetails(conflict)}</div>
             </div>);

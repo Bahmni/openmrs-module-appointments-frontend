@@ -10,6 +10,7 @@ import {FormattedMessage} from "react-intl";
 import React from "react";
 import PropTypes from "prop-types";
 import {getAppointmentConflictDetails} from "./ConflictsUtil";
+import {sortBy} from "lodash";
 
 const PatientDoubleBookingConflicts = props => {
 
@@ -29,7 +30,8 @@ const PatientDoubleBookingConflicts = props => {
 
     const getConflictsList = () => {
         let conflictsList = [];
-        props.conflicts.forEach((conflict, index) => {
+        const conflicts = sortBy(props.conflicts, conflict => conflict.startDateTime);
+        conflicts.forEach((conflict, index) => {
             conflictsList.push(
                 <div className={classNames(appointmentConflict)} key={index}>
                     {getDoubleBookingAppointmentConflictMessage(conflict)}
