@@ -142,4 +142,11 @@ describe('DatePicker', () => {
         expect(dateSelectedField).toBeNull();
     })
 
+    it('should show month and year dropdown', () =>{
+        const {container} = render(<AppointmentDatePicker/>);
+        expect(container.querySelector('.appointmentDatePicker')).not.toBeNull();
+       expect(container.querySelector('.react-datepicker__month-dropdown-container')).not.toBeNull();
+        expect(container.querySelector('.react-datepicker__year-dropdown-container')).not.toBeNull();
+    })
+
 });
