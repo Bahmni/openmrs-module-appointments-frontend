@@ -146,12 +146,6 @@ describe('Add Appointment', () => {
                 ))
         );
 
-        //select date
-        const getCellByTitle = (getAllByTitle, title) => {
-            const querySelector = getAllByTitle(title);
-            return querySelector[0].children[0];
-        };
-
         const nextMonth = clickOnFirstDayOfNextMonth(container);
 
         const selectedDate = nextMonth.startOf('month');
