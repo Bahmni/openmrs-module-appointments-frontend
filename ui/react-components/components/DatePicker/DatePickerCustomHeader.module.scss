@@ -1,0 +1,44 @@
+@import '../../variables.scss';
+
+.monthYearDropdownLabel{
+  padding: 20px;
+}
+
+.monthYearDatePickerContainer{
+  padding-top: 5px;
+
+}
+.monthYearDatePicker{
+  div[class*='react-datepicker__month--selected']{
+    background-color:var(--color-primary-1);
+  }
+  div[class*='react-datepicker__month-text']{
+    &:hover {
+      background-color: var(--color-primary-1-lighter);
+    }
+  }
+}
+
+.arrow{
+  border: 1px solid var(--color-primary-1);
+  background: var(--color-primary-1);;
+  color: white;
+  margin: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 12px;
+}
+
+.currentDateCircle{
+  border: 1px solid var(--color-primary-1);
+  background: var(--color-primary-1);
+  color: white;
+  margin: 8px;
+  font-size: 12px;
+}
+
+.disable{
+  background-color: #cccccc;
+  cursor:  not-allowed;
+  border: 1px solid #cccccc;
+}
