@@ -503,6 +503,5 @@ describe('Edit Appointment', () => {
         await flushPromises();
         const dateSelectedField = containerInDom.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe("11");
-        const  dateInputField = getByPlaceholderTextInDom('mm/dd/yyyy');
     })
 });
