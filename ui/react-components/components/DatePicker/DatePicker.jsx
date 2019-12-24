@@ -43,6 +43,8 @@ const AppointmentDatePicker = (props) => {
                 calendarClassName={calendarStyles}
                 minDate={minDate && minDate.toDate()}
                 dayClassName={() => {if(isDisabled) return classNames(disabledDate)}}
+                showMonthDropdown
+                showYearDropdown
            /></div>
         </div>
     );
