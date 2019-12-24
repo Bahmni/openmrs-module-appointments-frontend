@@ -80,7 +80,7 @@
       "openMRSSystemSettingUrl": "/openmrs/ws/rest/v1/systemsetting/",
       "baseLocaleURL": "./i18n/",
       "customLocaleURL": "/bahmni_config/openmrs/i18n/",
-      "loginPageUrl": "../home/index.html#/login"
+      "loginPageUrl": "../../bahmni/home/index.html#/login"
     }
   },
   "Appointments": {
