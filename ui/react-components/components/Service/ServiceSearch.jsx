@@ -57,7 +57,7 @@ ServiceSearch.propTypes = {
     specialityUuid: PropTypes.string,
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
-    specialityEnabled: PropTypes.func
+    specialityEnabled: PropTypes.bool
 };
 
 export default injectIntl(ServiceSearch);

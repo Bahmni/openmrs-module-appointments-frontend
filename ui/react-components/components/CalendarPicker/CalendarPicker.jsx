@@ -1,12 +1,12 @@
-import React from 'react';
-import Calendar from 'rc-calendar';
-import 'rc-calendar/assets/index.css';
-import DatePicker from 'rc-calendar/lib/Picker';
+import React, {useState, useRef} from 'react';
+import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
+import useOutsideClick from "../../utils/hooks/useOutsideClick";
 import PropTypes from "prop-types";
 import {
-    appointmentDatePicker,
-    appointmentDatePickerNotSelected,
-    appointmentDatePickerSelected,
+    calendarPickerContainer
+} from './CalendarPicker.module.scss'
+import {
+
     disable
 } from '../DatePicker/DatePicker.module.scss';
 import classNames from "classnames";
@@ -14,33 +14,35 @@ import classNames from "classnames";
 
 const CalendarPicker = (props) => {
 
-    const {date, onChange, isDisabled, startDate} = props;
+    const {date, onChange, isDisabled, minDate} = props;
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    let styles = [calendarPickerContainer];
+    const ref = useRef();
 
-    let styles = [appointmentDatePicker];
-    date ? styles.push(appointmentDatePickerSelected)
-        : styles.push(appointmentDatePickerNotSelected);
-
-    const calendar = (
-      <Calendar showToday={false} disabledDate={date => startDate ? date.isBefore(startDate) : date}
-                className={classNames(styles)}/>);
+    useOutsideClick(ref, (event) => {
+       if(event.target.className.indexOf("react-datepicker")< 0)
+            setShowDatePicker(false);
+    });
 
     return (
-        <div className={classNames(isDisabled ? disable : '')}>
-            <DatePicker
-                animation="slide-up"
+        <div data-testid='calendar-picker' className={classNames(styles, isDisabled ? disable : '')} ref={ref}>
+            <span data-testid="calendar-icon" onClick={ () => setShowDatePicker(!showDatePicker)}>
+                <i className={classNames("fa","fa-calendar")} aria-hidden="true"></i>
+            </span>
+            { showDatePicker && <div><AppointmentDatePicker
+                isDisabled={isDisabled}
+                minDate={minDate}
                 value={date}
-                calendar={calendar}
-                onChange={onChange}
-                dateInputPlaceholder="mm/dd/yyyy"
-            >{({value}) => <i className={classNames("fa fa-calendar")}/>}</DatePicker>
+                onChange={onChange} /></div>}
         </div>
     );
 };
 
 CalendarPicker.propTypes = {
-    date: PropTypes.object,
+    date: PropTypes.instanceOf(Date),
     onChange: PropTypes.func,
-    startDate: PropTypes.object
+    isDisabled: PropTypes.bool,
+    minDate: PropTypes.instanceOf(Date)
 };
 
 export default CalendarPicker;

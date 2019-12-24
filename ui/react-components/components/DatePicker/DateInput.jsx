@@ -66,7 +66,7 @@ const DateInput = (props) =>{
                    ref={inputRef}
                    disabled={isDisabled}
                    onBlur={handleBlur} value={componentValue}/>
-             <span className={classNames(inputClearStyles)} onClick={handleClear}>x</span>
+             <span data-testid='clear-date-input' className={classNames(inputClearStyles)} onClick={handleClear}>x</span>
         </div>
     )
 }
