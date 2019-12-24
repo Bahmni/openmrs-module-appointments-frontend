@@ -14,19 +14,22 @@ import classNames from "classnames";
 
 const CalendarPicker = (props) => {
 
-    const {date, onChange, isDisabled, minDate} = props;
+    const {date, onChange, minDate, isDisabled} = props;
     const [showDatePicker, setShowDatePicker] = useState(false);
     let styles = [calendarPickerContainer];
     const ref = useRef();
 
     useOutsideClick(ref, (event) => {
-       if(event.target.className.indexOf("react-datepicker")< 0)
+        if(event.target.className.indexOf("react-datepicker")< 0)
             setShowDatePicker(false);
     });
 
+    const handleOnClick = () => {
+        !isDisabled && setShowDatePicker(!showDatePicker)
+    };
     return (
         <div data-testid='calendar-picker' className={classNames(styles, isDisabled ? disable : '')} ref={ref}>
-            <span data-testid="calendar-icon" onClick={ () => setShowDatePicker(!showDatePicker)}>
+            <span data-testid="calendar-icon" onClick={ handleOnClick}>
                 <i className={classNames("fa","fa-calendar")} aria-hidden="true"></i>
             </span>
             { showDatePicker && <div><AppointmentDatePicker
