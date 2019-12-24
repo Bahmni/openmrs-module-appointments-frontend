@@ -28,6 +28,14 @@ const Wrapper = (props) => {
     </div>
 }
 
+const clickOnFirstDayOfNextMonth = (container) => {
+    const nextMonth = moment().add(1, 'months');
+    const nextButton = container.querySelector('.react-datepicker__navigation--next');
+    fireEvent.click(nextButton);
+    fireEvent.click(container.querySelector('.react-datepicker__day--001'));
+    return nextMonth;
+}
+
 describe('Edit Appointment', () => {
     const flushPromises = () => new Promise(setImmediate);
 
@@ -267,30 +275,22 @@ describe('Edit Appointment', () => {
         let containerInDom = undefined;
         let getByTestIdInDom = undefined;
         let getAllByTitleInDom = undefined;
+        let getByPlaceholderTextInDom = undefined;
         const config = {
             "enableSpecialities": true
         };
         act(() => {
-            const {getByText, container, getByTestId, getAllByTitle} = renderWithReactIntl(<EditAppointment
+            const {getByText, container, getByTestId, getAllByTitle, getByPlaceholderText} = renderWithReactIntl(<EditAppointment
                 appointmentUuid={'DAY'} isRecurring="true" appConfig={config}/>);
             getByTextInDom = getByText;
             containerInDom = container;
             getByTestIdInDom = getByTestId;
             getAllByTitleInDom = getAllByTitle;
+            getByPlaceholderTextInDom= getByPlaceholderText;
         });
         await flushPromises();
 
-        //change date
-        const date = moment();
-        const year = date.format('YYYY');
-        const month = date.format('MMM');
-        const tomorrow = date.format("MMMM D, YYYY");
-
-        fireEvent.click(containerInDom.querySelector('[title="Choose a year"]'));
-        fireEvent.click(containerInDom.querySelector(`[title="${year}"]`));
-        fireEvent.click(containerInDom.querySelector('[title="Choose a month"]'));
-        fireEvent.click(containerInDom.querySelector(`[title="${month}"]`));
-        fireEvent.click(containerInDom.querySelector(`[title="${tomorrow}"]`));
+        clickOnFirstDayOfNextMonth(containerInDom);
         fireEvent.click(getByTextInDom('Update'));
 
         expect(containerInDom.querySelector('.updateOptions')).toBeNull();
@@ -346,7 +346,7 @@ describe('Edit Appointment', () => {
         await flushPromises();
 
         //clear date
-        fireEvent.click(containerInDom.querySelector('.rc-calendar-clear-btn'));
+        fireEvent.click(getByTestIdInDom('clear-date-input'));
 
         fireEvent.click(getByTextInDom('Update'));
         getByTextInDom('Please select date');
@@ -465,48 +465,44 @@ describe('Edit Appointment', () => {
         let containerInDom = undefined;
         let getByTestIdInDom = undefined;
         let baseElementInDom = undefined;
+        let getAllByTestIdInDom= undefined
         const config = {
             "enableSpecialities": true,
             "enableServiceTypes": true
         };
         act(() => {
-            const {getByText, container, getByTestId, baseElement} = renderWithReactIntl(<Wrapper><EditAppointment
+            const {getByText, container, getByTestId, baseElement, getAllByTestId} = renderWithReactIntl(<Wrapper><EditAppointment
                 appointmentUuid={'WEEK'} isRecurring="true" appConfig={config}/></Wrapper>);
             getByTextInDom = getByText;
             containerInDom = container;
             getByTestIdInDom = getByTestId;
             baseElementInDom = baseElement;
+            getAllByTestIdInDom = getAllByTestId;
         });
         await flushPromises();
-        const calendar = baseElementInDom.querySelector('.fa-calendar');
+        const calendar = getByTestIdInDom('calendar-icon');
         fireEvent.click(calendar);
-        var closeButton = baseElementInDom.querySelectorAll('.rc-calendar-clear-btn')[1];
-        fireEvent.click(closeButton);
+        const clearDateInputButton = getAllByTestIdInDom('clear-date-input')[1];
+        fireEvent.click(clearDateInputButton);
 
         getByTextInDom('Invalid date');
         getByTextInDom('Invalid day');
     });
 
-    it('should enable all days after today in end date calendar', async () => {
+    it('should display datepicker with appointment start date for non recurring appointment', async() =>{
         let getByTextInDom = undefined;
         let containerInDom = undefined;
-        let getByTestIdInDom = undefined;
-        let baseElementInDom = undefined;
-        const config = {
-            "enableServiceTypes": true
-        };
+        let getByPlaceholderTextInDom= undefined;
         act(() => {
-            const {getByText, container, getByTestId, baseElement} = renderWithReactIntl(<Wrapper><EditAppointment
-                appointmentUuid={'future'} isRecurring="true" appConfig={config}/></Wrapper>);
+            const {getByText, container, getByPlaceholderText} = renderWithReactIntl(<EditAppointment
+                appointmentUuid='active-appointment-uuid'  isRecurring="false" />);
             getByTextInDom = getByText;
             containerInDom = container;
-            baseElementInDom = baseElement;
-            getByTestIdInDom = getByTestId;
+            getByPlaceholderTextInDom = getByPlaceholderText
         });
         await flushPromises();
-        const calendar = baseElementInDom.querySelector('.fa-calendar');
-        fireEvent.click(calendar);
-
-        expect(containerInDom.querySelector(".rc-calendar-today div").getAttribute('aria-disabled')).toBe("false");
-    });
+        const dateSelectedField = containerInDom.querySelector('.react-datepicker__day--selected');
+        expect(dateSelectedField.textContent).toBe("11");
+        const  dateInputField = getByPlaceholderTextInDom('mm/dd/yyyy');
+    })
 });
