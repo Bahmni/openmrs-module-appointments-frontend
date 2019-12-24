@@ -419,9 +419,8 @@ const EditAppointment = props => {
                                 updateAppointmentDetails({appointmentDate: date});
                                 updateErrorIndicators({appointmentDateError: !date});
                             }}
-                            onClear={() => updateAppointmentDetails({appointmentDate: undefined})}
-                            defaultValue={appointmentDetails.appointmentDate}
-                            minDate={getYesterday()}
+                            value={appointmentDetails.appointmentDate}
+                            minDate={moment()}
                             isDisabled={componentsDisableStatus.startDate}/>
                         <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                     </div>
@@ -517,7 +516,7 @@ const EditAppointment = props => {
                                                 }}
                                                 date={appointmentDetails.recurringEndDate}
                                                 isDisabled={componentsDisableStatus.endDate}
-                                                startDate={moment()}/>
+                                                minDate={appointmentDetails.appointmentDate}/>
                                         </span>
                                     </div>
                                     <ErrorMessage message={errors.endDateError ? errorTranslations.dateErrorMessage : undefined}/>
