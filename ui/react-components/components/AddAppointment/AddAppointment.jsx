@@ -475,7 +475,6 @@ const AddAppointment = props => {
                                     updateErrorIndicators({appointmentDateError: !date});
                                 }}
                                 onClear={() => {
-                                    console.log('clear clear')
                                     updateAppointmentDetails({appointmentDate: undefined})}
                                 }
                                 value={appointmentDetails.appointmentDate}
