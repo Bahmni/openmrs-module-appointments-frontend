@@ -33,6 +33,14 @@
   div[class*='react-datepicker__month-container']{
     width:100%;
   }
+
+  div[class*='react-datepicker__header__dropdown']{
+    margin-top:0.6rem;
+  }
+
+  span[class*='react-datepicker__month-read-view--selected-month'], span[class*='react-datepicker__year-read-view--selected-year']{
+    font-size: 16px;
+  }
 }
 
 .disable {
