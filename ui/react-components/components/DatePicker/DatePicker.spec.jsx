@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {render, fireEvent, wait, act} from '@testing-library/react';
+import {render, fireEvent, wait, within} from '@testing-library/react';
 import AppointmentDatePicker from './DatePicker.jsx';
 import moment from 'moment';
 
@@ -142,11 +142,39 @@ describe('DatePicker', () => {
         expect(dateSelectedField).toBeNull();
     })
 
-    it('should show month and year dropdown', () =>{
-        const {container} = render(<AppointmentDatePicker/>);
+    it('should show current selected date month and year value in header', () =>{
+        const fiveDaysFromToday = moment().add(5, 'days');
+        const {container, getByTestId} = render(<AppointmentDatePicker value={fiveDaysFromToday}/>);
         expect(container.querySelector('.appointmentDatePicker')).not.toBeNull();
-       expect(container.querySelector('.react-datepicker__month-dropdown-container')).not.toBeNull();
-        expect(container.querySelector('.react-datepicker__year-dropdown-container')).not.toBeNull();
+        const datePickerHeader = getByTestId('date-picker-header-label');
+       expect(datePickerHeader.childNodes[0].textContent).toBe(fiveDaysFromToday.format('MMMM YYYY'));
+    })
+
+    it('should display month year popup when date year label in header is clicked', () =>{
+        const fiveDaysFromToday = moment().add(5, 'days');
+        const {container, getByTestId, queryByTestId} = render(<AppointmentDatePicker value={fiveDaysFromToday}/>);
+        expect(container.querySelector('.appointmentDatePicker')).not.toBeNull();
+        const datePickerHeader = getByTestId('date-picker-header-label');
+        expect(queryByTestId('month-year-datepicker')).toBeNull();
+        fireEvent.click(datePickerHeader.childNodes[0])
+        expect(getByTestId('month-year-datepicker')).not.toBeNull();
+    })
+
+    it('should show the selected month and year from the month and year popup in header ', () =>{
+        const fiveDaysFromToday = moment().add(5, 'days');
+        const {container, getByTestId, queryByTestId} = render(<AppointmentDatePicker value={fiveDaysFromToday}/>);
+        expect(container.querySelector('.appointmentDatePicker')).not.toBeNull();
+        let datePickerHeader = getByTestId('date-picker-header-label');
+        expect(queryByTestId('month-year-datepicker')).toBeNull();
+        fireEvent.click(datePickerHeader.childNodes[0])
+        const withinMonthYearDatePicker = within(getByTestId('month-year-datepicker'));
+        const nextYearButton = withinMonthYearDatePicker.getByText('Next Year');
+        fireEvent.click(nextYearButton);
+        const nextYearDecMonthButton = withinMonthYearDatePicker.getByText('Dec');
+        fireEvent.click(nextYearDecMonthButton);
+        datePickerHeader = getByTestId('date-picker-header-label');
+        expect(datePickerHeader.childNodes[0].textContent).toBe(`December ${moment().add(1, 'year')
+            .format('YYYY')}`);
     })
 
 });

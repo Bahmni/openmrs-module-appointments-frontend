@@ -9,7 +9,8 @@ import {
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
-import DateInput from './DateInput.jsx'
+import DateInput from './DateInput.jsx';
+import DatePickerCustomHeader from './DatePickerCustomHeader.jsx';
 
 const datetoMomentDate = (date) => date==='' || date===null || date === undefined ? date
     : moment(date,'MM/DD/YYYY' );
@@ -43,8 +44,11 @@ const AppointmentDatePicker = (props) => {
                 calendarClassName={calendarStyles}
                 minDate={minDate && minDate.toDate()}
                 dayClassName={() => {if(isDisabled) return classNames(disabledDate)}}
-                showMonthDropdown
-                showYearDropdown
+                renderCustomHeader={(params) => {
+                    return(<DatePickerCustomHeader {...params}
+                                                   minDate={minDate && minDate.toDate()}
+                                                   currentDate={selectedDate}/>
+                )}}
            /></div>
         </div>
     );
