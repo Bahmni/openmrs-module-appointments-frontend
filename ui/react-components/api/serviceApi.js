@@ -8,6 +8,7 @@ export const getAllServices = async () => {
         return response.data;
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };
 
@@ -17,5 +18,6 @@ export const getService = async serviceUuid => {
         return response.data;
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };
