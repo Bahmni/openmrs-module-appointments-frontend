@@ -4,7 +4,8 @@ import {
     footer,
     footerElements,
     cancelPopup,
-    save
+    save,
+    errorMessageContainer
 } from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
 import React, {useState} from "react";
 import PropTypes from "prop-types";
@@ -14,11 +15,12 @@ import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import {AppContext} from "../AppContext/AppContext";
 import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
+import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit, isOptionsRequired, disableUpdateButton, cancelConfirmationMessage} = props;
+    const {checkAndSave, isEdit, isOptionsRequired, disableUpdateButton, cancelConfirmationMessage, errorMessage} = props;
     const[showUpdateButtons, setShowUpdateButtons] = useState(false);
 
     const getUpdateButtons =() =>{
@@ -33,6 +35,10 @@ const AppointmentEditorFooter = props => {
                         </button>;
 
     return (
+        <div>
+            <div className={classNames(errorMessageContainer)}>
+                <ErrorMessage message={errorMessage} />
+            </div>
         <div className={classNames(footer)}>
             <div className={classNames(footerElements)}>
                 <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
@@ -56,6 +62,7 @@ const AppointmentEditorFooter = props => {
 
             </div>
         </div>
+        </div>
     );
 };
 
@@ -67,7 +74,8 @@ AppointmentEditorFooter.propTypes = {
     cancelConfirmationMessage: PropTypes.shape({
       translationKey: PropTypes.string.isRequired,
       defaultMessage: PropTypes.string.isRequired
-    })
+    }),
+    errorMessage: PropTypes.string
 };
 
 export default AppointmentEditorFooter;

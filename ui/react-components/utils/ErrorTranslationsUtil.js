@@ -29,6 +29,9 @@ export const getErrorTranslations = intl => {
         }),
         noContentErrorMessage: intl.formatMessage({
             id: 'NO_CONTENT_ERROR_MESSAGE', defaultMessage: 'Selected days do not fall under the end date selected'
+        }),
+        unexpectedServiceErrorMessage: intl.formatMessage({
+            id: 'UNEXPECTED_SERVICE_ERROR', defaultMessage: 'There was an unexpected issue on the server. Please try again'
         })
     };
 };
