@@ -7,5 +7,6 @@ export const getPatientsByLocation = async (locationUuid, searchQuery, startInde
         return response.data.pageOfResults;
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };

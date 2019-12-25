@@ -7,6 +7,7 @@ export const saveOrUpdateAppointment = async (data) => {
         return response;
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };
 
@@ -15,6 +16,7 @@ export const conflictsFor = async appointmentRequest => {
         return await axios.post(appointmentConflictsUrl, appointmentRequest);
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };
 
@@ -24,5 +26,6 @@ export const getAppointment = async (appointmentUuid) => {
         return response;
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };

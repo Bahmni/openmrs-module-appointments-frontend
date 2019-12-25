@@ -173,7 +173,7 @@ describe('Add Appointment', () => {
         getByTestId('start-time-selector');
         getByTestId('end-time-selector');
         getByTestId('notes');
-        expect(getAllByTestId('error-message').length).toBe(8);
+        expect(getAllByTestId('error-message').length).toBe(9);
     });
 
     it('should display recurring plan', () => {
@@ -219,7 +219,7 @@ describe('Add Appointment', () => {
         expect(getAllByText('Please select time').length).toBe(2);
         expect(getAllByText('Please select date').length).toBe(1);
         expect(getAllByText('Please select recurrence end type').length).toBe(1);
-        expect(getAllByTestId('error-message').length).toBe(11);
+        expect(getAllByTestId('error-message').length).toBe(12);
         expect(saveAppointmentSpy).not.toHaveBeenCalled();
 
     });

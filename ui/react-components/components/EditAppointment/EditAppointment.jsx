@@ -118,6 +118,7 @@ const EditAppointment = props => {
     const [originalRecurringEndDate, setOriginalRecurringEndDate] = useState(undefined);
     const [originalOccurrences, setOriginalOccurrences] = useState(undefined);
     const [applyForAll, setApplyForAll] = useState(false);
+    const [serviceErrorMessage, setServiceErrorMessage] = useState('');
 
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
@@ -203,14 +204,24 @@ const EditAppointment = props => {
 
     const isWeeklyRecurringAppointment = () => appointmentDetails.recurrenceType === weekRecurrenceType;
 
+    const setServiceErrorMessageFromResponse = response => {
+        response.error && response.error.message ? setServiceErrorMessage(response.error.message)
+            : setServiceErrorMessage(errorTranslations.unexpectedServiceErrorMessage);
+    };
+
     const checkAndSave = async () => {
         if (isValidAppointment()) {
             const appointment = getAppointmentRequest();
             const response = await getAppointmentConflicts(appointment);
-            if (response.status === 204) {
+            const status = response.status;
+            if (status === 204) {
                 setShowUpdateConfirmPopup(true);
+            } else if (status === 200) {
+                setConflicts(response.data);
+            } else if (response.data && response.data.error) {
+                setConflicts(undefined);
+                setServiceErrorMessageFromResponse(response.data);
             }
-            response.status === 200 && setConflicts(response.data);
         }
     };
 
@@ -221,19 +232,27 @@ const EditAppointment = props => {
 
     const save = async appointmentRequest => {
         const response = await saveAppointment(appointmentRequest);
-        if (response.status === 200) {
+        const status = response.status;
+        if (status === 200) {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
+        } else if (response.data && response.data.error) {
+            setConflicts(undefined);
+            setServiceErrorMessageFromResponse(response.data);
         }
     };
 
     const updateAllAppointments = async recurringAppointmentRequest => {
         const response = await updateRecurring(recurringAppointmentRequest);
-        if (response.status === 200) {
+        const status = response.status;
+        if (status === 200) {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
+        } else if (response.data && response.data.error) {
+            setConflicts(undefined);
+            setServiceErrorMessageFromResponse(response.data);
         }
     };
 
@@ -242,10 +261,15 @@ const EditAppointment = props => {
             const recurringRequest = getRecurringAppointmentRequest(applyForAllInd);
             const response = applyForAllInd ? await getRecurringAppointmentsConflicts(recurringRequest) :
                 await getAppointmentConflicts(recurringRequest.appointmentRequest);
-            if (response.status === 204) {
+            const status = response.status;
+            if (status === 204) {
                 setShowUpdateConfirmPopup(true);
+            } else if (status === 200) {
+                setConflicts(response.data);
+            } else if (response.data && response.data.error) {
+                setConflicts(undefined);
+                setServiceErrorMessageFromResponse(response.data);
             }
-            response.status === 200 && setConflicts(response.data);
         }
     };
 
@@ -507,6 +531,7 @@ const EditAppointment = props => {
                 </div>
             </div>
             <AppointmentEditorFooter
+                errorMessage={serviceErrorMessage}
                 checkAndSave={applyForAllInd => updateAppointments(applyForAllInd)}
                 isEdit={true}
                 isOptionsRequired={isRecurringAppointment() && isApplicableForAll()}

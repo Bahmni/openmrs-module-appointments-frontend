@@ -6,6 +6,7 @@ export const saveRecurringAppointments = async data => {
         return await axios.post(`${recurringAppointmentsSaveUrl}`, data);
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };
 
@@ -14,6 +15,7 @@ export const updateRecurringAppointments = async data => {
         return await axios.put(`${recurringAppointmentsSaveUrl}/${data.appointmentRequest.uuid}`, data);
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };
 
@@ -31,5 +33,6 @@ export const recurringConflictsFor = async recurringAppointmentRequest => {
         return await axios.post(recurringAppointmentsConflictsUrl, recurringAppointmentRequest);
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };

@@ -7,5 +7,6 @@ export const getAllByTag = async (tags, operator) => {
         return response.data.results;
     } catch (error) {
         console.error(error);
+        return error.response;
     }
 };

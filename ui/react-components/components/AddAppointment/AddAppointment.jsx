@@ -100,7 +100,6 @@ const AddAppointment = props => {
         recurrencePeriodError: false,
         startTimeBeforeEndTimeError: false,
         weekDaysError: false,
-        noContentError: false,
         providerError: false
     };
 
@@ -108,6 +107,7 @@ const AddAppointment = props => {
     const [conflicts, setConflicts] = useState();
     const [errors, setErrors] = useState(initialErrorsState);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [serviceErrorMessage, setServiceErrorMessage] = useState('');
 
     useEffect(() => {
         if (appointmentDetails.occurrences === undefined)
@@ -222,11 +222,20 @@ const AddAppointment = props => {
         setShowSuccessPopup(true);
     };
 
+    const setServiceErrorMessageFromResponse = response => {
+        response.error && response.error.message ? setServiceErrorMessage(response.error.message)
+            : setServiceErrorMessage(errorTranslations.unexpectedServiceErrorMessage);
+    };
+
     const save = async appointmentRequest => {
         const response = await saveAppointment(appointmentRequest);
-        if (response.status === 200) {
+        const status = response.status;
+        if (status === 200) {
             setConflicts(undefined);
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
+        } else if (response.data && response.data.error) {
+            setConflicts(undefined);
+            setServiceErrorMessageFromResponse(response.data);
         }
     };
 
@@ -234,22 +243,31 @@ const AddAppointment = props => {
         if (isValidAppointment()) {
             const appointment = getAppointmentRequest();
             const response = await getAppointmentConflicts(appointment);
-            if (response.status === 204) {
+            const status = response.status;
+            if (status === 204) {
                 await save(appointment);
+            } else if (status === 200) {
+                setConflicts(response.data);
+            } else if (response.data && response.data.error) {
+                setConflicts(undefined);
+                setServiceErrorMessageFromResponse(response.data);
             }
-            response.status === 200 && setConflicts(response.data);
         }
     };
 
     const saveRecurringAppointments = async recurringAppointmentRequest => {
         const response = await saveRecurring(recurringAppointmentRequest);
-        if (response.status === 200) {
+        const status = response.status;
+        if (status === 200) {
             setConflicts(undefined);
-            updateErrorIndicators({noContentError: false});
+            setServiceErrorMessage('');
             const immediateAppointment = response.data[0];
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
-        } else if (response.status === 204) {
-            updateErrorIndicators({noContentError: true});
+        } else if (status === 204) {
+            setServiceErrorMessage(errorTranslations.noContentErrorMessage);
+        } else if (response.data && response.data.error) {
+            setConflicts(undefined);
+            setServiceErrorMessageFromResponse(response.data);
         }
     };
 
@@ -257,10 +275,15 @@ const AddAppointment = props => {
         if (isValidRecurringAppointment()) {
             const recurringRequest = getRecurringAppointmentRequest();
             const response = await getRecurringAppointmentsConflicts(recurringRequest);
-            if (response.status === 204) {
+            const status = response.status;
+            if (status === 204) {
                 await saveRecurringAppointments(recurringRequest);
+            } else if (status === 200) {
+                setConflicts(response.data);
+            } else if (response.data && response.data.error) {
+                setConflicts(undefined);
+                setServiceErrorMessageFromResponse(response.data);
             }
-            response.status === 200 && setConflicts(response.data);
         }
     };
 
@@ -485,12 +508,10 @@ const AddAppointment = props => {
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             </div>
-            {errors.noContentError && <div className={classNames(apiErrorContainer)}>
-                <ErrorMessage message={errorTranslations.noContentErrorMessage}/>
-            </div>}
             <AppointmentEditorFooter
-              checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
-              cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}/>
+                errorMessage={serviceErrorMessage}
+                checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
+                cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}/>
             {conflicts &&
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
