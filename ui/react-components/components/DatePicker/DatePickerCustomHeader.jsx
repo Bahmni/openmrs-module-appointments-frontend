@@ -12,6 +12,7 @@ import{
     monthYearDatePickerContainer
 } from './DatePickerCustomHeader.module.scss'
 import {isNil} from 'lodash';
+import PropTypes from "prop-types";
 const DatePickerCustomHeader = (props) => {
     const [showMonthYear, setShowMonthYear] = useState(false)
     const {date,
@@ -70,4 +71,18 @@ const DatePickerCustomHeader = (props) => {
     </div>
 }
 
+DatePickerCustomHeader.propTypes = {
+    date: PropTypes.instanceOf(Date),
+    changeYear:PropTypes.func,
+    changeMonth:PropTypes.func,
+    decreaseMonth:PropTypes.func,
+    increaseMonth:PropTypes.func,
+    prevMonthButtonDisabled:PropTypes.bool,
+    nextMonthButtonDisabled:PropTypes.bool,
+    minDate:PropTypes.instanceOf(Date),
+    currentDate: PropTypes.instanceOf(Date)
+};
+
+
 export default DatePickerCustomHeader;
+
