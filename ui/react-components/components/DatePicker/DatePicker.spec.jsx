@@ -166,15 +166,55 @@ describe('DatePicker', () => {
         expect(container.querySelector('.appointmentDatePicker')).not.toBeNull();
         let datePickerHeader = getByTestId('date-picker-header-label');
         expect(queryByTestId('month-year-datepicker')).toBeNull();
-        fireEvent.click(datePickerHeader.childNodes[0])
+        const monthYearHeader = datePickerHeader.childNodes[0];
+        fireEvent.click(monthYearHeader)
         const withinMonthYearDatePicker = within(getByTestId('month-year-datepicker'));
         const nextYearButton = withinMonthYearDatePicker.getByText('Next Year');
         fireEvent.click(nextYearButton);
         const nextYearDecMonthButton = withinMonthYearDatePicker.getByText('Dec');
         fireEvent.click(nextYearDecMonthButton);
         datePickerHeader = getByTestId('date-picker-header-label');
-        expect(datePickerHeader.childNodes[0].textContent).toBe(`December ${moment().add(1, 'year')
+        expect(monthYearHeader.textContent).toBe(`December ${moment().add(1, 'year')
             .format('YYYY')}`);
+    })
+
+    it('should show the current month and year in header when date is entered in date input', ()=>{
+        const fiveDaysFromToday = moment().add(5, 'days');
+        const minDate= moment();
+        const newSelectedDate= moment().add(40, 'days').add(2, 'months');
+        const {container, getByPlaceholderText, getByTestId} = render(<ParentWrapper value={fiveDaysFromToday}
+                                                                        minDate={minDate}/>);
+        let dateSelectedField = container.querySelector('.react-datepicker__day--selected');
+        expect(dateSelectedField.textContent).toBe(fiveDaysFromToday.date().toFixed(0));
+        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(dateInputField.value).toBe(fiveDaysFromToday.format('MM/DD/YYYY'));
+
+        fireEvent.change(dateInputField, {target:{value: newSelectedDate.format('MM/DD/YYYY')}})
+        fireEvent.blur(dateInputField);
+
+        dateSelectedField = container.querySelector('.react-datepicker__day--selected');
+        expect(dateSelectedField.textContent).toBe(newSelectedDate.date().toFixed(0));
+        expect(dateInputField.value).toBe(newSelectedDate.format('MM/DD/YYYY'));
+
+        let datePickerHeader = getByTestId('date-picker-header-label');
+        const monthYearHeader = datePickerHeader.childNodes[0];
+        expect(monthYearHeader.textContent).toBe(newSelectedDate.format('MMMM YYYY'))
+    })
+
+    it('should not decrease previous month below given mindate', () =>{
+        const minDate = moment();
+        const today = moment().add(1, 'months');
+        const {container, getByTestId} = render(<AppointmentDatePicker minDate={minDate} value={today}/>)
+        let previousButton = container.querySelector('.react-datepicker__navigation--previous');
+        let datePickerHeader = getByTestId('date-picker-header-label');
+        let monthYearHeader = datePickerHeader.childNodes[0];
+        expect(monthYearHeader.textContent).toBe(today.format('MMMM YYYY'))
+        fireEvent.click(previousButton)
+        monthYearHeader = datePickerHeader.childNodes[0];
+        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        previousButton = container.querySelector('.react-datepicker__navigation--previous');
+        fireEvent.click(previousButton)
+        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
     })
 
 });
