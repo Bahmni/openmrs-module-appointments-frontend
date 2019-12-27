@@ -1,44 +1,118 @@
 @import '../../variables.scss';
-
-.monthYearDropdownLabel{
-  padding: 20px;
-}
-
-.monthYearDatePickerContainer{
-  padding-top: 5px;
-
-}
-.monthYearDatePicker{
-  div[class*='react-datepicker__month--selected']{
-    background-color:var(--color-primary-1);
+.customHeaderWrapper {
+  width: 100%;
+  display: flex;
+  .monthYearDropdownLabel {
+    padding: 0.6em;
+    flex: 1;
+    text-align: center;
+    color: #666;
+    &:hover{
+      color: var(--color-primary-1);
+      cursor: pointer;
+      label{
+        cursor: pointer;
+      }
+    }
   }
-  div[class*='react-datepicker__month-text']{
-    &:hover {
-      background-color: var(--color-primary-1-lighter);
+
+  .monthYearDatePickerContainer {
+    padding-top: 5px;
+    width: 100.5%;
+    position: absolute;
+    top: -3.2em;
+    margin-left: -0.1em;
+  }
+
+  .monthYearDatePicker {
+    width: 100%;
+    font-size: 14px;
+
+    div[class*='react-datepicker__month--selected'] {
+      background-color: var(--color-primary-1);
+    }
+
+    div[class*='react-datepicker__month-text'] {
+      &:hover {
+        background-color: var(--color-primary-1-lighter);
+      }
+    }
+
+    div[class*='react-datepicker-year-header'] {
+      padding: 0.7em;
+    }
+
+    div[class*='react-datepicker__monthPicker'] {
+      padding-bottom: 2em;
+      padding-top: 2em;
+    }
+
+    div[class*='react-datepicker__month-text'] {
+      padding: 1.2em 0.8em;
+    }
+
+    button[class*='react-datepicker__navigation--next']{
+      border-left-color: #666;
+      &:hover{
+        border-left-color: var(--color-primary-1);
+        background: none;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        border-bottom-color:transparent;
+      }
+      &:focus{
+        outline: none;
+      }
+    }
+
+    button[class*='react-datepicker__navigation--previous']{
+      border-right-color: #666;
+      &:hover{
+        border-right-color: var(--color-primary-1);
+        background: none;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        border-bottom-color:transparent;
+      }
+      &:focus{
+        outline: none;
+      }
+    }
+  }
+
+  .calendarNavigation {
+    color: #666;
+    font-size: 16px;
+    flex: 1;
+    padding: 0.4em;
+    text-align: right;
+    .arrow {
+      margin: 8px;
+
+      &:hover {
+        color: var(--color-primary-1);
+        cursor: pointer;
+      }
+    }
+
+    .currentDateCircle {
+      margin: 8px;
+
+      &:hover {
+        color: var(--color-primary-1);
+        cursor: pointer;
+      }
+    }
+
+    .disable {
+      cursor: not-allowed;
+      color: #999999;
+
+      &:hover {
+        color: #999999;
+        cursor: not-allowed;
+      }
     }
   }
 }
 
-.arrow{
-  border: 1px solid var(--color-primary-1);
-  background: var(--color-primary-1);;
-  color: white;
-  margin: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  font-size: 12px;
-}
-
-.currentDateCircle{
-  border: 1px solid var(--color-primary-1);
-  background: var(--color-primary-1);
-  color: white;
-  margin: 8px;
-  font-size: 12px;
-}
-
-.disable{
-  background-color: #cccccc;
-  cursor:  not-allowed;
-  border: 1px solid #cccccc;
-}
