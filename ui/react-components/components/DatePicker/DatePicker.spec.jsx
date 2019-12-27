@@ -237,4 +237,25 @@ describe('DatePicker', () => {
 
     })
 
+    it('should take us to the date today from someother month or year when today icon is clicked on header', () =>{
+        const minDate = moment();
+        const oneYearFromToday = moment().add(1, 'years');
+        const {container, getByTestId} = render(<AppointmentDatePicker minDate={minDate}/>)
+        let datePickerHeader = getByTestId('date-picker-header-label');
+        let monthYearHeader = datePickerHeader.childNodes[0];
+        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        fireEvent.click(monthYearHeader);
+        let nextButton =  container.querySelector('.react-datepicker__navigation--next');
+        fireEvent.click(nextButton)
+        const firstMonthOfNextYear = container.querySelector('.react-datepicker__month-0');
+        fireEvent.click(firstMonthOfNextYear);
+        expect(monthYearHeader.textContent).toBe(`January ${oneYearFromToday.format('YYYY')}`);
+        const goToTodayButton = getByTestId('go-to-today');
+        fireEvent.click(goToTodayButton);
+        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        const dayTodayButton = container.querySelector('.react-datepicker__day--today');
+        expect(dayTodayButton.textContent).toBe(moment().format('DD'));
+
+    })
+
 });
