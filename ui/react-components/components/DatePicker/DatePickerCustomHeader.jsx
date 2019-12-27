@@ -30,14 +30,10 @@ const DatePickerCustomHeader = (props) => {
     const isCurrentDateNotSelected = isNil(currentDate);
     const prevMonthArrowStyles=[arrow]
     prevMonthButtonDisabled && prevMonthArrowStyles.push(disable)
-    const currentCircleStyle=[currentDateCircle]
-    isCurrentDateNotSelected && currentCircleStyle.push(disable);
 
-    const goToCurrentSelectedDate = () => {
-        if (!isCurrentDateNotSelected) {
-            changeYear(moment(currentDate).year())
-            changeMonth(moment(currentDate).month())
-        }
+    const goToToday = () => {
+        changeYear(moment().year())
+        changeMonth(moment().month())
     };
 
     const handleChangeOfMonthYear = (date) => {
@@ -61,8 +57,8 @@ const DatePickerCustomHeader = (props) => {
                   disabled={prevMonthButtonDisabled}>
                 <i className={classNames('fa', 'fa-caret-left', prevMonthArrowStyles)} aria-hidden="true"></i>
             </span>
-            <span onClick={goToCurrentSelectedDate} disabled={isCurrentDateNotSelected}>
-                <i className={classNames('fa', 'fa-circle', currentCircleStyle)} aria-hidden="true"></i>
+            <span data-testid='go-to-today' onClick={goToToday}>
+                <i className={classNames('fa', 'fa-circle', currentDateCircle)} aria-hidden="true"></i>
             </span>
             <span onClick={increaseMonth} disabled={nextMonthButtonDisabled}
                   className={classNames('react-datepicker__navigation--next')}>
