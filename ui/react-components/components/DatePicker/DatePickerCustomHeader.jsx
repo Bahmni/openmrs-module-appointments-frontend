@@ -9,7 +9,9 @@ import{
     arrow,
     currentDateCircle,
     disable,
-    monthYearDatePickerContainer
+    monthYearDatePickerContainer,
+    calendarNavigation,
+    customHeaderWrapper
 } from './DatePickerCustomHeader.module.scss'
 import {isNil} from 'lodash';
 import PropTypes from "prop-types";
@@ -43,23 +45,29 @@ const DatePickerCustomHeader = (props) => {
         changeMonth(moment(date).month())
         setShowMonthYear(false);
     };
-    return <div>
-         <span data-testid="date-picker-header-label" className={classNames(monthYearDropdownLabel)} onClick={() =>{setShowMonthYear(!showMonthYear)}}>
+    return <div className={classNames(customHeaderWrapper)}>
+         <span data-testid="date-picker-header-label" className={classNames(monthYearDropdownLabel)}
+               onClick={() =>{setShowMonthYear(!showMonthYear)}}>
                 <label>{moment(date).format('MMMM YYYY')}</label>
                 <span >
                     <i className={classNames('fa','fa-angle-down')} aria-hidden="true"></i>
                 </span>
          </span>
-        <span onClick={()=>{if(!prevMonthButtonDisabled) decreaseMonth()}}
-              className={classNames('react-datepicker__navigation--previous')}
-              disabled={prevMonthButtonDisabled}>
-            <i className={classNames('fa','fa-caret-left', prevMonthArrowStyles)} aria-hidden="true"></i>
-        </span>
-        <span onClick={ goToCurrentSelectedDate} disabled={isCurrentDateNotSelected}>
-            <i className={classNames('fa','fa-circle', currentCircleStyle)} aria-hidden="true"></i>
-        </span>
-        <span onClick={increaseMonth} disabled={nextMonthButtonDisabled} className={classNames('react-datepicker__navigation--next')}>
-            <i className={classNames('fa','fa-caret-right', arrow)} aria-hidden="true"></i>
+        <span className={classNames(calendarNavigation)}>
+            <span onClick={() => {
+                if (!prevMonthButtonDisabled) decreaseMonth()
+            }}
+                  className={classNames('react-datepicker__navigation--previous')}
+                  disabled={prevMonthButtonDisabled}>
+                <i className={classNames('fa', 'fa-caret-left', prevMonthArrowStyles)} aria-hidden="true"></i>
+            </span>
+            <span onClick={goToCurrentSelectedDate} disabled={isCurrentDateNotSelected}>
+                <i className={classNames('fa', 'fa-circle', currentCircleStyle)} aria-hidden="true"></i>
+            </span>
+            <span onClick={increaseMonth} disabled={nextMonthButtonDisabled}
+                  className={classNames('react-datepicker__navigation--next')}>
+                <i className={classNames('fa', 'fa-caret-right', arrow)} aria-hidden="true"></i>
+            </span>
         </span>
         {showMonthYear && <div data-testid='month-year-datepicker' className={classNames(monthYearDatePickerContainer)}> <DatePicker
             selected={date}
