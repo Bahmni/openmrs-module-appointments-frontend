@@ -3,7 +3,8 @@ import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
 import useOutsideClick from "../../utils/hooks/useOutsideClick";
 import PropTypes from "prop-types";
 import {
-    calendarPickerContainer
+    calendarPickerContainer,
+    calenderPickerDatePickerWrapper
 } from './CalendarPicker.module.scss'
 import {
 
@@ -32,7 +33,7 @@ const CalendarPicker = (props) => {
             <span data-testid="calendar-icon" onClick={ handleOnClick}>
                 <i className={classNames("fa","fa-calendar")} aria-hidden="true"></i>
             </span>
-            { showDatePicker && <div><AppointmentDatePicker
+            { showDatePicker && <div className={classNames(calenderPickerDatePickerWrapper)}><AppointmentDatePicker
                 isDisabled={isDisabled}
                 minDate={minDate}
                 value={date}

@@ -1,8 +1,10 @@
 @import '../../variables.scss';
 
 .calendarPickerContainer{
-  z-index:10000;
   position:absolute;
   width: 20%;
   margin-left: 0.4em;
+  .calenderPickerDatePickerWrapper{
+    z-index:10000;
+  }
 }
