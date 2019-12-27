@@ -10,6 +10,10 @@
     background-color:var(--color-primary-1);
   }
 
+  div[class*='react-datepicker__day--outside-month']{
+    color: #cccccc;
+  }
+
   div[class*='react-datepicker__day--today']{
     border-radius: 0.3rem;
     border:1px solid var(--color-primary-1) ;
