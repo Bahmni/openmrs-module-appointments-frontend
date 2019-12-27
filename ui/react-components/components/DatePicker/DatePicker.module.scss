@@ -7,21 +7,21 @@
   border-top: none;
 
   div[class*='react-datepicker__day--selected']{
-    background-color:var(--color-primary-1);
+    background-color:$primary-color-1;
   }
 
   div[class*='react-datepicker__day--outside-month']{
-    color: #cccccc;
+    color: $disable-color;
   }
 
   div[class*='react-datepicker__day--today']{
     border-radius: 0.3rem;
-    border:1px solid var(--color-primary-1) ;
+    border:1px solid $primary-color-1 ;
   }
   div[class*='react-datepicker__day']{
     margin-right: 0.6rem;
     &:hover {
-      background-color: var(--color-primary-1-lighter);
+      background-color: $primary-color-1-lighter;
     }
   }
   div[class*='react-datepicker__day-name']{
@@ -58,5 +58,5 @@
 
 .disabledDate {
   pointer-events: none;
-  color: #cccccc;
+  color:  $disable-color;
 }
