@@ -13,6 +13,7 @@ import{
 } from './DatePickerCustomHeader.module.scss'
 import {isNil} from 'lodash';
 import PropTypes from "prop-types";
+
 const DatePickerCustomHeader = (props) => {
     const [showMonthYear, setShowMonthYear] = useState(false)
     const {date,
@@ -37,6 +38,11 @@ const DatePickerCustomHeader = (props) => {
         }
     };
 
+    const handleChangeOfMonthYear = (date) => {
+        changeYear(moment(date).year())
+        changeMonth(moment(date).month())
+        setShowMonthYear(false);
+    };
     return <div>
          <span data-testid="date-picker-header-label" className={classNames(monthYearDropdownLabel)} onClick={() =>{setShowMonthYear(!showMonthYear)}}>
                 <label>{moment(date).format('MMMM YYYY')}</label>
@@ -57,16 +63,12 @@ const DatePickerCustomHeader = (props) => {
         </span>
         {showMonthYear && <div data-testid='month-year-datepicker' className={classNames(monthYearDatePickerContainer)}> <DatePicker
             selected={date}
-            onChange={(date) => {
-                changeYear(moment(date).year())
-                changeMonth(moment(date).month())
-                setShowMonthYear(false);
-            }}
+            onChange={handleChangeOfMonthYear}
             calendarClassName={classNames(monthYearDatePicker)}
             dateFormat="MM/yyyy"
             showMonthYearPicker
             inline
-            minDate={minDate}
+            minDate={moment(minDate).startOf('month').toDate()}
         /></div>}
     </div>
 }

@@ -217,4 +217,27 @@ describe('DatePicker', () => {
         expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
     })
 
+    it('should allow today month to be selected from header when going ahead in year, select a date & come back', () =>{
+        const minDate = moment();
+        const oneYearFromToday = moment().add(1, 'years');
+        const {container, getByTestId} = render(<AppointmentDatePicker minDate={minDate}/>)
+        let datePickerHeader = getByTestId('date-picker-header-label');
+        let monthYearHeader = datePickerHeader.childNodes[0];
+        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        fireEvent.click(monthYearHeader);
+        let nextButton =  container.querySelector('.react-datepicker__navigation--next');
+        fireEvent.click(nextButton)
+        const firstMonthOfNextYear = container.querySelector('.react-datepicker__month-0');
+        fireEvent.click(firstMonthOfNextYear);
+        expect(monthYearHeader.textContent).toBe(`January ${oneYearFromToday.format('YYYY')}`);
+        fireEvent.click(monthYearHeader);
+        let previousButton = container.querySelector('.react-datepicker__navigation--previous');
+        fireEvent.click(previousButton);
+
+        let lastMonthOfCurrentYear = container.querySelector('.react-datepicker__month-11');
+        fireEvent.click(lastMonthOfCurrentYear);
+        expect(monthYearHeader.textContent).toBe(`December ${moment().format('YYYY')}`);
+
+    })
+
 });
