@@ -4,37 +4,32 @@
     font-size: 16px;
     margin-bottom: 50px;
   }
-
   .recurringDetailsEdit {
     > div {
       margin-bottom: 35px;
       .recurringTerminationDetails {
-        span {
-          font-size: 16px;
-        }
         > div {
           margin-bottom: 15px;
         }
-      }
-      div {
-        margin-left: 0;
       }
       .weekDaySelector {
         margin-top: 10px;
       }
     }
-
     .recurringEndDateContainer {
       > div {
         display: flex;
       }
+      .recurringEndDateLabel {
+        font-size: 16px;
+      }
       .dateText {
-        margin-right: 1.3%;
         &:before {
           content: "|";
           padding: 3px;
         }
       }
     }
+
   }
 }

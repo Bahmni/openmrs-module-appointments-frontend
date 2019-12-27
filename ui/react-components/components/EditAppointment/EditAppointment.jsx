@@ -39,7 +39,8 @@ import {
     recurringDetailsEdit,
     recurringEndDateContainer,
     recurringTerminationDetails,
-    weekDaySelector
+    weekDaySelector,
+    recurringEndDateLabel
 } from './EditAppointment.module.scss'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import InputNumber from "../InputNumber/InputNumber.jsx";
@@ -501,11 +502,14 @@ const EditAppointment = props => {
                                         <Label translationKey="NEW_END_DATE_LABEL" defaultValue="Series ends on"/>
                                     </div>
                                     <div class={classNames(recurringTerminationDetails)}>
-                                        <span>{moment(appointmentDetails.recurringEndDate).format("Do MMMM YYYY")}</span>
-                                        <span className={classNames(dateText)}>
-                                            {appointmentDetails.recurringEndDate
-                                                ? capitalize(moment(appointmentDetails.recurringEndDate).format("dddd"))
-                                                : <FormattedMessage id="INVALID_DAY" defaultMessage="Invalid day"/>}
+                                        <span className={classNames(recurringEndDateLabel)}>
+                                            <span>{moment(appointmentDetails.recurringEndDate).format("Do MMMM YYYY")}
+                                            </span>
+                                            <span className={classNames(dateText)}>
+                                                {appointmentDetails.recurringEndDate
+                                                    ? capitalize(moment(appointmentDetails.recurringEndDate).format("dddd"))
+                                                    : <FormattedMessage id="INVALID_DAY" defaultMessage="Invalid day"/>}
+                                            </span>
                                         </span>
                                         <span>
                                             <CalendarPicker
