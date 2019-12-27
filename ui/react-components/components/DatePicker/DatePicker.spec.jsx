@@ -161,21 +161,18 @@ describe('DatePicker', () => {
     })
 
     it('should show the selected month and year from the month and year popup in header ', () =>{
-        const fiveDaysFromToday = moment().add(5, 'days');
-        const {container, getByTestId, queryByTestId} = render(<AppointmentDatePicker value={fiveDaysFromToday}/>);
-        expect(container.querySelector('.appointmentDatePicker')).not.toBeNull();
+        const minDate = moment();
+        const oneYearFromToday = moment().add(1, 'years');
+        const {container, getByTestId} = render(<AppointmentDatePicker minDate={minDate}/>)
         let datePickerHeader = getByTestId('date-picker-header-label');
-        expect(queryByTestId('month-year-datepicker')).toBeNull();
-        const monthYearHeader = datePickerHeader.childNodes[0];
-        fireEvent.click(monthYearHeader)
-        const withinMonthYearDatePicker = within(getByTestId('month-year-datepicker'));
-        const nextYearButton = withinMonthYearDatePicker.getByText('Next Year');
-        fireEvent.click(nextYearButton);
-        const nextYearDecMonthButton = withinMonthYearDatePicker.getByText('Dec');
-        fireEvent.click(nextYearDecMonthButton);
-        datePickerHeader = getByTestId('date-picker-header-label');
-        expect(monthYearHeader.textContent).toBe(`December ${moment().add(1, 'year')
-            .format('YYYY')}`);
+        let monthYearHeader = datePickerHeader.childNodes[0];
+        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        fireEvent.click(monthYearHeader);
+        let nextButton =  container.querySelector('.react-datepicker__navigation--next');
+        fireEvent.click(nextButton)
+        const firstMonthOfNextYear = container.querySelector('.react-datepicker__month-0');
+        fireEvent.click(firstMonthOfNextYear);
+        expect(monthYearHeader.textContent).toBe(`January ${oneYearFromToday.format('YYYY')}`);
     })
 
     it('should show the current month and year in header when date is entered in date input', ()=>{
