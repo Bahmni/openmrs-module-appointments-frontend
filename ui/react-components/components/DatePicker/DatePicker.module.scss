@@ -45,6 +45,10 @@
   span[class*='react-datepicker__month-read-view--selected-month'], span[class*='react-datepicker__year-read-view--selected-year']{
     font-size: 16px;
   }
+
+  div[class*='react-datepicker__header--custom']{
+    text-align:left;
+  }
 }
 
 .disable {
