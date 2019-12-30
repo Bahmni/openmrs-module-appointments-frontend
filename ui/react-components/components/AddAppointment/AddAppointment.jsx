@@ -391,7 +391,8 @@ const AddAppointment = props => {
                                 endDateType={appointmentDetails.endDateType}/>
                             <AppointmentDatePicker
                                 onChange={date => {
-                                    updateAppointmentDetails({recurringEndDate: moment(date).endOf('day')});
+                                    updateAppointmentDetails({recurringEndDate: date!=='' && !_.isNil(date)
+                                            ? moment(date).endOf('day') : undefined});
                                     updateErrorIndicators({endDateError: !date});
                                 }}
                                 isDisabled={appointmentDetails.endDateType !== on || (appointmentDetails.endDateType === on && _.isNil(appointmentDetails.recurringStartDate))}
