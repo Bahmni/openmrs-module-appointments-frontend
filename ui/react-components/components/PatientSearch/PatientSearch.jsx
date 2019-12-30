@@ -9,7 +9,7 @@ import {MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH} from "../../constants";
 
 const PatientSearch = (props) => {
 
-    const {intl, onChange, value, isDisabled, minCharLengthToTriggerPatientSearch} = props;
+    const {intl, onChange, value, isDisabled, minCharLengthToTriggerPatientSearch, autoFocus} = props;
 
     const createDropdownOptions = (patients) => {
         return patients.map(patient => getPatientForDropdown(patient));
@@ -33,7 +33,7 @@ const PatientSearch = (props) => {
             placeholder={placeholder}
             selectedValue={value}
             isDisabled={isDisabled}
-            autoFocus={true}
+            autoFocus={autoFocus}
         />);
 };
 
@@ -42,7 +42,8 @@ PatientSearch.propTypes = {
     onChange: PropTypes.func.isRequired,
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
-    minCharLengthToTriggerPatientSearch: PropTypes.number
+    minCharLengthToTriggerPatientSearch: PropTypes.number,
+    autoFocus: PropTypes.bool
 };
 
 export default injectIntl(PatientSearch);

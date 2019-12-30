@@ -344,7 +344,7 @@ const AddAppointment = props => {
                                    updateAppointmentDetails={updateAppointmentDetails}
                                    updateErrorIndicators={updateErrorIndicators}
                                    endTimeBasedOnService={endTimeBasedOnService}
-                                   appConfig={appConfig} errors={errors}/>
+                                   appConfig={appConfig} errors={errors} patientSearchAutoFocus={true}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
