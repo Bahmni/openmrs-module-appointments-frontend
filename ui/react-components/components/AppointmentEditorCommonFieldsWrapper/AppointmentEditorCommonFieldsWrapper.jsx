@@ -31,7 +31,7 @@ import {
 const AppointmentEditorCommonFieldsWrapper = props => {
 
     const {updateAppointmentDetails, updateErrorIndicators} = props;
-    const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl} = props;
+    const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl, patientSearchAutoFocus} = props;
     const componentsDisableStatus = props.componentsDisableStatus || {};
     const errorTranslations = getErrorTranslations(intl);
 
@@ -70,7 +70,8 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                 const newValue = optionSelected ? optionSelected : null;
                                 updateAppointmentDetails({patient: newValue});
                                 errors.patientError && optionSelected && updateErrorIndicators({patientError: !newValue});
-                            }} isDisabled={componentsDisableStatus.patient}/>
+                            }} isDisabled={componentsDisableStatus.patient}
+                            autoFocus={patientSearchAutoFocus}/>
                         <ErrorMessage
                             message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
                     </div>
