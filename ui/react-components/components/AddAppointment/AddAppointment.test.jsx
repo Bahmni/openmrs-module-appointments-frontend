@@ -117,6 +117,7 @@ describe('Add Appointment', () => {
         //select patient
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.blur(inputBox);
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
             () => (container.querySelector('.react-select__menu'))

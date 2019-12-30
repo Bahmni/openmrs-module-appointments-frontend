@@ -22,6 +22,7 @@ describe('Patient Search', () => {
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const {container, getByText} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}/>);
         const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.blur(inputBox);
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
             () => (container.querySelector('.react-select__menu'))
@@ -43,6 +44,7 @@ describe('Patient Search', () => {
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const {container, getByText} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}/>);
         const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.blur(inputBox);
         fireEvent.change(inputBox, { target: { value: "ab" } });
         await waitForElement(
             () => (container.querySelector('.react-select__menu'))
@@ -54,6 +56,7 @@ describe('Patient Search', () => {
         const {container} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}
                                                                           minCharLengthToTriggerPatientSearch={4}/>);
         const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.blur(inputBox);
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
             () => (container.querySelector('.react-select__menu'))
@@ -78,6 +81,7 @@ describe('Patient Search', () => {
         const onChangeSpy = jest.fn();
         const {container, getByText} = renderWithReactIntl(<PatientSearch onChange={onChangeSpy}/>);
         const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.blur(inputBox);
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
             () => (container.querySelector('.react-select__menu'))
