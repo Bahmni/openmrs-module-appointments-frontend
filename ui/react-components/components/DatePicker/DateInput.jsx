@@ -42,8 +42,10 @@ const DateInput = (props) =>{
     }
 
     const handleClear = (e) =>{
-        setComponentValue('')
-        onBlur('')
+        if(!isDisabled) {
+            setComponentValue('')
+            onBlur('')
+        }
     }
 
     const handleKeyDown= (e) => {

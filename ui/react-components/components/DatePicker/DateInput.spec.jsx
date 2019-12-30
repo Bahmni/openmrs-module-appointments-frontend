@@ -157,6 +157,18 @@ describe('Date Input', ()=>{
         expect(inputField.disabled).toBe(true);
     })
 
+    it('should not allow the value to be cleared if disabled is true',()=>{
+        const today = moment().format('MM/DD/YYYY');
+        const {container, getByPlaceholderText, getByText} = render(<DateInput value={today} onBlur={onBlurSpy}
+                                                                               isDisabled={true}/>);
+        const inputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(inputField.disabled).toBe(true);
+        const closeButton = getByText('x');
+        fireEvent.click(closeButton);
+        expect(inputField.value).toBe(today);
+        expect(onBlurSpy).not.toHaveBeenCalled()
+    })
+
     it('should  allow the value to be editable if disabled is false',()=>{
         const {container, getByPlaceholderText, getByText} = render(<DateInput value='' onBlur={onBlurSpy}
                                                                                isDisabled={false}/>);
