@@ -11,7 +11,7 @@ import {isUndefined} from "lodash";
 
 const AsyncDropdown = (props) => {
 
-    const {loadOptions, placeholder, onChange, intl, selectedValue, isDisabled} = props;
+    const {loadOptions, placeholder, onChange, intl, selectedValue, isDisabled, autoFocus} = props;
 
     const [inputValue, setInputValue] = useState();
     const [value, setValue] = useState(selectedValue);
@@ -59,6 +59,7 @@ const AsyncDropdown = (props) => {
                     select = ref;
                 }}
                 cacheOptions={true}
+                autoFocus={autoFocus}
                 defaultOptions
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"
@@ -90,5 +91,6 @@ AsyncDropdown.propTypes = {
     onChange: PropTypes.func,
     placeholder: PropTypes.string,
     selectedValue: PropTypes.object,
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    autoFocus: PropTypes.bool
 };

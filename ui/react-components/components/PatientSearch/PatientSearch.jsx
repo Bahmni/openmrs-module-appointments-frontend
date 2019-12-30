@@ -33,6 +33,7 @@ const PatientSearch = (props) => {
             placeholder={placeholder}
             selectedValue={value}
             isDisabled={isDisabled}
+            autoFocus={true}
         />);
 };
 
