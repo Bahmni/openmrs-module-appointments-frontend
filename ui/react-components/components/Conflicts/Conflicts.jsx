@@ -5,12 +5,11 @@ import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import classNames from 'classnames';
 import {button} from "./Conflicts.module.scss";
-import FocusLock from "react-focus-lock";
+
 const Conflicts = props => {
 
     return (
-      <FocusLock>
-          <div data-testid="conflicts">
+        <div data-testid="conflicts">
             <button className={classNames(button)} data-testid="conflictsCancel" onClick={props.modifyInformation}>
                     <i className={classNames("fa", "fa-times")}/>
                 </button>
@@ -21,7 +20,6 @@ const Conflicts = props => {
                 <ConflictsFooter saveAnyway={props.saveAnyway} modifyInformation={props.modifyInformation}/>
             </div>
         </div>
-      </FocusLock>
     )
 };
 Conflicts.proptypes = {

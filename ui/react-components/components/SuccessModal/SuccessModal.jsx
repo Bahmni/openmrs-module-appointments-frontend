@@ -12,7 +12,7 @@ import {
 } from "./SuccessModal.module.scss";
 import PropTypes from "prop-types";
 import {AppContext} from "../AppContext/AppContext";
-import FocusLock from "react-focus-lock";
+
 const SuccessModal = (props) => {
 
     const {intl, patientDetails, resetAppointmentModal} = props;
@@ -21,41 +21,39 @@ const SuccessModal = (props) => {
     const defaultSaveSuccessMessage = 'The new appointment for the patient {patientDetails} has been saved.';
 
     return (
-        <FocusLock>
-            <div className={classNames(saveModal)}>
-                <div className={classNames(saveModalCloseIcon)}>
-                    <a data-testid="save-close-icon">
-                        <i className={classNames("fa", "fa-times")} onClick={() => onBack()} tabIndex={3}/>
-                    </a>
+        <div className={classNames(saveModal)}>
+            <div className={classNames(saveModalCloseIcon)}>
+                <a data-testid="save-close-icon">
+                    <i className={classNames("fa", "fa-times")} onClick={() => onBack()}/>
+                </a>
+            </div>
+            <div>
+                <h1 className={classNames(saveModalTitle)}>
+                    <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TITLE'} defaultMessage={'Save successful'}/>
+                </h1>
+
+                <div className={classNames(saveModalBody)}>
+                    <span>
+                        <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TEXT'} defaultMessage={defaultSaveSuccessMessage} values={{patientDetails: <strong>{patientDetails}</strong>}} />
+                    </span>
+                    <br/><br/>
+                    <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_HELP_TEXT'}
+                                      defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
                 </div>
-                <div>
-                    <h1 className={classNames(saveModalTitle)}>
-                        <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TITLE'} defaultMessage={'Save successful'}/>
-                    </h1>
 
-                    <div className={classNames(saveModalBody)}>
-                        <span>
-                            <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_TEXT'} defaultMessage={defaultSaveSuccessMessage} values={{patientDetails: <strong>{patientDetails}</strong>}} />
-                        </span>
-                        <br/><br/>
-                        <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_HELP_TEXT'}
-                                          defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
-                    </div>
+                <div className={classNames(saveConfirmationFooter)}>
+                    <button className={classNames(button)} data-testid="save-close-button" onClick={() => onBack()}>
+                        <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_CLOSE'} defaultMessage={'Close'}/>
+                    </button>
 
-                    <div className={classNames(saveConfirmationFooter)}>
-                        <button className={classNames(button)} data-testid="save-close-button" onClick={() => onBack()} tabIndex={1}>
-                            <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_CLOSE'} defaultMessage={'Close'}/>
-                        </button>
-
-                        <span className={classNames(newAppointmentLink)} tabIndex={2}>
-                            <a  data-testid="save-new-appointment-link" onClick={resetAppointmentModal}>
-                             <FormattedMessage id={'ADD_NEW_APPOINTMENT'} defaultMessage={'Add New Appointment'}/>
-                            </a>
-                        </span>
-                    </div>
+                    <span className={classNames(newAppointmentLink)}>
+                        <a  data-testid="save-new-appointment-link" onClick={resetAppointmentModal}>
+                         <FormattedMessage id={'ADD_NEW_APPOINTMENT'} defaultMessage={'Add New Appointment'}/>
+                        </a>
+                    </span>
                 </div>
             </div>
-        </FocusLock>
+        </div>
     );
 };
 
