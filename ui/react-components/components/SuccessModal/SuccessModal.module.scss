@@ -3,7 +3,7 @@
 .saveModal {
   .saveModalCloseIcon {
     text-align: right;
-    a {
+    button {
       color: $secondary-color-2;
     }
   }
@@ -41,8 +41,13 @@
       }
 
       .newAppointmentLink {
-        a {
+        button {
           text-decoration-line: underline;
+          border: none;
+          background: none;
+          padding: 0;
+          color: #2b95ff;
+          cursor: pointer;
         }
       }
     }
