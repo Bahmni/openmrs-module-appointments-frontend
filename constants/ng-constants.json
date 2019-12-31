@@ -130,7 +130,9 @@
         "TENTATIVE": "TENTATIVE",
         "CANCELLED": "CANCELLED",
         "AWAITING": "AWAITING"
-      }
+      },
+      "addAppointmentUrl" : "#/home/manage/appointments/calendar/new",
+      "editAppointmentUrl" : "#/home/manage/appointments/calendar/edit"
     }
   }
 }
