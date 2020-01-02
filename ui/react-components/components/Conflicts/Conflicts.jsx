@@ -15,7 +15,7 @@ const Conflicts = props => {
                 <button className={classNames(button)} data-testid="conflictsCancel" onClick={props.modifyInformation}>
                     <i className={classNames("fa", "fa-times")}/>
                 </button>
-                <div data-testid="conflicts-body" tabIndex={1}>
+                <div data-testid="conflicts-body">
                     <ConflictsBody conflicts={props.conflicts} service={props.service} isRecurring={props.isRecurring}/>
                 </div>
                 <div data-testid="conflicts-footer">
