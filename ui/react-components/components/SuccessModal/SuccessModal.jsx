@@ -25,8 +25,8 @@ const SuccessModal = (props) => {
         <FocusLock>
             <div className={classNames(saveModal)}>
                 <div className={classNames(saveModalCloseIcon)}>
-                    <button data-testid="save-close-icon">
-                        <i className={classNames("fa", "fa-times")} onClick={() => onBack()} tabIndex={3}/>
+                    <button data-testid="save-close-icon" tabIndex={3}>
+                        <i className={classNames("fa", "fa-times")} onClick={() => onBack()}/>
                     </button>
                 </div>
                 <div>
