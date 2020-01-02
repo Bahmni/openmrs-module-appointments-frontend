@@ -18,18 +18,18 @@ const ConflictsBody = props => {
         let tabHeads = [];
         let tabPanels = [];
         if (patientDoubleBookingConflicts) {
-            tabHeads.push(createTab(patientDoubleBookingConflicts, 'OVERLAPPING_CONFLICTS', 'Overlapping conflicts'));
+            tabHeads.push(createTab(patientDoubleBookingConflicts, 'OVERLAPPING_CONFLICTS', 'Overlapping conflicts', 1));
             tabPanels.push(createTabPanel(patientDoubleBookingConflicts, OVERLAPPING_CONFLICTS_CONTENT));
         }
         if (serviceUnavailableConflicts) {
-            tabHeads.push(createTab(serviceUnavailableConflicts, 'NO_SERVICE_DATE_CONFLICTS', 'No-Service Date conflicts'));
+            tabHeads.push(createTab(serviceUnavailableConflicts, 'NO_SERVICE_DATE_CONFLICTS', 'No-Service Date conflicts', 2));
             tabPanels.push(createTabPanel(serviceUnavailableConflicts, SERVICE_UNAVAILABLE_CONTENT));
         }
         return {tabHeads, tabPanels};
     };
 
-    const createTab = (conflicts, translationKey, defaultMessage) => {
-        return <Tab key={defaultMessage} data-testid={"conflict-tab"}>
+    const createTab = (conflicts, translationKey, defaultMessage, tabIndex) => {
+        return <Tab key={defaultMessage} data-testid={"conflict-tab"} tabIndex={tabIndex}>
             <span>
                 <FormattedMessage id={translationKey} defaultMessage={defaultMessage}/>
                 <span className={classNames(conflictsCount)}>{conflicts.length}</span>
