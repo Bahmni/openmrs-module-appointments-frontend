@@ -12,10 +12,10 @@ const Conflicts = props => {
     return (
         <FocusLock>
             <div data-testid="conflicts">
-                <button className={classNames(button)} data-testid="conflictsCancel" onClick={props.modifyInformation} tabIndex={1}>
+                <button className={classNames(button)} data-testid="conflictsCancel" onClick={props.modifyInformation}>
                     <i className={classNames("fa", "fa-times")}/>
                 </button>
-                <div data-testid="conflicts-body">
+                <div data-testid="conflicts-body" tabIndex={1}>
                     <ConflictsBody conflicts={props.conflicts} service={props.service} isRecurring={props.isRecurring}/>
                 </div>
                 <div data-testid="conflicts-footer">
