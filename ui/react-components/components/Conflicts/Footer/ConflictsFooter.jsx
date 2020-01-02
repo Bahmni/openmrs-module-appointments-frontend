@@ -9,13 +9,16 @@ const ConflictsFooter = props => {
     return (
         <div className={classNames(footer, conflictsFooter)}>
             <div className={classNames(footerElements)}>
-                <button className={classNames(button)} data-testid="conflictsSaveAnyway" onClick={props.saveAnyway}>
+                <button className={classNames(button)} data-testid="conflictsSaveAnyway" onClick={props.saveAnyway}
+                        tabIndex={3}>
                     <i className={classNames("fa", "fa-check")}/>
                     <span>
                         <FormattedMessage id={'APPOINTMENT_SAVE_ANYWAY'} defaultMessage={'Save Anyway'}/>
                     </span>
                 </button>
-                <button className={classNames(button, save)} data-testid="conflictsModify" onClick={props.modifyInformation}>
+                <button className={classNames(button, save)} data-testid="conflictsModify"
+                        onClick={props.modifyInformation}
+                        tabIndex={4}>
                     <i className={classNames("fa", "fa-edit")}/>
                     <span>
                         <FormattedMessage id={'APPOINTMENT_MODIFY_INFORMATION'} defaultMessage={'Modify information'}/>
