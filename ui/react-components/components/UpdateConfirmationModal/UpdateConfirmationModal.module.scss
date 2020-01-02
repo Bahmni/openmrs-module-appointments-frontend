@@ -3,8 +3,12 @@
 .updateConfirmationModal {
   .updateConfirmationModalCloseIcon {
     text-align: right;
-    a{
+    button{
+      border: none;
+      background: none;
       color: $secondary-color-2;
+      cursor: pointer;
+      padding: 0;
     }
   }
   > div:nth-child(2) {
