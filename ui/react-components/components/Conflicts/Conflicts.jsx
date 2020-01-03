@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import classNames from 'classnames';
 import {button} from "./Conflicts.module.scss";
-import useFocusLock from "../FocusLock/useFocusLock.jsx";
+import useFocusLock from "../../utils/hooks/useFocusLock.jsx";
 
 const Conflicts = props => {
 

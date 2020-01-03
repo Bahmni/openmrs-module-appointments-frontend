@@ -10,7 +10,7 @@ import {
     updateConfirmationModalTitle
 } from "./UpdateConfirmationModal.module.scss";
 import PropTypes from "prop-types";
-import useFocusLock from "../FocusLock/useFocusLock.jsx";
+import useFocusLock from "../../utils/hooks/useFocusLock.jsx";
 
 
 const UpdateConfirmationModal = (props) => {

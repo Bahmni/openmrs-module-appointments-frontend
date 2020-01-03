@@ -12,7 +12,7 @@ import {
 } from "./SuccessModal.module.scss";
 import {AppContext} from "../AppContext/AppContext";
 import PropTypes from "prop-types";
-import useFocusLock from "../FocusLock/useFocusLock.jsx";
+import useFocusLock from "../../utils/hooks/useFocusLock.jsx";
 
 const UpdateSuccessModal = (props) => {
 
