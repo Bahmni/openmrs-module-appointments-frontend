@@ -10,7 +10,7 @@ import {
     updateConfirmationModalTitle
 } from "./UpdateConfirmationModal.module.scss";
 import PropTypes from "prop-types";
-import WithFocusLock from "../FocusLock/WithFocusLock.jsx";
+import useFocusLock from "../FocusLock/useFocusLock.jsx";
 
 
 const UpdateConfirmationModal = (props) => {
@@ -63,4 +63,4 @@ UpdateConfirmationModal.propTypes = {
 };
 
 
-export default injectIntl(WithFocusLock(UpdateConfirmationModal));
+export default injectIntl(useFocusLock(UpdateConfirmationModal));

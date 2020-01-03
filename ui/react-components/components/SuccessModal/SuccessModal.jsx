@@ -12,7 +12,7 @@ import {
 } from "./SuccessModal.module.scss";
 import PropTypes from "prop-types";
 import {AppContext} from "../AppContext/AppContext";
-import WithFocusLock from "../FocusLock/WithFocusLock.jsx";
+import useFocusLock from "../FocusLock/useFocusLock.jsx";
 
 const SuccessModal = (props) => {
 
@@ -67,4 +67,4 @@ SuccessModal.propTypes = {
     resetAppointmentModal: PropTypes.func.isRequired
 };
 
-export default injectIntl(WithFocusLock(SuccessModal));
+export default injectIntl(useFocusLock(SuccessModal));
