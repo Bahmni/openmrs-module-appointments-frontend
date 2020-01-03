@@ -27,7 +27,7 @@ const AppointmentEditorFooter = props => {
         setShowUpdateButtons(!showUpdateButtons);
     };
 
-    const popupContent = <CancelConfirmation {...cancelConfirmationMessage} onBack={React.useContext(AppContext).onBack}/>;
+    const popupContent = <CancelConfirmation {...cancelConfirmationMessage} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
 
     const cancelButton = <button className={classNames(button)} data-testid="cancel">
                             <i className={classNames("fa", "fa-times")}/>
