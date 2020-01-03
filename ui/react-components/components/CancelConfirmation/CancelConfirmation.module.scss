@@ -3,7 +3,10 @@
 .cancelModal {
   .cancelModalCloseIcon {
     text-align: right;
-    a{
+    button{
+      border: none;
+      background: none;
+      padding: 0;
       color: $secondary-color-2;
     }
   }
