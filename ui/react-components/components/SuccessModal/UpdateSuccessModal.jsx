@@ -12,7 +12,7 @@ import {
 } from "./SuccessModal.module.scss";
 import {AppContext} from "../AppContext/AppContext";
 import PropTypes from "prop-types";
-import WithFocusLock from "../FocusLock/WithFocusLock.jsx";
+import useFocusLock from "../FocusLock/useFocusLock.jsx";
 
 const UpdateSuccessModal = (props) => {
 
@@ -55,4 +55,4 @@ const UpdateSuccessModal = (props) => {
 UpdateSuccessModal.propTypes = {
     updateSeries: PropTypes.bool
 };
-export default injectIntl(WithFocusLock(UpdateSuccessModal));
+export default injectIntl(useFocusLock(UpdateSuccessModal));
