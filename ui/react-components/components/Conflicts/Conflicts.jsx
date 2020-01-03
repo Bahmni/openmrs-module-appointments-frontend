@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import classNames from 'classnames';
 import {button} from "./Conflicts.module.scss";
-import WithFocusLock from "../FocusLock/WithFocusLock.jsx";
+import useFocusLock from "../FocusLock/useFocusLock.jsx";
 
 const Conflicts = props => {
 
@@ -29,4 +29,4 @@ Conflicts.proptypes = {
     conflicts: PropTypes.object.isRequired,
     service: PropTypes.object.isRequired
 };
-export default injectIntl(WithFocusLock(Conflicts));
+export default injectIntl(useFocusLock(Conflicts));
