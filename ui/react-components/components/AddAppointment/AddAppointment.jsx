@@ -45,7 +45,7 @@ import {
     dayRecurrenceType,
     FROM,
     MINUTES,
-    RECURRING_APPOINTMENT_TYPE,
+    RECURRING_APPOINTMENT_TYPE, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     TODAY,
     WALK_IN_APPOINTMENT_TYPE
 } from "../../constants";
@@ -237,6 +237,9 @@ const AddAppointment = props => {
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
+            setTimeout(function () {
+                setServiceErrorMessage('');
+            }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
         }
     };
 
@@ -252,6 +255,9 @@ const AddAppointment = props => {
             } else if (response.data && response.data.error) {
                 setConflicts(undefined);
                 setServiceErrorMessageFromResponse(response.data);
+                setTimeout(function () {
+                    setServiceErrorMessage('');
+                }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
             }
         }
     };
@@ -269,6 +275,9 @@ const AddAppointment = props => {
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
+            setTimeout(function () {
+                setServiceErrorMessage('');
+            }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
         }
     };
 
@@ -284,6 +293,9 @@ const AddAppointment = props => {
             } else if (response.data && response.data.error) {
                 setConflicts(undefined);
                 setServiceErrorMessageFromResponse(response.data);
+                setTimeout(function () {
+                    setServiceErrorMessage('');
+                }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
             }
         }
     };
