@@ -131,8 +131,7 @@
         "CANCELLED": "CANCELLED",
         "AWAITING": "AWAITING"
       },
-      "addAppointmentUrl" : "#/home/manage/appointments/calendar/new",
-      "editAppointmentUrl" : "#/home/manage/appointments/calendar/edit"
+      "appointmentsV2Url" : "/appointments-v2/#/home/manage/appointments"
     }
   }
 }

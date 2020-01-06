@@ -7,7 +7,7 @@ import {forEach} from 'lodash';
 
 const ServiceSearch = (props) => {
 
-    const {intl, onChange, specialityUuid, value, isDisabled, specialityEnabled} = props;
+    const {intl, onChange, specialityUuid, value, isDisabled, specialityEnabled, autoFocus} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SERVICE', defaultMessage: 'Service'
     });
@@ -47,6 +47,7 @@ const ServiceSearch = (props) => {
                   selectedValue={value}
                   isDisabled={isDisabled}
                   isClearable={false}
+                  autoFocus={!specialityEnabled && autoFocus}
         />
     );
 };
@@ -57,7 +58,8 @@ ServiceSearch.propTypes = {
     specialityUuid: PropTypes.string,
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
-    specialityEnabled: PropTypes.bool
+    specialityEnabled: PropTypes.bool,
+    autoFocus: PropTypes.bool
 };
 
 export default injectIntl(ServiceSearch);
