@@ -56,7 +56,6 @@ const AppointmentDatePicker = (props) => {
 
 AppointmentDatePicker.propTypes = {
     onChange: PropTypes.func,
-    onClear: PropTypes.func,
     value: PropTypes.instanceOf(moment),
     minDate: PropTypes.instanceOf(moment),
     isDisabled: PropTypes.bool

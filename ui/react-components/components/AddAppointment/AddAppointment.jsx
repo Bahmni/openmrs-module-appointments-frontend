@@ -475,9 +475,6 @@ const AddAppointment = props => {
                                     updateAppointmentDetails({appointmentDate: date});
                                     updateErrorIndicators({appointmentDateError: !date});
                                 }}
-                                onClear={() => {
-                                    updateAppointmentDetails({appointmentDate: undefined})}
-                                }
                                 value={appointmentDetails.appointmentDate}
                                 minDate={moment()}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
