@@ -113,6 +113,7 @@
       "privilegeManageAppointments": "app:appointments:manageAppointmentsTab",
       "privilegeForAdmin": "app:appointments:adminTab",
       "privilegeOwnAppointments": "Manage Own Appointments",
+      "privilegeAppointmentsAddProviders": "Appointments: Add Providers",
       "privilegeResetAppointmentStatus": "Reset Appointment Status",
       "availableForAppointments": "Available for appointments",
       "weekDays": {
