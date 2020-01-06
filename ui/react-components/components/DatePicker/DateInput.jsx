@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import {isValidUSDate} from '../../utils/DateUtil'
 import PropTypes from "prop-types";
 import moment from "moment";
+import {isNil} from 'lodash'
 
 const DateInput = (props) =>{
     const validateDate= ({dateValue, minDate, maxDate}) =>{
@@ -36,6 +37,9 @@ const DateInput = (props) =>{
         const isValidDate = validateDate({dateValue: inputValue, minDate,maxDate});
         if(isValidDate){
             onBlur(componentValue);
+        }else if(isNil(value)){
+            onBlur('')
+            setComponentValue('')
         }else {
             setComponentValue(value)
         }
