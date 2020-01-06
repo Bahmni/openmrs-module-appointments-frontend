@@ -4,9 +4,9 @@
   width: 100%;
   display: flex;
   .monthYearDropdownLabel {
-    padding: 0.6em;
+    padding: 0.6em 0.6em 0.6em 0.8em;
     flex: 1;
-    text-align: center;
+    text-align: left;
     color: $color-datepicker-content-color;
     &:hover{
       color: $primary-color-1;
@@ -19,10 +19,10 @@
 
   .monthYearDatePickerContainer {
     padding-top: 5px;
-    width: 100.5%;
+    width: 100%;
     position: absolute;
     top: -3.2em;
-    margin-left: -0.1em;
+    margin-left: -1px;
   }
 
   .monthYearDatePicker {
@@ -31,6 +31,9 @@
 
     div[class*='react-datepicker__month--selected'] {
       background-color: $primary-color-1;
+      &:hover {
+        color: $color-datepicker-content-color;
+      }
     }
 
     div[class*='react-datepicker__month-text'] {
@@ -44,18 +47,23 @@
     }
 
     div[class*='react-datepicker__monthPicker'] {
-      padding-bottom: 2em;
-      padding-top: 2em;
+      padding: 2em 0;
+    }
+
+    div[class*='react-datepicker__month-wrapper'] {
+      display: flex;
+      justify-content: space-evenly;
     }
 
     div[class*='react-datepicker__month-text'] {
-      padding: 1.2em 0.8em;
+      padding: 1em 0;
     }
 
-    button[class*='react-datepicker__navigation--next']{
+    button[class*='react-datepicker__navigation--next'] {
       border-left-color: $color-datepicker-content-color;
-      &:hover{
+      &:hover {
         border-left-color: $primary-color-1;
+        border: 0.45rem solid $primary-color-1;
         background: none;
         border-right-color: transparent;
         border-top-color: transparent;
@@ -70,6 +78,7 @@
       border-right-color: $color-datepicker-content-color;
       &:hover{
         border-right-color: $primary-color-1;
+        border: 0.45rem solid $primary-color-1;
         background: none;
         border-left-color: transparent;
         border-top-color: transparent;

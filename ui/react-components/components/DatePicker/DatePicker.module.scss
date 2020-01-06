@@ -1,13 +1,19 @@
 @import '../../variables.scss';
 
 .appointmentDatePicker {
-  width:84.3%;
+  width: calc(100% - 2px);
+  width: -moz-webkit-fill-available;
+  width: -ms-webkit-fill-available;
+  width: -webkit-fill-available;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-top: none;
 
   div[class*='react-datepicker__day--selected']{
     background-color:$primary-color-1;
+    &:hover {
+      color: $color-datepicker-content-color;
+    }
   }
 
   div[class*='react-datepicker__day--outside-month']{
@@ -18,20 +24,41 @@
     border-radius: 0.3rem;
     border:1px solid $primary-color-1 ;
   }
-  div[class*='react-datepicker__day']{
-    margin-right: 0.6rem;
+
+  div[class*='react-datepicker__day'] {
     &:hover {
       background-color: $primary-color-1-lighter;
     }
   }
-  div[class*='react-datepicker__day-name']{
-    margin-right: 0.6rem;
+
+  div[class*='react-datepicker__day-name'] {
     &:hover {
       background:none;
     }
   }
-  div[class*='react-datepicker__time-name']{
-    margin-right: 0.6rem;
+
+  div[class*='react-datepicker__day-names'] {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 0.4rem;
+
+    div[class*='react-datepicker__day-name'] {
+      width: 1.5rem;
+      line-height: 1.5rem;
+      &:hover {
+        background:none;
+      }
+    }
+  }
+
+  div[class*='react-datepicker__week'] {
+    display: flex;
+    justify-content: space-around;
+
+    div[class*='react-datepicker__day'] {
+      width: 1.5rem;
+      line-height: 1.5rem;
+    }
   }
 
   div[class*='react-datepicker__month-container']{
@@ -53,7 +80,6 @@
 
 .disable {
   cursor: not-allowed;
-  width: 100%;
 }
 
 .disabledDate {
