@@ -44,7 +44,7 @@ const DatePickerCustomHeader = (props) => {
     return <div className={classNames(customHeaderWrapper)}>
          <span data-testid="date-picker-header-label" className={classNames(monthYearDropdownLabel)}
                onClick={() =>{setShowMonthYear(!showMonthYear)}}>
-                <label>{moment(date).format('MMMM YYYY')}</label>
+                <label>{moment(date).format('MMM YYYY')}</label>
                 <span >
                     <i className={classNames('fa','fa-angle-down')} aria-hidden="true"></i>
                 </span>
@@ -72,6 +72,7 @@ const DatePickerCustomHeader = (props) => {
             dateFormat="MM/yyyy"
             showMonthYearPicker
             inline
+            fixedHeight
             minDate={moment(minDate).startOf('month').toDate()}
         /></div>}
     </div>

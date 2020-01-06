@@ -97,7 +97,7 @@ describe('DatePicker', () => {
         const nextButton = container.querySelector('.react-datepicker__navigation--next');
         fireEvent.click(nextButton);
         await wait(() => {
-            expect(queryByText(nextMonth.format('MMMM YYYY'))).toBeInTheDocument()
+            expect(queryByText(nextMonth.format('MMM YYYY'))).toBeInTheDocument()
         });
         fireEvent.click(container.querySelector('.react-datepicker__day--001'));
         const selectedDate = nextMonth.startOf('month');
@@ -148,7 +148,7 @@ describe('DatePicker', () => {
         const {container, getByTestId} = render(<AppointmentDatePicker value={fiveDaysFromToday}/>);
         expect(container.querySelector('.appointmentDatePicker')).not.toBeNull();
         const datePickerHeader = getByTestId('date-picker-header-label');
-       expect(datePickerHeader.childNodes[0].textContent).toBe(fiveDaysFromToday.format('MMMM YYYY'));
+       expect(datePickerHeader.childNodes[0].textContent).toBe(fiveDaysFromToday.format('MMM YYYY'));
     })
 
     it('should display month year popup when date year label in header is clicked', () =>{
@@ -167,13 +167,13 @@ describe('DatePicker', () => {
         const {container, getByTestId, getByText} = render(<AppointmentDatePicker minDate={minDate}/>)
         let datePickerHeader = getByTestId('date-picker-header-label');
         let monthYearHeader = datePickerHeader.childNodes[0];
-        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        expect(monthYearHeader.textContent).toBe(moment().format('MMM YYYY'));
         fireEvent.click(monthYearHeader);
         let nextButton =  getByText('Next Year')
         fireEvent.click(nextButton)
         const firstMonthOfNextYear = container.querySelector('.react-datepicker__month-0');
         fireEvent.click(firstMonthOfNextYear);
-        expect(monthYearHeader.textContent).toBe(`January ${oneYearFromToday.format('YYYY')}`);
+        expect(monthYearHeader.textContent).toBe(`Jan ${oneYearFromToday.format('YYYY')}`);
     })
 
     it('should show the current month and year in header when date is entered in date input', ()=>{
@@ -196,7 +196,7 @@ describe('DatePicker', () => {
 
         let datePickerHeader = getByTestId('date-picker-header-label');
         const monthYearHeader = datePickerHeader.childNodes[0];
-        expect(monthYearHeader.textContent).toBe(newSelectedDate.format('MMMM YYYY'))
+        expect(monthYearHeader.textContent).toBe(newSelectedDate.format('MMM YYYY'))
     })
 
     it('should not decrease previous month below given mindate', () =>{
@@ -206,13 +206,13 @@ describe('DatePicker', () => {
         let previousButton = container.querySelector('.react-datepicker__navigation--previous');
         let datePickerHeader = getByTestId('date-picker-header-label');
         let monthYearHeader = datePickerHeader.childNodes[0];
-        expect(monthYearHeader.textContent).toBe(today.format('MMMM YYYY'))
+        expect(monthYearHeader.textContent).toBe(today.format('MMM YYYY'))
         fireEvent.click(previousButton)
         monthYearHeader = datePickerHeader.childNodes[0];
-        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        expect(monthYearHeader.textContent).toBe(moment().format('MMM YYYY'));
         previousButton = container.querySelector('.react-datepicker__navigation--previous');
         fireEvent.click(previousButton)
-        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        expect(monthYearHeader.textContent).toBe(moment().format('MMM YYYY'));
     })
 
     it('should allow today month to be selected from header when going ahead in year, select a date & come back', () =>{
@@ -221,20 +221,20 @@ describe('DatePicker', () => {
         const {container, getByTestId, getByText} = render(<AppointmentDatePicker minDate={minDate}/>)
         let datePickerHeader = getByTestId('date-picker-header-label');
         let monthYearHeader = datePickerHeader.childNodes[0];
-        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        expect(monthYearHeader.textContent).toBe(moment().format('MMM YYYY'));
         fireEvent.click(monthYearHeader);
         let nextButton =  getByText('Next Year');
         fireEvent.click(nextButton)
         const firstMonthOfNextYear = container.querySelector('.react-datepicker__month-0');
         fireEvent.click(firstMonthOfNextYear);
-        expect(monthYearHeader.textContent).toBe(`January ${oneYearFromToday.format('YYYY')}`);
+        expect(monthYearHeader.textContent).toBe(`Jan ${oneYearFromToday.format('YYYY')}`);
         fireEvent.click(monthYearHeader);
         let previousButton = container.querySelector('.react-datepicker__navigation--previous');
         fireEvent.click(previousButton);
 
         let lastMonthOfCurrentYear = container.querySelector('.react-datepicker__month-11');
         fireEvent.click(lastMonthOfCurrentYear);
-        expect(monthYearHeader.textContent).toBe(`December ${moment().format('YYYY')}`);
+        expect(monthYearHeader.textContent).toBe(`Dec ${moment().format('YYYY')}`);
 
     })
 
@@ -244,16 +244,16 @@ describe('DatePicker', () => {
         const {container, getByTestId,getByText} = render(<AppointmentDatePicker minDate={minDate}/>)
         let datePickerHeader = getByTestId('date-picker-header-label');
         let monthYearHeader = datePickerHeader.childNodes[0];
-        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        expect(monthYearHeader.textContent).toBe(moment().format('MMM YYYY'));
         fireEvent.click(monthYearHeader);
         let nextButton =  getByText('Next Year')
         fireEvent.click(nextButton)
         const firstMonthOfNextYearComponent = container.querySelector('.react-datepicker__month-0');
         fireEvent.click(firstMonthOfNextYearComponent);
-        expect(monthYearHeader.textContent).toBe(`January ${firstMonthOfNextYear.format('YYYY')}`);
+        expect(monthYearHeader.textContent).toBe(`Jan ${firstMonthOfNextYear.format('YYYY')}`);
         const goToTodayButton = getByTestId('go-to-today');
         fireEvent.click(goToTodayButton);
-        expect(monthYearHeader.textContent).toBe(moment().format('MMMM YYYY'));
+        expect(monthYearHeader.textContent).toBe(moment().format('MMM YYYY'));
         const dayTodayButton = container.querySelector('.react-datepicker__day--today');
         expect(dayTodayButton.textContent).toBe(moment().format('D'));
 
