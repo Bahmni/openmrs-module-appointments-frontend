@@ -27,7 +27,7 @@ li[class*='react-tabs__tab'][aria-selected="true"] {
 }
 
 .conflictsHeading {
-  margin: 2% 0 2% 1.5%;
+  margin: 2% 0 1.5rem 1.5%;
   font-size: 14px;
   height: 19px;
   color: $secondary-color-2;
@@ -39,7 +39,7 @@ li[class*='react-tabs__tab'][aria-selected="true"] {
 }
 
 .appointmentConflict {
-  margin: 1% 0 3% 1.5%;
+  margin: 0.9rem 0 3% 1.5%;
   font-size: 14px;
   color: $secondary-color-2;
   .conflictMessage {

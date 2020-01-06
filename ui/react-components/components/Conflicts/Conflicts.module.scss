@@ -1,9 +1,17 @@
-.button {
-    left: 98%;
-    position: relative;
-    padding-top: 10px;
-    background: none;
-    border: none;
-    padding: 0px;
-    margin-top: 10px;
+.conflictsContainer {
+    padding-top: 20px;
+    .button {
+        //left: 98%;
+        position: relative;
+        background: none;
+        border: none;
+        //padding: 0px;
+        //margin-top: 3%;
+        padding: 10px 0;
+        float: right;
+        &:hover {
+            border: none;
+            background: none;
+        }
+    }
 }

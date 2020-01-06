@@ -23,6 +23,8 @@ input[type="radio"] {
   display: flex;
   margin: 5% 4% 4% 0;
   align-items: center;
+  height: 20px;
+
   div {
     display: flex;
   }
@@ -36,12 +38,14 @@ input[type="radio"] {
   opacity: 0.6;
   display: flex;
   margin: 5% 4% 4% 0;
+  align-items: center;
+  height: 20px;
 }
 
 div[disabled] {
   pointer-events: none;
   opacity: 0.7;
-  display: flex;
+  //display: flex;
 }
 
 
