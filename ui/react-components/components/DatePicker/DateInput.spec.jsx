@@ -181,4 +181,14 @@ describe('Date Input', ()=>{
         const inputField = getByPlaceholderText('mm/dd/yyyy');
         expect(inputField.disabled).toBe(false);
     })
+
+    it('should set the date to empty string when invalid date is entered',()=>{
+        const {container, getByPlaceholderText, getByText} = render(<DateInput onBlur={onBlurSpy}/>);
+        const inputField = getByPlaceholderText('mm/dd/yyyy');
+        expect(inputField.value).toBe('');
+        fireEvent.change(inputField, {target:{value:'322'}});
+        fireEvent.blur(inputField);
+        expect(inputField.value).toBe('')
+        expect(onBlurSpy).toHaveBeenCalledWith('')
+    })
 })
