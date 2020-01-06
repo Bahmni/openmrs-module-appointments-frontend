@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import{
+    dateTextHolder,
     dateInputClear,
     dateInputBox,
     disable
@@ -24,7 +25,8 @@ const DateInput = (props) =>{
             }
         }
         return isDateFormatValid;
-    }
+    };
+
     const inputRef = useRef(null);
     const {value, onBlur, minDate, maxDate, isDisabled} = props;
     const [componentValue, setComponentValue] = useState(validateDate({dateValue: value, minDate,maxDate})? value:'');
@@ -43,20 +45,20 @@ const DateInput = (props) =>{
         }else {
             setComponentValue(value)
         }
-    }
+    };
 
     const handleClear = (e) =>{
         if(!isDisabled) {
-            setComponentValue('')
+            setComponentValue('');
             onBlur('')
         }
-    }
+    };
 
     const handleKeyDown= (e) => {
         if (e.key === 'Enter') {
            inputRef.current.blur();
         }
-    }
+    };
 
     const inputClearStyles= [dateInputClear];
     isDisabled && inputClearStyles.push(disable);
@@ -65,7 +67,7 @@ const DateInput = (props) =>{
     isDisabled && inputFieldStyles.push(disable);
 
     return(
-        <div>
+        <div className={classNames(dateTextHolder)}>
             <input placeholder="mm/dd/yyyy" onChange={(e) => setComponentValue(e.target.value)}
                    className={classNames(inputFieldStyles)}
                    onKeyDown={handleKeyDown}

@@ -40,6 +40,7 @@ const AppointmentDatePicker = (props) => {
                 selected={isDisabled? '' : selectedDate}
                 onChange={(date) =>onChange(datetoMomentDate(date))}
                 inline
+                fixedHeight
                 readOnly={true}
                 calendarClassName={calendarStyles}
                 minDate={minDate && minDate.toDate()}
