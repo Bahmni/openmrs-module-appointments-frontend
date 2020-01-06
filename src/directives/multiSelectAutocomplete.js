@@ -4,8 +4,7 @@ angular.module('bahmni.appointments')
     .directive('multiSelectAutocomplete', [function () {
         var link = function ($scope, element) {
             $scope.focusOnTheTest = function () {
-                if(window.location.hash !== Bahmni.Appointments.Constants.addAppointmentUrl
-                    && window.location.hash !== Bahmni.Appointments.Constants.editAppointmentUrl) {
+                if (!window.location.href.includes(Bahmni.Appointments.Constants.appointmentsV2Url)){
                     var autoselectInput = element.find("input.input");
                     autoselectInput[0].focus();
                 }
