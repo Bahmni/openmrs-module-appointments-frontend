@@ -228,6 +228,12 @@ const AddAppointment = props => {
             : setServiceErrorMessage(errorTranslations.unexpectedServiceErrorMessage);
     };
 
+    const  resetServiceErrorMessage = () => {
+        setTimeout(function () {
+            setServiceErrorMessage('');
+        }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+    };
+
     const save = async appointmentRequest => {
         const response = await saveAppointment(appointmentRequest);
         const status = response.status;
@@ -237,9 +243,7 @@ const AddAppointment = props => {
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
-            setTimeout(function () {
-                setServiceErrorMessage('');
-            }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+            resetServiceErrorMessage();
         }
     };
 
@@ -255,9 +259,7 @@ const AddAppointment = props => {
             } else if (response.data && response.data.error) {
                 setConflicts(undefined);
                 setServiceErrorMessageFromResponse(response.data);
-                setTimeout(function () {
-                    setServiceErrorMessage('');
-                }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+                resetServiceErrorMessage();
             }
         }
     };
@@ -275,11 +277,11 @@ const AddAppointment = props => {
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
-            setTimeout(function () {
-                setServiceErrorMessage('');
-            }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+            resetServiceErrorMessage();
         }
     };
+
+
 
     const checkAndSaveRecurringAppointments = async () => {
         if (isValidRecurringAppointment()) {
@@ -293,9 +295,7 @@ const AddAppointment = props => {
             } else if (response.data && response.data.error) {
                 setConflicts(undefined);
                 setServiceErrorMessageFromResponse(response.data);
-                setTimeout(function () {
-                    setServiceErrorMessage('');
-                }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+                resetServiceErrorMessage();
             }
         }
     };
