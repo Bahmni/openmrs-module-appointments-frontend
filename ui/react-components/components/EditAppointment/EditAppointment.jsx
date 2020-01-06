@@ -210,6 +210,12 @@ const EditAppointment = props => {
             : setServiceErrorMessage(errorTranslations.unexpectedServiceErrorMessage);
     };
 
+    const resetServiceErrorMessage = () => {
+        setTimeout(function () {
+            setServiceErrorMessage('');
+        }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+    }
+
     const checkAndSave = async () => {
         if (isValidAppointment()) {
             const appointment = getAppointmentRequest();
@@ -222,9 +228,7 @@ const EditAppointment = props => {
             } else if (response.data && response.data.error) {
                 setConflicts(undefined);
                 setServiceErrorMessageFromResponse(response.data);
-                setTimeout(function () {
-                    setServiceErrorMessage('');
-                }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+                resetServiceErrorMessage();
             }
         }
     };
@@ -244,9 +248,7 @@ const EditAppointment = props => {
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
-            setTimeout(function () {
-                setServiceErrorMessage('');
-            }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+            resetServiceErrorMessage();
         }
     };
 
@@ -260,9 +262,7 @@ const EditAppointment = props => {
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
-            setTimeout(function () {
-                setServiceErrorMessage('');
-            }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+            resetServiceErrorMessage();
         }
     };
 
@@ -279,9 +279,7 @@ const EditAppointment = props => {
             } else if (response.data && response.data.error) {
                 setConflicts(undefined);
                 setServiceErrorMessageFromResponse(response.data);
-                setTimeout(function () {
-                    setServiceErrorMessage('');
-                }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+                resetServiceErrorMessage();
             }
         }
     };
