@@ -28,7 +28,7 @@ const SpecialitySearch = (props) => {
         setSpecialities(createDropdownOptions(specialities));
     };
 
-    const {intl, onChange, value, isDisabled} = props;
+    const {intl, onChange, value, isDisabled, autoFocus} = props;
     const placeholder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SPECIALITY', defaultMessage: 'Speciality'
     });
@@ -41,6 +41,7 @@ const SpecialitySearch = (props) => {
             selectedValue={value}
             isDisabled={isDisabled}
             isClearable={true}
+            autoFocus={autoFocus}
         />);
 };
 
@@ -48,7 +49,8 @@ SpecialitySearch.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.object,
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    autoFocus: PropTypes.bool
 };
 
 export default injectIntl(SpecialitySearch);

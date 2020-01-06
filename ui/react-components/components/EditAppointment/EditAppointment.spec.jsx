@@ -213,6 +213,7 @@ describe('Edit Appointment', () => {
         //change service
         const targetService = 'Dressing';
         const inputBoxService = containerInDom.querySelectorAll('.react-select__input input')[1];
+        fireEvent.blur(inputBoxService);
         fireEvent.change(inputBoxService, {target: {value: "Dre"}});
         await waitForElement(() => (containerInDom.querySelector('.react-select__menu')));
         const optionService = getByTextInDom(targetService);
@@ -251,6 +252,7 @@ describe('Edit Appointment', () => {
         // change service
         const targetService = 'Dressing';
         const inputBoxService = containerInDom.querySelectorAll('.react-select__input input')[1];
+        fireEvent.blur(inputBoxService);
         fireEvent.change(inputBoxService, {target: {value: "Dre"}});
         await waitForElement(() => (containerInDom.querySelector('.react-select__menu')));
         const optionService = getByTextInDom(targetService);

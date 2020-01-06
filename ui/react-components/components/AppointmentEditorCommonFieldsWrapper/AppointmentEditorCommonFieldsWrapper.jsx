@@ -30,7 +30,7 @@ import {
 
 const AppointmentEditorCommonFieldsWrapper = props => {
 
-    const {updateAppointmentDetails, updateErrorIndicators} = props;
+    const {updateAppointmentDetails, updateErrorIndicators, editAutoFocus} = props;
     const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl, patientSearchAutoFocus} = props;
     const componentsDisableStatus = props.componentsDisableStatus || {};
     const errorTranslations = getErrorTranslations(intl);
@@ -84,7 +84,8 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                                   serviceType: null,
                                                   location: null
                                               })}
-                                              isDisabled={componentsDisableStatus.speciality}/>
+                                              isDisabled={componentsDisableStatus.speciality}
+                                              autoFocus={editAutoFocus}/>
                         </div> : null
                     }
                     <div data-testid="service-search">
@@ -97,6 +98,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         && appointmentDetails.speciality.value.uuid}
                                        isDisabled={componentsDisableStatus.service}
                                        specialityEnabled = {isSpecialitiesEnabled(appConfig)}
+                                       autoFocus={editAutoFocus}
                     />
                         <ErrorMessage
                             message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
