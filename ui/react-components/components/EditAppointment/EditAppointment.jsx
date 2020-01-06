@@ -27,7 +27,7 @@ import {
     CANCEL_CONFIRMATION_MESSAGE_EDIT,
     MINUTES, RECURRENCE_TERMINATION_AFTER, RECURRENCE_TERMINATION_ON,
     RECURRING_APPOINTMENT_TYPE,
-    SCHEDULED_APPOINTMENT_TYPE,
+    SCHEDULED_APPOINTMENT_TYPE, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     WALK_IN_APPOINTMENT_TYPE, weekRecurrenceType
 } from "../../constants";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
@@ -222,6 +222,9 @@ const EditAppointment = props => {
             } else if (response.data && response.data.error) {
                 setConflicts(undefined);
                 setServiceErrorMessageFromResponse(response.data);
+                setTimeout(function () {
+                    setServiceErrorMessage('');
+                }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
             }
         }
     };
@@ -241,6 +244,9 @@ const EditAppointment = props => {
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
+            setTimeout(function () {
+                setServiceErrorMessage('');
+            }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
         }
     };
 
@@ -254,6 +260,9 @@ const EditAppointment = props => {
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
+            setTimeout(function () {
+                setServiceErrorMessage('');
+            }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
         }
     };
 
@@ -270,6 +279,9 @@ const EditAppointment = props => {
             } else if (response.data && response.data.error) {
                 setConflicts(undefined);
                 setServiceErrorMessageFromResponse(response.data);
+                setTimeout(function () {
+                    setServiceErrorMessage('');
+                }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
             }
         }
     };
