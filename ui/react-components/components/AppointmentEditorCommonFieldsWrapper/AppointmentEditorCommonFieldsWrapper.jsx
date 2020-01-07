@@ -115,7 +115,8 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     <div data-testid="location-search">
                         <LocationSearch value={appointmentDetails.location}
                                         onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
-                                        isDisabled={componentsDisableStatus.location}/>
+                                        isDisabled={componentsDisableStatus.location}
+                                        autoFocus={componentsDisableStatus.speciality && componentsDisableStatus.service && editAutoFocus}/>
                         <ErrorMessage message={undefined}/>
                     </div>
                 </div>
