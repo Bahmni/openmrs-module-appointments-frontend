@@ -97,7 +97,7 @@ const providers = [
     }
 ];
 
-export const getAllProviders = () => {
+export const getAllProvidersForAppointments = () => {
     return new Promise((resolve, reject) => {
         process.nextTick(() =>
             resolve(providers)

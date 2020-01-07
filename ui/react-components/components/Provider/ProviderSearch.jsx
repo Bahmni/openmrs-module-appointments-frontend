@@ -1,4 +1,4 @@
-import {getAllProviders} from "../../api/providerApi";
+import {getAllProvidersForAppointments} from "../../api/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, {useEffect, useState} from "react";
 import Tags from "../Tags/Tags.jsx";
@@ -23,7 +23,7 @@ const ProviderSearch = props => {
     }, [selectedProvider]);
 
     const loadProviders = async () => {
-        const providers = await getAllProviders();
+        const providers = await getAllProvidersForAppointments();
         setProviders(createDropdownOptions(providers));
     };
 

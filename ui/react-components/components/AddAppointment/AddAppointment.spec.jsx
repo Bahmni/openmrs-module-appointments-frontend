@@ -17,7 +17,7 @@ const providerApi = require('../../api/providerApi');
 let getPatientByLocationSpy;
 let getAllServicesSpy;
 let getAllSpecialitiesSpy;
-let getAllProvidersSpy;
+let getAllProvidersForAppointmentsSpy;
 
 const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'months');
@@ -31,14 +31,14 @@ describe('Add Appointment', () => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
         getAllServicesSpy = jest.spyOn(serviceApi, 'getAllServices');
         getAllSpecialitiesSpy = jest.spyOn(specialityApi, 'getAllSpecialities');
-        getAllProvidersSpy = jest.spyOn(providerApi, 'getAllProviders');
+        getAllProvidersForAppointmentsSpy = jest.spyOn(providerApi, 'getAllProvidersForAppointments');
         jest.useFakeTimers();
     });
     afterEach(() => {
         getPatientByLocationSpy.mockRestore();
         getAllServicesSpy.mockRestore();
         getAllSpecialitiesSpy.mockRestore();
-        getAllProvidersSpy.mockRestore();
+        getAllProvidersForAppointmentsSpy.mockRestore();
     });
 
     it('should render an editor', () => {

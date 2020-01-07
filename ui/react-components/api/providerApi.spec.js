@@ -1,6 +1,6 @@
 import React from 'react';
 import mockAxios from 'jest-mock-axios';
-import {getAllProviders} from "./providerApi";
+import {getAllProvidersForAppointments} from "./providerApi";
 import {providerUrl, providerParams} from "../constants";
 
 afterEach(() => {
@@ -109,7 +109,7 @@ describe('Provider Api', () => {
             })
         );
 
-        let allProviders = await getAllProviders();
+        let allProviders = await getAllProvidersForAppointments();
 
         expect(mockAxios.get).toHaveBeenCalledWith(`${providerUrl}?${providerParams}`);
         expect(allProviders[0]).toEqual(mockResponse.results[1]);

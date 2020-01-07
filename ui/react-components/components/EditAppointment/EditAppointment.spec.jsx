@@ -20,7 +20,7 @@ let appointmentsUpdateApiSpy;
 let getAllServicesSpy;
 let conflictsForSpy;
 let recurringConflictsApiSpy;
-let getAllProvidersSpy;
+let getAllProvidersForAppointmentsSpy;
 
 const Wrapper = (props) => {
     return  <div>
@@ -46,7 +46,7 @@ describe('Edit Appointment', () => {
         getAllServicesSpy = jest.spyOn(serviceApi, 'getAllServices');
         conflictsForSpy = jest.spyOn(appointmentsApi, 'conflictsFor');
         recurringConflictsApiSpy = jest.spyOn(recurringAppointmentsApi, 'recurringConflictsFor');
-        getAllProvidersSpy = jest.spyOn(providerApi, 'getAllProviders');
+        getAllProvidersForAppointmentsSpy = jest.spyOn(providerApi, 'getAllProvidersForAppointments');
     });
     afterEach(() => {
         appointmentsApiSpy.mockRestore();
@@ -55,7 +55,7 @@ describe('Edit Appointment', () => {
         getAllServicesSpy.mockRestore();
         conflictsForSpy.mockRestore();
         recurringConflictsApiSpy.mockRestore();
-        getAllProvidersSpy.mockRestore();
+        getAllProvidersForAppointmentsSpy.mockRestore();
     });
 
     it('should call getAppointment when isRecurring is false', () => {

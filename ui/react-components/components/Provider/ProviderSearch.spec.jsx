@@ -7,14 +7,14 @@ import {renderWithReactIntl} from '../../utils/TestUtil';
 jest.mock('../../api/providerApi');
 jest.mock('../../utils/CookieUtil');
 const providerApi = require('../../api/providerApi');
-let getAllProviders;
+let getAllProvidersForAppointments;
 
 describe('Provider Search', () => {
     beforeEach(() => {
-        getAllProviders = jest.spyOn(providerApi, 'getAllProviders');
+        getAllProvidersForAppointments = jest.spyOn(providerApi, 'getAllProvidersForAppointments');
     });
     afterEach(() => {
-        getAllProviders.mockRestore();
+        getAllProvidersForAppointments.mockRestore();
     });
 
 
@@ -52,7 +52,7 @@ describe('Provider Search', () => {
         await waitForElement(() => (container.querySelector('.react-select__menu')));
         const option = getByText(selectedProvider);
         fireEvent.click(option);
-        expect(getAllProviders).toHaveBeenCalled();
+        expect(getAllProvidersForAppointments).toHaveBeenCalled();
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
 
