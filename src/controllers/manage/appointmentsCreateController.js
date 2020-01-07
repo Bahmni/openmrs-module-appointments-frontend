@@ -20,8 +20,13 @@ angular.module('bahmni.appointments')
             let appointmentTimeBeforeEdit = {};
             let existingProvidersUuids = [];
 
+            const canScheduleWithAllProviders = function() {
+                return appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges)
+                    || appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeScheduleAppointments, $rootScope.currentUser.privileges);
+            };
+
             var providerListForCurrentUser = function (providers) {
-                if (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges)) {
+                if (canScheduleWithAllProviders()) {
                     return providers;
                 }
                 if (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeOwnAppointments, $rootScope.currentUser.privileges)) {

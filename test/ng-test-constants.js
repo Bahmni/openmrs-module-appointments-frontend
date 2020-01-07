@@ -115,6 +115,7 @@ window.Bahmni.Appointments.Constants = {
   "privilegeForAdmin": "app:appointments:adminTab",
   "privilegeOwnAppointments": "Manage Own Appointments",
   "privilegeResetAppointmentStatus": "Reset Appointment Status",
+  "privilegeAppointmentsAddProviders": "Appointments: Add Providers",
   "availableForAppointments": "Available for appointments",
   "weekDays": {
     "Monday": 1,
