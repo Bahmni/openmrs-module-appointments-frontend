@@ -404,8 +404,7 @@ const EditAppointment = props => {
                                                   endTimeBasedOnService={endTimeBasedOnService}
                                                   updateAppointmentDetails={updateAppointmentDetails}
                                                   appConfig={appConfig}
-                                                  componentsDisableStatus={componentsDisableStatus}
-                                                  editAutoFocus={true}/>
+                                                  componentsDisableStatus={componentsDisableStatus}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan isEdit={true} appointmentType={appointmentDetails.appointmentType}
