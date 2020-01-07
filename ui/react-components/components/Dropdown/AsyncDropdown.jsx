@@ -59,7 +59,7 @@ const AsyncDropdown = (props) => {
                     select = ref;
                 }}
                 cacheOptions={true}
-                autoFocus={autoFocus}
+                autoFocus={!isDisabled && autoFocus}
                 defaultOptions
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"
