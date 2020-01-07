@@ -28,14 +28,18 @@ const CalendarPicker = (props) => {
     };
     return (
         <div data-testid='calendar-picker' className={classNames(styles, isDisabled ? disable : '')} ref={ref}>
-            <span data-testid="calendar-icon" onClick={ handleOnClick}>
-                <i className={classNames("fa","fa-calendar")} aria-hidden="true"></i>
-            </span>
-            { showDatePicker && <AppointmentDatePicker
+            <button data-testid="calendar-icon" onClick={handleOnClick}>
+                <i className={classNames("fa", "fa-calendar")} aria-hidden="true"></i>
+            </button>
+            {showDatePicker && <AppointmentDatePicker
                 isDisabled={isDisabled}
                 minDate={minDate}
                 value={date}
-                onChange={onChange} />}
+                onChange={onChange}
+                hideDatePicker={() => {
+                    setShowDatePicker(false)
+                }}
+            />}
         </div>
     );
 };
