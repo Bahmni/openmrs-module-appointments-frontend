@@ -50,7 +50,7 @@ LocationSearch.propTypes = {
     onChange: PropTypes.func.isRequired,
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
-    autoFocus: Proptypes.bool
+    autoFocus: PropTypes.bool
 };
 
 export default injectIntl(LocationSearch);
