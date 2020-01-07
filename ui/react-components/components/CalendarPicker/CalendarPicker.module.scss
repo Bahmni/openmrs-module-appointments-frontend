@@ -1,7 +1,12 @@
 @import '../../variables.scss';
 
 .calendarPickerContainer {
-  position:absolute;
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  position: absolute;
   width: 20%;
   margin-left: 0.4em;
 }
