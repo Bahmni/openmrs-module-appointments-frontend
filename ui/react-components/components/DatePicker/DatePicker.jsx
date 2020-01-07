@@ -15,7 +15,7 @@ import DatePickerCustomHeader from './DatePickerCustomHeader.jsx';
 const datetoMomentDate = (date) => date==='' || date===null || date === undefined ? date
     : moment(date,'MM/DD/YYYY' );
 const AppointmentDatePicker = (props) => {
-    const {minDate, value, onChange, isDisabled} = props;
+    const {minDate, value, onChange, isDisabled, hideDatePicker} = props;
     let calendarStyles =[appointmentDatePicker];
     isDisabled && calendarStyles.push(disable);
     const selectedDate = value?  value.toDate() : value;
@@ -23,9 +23,9 @@ const AppointmentDatePicker = (props) => {
     let containerStyles=[];
     isDisabled && containerStyles.push(disable);
 
-    const handleBlurOfDateInput = (date) =>{
-        const valueEntered= datetoMomentDate(date);
-        onChange(valueEntered)
+    const handleBlurOfDateInput = (date) => {
+        const valueEntered = datetoMomentDate(date);
+        onChange(valueEntered);
     };
 
     const dateInputValue = isDisabled? '' : (value && value!=='' ? value.format('MM/DD/YYYY') : value);
@@ -35,10 +35,14 @@ const AppointmentDatePicker = (props) => {
            <DateInput value={dateInputValue}
                       minDate={minDate && minDate.toDate()}
                       isDisabled={isDisabled}
-                      onBlur={handleBlurOfDateInput}/>
+                      onBlur={handleBlurOfDateInput}
+                      hideDatePicker = {hideDatePicker}/>
            <div disabled={isDisabled} data-testid="datePicker-Calendar"> <DatePicker
                 selected={isDisabled? '' : selectedDate}
-                onChange={(date) =>onChange(datetoMomentDate(date))}
+                onChange={(date) =>{
+                    onChange(datetoMomentDate(date));
+                    hideDatePicker && hideDatePicker();
+                }}
                 inline
                 fixedHeight
                 readOnly={true}
@@ -59,7 +63,8 @@ AppointmentDatePicker.propTypes = {
     onChange: PropTypes.func,
     value: PropTypes.instanceOf(moment),
     minDate: PropTypes.instanceOf(moment),
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    hideDatePicker: PropTypes.func
 };
 
 export default AppointmentDatePicker;
