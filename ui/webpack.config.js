@@ -73,6 +73,9 @@ module.exports = function (webpackEnv) {
         performance : {
             hints : false
         },
+        resolve: {
+            extensions: ['*', '.js', '.jsx']
+        },
         optimization:{
             minimize: isEnvProduction,
             minimizer: [
