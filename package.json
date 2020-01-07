@@ -58,7 +58,7 @@
         "bahmni-commons-ng": "0.0.1",
         "fullcalendar": "2.7.3",
         "fullcalendar-scheduler": "1.3.2",
-        "jquery": "1.9.1",
+        "jquery": "3.4.0",
         "ng-clip": "0.2.5",
         "ng-dialog": "0.3.12",
         "ng-infinite-scroll": "1.3.0",
