@@ -274,6 +274,7 @@ const AddAppointment = props => {
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
         } else if (status === 204) {
             setServiceErrorMessage(errorTranslations.noContentErrorMessage);
+            resetServiceErrorMessage();
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
