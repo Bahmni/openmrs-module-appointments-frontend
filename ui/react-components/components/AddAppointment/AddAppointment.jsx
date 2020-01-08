@@ -71,7 +71,7 @@ const AddAppointment = props => {
         service: null,
         serviceType: null,
         location: null,
-        speciality: undefined,
+        speciality: null,
         appointmentDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
         recurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
         recurringEndDate: undefined,
