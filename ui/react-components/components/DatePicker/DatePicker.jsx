@@ -12,7 +12,7 @@ import moment from 'moment';
 import DateInput from './DateInput.jsx';
 import DatePickerCustomHeader from './DatePickerCustomHeader.jsx';
 
-const datetoMomentDate = (date) => date==='' || date===null || date === undefined ? date
+const dateToMomentDate = (date) => date==='' || date===null || date === undefined ? date
     : moment(date,'MM/DD/YYYY' );
 const AppointmentDatePicker = (props) => {
     const {minDate, value, onChange, isDisabled, hideDatePicker} = props;
@@ -24,7 +24,7 @@ const AppointmentDatePicker = (props) => {
     isDisabled && containerStyles.push(disable);
 
     const handleBlurOfDateInput = (date) => {
-        const valueEntered = datetoMomentDate(date);
+        const valueEntered = dateToMomentDate(date);
         onChange(valueEntered);
     };
 
@@ -40,12 +40,8 @@ const AppointmentDatePicker = (props) => {
            />
            <div disabled={isDisabled} data-testid="datePicker-Calendar"> <DatePicker
                 selected={isDisabled? '' : selectedDate}
-                onSelect={(date) => {
-                    selectedDate && date.getTime() === selectedDate.getTime() && hideDatePicker && hideDatePicker()}}
-                onChange={(date) =>{
-                    onChange(datetoMomentDate(date));
-                    hideDatePicker && hideDatePicker();
-                }}
+                onSelect={() => hideDatePicker && hideDatePicker()}
+                onChange={(date) =>onChange(dateToMomentDate(date))}
                 inline
                 fixedHeight
                 readOnly={true}
