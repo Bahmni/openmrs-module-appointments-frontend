@@ -38,7 +38,7 @@ describe('CalendarPicker', () =>{
         expect(queryByTestId('datePicker')).toBeNull();
     })
 
-    it('should not close the picker when clicked on previous month button of datepicker', () =>{
+    it('should close the picker when clicked on any button of datepicker', () =>{
         const Wrapper=(props) =>{
             const {value} = props;
             const [dateValue, setDateValue] = useState(value);
@@ -57,9 +57,7 @@ describe('CalendarPicker', () =>{
         fireEvent.click(calendarIcon);
         expect(getByTestId('datePicker')).not.toBeNull();
         clickOnFirstDayOfNextMonth(container);
-        const previousButton = container.querySelector('.react-datepicker__navigation--previous');
-        fireEvent.click(previousButton);
-        expect(queryByTestId('datePicker')).not.toBeNull();
+        expect(queryByTestId('datePicker')).toBeNull();
     })
 
     it('should not show the date picker on click of icon when component is disabled',()=>{

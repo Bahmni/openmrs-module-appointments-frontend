@@ -16,7 +16,7 @@ describe('DatePicker', () => {
         const hidePicker = () => {};
         return <AppointmentDatePicker value={dateValue}
                                       onChange={onChange}
-                                      hide={hidePicker}/>
+                                      hideDatePicker={hidePicker}/>
     }
 
     it('should render Calendar component ',() => {
