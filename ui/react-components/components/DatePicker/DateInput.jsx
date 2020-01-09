@@ -39,7 +39,6 @@ const DateInput = (props) =>{
         const isValidDate = validateDate({dateValue: inputValue, minDate, maxDate});
         if (isValidDate) {
             onBlur(componentValue);
-            hideDatePicker && hideDatePicker();
         } else if (isNil(value)) {
             onBlur('');
             setComponentValue('')
@@ -52,14 +51,20 @@ const DateInput = (props) =>{
     const handleClear = (e) =>{
         if(!isDisabled) {
             setComponentValue('');
-            onBlur('')
+            inputRef.current.focus();
         }
     };
 
     const handleKeyDown= (e) => {
-        if (e.key === 'Enter' || e.key === 'Tab') {
-           inputRef.current.blur();
+        if (e.key === 'Enter') {
+            inputRef.current.blur();
+            const inputValue = e.target.value;
+            const isValidDate = validateDate({dateValue: inputValue, minDate, maxDate});
+            if (isValidDate)
+                hideDatePicker && hideDatePicker();
         }
+        else if(e.key === 'Tab')
+            hideDatePicker && hideDatePicker();
     };
 
     const inputClearStyles= [dateInputClear];

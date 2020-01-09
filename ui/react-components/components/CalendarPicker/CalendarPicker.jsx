@@ -26,8 +26,15 @@ const CalendarPicker = (props) => {
     const handleOnClick = () => {
         !isDisabled && setShowDatePicker(!showDatePicker)
     };
+
+
+    const handleKeyDown = (e) => {
+        if(e.key === 'Escape')
+            setShowDatePicker(false);
+    };
+
     return (
-        <div data-testid='calendar-picker' className={classNames(styles, isDisabled ? disable : '')} ref={ref}>
+        <div data-testid='calendar-picker' className={classNames(styles, isDisabled ? disable : '')} ref={ref} onKeyDown={handleKeyDown}>
             <button data-testid="calendar-icon" onClick={handleOnClick}>
                 <i className={classNames("fa", "fa-calendar")} aria-hidden="true"></i>
             </button>

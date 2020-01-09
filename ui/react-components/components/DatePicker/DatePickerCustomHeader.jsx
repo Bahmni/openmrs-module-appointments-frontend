@@ -41,7 +41,8 @@ const DatePickerCustomHeader = (props) => {
         changeMonth(moment(date).month())
         setShowMonthYear(false);
     };
-    return <div className={classNames(customHeaderWrapper)}>
+
+    return <div className={classNames(customHeaderWrapper)} tabIndex={1}>
          <span data-testid="date-picker-header-label" className={classNames(monthYearDropdownLabel)}
                onClick={() =>{setShowMonthYear(!showMonthYear)}}>
                 <label>{moment(date).format('MMM YYYY')}</label>
