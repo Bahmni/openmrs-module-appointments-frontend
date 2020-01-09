@@ -51,6 +51,7 @@ const DateInput = (props) =>{
     const handleClear = (e) =>{
         if(!isDisabled) {
             setComponentValue('');
+            onBlur('');
             inputRef.current.focus();
         }
     };
