@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -36,9 +36,12 @@ const AppointmentDatePicker = (props) => {
                       minDate={minDate && minDate.toDate()}
                       isDisabled={isDisabled}
                       onBlur={handleBlurOfDateInput}
-                      hideDatePicker = {hideDatePicker}/>
+                      hideDatePicker = {hideDatePicker}
+           />
            <div disabled={isDisabled} data-testid="datePicker-Calendar"> <DatePicker
                 selected={isDisabled? '' : selectedDate}
+                onSelect={(date) => {
+                    date.getTime() === selectedDate.getTime() && hideDatePicker && hideDatePicker()}}
                 onChange={(date) =>{
                     onChange(datetoMomentDate(date));
                     hideDatePicker && hideDatePicker();
