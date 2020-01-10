@@ -43,9 +43,7 @@ const CalendarPicker = (props) => {
                 minDate={minDate}
                 value={date}
                 onChange={onChange}
-                hideDatePicker={() => {
-                    setShowDatePicker(false)
-                }}
+                handleDateSelection={() => setShowDatePicker(false)}
             />}
         </div>
     );

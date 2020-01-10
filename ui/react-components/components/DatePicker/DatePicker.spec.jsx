@@ -5,6 +5,7 @@ import AppointmentDatePicker from './DatePicker.jsx';
 import moment from 'moment';
 
 describe('DatePicker', () => {
+    const handleDateSelectionSpy = jest.fn();
     const ParentWrapper=(props) =>{
         const {value} = props;
         const [dateValue, setDateValue] = useState(value);
@@ -13,10 +14,9 @@ describe('DatePicker', () => {
         useEffect(()=>{
             setDateValue(value);
         },[value]);
-        const hidePicker = () => {};
         return <AppointmentDatePicker value={dateValue}
                                       onChange={onChange}
-                                      hideDatePicker={hidePicker}/>
+                                      handleDateSelection={handleDateSelectionSpy}/>
     }
 
     it('should render Calendar component ',() => {
@@ -260,5 +260,15 @@ describe('DatePicker', () => {
         expect(dayTodayButton.textContent).toBe(moment().format('D'));
 
     })
+
+    it('should call handleDateSelection and close date picker on selection of date', function () {
+        const today = moment();
+        const {container} = render(<ParentWrapper value={today} handleDateSelection={handleDateSelectionSpy}/>);
+        let dateSelectedField = container.querySelector('.react-datepicker__day--selected');
+        fireEvent.click(container.querySelector('.react-datepicker__day--001'));
+        expect(handleDateSelectionSpy).toHaveBeenCalledWith();
+        expect(dateSelectedField.textContent).toBe(today.date().toFixed(0));
+        expect(container.querySelector('react-datepicker')).toBeNull();
+    });
 
 });
