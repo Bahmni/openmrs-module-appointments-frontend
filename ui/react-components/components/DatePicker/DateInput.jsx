@@ -28,7 +28,7 @@ const DateInput = (props) =>{
     };
 
     const inputRef = useRef(null);
-    const {value, onBlur, minDate, maxDate, isDisabled,hideDatePicker} = props;
+    const {value, onBlur, minDate, maxDate, isDisabled, handleTab} = props;
     const [componentValue, setComponentValue] = useState(validateDate({dateValue: value, minDate,maxDate})? value:'');
     useEffect(() => {
         setComponentValue(validateDate({dateValue: value, minDate,maxDate})?value:'');
@@ -62,10 +62,10 @@ const DateInput = (props) =>{
             const inputValue = e.target.value;
             const isValidDate = validateDate({dateValue: inputValue, minDate, maxDate});
             if (isValidDate)
-                hideDatePicker && hideDatePicker();
+                handleTab && handleTab();
         }
         else if(e.key === 'Tab')
-            hideDatePicker && hideDatePicker();
+            handleTab && handleTab();
     };
 
     const inputClearStyles= [dateInputClear];
@@ -93,7 +93,7 @@ DateInput.propTypes = {
     minDate: PropTypes.instanceOf(Date),
     maxDate: PropTypes.instanceOf(Date),
     isDisabled: PropTypes.bool,
-    hideDatePicker: PropTypes.func
+    handleTab: PropTypes.func
 };
 
 export default DateInput;
