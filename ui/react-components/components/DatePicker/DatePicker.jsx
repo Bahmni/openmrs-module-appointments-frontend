@@ -12,15 +12,15 @@ import moment from 'moment';
 import DateInput from './DateInput.jsx';
 import DatePickerCustomHeader from './DatePickerCustomHeader.jsx';
 
-const dateToMomentDate = (date) => date==='' || date===null || date === undefined ? date
-    : moment(date,'MM/DD/YYYY' );
+const dateToMomentDate = (date) => date === '' || date === null || date === undefined ? date
+    : moment(date, 'MM/DD/YYYY');
 const AppointmentDatePicker = (props) => {
-    const {minDate, value, onChange, isDisabled, hideDatePicker} = props;
-    let calendarStyles =[appointmentDatePicker];
+    const {minDate, value, onChange, isDisabled, handleDateSelection} = props;
+    let calendarStyles = [appointmentDatePicker];
     isDisabled && calendarStyles.push(disable);
-    const selectedDate = value?  value.toDate() : value;
+    const selectedDate = value ? value.toDate() : value;
 
-    let containerStyles=[];
+    let containerStyles = [];
     isDisabled && containerStyles.push(disable);
 
     const handleBlurOfDateInput = (date) => {
@@ -28,20 +28,20 @@ const AppointmentDatePicker = (props) => {
         onChange(valueEntered);
     };
 
-    const dateInputValue = isDisabled? '' : (value && value!=='' ? value.format('MM/DD/YYYY') : value);
+    const dateInputValue = isDisabled ? '' : (value && value !== '' ? value.format('MM/DD/YYYY') : value);
 
     return (
         <div data-testid="datePicker" className={classNames(containerStyles)}>
-           <DateInput value={dateInputValue}
-                      minDate={minDate && minDate.toDate()}
-                      isDisabled={isDisabled}
-                      onBlur={handleBlurOfDateInput}
-                      hideDatePicker = {hideDatePicker}
-           />
-           <div disabled={isDisabled} data-testid="datePicker-Calendar"> <DatePicker
-                selected={isDisabled? '' : selectedDate}
-                onSelect={() => hideDatePicker && hideDatePicker()}
-                onChange={(date) =>onChange(dateToMomentDate(date))}
+            <DateInput value={dateInputValue}
+                       minDate={minDate && minDate.toDate()}
+                       isDisabled={isDisabled}
+                       onBlur={handleBlurOfDateInput}
+                       handleTab={handleDateSelection}
+            />
+            <div disabled={isDisabled} data-testid="datePicker-Calendar"><DatePicker
+                selected={isDisabled ? '' : selectedDate}
+                onSelect={() => handleDateSelection && handleDateSelection()}
+                onChange={(date) => onChange(dateToMomentDate(date))}
                 inline
                 fixedHeight
                 readOnly={true}
@@ -49,11 +49,12 @@ const AppointmentDatePicker = (props) => {
                 minDate={minDate && minDate.toDate()}
                 dayClassName={() => {if(isDisabled) return classNames(disabledDate)}}
                 renderCustomHeader={(params) => {
-                    return(<DatePickerCustomHeader {...params}
-                                                   minDate={minDate && minDate.toDate()}
-                                                   currentDate={selectedDate}/>
-                )}}
-           /></div>
+                    return (<DatePickerCustomHeader {...params}
+                                                    minDate={minDate && minDate.toDate()}
+                                                    currentDate={selectedDate}/>
+                    )
+                }}
+            /></div>
         </div>
     );
 };
@@ -63,7 +64,7 @@ AppointmentDatePicker.propTypes = {
     value: PropTypes.instanceOf(moment),
     minDate: PropTypes.instanceOf(moment),
     isDisabled: PropTypes.bool,
-    hideDatePicker: PropTypes.func
+    handleDateSelection: PropTypes.func
 };
 
 export default AppointmentDatePicker;
