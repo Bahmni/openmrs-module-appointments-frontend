@@ -1133,7 +1133,7 @@ describe("AppointmentsCreateController", function () {
         appointmentCreateConfig.providers = allAvailableProviders;
         rootScope = {
             currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments},
-                    {name: Bahmni.Appointments.Constants.privilegeScheduleAppointments}]},
+                    {name: Bahmni.Appointments.Constants.privilegeAppointmentsAddProviders}]},
             currentProvider: {uuid: 'currentUserUuid'}
         };
 

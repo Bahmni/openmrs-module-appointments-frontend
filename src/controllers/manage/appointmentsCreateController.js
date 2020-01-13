@@ -22,7 +22,7 @@ angular.module('bahmni.appointments')
 
             const canScheduleWithAllProviders = function() {
                 return appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges)
-                    || appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeScheduleAppointments, $rootScope.currentUser.privileges);
+                    || appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeAppointmentsAddProviders, $rootScope.currentUser.privileges);
             };
 
             var providerListForCurrentUser = function (providers) {
