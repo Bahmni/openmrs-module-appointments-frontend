@@ -26,15 +26,18 @@ const AsyncDropdown = (props) => {
     }, [selectedValue]);
 
     const handleOnChange = (event) => {
+        //Hack: allow input field to be editable
         setInputValue('');
         setValue(event);
         setLastSelectedValue(event);
-        if (event) {
-        } else {
+        if (!event) {
             setValue('');
         }
+        //End of hack
         onChange && onChange(event);
     };
+
+    //Hack: allow input field to be editable
     const handleOnInputChange = (event, {action}) => {
         if (action === 'input-change') {
             setInputValue(event);
@@ -49,6 +52,7 @@ const AsyncDropdown = (props) => {
     const handleFocus = () => {
         setInputValue(inputValue !== '' ? inputValue : value && value.label);
     };
+    //End of hack
 
     const isComponentDisabled = () => isUndefined(isDisabled) ? false :  isDisabled;
 
