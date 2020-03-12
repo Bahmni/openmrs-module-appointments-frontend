@@ -30,8 +30,8 @@ import {
 
 const AppointmentEditorCommonFieldsWrapper = props => {
 
-    const {updateAppointmentDetails, updateErrorIndicators, editAutoFocus} = props;
-    const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl, patientSearchAutoFocus} = props;
+    const {updateAppointmentDetails, updateErrorIndicators} = props;
+    const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl, autoFocus} = props;
     const componentsDisableStatus = props.componentsDisableStatus || {};
     const errorTranslations = getErrorTranslations(intl);
 
@@ -71,7 +71,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                 updateAppointmentDetails({patient: newValue});
                                 errors.patientError && optionSelected && updateErrorIndicators({patientError: !newValue});
                             }} isDisabled={componentsDisableStatus.patient}
-                            autoFocus={patientSearchAutoFocus}/>
+                            autoFocus={autoFocus}/>
                         <ErrorMessage
                             message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
                     </div>
@@ -85,7 +85,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                                   location: null
                                               })}
                                               isDisabled={componentsDisableStatus.speciality}
-                                              autoFocus={editAutoFocus}/>
+                                              autoFocus={componentsDisableStatus.patient}/>
                         </div> : null
                     }
                     <div data-testid="service-search">
@@ -98,7 +98,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         && appointmentDetails.speciality.value.uuid}
                                        isDisabled={componentsDisableStatus.service}
                                        specialityEnabled = {isSpecialitiesEnabled(appConfig)}
-                                       autoFocus={editAutoFocus}
+                                       autoFocus={componentsDisableStatus.patient}
                     />
                         <ErrorMessage
                             message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
@@ -115,7 +115,8 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     <div data-testid="location-search">
                         <LocationSearch value={appointmentDetails.location}
                                         onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
-                                        isDisabled={componentsDisableStatus.location}/>
+                                        isDisabled={componentsDisableStatus.location}
+                                        autoFocus={componentsDisableStatus.patient && componentsDisableStatus.speciality && componentsDisableStatus.service}/>
                         <ErrorMessage message={undefined}/>
                     </div>
                 </div>

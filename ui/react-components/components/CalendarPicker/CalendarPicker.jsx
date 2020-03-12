@@ -26,16 +26,25 @@ const CalendarPicker = (props) => {
     const handleOnClick = () => {
         !isDisabled && setShowDatePicker(!showDatePicker)
     };
+
+
+    const handleKeyDown = (e) => {
+        if(e.key === 'Escape')
+            setShowDatePicker(false);
+    };
+
     return (
-        <div data-testid='calendar-picker' className={classNames(styles, isDisabled ? disable : '')} ref={ref}>
-            <span data-testid="calendar-icon" onClick={ handleOnClick}>
-                <i className={classNames("fa","fa-calendar")} aria-hidden="true"></i>
-            </span>
-            { showDatePicker && <AppointmentDatePicker
+        <div data-testid='calendar-picker' className={classNames(styles, isDisabled ? disable : '')} ref={ref} onKeyDown={handleKeyDown}>
+            <button data-testid="calendar-icon" onClick={handleOnClick}>
+                <i className={classNames("fa", "fa-calendar")} aria-hidden="true"></i>
+            </button>
+            {showDatePicker && <AppointmentDatePicker
                 isDisabled={isDisabled}
                 minDate={minDate}
                 value={date}
-                onChange={onChange} />}
+                onChange={onChange}
+                handleDateSelection={() => setShowDatePicker(false)}
+            />}
         </div>
     );
 };

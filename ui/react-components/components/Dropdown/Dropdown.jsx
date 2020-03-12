@@ -16,7 +16,7 @@ const Dropdown = props => {
     const dropdownRef = useRef(null);
     useEffect(() => {
         autoFocus && dropdownRef && !isDisabled && dropdownRef.current.focus();
-    }, [autoFocus]);
+    }, [autoFocus, isDisabled]);
 
     const isComponentDisabled = () => isUndefined(isDisabled) ? false :  isDisabled;
 

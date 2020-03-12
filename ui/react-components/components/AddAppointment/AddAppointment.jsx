@@ -71,7 +71,7 @@ const AddAppointment = props => {
         service: null,
         serviceType: null,
         location: null,
-        speciality: undefined,
+        speciality: null,
         appointmentDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
         recurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
         recurringEndDate: undefined,
@@ -274,6 +274,7 @@ const AddAppointment = props => {
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
         } else if (status === 204) {
             setServiceErrorMessage(errorTranslations.noContentErrorMessage);
+            resetServiceErrorMessage();
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
@@ -356,7 +357,7 @@ const AddAppointment = props => {
                                    updateAppointmentDetails={updateAppointmentDetails}
                                    updateErrorIndicators={updateErrorIndicators}
                                    endTimeBasedOnService={endTimeBasedOnService}
-                                   appConfig={appConfig} errors={errors} patientSearchAutoFocus={true}/>
+                                   appConfig={appConfig} errors={errors} autoFocus={true}/>
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan appointmentType={appointmentDetails.appointmentType}

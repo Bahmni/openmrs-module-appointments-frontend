@@ -1,6 +1,9 @@
 @import '../../variables.scss';
 
 .customHeaderWrapper {
+  &:focus{
+    outline: none;
+  }
   width: 100%;
   display: flex;
   .monthYearDropdownLabel {

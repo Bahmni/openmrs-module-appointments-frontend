@@ -28,7 +28,7 @@ const DateInput = (props) =>{
     };
 
     const inputRef = useRef(null);
-    const {value, onBlur, minDate, maxDate, isDisabled} = props;
+    const {value, onBlur, minDate, maxDate, isDisabled, handleTab} = props;
     const [componentValue, setComponentValue] = useState(validateDate({dateValue: value, minDate,maxDate})? value:'');
     useEffect(() => {
         setComponentValue(validateDate({dateValue: value, minDate,maxDate})?value:'');
@@ -36,28 +36,36 @@ const DateInput = (props) =>{
 
     const handleBlur=(e) =>{
         const inputValue = e.target.value;
-        const isValidDate = validateDate({dateValue: inputValue, minDate,maxDate});
-        if(isValidDate){
+        const isValidDate = validateDate({dateValue: inputValue, minDate, maxDate});
+        if (isValidDate) {
             onBlur(componentValue);
-        }else if(isNil(value)){
-            onBlur('')
+        } else if (isNil(value)) {
+            onBlur('');
             setComponentValue('')
-        }else {
-            setComponentValue(value)
+        } else {
+            setComponentValue(value);
+            inputRef.current.focus();
         }
     };
 
     const handleClear = (e) =>{
         if(!isDisabled) {
             setComponentValue('');
-            onBlur('')
+            onBlur('');
+            inputRef.current.focus();
         }
     };
 
     const handleKeyDown= (e) => {
         if (e.key === 'Enter') {
-           inputRef.current.blur();
+            inputRef.current.blur();
+            const inputValue = e.target.value;
+            const isValidDate = validateDate({dateValue: inputValue, minDate, maxDate});
+            if (isValidDate)
+                handleTab && handleTab();
         }
+        else if(e.key === 'Tab')
+            handleTab && handleTab();
     };
 
     const inputClearStyles= [dateInputClear];
@@ -84,7 +92,8 @@ DateInput.propTypes = {
     value: PropTypes.string,
     minDate: PropTypes.instanceOf(Date),
     maxDate: PropTypes.instanceOf(Date),
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    handleTab: PropTypes.func
 };
 
 export default DateInput;

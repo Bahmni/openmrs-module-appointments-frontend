@@ -18,7 +18,7 @@ const ServiceSearch = (props) => {
 
     useEffect(() => {
             setDropdownOptions(createDropdownOptions(services))
-            }, [specialityUuid]);
+            }, [specialityUuid, specialityEnabled]);
 
 
     const loadServices = async () => {
