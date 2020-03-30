@@ -1,0 +1,36 @@
+
+.calender {
+    width: 100%;
+    td {
+        font-size: 14px;
+        &:nth-child(1) {
+            padding-right: 5px;
+            text-align: right;
+            width: 30px;
+            height: 21px;
+        }
+    }
+
+    .bordered-cell {
+        border: 1px solid #ddd;
+    }
+
+
+    tr {
+        &:nth-child(odd) {
+            td {
+                &:not(:first-child) {
+                    border-bottom: none;
+                }
+            }
+        }
+
+        &:nth-child(even) {
+            td {
+                &:not(:first-child){
+                    border-top: none;
+                }
+            }
+        }
+    }
+}
