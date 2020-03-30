@@ -5,17 +5,27 @@ import Tags from "../Tags/Tags.jsx";
 import {forEach, find} from 'lodash';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
+import classNames from 'classnames'
 import {sortBy} from "lodash";
 import {getValidProviders} from "../../helper";
 import {PROVIDER_RESPONSES} from "../../constants";
 
-const ProviderSearch = props => {
+const appointmentStatusList = [
+    {value: 'Scheduled', label: 'Scheduled'},
+    {value: 'CheckedIn', label: 'CheckedIn'},
+    {value: 'Completed', label: 'Completed'},
+    {value: 'Cancelled', label: 'Cancelled'},
+    {value: 'Missed', label: 'Missed'},
+];
+
+
+const AppointmentStatus = props => {
 
     const {intl, selectedProviders, onChange, onProviderRemove, isDisabled} = props;
     const {openMenuOnClick=true, openMenuOnFocus=true}=props
 
     const placeHolder = intl.formatMessage({
-        id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PROVIDER', defaultMessage: 'Choose Provider'
+        id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PROVIDER', defaultMessage: 'Enter a Provider'
     });
     const [providers, setProviders] = useState([]);
     const [selectedProvider, setSelectedProvider] = useState(null);
@@ -52,7 +62,7 @@ const ProviderSearch = props => {
         <div>
             <Dropdown
                 isDisabled={isDisabled}
-                options={Object.values(providers)}
+                options={appointmentStatusList}
                 placeholder={placeHolder}
                 onChange={onProviderSelect}
                 selectedValue={selectedProvider}
@@ -60,13 +70,15 @@ const ProviderSearch = props => {
                 openMenuOnFocus={openMenuOnFocus}
                 components={{}}
             />
-            <Tags onChange={onProviderRemove} isDisabled={isDisabled}
-                  selectedTags={getValidProviders(selectedProviders)}/>
+            
+            <Tags onChange={()=>console.log('provider search')} isDisabled={isDisabled}
+                  selectedTags={appointmentStatusList}/>
         </div>
+       
     );
 };
 
-ProviderSearch.propTypes = {
+AppointmentStatus.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     onProviderRemove: PropTypes.func.isRequired,
@@ -74,5 +86,5 @@ ProviderSearch.propTypes = {
     isDisabled: PropTypes.bool
 };
 
-export default injectIntl(ProviderSearch);
+export default injectIntl(AppointmentStatus);
 
