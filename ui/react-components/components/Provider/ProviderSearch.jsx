@@ -12,7 +12,7 @@ import {PROVIDER_RESPONSES} from "../../constants";
 const ProviderSearch = props => {
 
     const {intl, selectedProviders, onChange, onProviderRemove, isDisabled} = props;
-    const {openMenuOnClick=true, openMenuOnFocus=true}=props
+    const {openMenuOnClick=true, openMenuOnFocus=true, style='',components}=props
 
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PROVIDER', defaultMessage: 'Choose Provider'
@@ -59,6 +59,8 @@ const ProviderSearch = props => {
                 openMenuOnClick={openMenuOnClick}
                 openMenuOnFocus={openMenuOnFocus}
                 components={{}}
+                style={style}
+                components={components}
             />
             <Tags onChange={onProviderRemove} isDisabled={isDisabled}
                   selectedTags={getValidProviders(selectedProviders)}/>

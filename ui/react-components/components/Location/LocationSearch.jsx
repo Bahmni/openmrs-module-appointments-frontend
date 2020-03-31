@@ -30,7 +30,7 @@ const LocationSearch = (props) => {
     };
 
     const {intl, onChange, value, isDisabled, autoFocus} = props;
-    const {openMenuOnClick=true, openMenuOnFocus=true}=props
+    const {openMenuOnClick=true, openMenuOnFocus=true, style='',components}=props
     const placeholder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_LOCATION', defaultMessage: 'Location'
     });
@@ -46,6 +46,8 @@ const LocationSearch = (props) => {
             openMenuOnClick={openMenuOnClick}
             openMenuOnFocus={openMenuOnFocus}
             components={{}}
+            style={style}
+            components={components}
         />);
 };
 
