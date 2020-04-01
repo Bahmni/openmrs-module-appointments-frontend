@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Tags from "../Tags/Tags.jsx";
 import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
+import {searchFeildOnChangeHandler,searchFeildOnRemoveHandler} from '../../helper';
 
 const appointmentStatusList = [
   { value: "Scheduled", label: "Scheduled" },
@@ -18,7 +19,8 @@ const AppointmentStatus = props => {
     openMenuOnClick = true,
     openMenuOnFocus = true,
     style = "",
-    components
+    components,
+    customSelectStyle
   } = props;
 
   const placeHolder = intl.formatMessage({
@@ -35,25 +37,8 @@ const AppointmentStatus = props => {
     setAppointStatusOptions(appointmentStatusList);
   }, [appointmentStatusList, setAppointStatusOptions]);
 
-  const onChangeHandler = e => {
-    setSelectedAppointmentStatusOptions([
-      ...selectedAppointmentStatusOptions,
-      e
-    ]);
-    setAppointStatusOptions(() =>
-      [...appointmentStatusOptions].filter(item => item != e)
-    );
-  };
-
-  const onRemoveStatus = e => {
-    setSelectedAppointmentStatusOptions(() =>
-      [...selectedAppointmentStatusOptions].filter(item => item.value !== e)
-    );
-    setAppointStatusOptions([
-      ...appointmentStatusOptions,
-      { value: e, label: e }
-    ]);
-  };
+  const onChangeHandler = e => searchFeildOnChangeHandler(appointmentStatusOptions,setAppointStatusOptions,selectedAppointmentStatusOptions,setSelectedAppointmentStatusOptions,e)
+  const onRemoveHandler = e => searchFeildOnRemoveHandler(appointmentStatusOptions,setAppointStatusOptions,selectedAppointmentStatusOptions,setSelectedAppointmentStatusOptions,e)
 
   return (
     <div>
@@ -66,10 +51,11 @@ const AppointmentStatus = props => {
         openMenuOnClick={openMenuOnClick}
         openMenuOnFocus={openMenuOnFocus}
         components={components}
+        customSelectStyle={customSelectStyle}
       />
 
       <Tags
-        onChange={onRemoveStatus}
+        onChange={onRemoveHandler}
         isDisabled={isDisabled}
         selectedTags={selectedAppointmentStatusOptions}
         style={style}

@@ -7,11 +7,12 @@ import {locationTagName} from "../../constants";
 import {forEach} from 'lodash';
 import {locationsResposne} from './locations'
 import Tags from "../Tags/Tags.jsx";
+import {searchFeildOnChangeHandler,searchFeildOnRemoveHandler} from '../../helper';
 
 const LocationSearch = (props) => {
 
     const {intl, onChange, value, isDisabled, autoFocus} = props;
-    const {showTags=false, openMenuOnClick=true, openMenuOnFocus=true, style='',components}=props
+    const {showTags=false, openMenuOnClick=true, openMenuOnFocus=true, style='',components,customSelectStyle}=props
 
     const createDropdownOptions = (locations) => {
         const options = [];
@@ -42,18 +43,9 @@ const LocationSearch = (props) => {
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_LOCATION', defaultMessage: 'Location'
     });
 
-    const onChangeHandler = e => {
-        setSelectedLocations([...selectedLocations, e]);
-        setLocations(()=>[...locations].filter(item => item.value != e.value));
-        
-    };
+    const onChangeHandler = e => searchFeildOnChangeHandler(locations,setLocations,selectedLocations,setSelectedLocations,e)
+    const onRemoveHandler = e => searchFeildOnRemoveHandler(locations,setLocations,selectedLocations,setSelectedLocations,e)    
     
-      const onRemoveLocation = e => {
-        setSelectedLocations(() =>
-          [...selectedLocations].filter(item => item.value !== e)
-        );
-        setLocations([...locations, { value: e, label: e }]);
-      };
     return (
         <div>
         <Dropdown
@@ -68,10 +60,11 @@ const LocationSearch = (props) => {
             openMenuOnFocus={openMenuOnFocus}
             style={style}
             components={components}
+            customSelectStyle={customSelectStyle}
         />
         {showTags?
         <Tags
-            onChange={onRemoveLocation}
+            onChange={onRemoveHandler}
             isDisabled={isDisabled}
             selectedTags={selectedLocations}
             style={style}

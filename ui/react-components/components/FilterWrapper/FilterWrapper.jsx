@@ -8,6 +8,18 @@ import "./FilterWrapper.module.scss";
 import { getAllProviders } from "../../api/providerApi";
 import { PROVIDER_RESPONSES } from "../../constants";
 
+const customSelectStyle={
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isFocused ? "white" : "black",
+    backgroundColor: state.isFocused ? "#0097cf" : "white",
+  }),
+}
+const customSelectComponents={
+  IndicatorSeparator: () => null,
+  DropdownIndicator: () => null
+}
+
 const FilterWrapper = props => {
   return (
     <div>
@@ -17,10 +29,8 @@ const FilterWrapper = props => {
           openMenuOnClick={false}
           openMenuOnFocus={false}
           style={"custom"}
-          components={{
-            IndicatorSeparator: () => null,
-            DropdownIndicator: () => null
-          }}
+          components={customSelectComponents}
+          customSelectStyle={customSelectStyle}
         />
       </div>
       <div className={classNames("appointment-filter-items")}>
@@ -30,10 +40,8 @@ const FilterWrapper = props => {
           openMenuOnClick={false}
           openMenuOnFocus={false}
           style={"custom"}
-          components={{
-            IndicatorSeparator: () => null,
-            DropdownIndicator: () => null
-          }}
+          components={customSelectComponents}
+          customSelectStyle={customSelectStyle}
         />
       </div>
       <div className={classNames("appointment-filter-items")}>
@@ -46,10 +54,8 @@ const FilterWrapper = props => {
           openMenuOnClick={false}
           openMenuOnFocus={false}
           style={"custom"}
-          components={{
-            IndicatorSeparator: () => null,
-            DropdownIndicator: () => null
-          }}
+          components={customSelectComponents}
+          customSelectStyle={customSelectStyle}
         />
       </div>
     </div>
