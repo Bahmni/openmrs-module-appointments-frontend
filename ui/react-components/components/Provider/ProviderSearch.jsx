@@ -21,7 +21,7 @@ const ProviderSearch = props => {
   const {
     intl,
     selectedProviders,
-    onChange = (e)=> onChangeHandler(e) ,
+    onChange,
     onProviderRemove = (e) => onRemoveProvider(e) ,
     isDisabled
   } = props;
@@ -43,7 +43,7 @@ const ProviderSearch = props => {
       if(props.onChange)
         setProviders(loadProviders());
 
-  }, [selectedProvider]);
+  }, []);
 
   const loadProviders = async () => {
     const providers = await getAllProviders();
@@ -76,22 +76,17 @@ const ProviderSearch = props => {
   };
 
   const onChangeHandler = e => {
-      console.log(e)
     setSelectedProvider([...selectedProvider, e]);
     let someAfr = [...providers].filter(item => {return item.value != e.value
     });
     setProviders(someAfr);
-    console.log('onchangehandler',providers)
   };
 
   const onRemoveProvider = e => {
-      console.log(e)
     setSelectedProvider(() =>
       [...selectedProvider].filter(item => item.value !== e)
     );
     setProviders([...providers, { value: e, label: e }]);
-    console.log('onremovehandler',providers)
-
   };
 
   return (
@@ -100,7 +95,7 @@ const ProviderSearch = props => {
         isDisabled={isDisabled}
         options={providers}
         placeholder={placeHolder}
-        onChange={props.onChange?onProviderSelect:onChange}
+        onChange={props.onChange?onProviderSelect:onChangeHandler}
         selectedValue={""}
         openMenuOnClick={openMenuOnClick}
         openMenuOnFocus={openMenuOnFocus}

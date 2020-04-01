@@ -26,7 +26,7 @@ const FilterWrapper = props => {
       <div className={classNames("appointment-filter-items")}>
         <Label translationKey="LOCATION_FILTER" defaultValue="Location" />
         <LocationSearch
-          onChange={() => console.log("provider search")}
+          showTags={true}
           openMenuOnClick={false}
           openMenuOnFocus={false}
           style={"custom"}

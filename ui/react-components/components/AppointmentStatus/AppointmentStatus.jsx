@@ -1,14 +1,8 @@
-import { getAllProviders } from "../../api/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, { useEffect, useState } from "react";
 import Tags from "../Tags/Tags.jsx";
-import { forEach, find } from "lodash";
 import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
-import classNames from "classnames";
-import { sortBy } from "lodash";
-import { getValidProviders } from "../../helper";
-import { PROVIDER_RESPONSES, appointmentConflictsUrl } from "../../constants";
 
 const appointmentStatusList = [
   { value: "Scheduled", label: "Scheduled" },
