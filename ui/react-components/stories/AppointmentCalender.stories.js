@@ -2,6 +2,10 @@ import React from 'react'
 
 import AppointmentCalender from '../components/AppointmentCalender/AppointmentCalender';
 
-export default {title: 'Appointment Calender View'}
+import data from '../components/AppointmentCalender/mockAppointmentsData.json'
 
-export const Basic = () => <AppointmentCalender />
+export default {
+    title: 'Appointment Calender View',
+}
+
+export const Basic = () => <AppointmentCalender appoinments={data} hoursDiff={1}/>

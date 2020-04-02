@@ -2,6 +2,10 @@
     table-layout: fixed;
     width: 100%;
 
+    thead>tr>td {
+        text-align: center;
+    }
+
     td,
     th {
         font-size: 14px;
@@ -44,10 +48,10 @@
             }
         }
     }
-    
 
-    
-    .appointment_label{
+
+
+    .appointment_label {
         position: absolute;
         z-index: 1;
         width: 95%;
@@ -63,21 +67,6 @@
 }
 
 
-.provider_names {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-
-    &>div {
-        display: table-row;
-
-        &>div {
-            display: table-cell;
-            text-align: center;
-            padding-left: 30px;
-        }
-    }
-}
 
 .no_appointment {
     position: fixed;

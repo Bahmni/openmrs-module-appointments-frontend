@@ -2,29 +2,35 @@ import React, { Fragment } from "react";
 
 import "./AppointmentCalender.module.scss";
 
-import data from './mockAppointmentsData.json'
+const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff }) => {
+    const timeDiff = minutesDiff / 2
 
-const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots }) => {
+    const getDiffMinutes = (strTime, endTime) => Math.round((strTime - endTime) / 60000)
+
     return (
         <Fragment>
             {[timeSlotLabel, null].map((time, index) => (
-                <tr>
+                <tr key={`${timeSlotLabel}_${index}`}>
                     <td>{time}</td>
                     {providers.map(provider => (
                         <td
+                            key={`${timeSlotLabel}_${provider}`}
                             className="bordered-cell"
                             onClick={() => console.log(time)}
                         >
                             {
                                 appoinmentSlots.map(appoinmentSlot => {
-                                    return appoinmentSlot && ( appoinmentSlot.providers.length === 0 && provider === "[No Provider]" || appoinmentSlot.providers.map(e => e.name).indexOf(provider) > -1 )&& ( index === 0 && new Date(appoinmentSlot.startDateTime).getMinutes() <= 30 || index === 1 && new Date(appoinmentSlot.startDateTime).getMinutes() > 30) 
+                                    const timeDiffInMin = getDiffMinutes(appoinmentSlot.endDateTime, appoinmentSlot.startDateTime)
+                                    return appoinmentSlot && ( appoinmentSlot.providers.length === 0 && provider === "[No Provider]" || appoinmentSlot.providers.map(provider => provider.name).indexOf(provider) > -1 ) && ( index === 0 && timeDiffInMin <= timeDiff || index === 1 && timeDiffInMin > timeDiff) 
                                     ?  (() => {
-                                        const top =  (22 / 30) * new Date(appoinmentSlot.startDateTime).getMinutes() + (index === 1 ? -22 : 0 ) + "px"
-                                        const height = (22 / 30) * Math.round((appoinmentSlot.endDateTime - appoinmentSlot.startDateTime) / 60000) + "px"
-                                            return <div className="appointment_label" style={{top,height, backgroundColor: hexToRgbA(appoinmentSlot.service.color, .7), borderColor: appoinmentSlot.service.color}}>
-                                                {new Date(appoinmentSlot.startDateTime).toLocaleTimeString() + " - " + new Date(appoinmentSlot.endDateTime).toLocaleTimeString()}<br />
-                                                {appoinmentSlot.patient.name} ({appoinmentSlot.patient.identifier})
-                                            </div>
+                                            const top =  (22 / timeDiff) * new Date(appoinmentSlot.startDateTime).getMinutes() + (index === 1 ? -22 : 0 ) + "px"
+                                            const height = (22 / timeDiff) * getDiffMinutes(appoinmentSlot.endDateTime, appoinmentSlot.startDateTime) + "px"
+
+                                            const text = new Date(appoinmentSlot.startDateTime).toLocaleTimeString([], {timeStyle: 'short'}) + " - " + new Date(appoinmentSlot.endDateTime).toLocaleTimeString([], {timeStyle: 'short'}) + "\n" + appoinmentSlot.patient.name + " (" + appoinmentSlot.patient.identifier + ")" 
+
+                                            return <div key={appoinmentSlot.uuid} title={text} className="appointment_label" style={{top,height, backgroundColor: hexToRgbA(appoinmentSlot.service.color, .7), borderColor: appoinmentSlot.service.color}}>
+                                                    {text}
+                                                </div>
                                         })()
                                         : null
                                 })
@@ -38,8 +44,8 @@ const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots }) => {
 };
 
 
-const AppointmentCalender = props => {
-    const providers = (data.length > 0 ? [...new Set(data.flatMap(appoinment => appoinment.providers && appoinment.providers.length > 0 ? appoinment.providers.map(provider => provider.name ) : "[No Provider]"))] : [null]).sort(function (a, b) {
+const AppointmentCalender = ({hoursDiff = 3, appoinments}) => {
+    const providers = (appoinments.length > 0 ? [...new Set(appoinments.flatMap(appoinment => appoinment.providers && appoinment.providers.length > 0 ? appoinment.providers.map(provider => provider.name ) : "[No Provider]"))] : [null]).sort(function (a, b) {
         if (a.toLowerCase() > b.toLowerCase()) {
             return -1;
         }
@@ -48,34 +54,39 @@ const AppointmentCalender = props => {
         }
         return 0;
     })
-    const appoinments = data
     return (
-        <div>
+        <div data-testid="appointment-calender">
             {appoinments.length === 0 ? (
                 <div className="no_appointment">No Appointments Found</div>
             ) : null}
-            {appoinments.length > 0 ? (
-                <div className="provider_names">
-                    <div>
-                        {providers.map(provider => (
-                            <div>{provider}</div>
-                        ))}
-                    </div>
-                </div>
-            ) : null}
             <table cellSpacing="0" className="calender">
+                {appoinments.length > 0 ? (
+                    <thead>
+                       <tr>
+                            <td key={""}></td>
+                            {providers.map(provider => (
+                                <td key={provider}>{provider}</td>
+                            ))}
+                        </tr>
+                    </thead>)
+                    : null
+                }
                 <tbody>
-                    {[...Array(24).keys()].map(time => {
+                    {[...Array(24 / hoursDiff).keys()].map(time => {
                         const appoinmentSlots = appoinments.filter(
-                            appoinment =>
-                                new Date(appoinment.startDateTime).getHours() === time
+                            appoinment =>{
+                                const hours = new Date(appoinment.startDateTime).getHours()
+                                return hours >= time  * hoursDiff && hours < (time + 1)  * hoursDiff
+                            }
                         )
-                        const timeSlotLabel = (time % 12 === 0 ? 12 : time % 12) + (time - 12 < 0 ? "am" : "pm");
+                        const timeSlotLabel = ((time * hoursDiff) % 12 === 0 ? 12 : (time * hoursDiff) % 12) + ((time * hoursDiff) - 12 < 0 ? "am" : "pm");
                         return (
                             <TimeSlot
+                                key={timeSlotLabel}
                                 timeSlotLabel={timeSlotLabel}
                                 providers={providers}
                                 appoinmentSlots={appoinmentSlots}
+                                minutesDiff={hoursDiff * 60}
                             />
                         );
                     })}
@@ -85,7 +96,7 @@ const AppointmentCalender = props => {
     );
 };
 
-function hexToRgbA(hex, alpha){
+const hexToRgbA = (hex, alpha) =>{
     var c;
     if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
         c= hex.substring(1).split('');
@@ -95,7 +106,7 @@ function hexToRgbA(hex, alpha){
         c= '0x'+c.join('');
         return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',' + alpha + ')';
     }
-    throw new Error('Bad Hex');
+    return hex;
 }
 
 
