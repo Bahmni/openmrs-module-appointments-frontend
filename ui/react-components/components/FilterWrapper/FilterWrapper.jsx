@@ -7,6 +7,7 @@ import classNames from "classnames";
 import "./FilterWrapper.module.scss";
 import { getAllProviders } from "../../api/providerApi";
 import { PROVIDER_RESPONSES } from "../../constants";
+import {injectIntl} from "react-intl";
 
 const customSelectStyle={
   option: (provided, state) => ({
@@ -50,7 +51,6 @@ const FilterWrapper = props => {
           defaultValue="Appointment Status"
         />
         <AppointmentStatus
-          onChange={() => console.log("provider search")}
           openMenuOnClick={false}
           openMenuOnFocus={false}
           style={"custom"}
@@ -62,4 +62,4 @@ const FilterWrapper = props => {
   );
 };
 
-export default FilterWrapper;
+export default injectIntl(FilterWrapper);
