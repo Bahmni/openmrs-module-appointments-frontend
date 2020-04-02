@@ -1,0 +1,172 @@
+[
+    {
+        "uuid": "a18c7e8b-ac28-40e2-af0c-b1caa71bbf4a",
+        "appointmentNumber": "0000",
+        "patient": {
+            "identifier": "GAN203007",
+            "name": "Test Test",
+            "uuid": "a857c0b7-990c-49b3-bf16-ab55e3e77713"
+        },
+        "service": {
+            "appointmentServiceId": 1,
+            "name": "cardio",
+            "description": "cardio",
+            "speciality": {},
+            "startTime": "10:00:00",
+            "endTime": "10:45:00",
+            "maxAppointmentsLimit": 5,
+            "durationMins": 45,
+            "location": {},
+            "uuid": "7a672626-c824-4372-a0f2-07aaea693089",
+            "color": "#FF8C00",
+            "initialAppointmentStatus": null,
+            "creatorName": null
+        },
+        "serviceType": null,
+        "provider": null,
+        "location": null,
+        "startDateTime": 1585702020000,
+        "endDateTime": 1585705920000,
+        "appointmentKind": "Scheduled",
+        "status": "Scheduled",
+        "comments": null,
+        "additionalInfo": null,
+        "providers": [
+            {
+                "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+                "comments": null,
+                "response": "ACCEPTED",
+                "name": "Super Man"
+            }
+        ],
+        "recurring": true
+    },
+    {
+        "uuid": "5d8b29b5-6cfb-46f3-9955-4a53a26a4d08",
+        "appointmentNumber": "0000",
+        "patient": {
+            "identifier": "GAN203007",
+            "name": "Test Test",
+            "uuid": "a857c0b7-990c-49b3-bf16-ab55e3e77713"
+        },
+        "service": {
+            "appointmentServiceId": 1,
+            "name": "cardio",
+            "description": "cardio",
+            "speciality": {},
+            "startTime": "10:00:00",
+            "endTime": "10:45:00",
+            "maxAppointmentsLimit": 5,
+            "durationMins": 45,
+            "location": {},
+            "uuid": "7a672626-c824-4372-a0f2-07aaea693089",
+            "color": "#FF8C00",
+            "initialAppointmentStatus": null,
+            "creatorName": null
+        },
+        "serviceType": null,
+        "provider": null,
+        "location": null,
+        "startDateTime": 1585720800000,
+        "endDateTime": 1585723500000,
+        "appointmentKind": "Scheduled",
+        "status": "Scheduled",
+        "comments": null,
+        "additionalInfo": null,
+        "providers": [],
+        "recurring": false
+    },
+    {
+        "uuid": "c8e97aea-591f-471f-9eb1-72cde7c6e12a",
+        "appointmentNumber": "0000",
+        "patient": {
+            "identifier": "GAN203007",
+            "name": "Test Test",
+            "uuid": "a857c0b7-990c-49b3-bf16-ab55e3e77713"
+        },
+        "service": {
+            "appointmentServiceId": 2,
+            "name": "ortho",
+            "description": "ortho",
+            "speciality": {},
+            "startTime": "10:45:00",
+            "endTime": "12:30:00",
+            "maxAppointmentsLimit": 8,
+            "durationMins": 45,
+            "location": {},
+            "uuid": "8c0d66d2-7641-43d2-893c-e8ca42603783",
+            "color": "#006400",
+            "initialAppointmentStatus": null,
+            "creatorName": null
+        },
+        "serviceType": null,
+        "provider": null,
+        "location": {
+            "name": "Registration Desk",
+            "uuid": "c5854fd7-3f12-11e4-adec-0800271c1b75"
+        },
+        "startDateTime": 1585718100000,
+        "endDateTime": 1585720800000,
+        "appointmentKind": "WalkIn",
+        "status": "Scheduled",
+        "comments": "Urgent need",
+        "additionalInfo": null,
+        "providers": [
+            {
+                "uuid": "8acb794f-fd3c-4000-bb12-b20ffc18cfc1",
+                "comments": null,
+                "response": "ACCEPTED",
+                "name": "Super User"
+            }
+        ],
+        "recurring": false
+    },
+    {
+        "uuid": "d45e22d7-f5e2-4337-9940-9922fa38e627",
+        "appointmentNumber": "0000",
+        "patient": {
+            "identifier": "GAN203007",
+            "name": "Test Test",
+            "uuid": "a857c0b7-990c-49b3-bf16-ab55e3e77713"
+        },
+        "service": {
+            "appointmentServiceId": 2,
+            "name": "ortho",
+            "description": "ortho",
+            "speciality": {},
+            "startTime": "10:45:00",
+            "endTime": "12:30:00",
+            "maxAppointmentsLimit": 8,
+            "durationMins": 45,
+            "location": {},
+            "uuid": "8c0d66d2-7641-43d2-893c-e8ca42603783",
+            "color": "#006400",
+            "initialAppointmentStatus": null,
+            "creatorName": null
+        },
+        "serviceType": null,
+        "provider": null,
+        "location": null,
+        "startDateTime": 1585761300000,
+        "endDateTime": 1585764000000,
+        "appointmentKind": "Scheduled",
+        "status": "Scheduled",
+        "comments": null,
+        "additionalInfo": null,
+        "providers": [
+            {
+                "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+                "comments": null,
+                "response": "ACCEPTED",
+                "name": "Super Man"
+            },
+            {
+                "uuid": "59df9c9b-9b58-4b96-af9e-46a1077c1b60",
+                "comments": null,
+                "response": "ACCEPTED",
+                "name": "reporttwo reporttwo"
+            }
+        ],
+        "recurring": false
+    }
+]

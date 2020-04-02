@@ -1,8 +1,11 @@
-
 .calender {
+    table-layout: fixed;
     width: 100%;
-    td {
+
+    td,
+    th {
         font-size: 14px;
+
         &:nth-child(1) {
             padding-right: 5px;
             text-align: right;
@@ -11,14 +14,22 @@
         }
     }
 
+    .borderless-cell {
+        border: none;
+        text-align: center;
+        height: 16px;
+    }
+
     .bordered-cell {
+        position: relative;
         border: 1px solid #ddd;
     }
 
 
+
     tr {
         &:nth-child(odd) {
-            td {
+            td.bordered-cell {
                 &:not(:first-child) {
                     border-bottom: none;
                 }
@@ -26,11 +37,56 @@
         }
 
         &:nth-child(even) {
-            td {
-                &:not(:first-child){
+            td.bordered-cell {
+                &:not(:first-child) {
                     border-top: none;
                 }
             }
         }
     }
+    
+
+    
+    .appointment_label{
+        position: absolute;
+        z-index: 1;
+        width: 95%;
+        padding: 0px 5px;
+        border-radius: 5px;
+        color: white;
+        display: flex;
+        align-items: center;
+        font-weight: 400;
+        overflow: auto;
+        border: .5px solid;
+    }
+}
+
+
+.provider_names {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+
+    &>div {
+        display: table-row;
+
+        &>div {
+            display: table-cell;
+            text-align: center;
+            padding-left: 30px;
+        }
+    }
+}
+
+.no_appointment {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0 auto;
+    padding: 12px 28px;
+    color: red;
+    width: fit-content;
+    background-color: rgb(236, 234, 236);
+
 }
