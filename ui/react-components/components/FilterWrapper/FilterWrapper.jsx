@@ -50,7 +50,6 @@ const FilterWrapper = props => {
           defaultValue="Appointment Status"
         />
         <AppointmentStatus
-          onChange={() => console.log("provider search")}
           openMenuOnClick={false}
           openMenuOnFocus={false}
           style={"custom"}

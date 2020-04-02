@@ -14,7 +14,7 @@ const appointmentStatusList = [
 ];
 
 const AppointmentStatus = props => {
-  const { intl, isDisabled } = props;
+  const { intl, onChange=e=>onChangehandler(e),isDisabled } = props;
   const {
     openMenuOnClick = true,
     openMenuOnFocus = true,
@@ -25,7 +25,7 @@ const AppointmentStatus = props => {
 
   const placeHolder = intl.formatMessage({
     id: "PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PROVIDER",
-    defaultMessage: "Enter a Appointment Status"
+    defaultMessage: "Enter Status Name"
   });
   const [appointmentStatusOptions, setAppointStatusOptions] = useState([]);
   const [
@@ -46,7 +46,7 @@ const AppointmentStatus = props => {
         isDisabled={isDisabled}
         options={appointmentStatusOptions}
         placeholder={placeHolder}
-        onChange={onChangeHandler}
+        onChange={props.onChange?onChange:onChangeHandler}
         selectedValue={""}
         openMenuOnClick={openMenuOnClick}
         openMenuOnFocus={openMenuOnFocus}
@@ -66,9 +66,7 @@ const AppointmentStatus = props => {
 
 AppointmentStatus.propTypes = {
   intl: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onProviderRemove: PropTypes.func.isRequired,
-  selectedProviders: PropTypes.array,
+  onChange: PropTypes.func,
   isDisabled: PropTypes.bool
 };
 

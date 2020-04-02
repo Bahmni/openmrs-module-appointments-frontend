@@ -76,7 +76,7 @@ const LocationSearch = (props) => {
 
 LocationSearch.propTypes = {
     intl: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
     autoFocus: PropTypes.bool

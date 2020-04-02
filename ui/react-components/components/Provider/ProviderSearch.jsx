@@ -127,8 +127,8 @@ const ProviderSearch = props => {
 
 ProviderSearch.propTypes = {
   intl: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onProviderRemove: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+  onProviderRemove: PropTypes.func,
   selectedProviders: PropTypes.array,
   isDisabled: PropTypes.bool
 };
