@@ -1,4 +1,17 @@
 @import '../../variables.scss';
+.calender-wrapper{
+    position: relative;
+    .non-working-hrs-modal{
+        &:first-child{
+            top: 23px;
+        }
+        position: absolute;
+        z-index: -1;
+        background-color: rgb(243, 243, 243) ;
+        // height:100px;
+        left:56px;
+        width:calc(100% - 56px);
+    }
 .calender {
     table-layout: fixed;
     width: 100%;
@@ -100,15 +113,4 @@
     width: fit-content;
     background-color: $disable-color;
 }
-
-.non-working-hrs-modal{
-    &:first-child{
-        top: 23px;
-    }
-    position: absolute;
-    z-index: -1;
-    background-color: rgb(243, 243, 243) ;
-    // height:100px;
-    left:56px;
-    width:calc(100% - 56px);
 }

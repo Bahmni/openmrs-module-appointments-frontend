@@ -8,7 +8,6 @@ const TimeSlot = ({
   appoinmentSlots,
   minutesDiff,
   onSelect,
-  isDisabled
 }) => {
   const timeDiff = minutesDiff / 2;
 
@@ -100,8 +99,11 @@ const TimeSlot = ({
   );
 };
 
+
+
+
 const AppointmentCalender = ({
-  hoursDiff = 2,
+  hoursDiff = 1,
   appoinments,
   onSelect,
   startOfDay = "9:00",
@@ -124,7 +126,7 @@ const AppointmentCalender = ({
     return 0;
   });
   return (
-    <div data-testid="appointment-calender" style={{ position: "relative" }}>
+    <div data-testid="appointment-calender" className="calender-wrapper">
       {appoinments.length === 0 ? (
         <div className="no_appointment">No Appointments Found</div>
       ) : null}
@@ -172,46 +174,8 @@ const AppointmentCalender = ({
               );
             });
             // making 0 as 12am and Handling minutes (conveting decimal to time format e.g. 0.50 => 12.30am) to handle configurable timeslot.
-            let _timeSlotLabel = time * hoursDiff;
-
-            let disabled = null;
-            if (
-              _timeSlotLabel >= Number(startOfDay.replace(":", ".")) &&
-              _timeSlotLabel <= Number(endOfDay.replace(":", "."))
-            ) {
-              console.log(
-                "IF",
-                _timeSlotLabel,
-                Number(startOfDay.replace(":", ".")),
-                Number(endOfDay.replace(":", "."))
-              );
-              if (
-                _timeSlotLabel + (1 / hoursDiff) * (3 / 5) >=
-                Number(endOfDay.replace(":", "."))
-              )
-                disabled = 0;
-              else disabled = 2;
-            } else if (
-              _timeSlotLabel + (1 / hoursDiff) * (3 / 5) >=
-                Number(startOfDay.replace(":", ".")) &&
-              _timeSlotLabel + (1 / hoursDiff) * (3 / 5) <=
-                Number(endOfDay.replace(":", "."))
-            ) {
-              console.log(
-                "ELSE",
-                _timeSlotLabel,
-                _timeSlotLabel + (1 / hoursDiff) * (3 / 5),
-                Number(startOfDay.replace(":", ".")),
-                Number(endOfDay.replace(":", "."))
-              );
-              disabled = 1;
-            }
-
-            _timeSlotLabel %= 12;
-
-            _timeSlotLabel +=
-              _timeSlotLabel >= 0.0 && _timeSlotLabel < 1.0 ? 12 : 0;
-
+            let _timeSlotLabel = (time * hoursDiff)%12;
+            _timeSlotLabel += _timeSlotLabel >= 0.0 && _timeSlotLabel < 1.0 ? 12 : 0;
             _timeSlotLabel = _timeSlotLabel.toFixed(2);
 
             const timeSlotLabel =
@@ -228,7 +192,6 @@ const AppointmentCalender = ({
                 appoinmentSlots={appoinmentSlots}
                 minutesDiff={hoursDiff * 60}
                 onSelect={onSelect}
-                // isDisabled={disabled}
               />
             );
           })}
