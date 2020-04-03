@@ -2,6 +2,7 @@
 .calender {
     table-layout: fixed;
     width: 100%;
+    
 
     thead>tr>td {
         text-align: center;
@@ -32,6 +33,7 @@
 
     .bordered-cell {
         position: relative;
+        // background-color: transparent;
         border-top: 1px solid $calendar-grid-lines-color;
         border-left: 1px solid $calendar-grid-lines-color;
         &:last-child{
@@ -97,4 +99,16 @@
     color: $error-text-color;
     width: fit-content;
     background-color: $disable-color;
+}
+
+.non-working-hrs-modal{
+    &:first-child{
+        top: 23px;
+    }
+    position: absolute;
+    z-index: -1;
+    background-color: rgb(243, 243, 243) ;
+    // height:100px;
+    left:56px;
+    width:calc(100% - 56px);
 }
