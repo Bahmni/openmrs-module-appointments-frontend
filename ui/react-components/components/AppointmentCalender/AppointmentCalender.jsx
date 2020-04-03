@@ -10,7 +10,7 @@ const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSe
     return (
         <Fragment>
             {[timeSlotLabel, null].map((time, index) => (
-                <tr key={`${timeSlotLabel}_${index}`} isDisabled={(isDisabled === index  || isDisabled ===  2).toString()}>
+                <tr key={`${timeSlotLabel}_${index}`} >
                     <td>{time && (minutesDiff % 60 === 0 ?  time.replace(".00","") : time.replace(".",":")) }</td>
                     {providers.map(provider => (
                         <td
@@ -51,11 +51,23 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
         return 0;
     })
     return (
-        <div data-testid="appointment-calender">
+        <div data-testid="appointment-calender" className="calender">
             {appoinments.length === 0 ? (
                 <div className="no_appointment">No Appointments Found</div>
             ) : null}
-            <table cellSpacing="0" className="calender">
+
+            {
+                (()=>{
+                        const topModalHeight = (Number(startOfDay.split(':')[0]) * 60+Number(startOfDay.split(':')[1]) ) * (23/(30*hoursDiff))
+                        const bottomModalHeight= ((24-Number(endOfDay.split(':')[0])) * 60 - Number(endOfDay.split(':')[1])) * (23/(30 * hoursDiff))
+                        console.log(bottomModalHeight)
+                        return <Fragment>
+                                <div className="non-working-hrs-modal" style={{height:topModalHeight}}/>
+                                <div className="non-working-hrs-modal" style={{height: bottomModalHeight,bottom:"0"}}/>
+                        </Fragment>
+                })()
+            }
+            <table cellSpacing="0" className="calender-table">
                 {appoinments.length > 0 ? (
                     <thead>
                        <tr>
@@ -76,23 +88,8 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
                             }
                         )
                         // making 0 as 12am and Handling minutes (conveting decimal to time format e.g. 0.50 => 12.30am) to handle configurable timeslot. 
-                        let _timeSlotLabel = ((time * hoursDiff)) 
+                        let _timeSlotLabel = ((time * hoursDiff)) % 12
                         
-                        let disabled = null
-                        if(_timeSlotLabel >= Number(startOfDay.replace(":",".")) && _timeSlotLabel <=  Number(endOfDay.replace(":","."))){
-                            console.log("IF", _timeSlotLabel, Number(startOfDay.replace(":",".")), Number(endOfDay.replace(":",".")))
-                            if(_timeSlotLabel + ((1 / hoursDiff )* (3 / 5)) >= Number(endOfDay.replace(":",".")))
-                                disabled = 0
-                            else
-                                disabled = 2
-                        }
-                        else if(_timeSlotLabel + ((1 / hoursDiff )* (3 / 5)) >= Number(startOfDay.replace(":",".")) && _timeSlotLabel + ((1 / hoursDiff )* (3 / 5)) <=  Number(endOfDay.replace(":","."))){
-                            console.log("ELSE", _timeSlotLabel,_timeSlotLabel + ((1 / hoursDiff )* (3 / 5)), Number(startOfDay.replace(":",".")), Number(endOfDay.replace(":",".")))
-                            disabled = 1
-                        }
-
-                        _timeSlotLabel %= 12
-
                         _timeSlotLabel += _timeSlotLabel >= 0.00 && _timeSlotLabel < 1.00 ? 12 : 0
 
                         _timeSlotLabel = _timeSlotLabel.toFixed(2)
@@ -106,7 +103,6 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
                                 appoinmentSlots={appoinmentSlots}
                                 minutesDiff={hoursDiff * 60}
                                 onSelect={onSelect}
-                                isDisabled={disabled}
                             />
                         );
                     })}
