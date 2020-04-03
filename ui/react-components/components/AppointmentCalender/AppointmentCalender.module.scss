@@ -1,3 +1,4 @@
+@import '../../variables.scss';
 .calender {
     table-layout: fixed;
     width: 100%;
@@ -6,6 +7,11 @@
         text-align: center;
     }
 
+    tr[isDisabled="false"]{
+        td.bordered-cell{
+            background-color: rgb(243, 243, 243);
+        }
+    }
     td,
     th {
         font-size: 14px;
@@ -13,7 +19,7 @@
         &:nth-child(1) {
             padding-right: 5px;
             text-align: right;
-            width: 30px;
+            width: 50px;
             height: 21px;
         }
     }
@@ -26,9 +32,22 @@
 
     .bordered-cell {
         position: relative;
-        border: 1px solid #ddd;
+        border-top: 1px solid $calendar-grid-lines-color;
+        border-left: 1px solid $calendar-grid-lines-color;
+        &:last-child{
+            border-right: 1px solid $calendar-grid-lines-color;
+        }
     }
 
+    tbody{
+        tr{
+            &:last-child{
+                td.bordered-cell{
+                    border-bottom: 1px solid $calendar-grid-lines-color;
+                }
+            }
+        }
+    }
 
 
     tr {
@@ -57,7 +76,7 @@
         width: 95%;
         padding: 0px 5px;
         border-radius: 5px;
-        color: white;
+        color: $secondary-color-1;
         display: flex;
         align-items: center;
         font-weight: 400;
@@ -70,12 +89,12 @@
 
 .no_appointment {
     position: fixed;
+    z-index: 1;
     left: 50%;
     transform: translateX(-50%);
     margin: 0 auto;
     padding: 12px 28px;
-    color: red;
+    color: $error-text-color;
     width: fit-content;
-    background-color: rgb(236, 234, 236);
-
+    background-color: $disable-color;
 }

@@ -28,8 +28,8 @@ describe("<AppointmentCalender />", () => {
         expect(container.getElementsByClassName("appointment_label").length).toEqual(5)
     })
 
-    it("should work for different time diff", () => {
-        let {container, rerender} = render(
+    it("should work for configurable time slots", () => {
+        const {container, rerender} = render(
             <AppointmentCalender appoinments={[]} hoursDiff={1}/>
         );
 
@@ -43,5 +43,14 @@ describe("<AppointmentCalender />", () => {
 
         expect(container.getElementsByTagName("tbody")[0].childNodes.length / 2).toEqual(8)
 
+    })
+
+    it("should show providers properly", () => {
+        const {container} = render(
+            <AppointmentCalender appoinments={data} hoursDiff={1}/>
+        );
+
+        expect(container.querySelector("thead>tr").childNodes.length - 1).toEqual(4)
+        
     })
 })

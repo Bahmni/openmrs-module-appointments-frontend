@@ -2,29 +2,29 @@ import React, { Fragment } from "react";
 
 import "./AppointmentCalender.module.scss";
 
-const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff }) => {
+const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSelect, isDisabled }) => {
     const timeDiff = minutesDiff / 2
 
-    const getDiffMinutes = (strTime, endTime) => Math.round((strTime - endTime) / 60000)
 
+    const getMinutesDiff = (strTime, endTime) => Math.round((strTime - endTime) / 60000)
     return (
         <Fragment>
             {[timeSlotLabel, null].map((time, index) => (
-                <tr key={`${timeSlotLabel}_${index}`}>
-                    <td>{time}</td>
+                <tr key={`${timeSlotLabel}_${index}`} isDisabled={(isDisabled === index  || isDisabled ===  2).toString()}>
+                    <td>{time && (minutesDiff % 60 === 0 ?  time.replace(".00","") : time.replace(".",":")) }</td>
                     {providers.map(provider => (
                         <td
-                            key={`${timeSlotLabel}_${provider}`}
+                            key={`${timeSlotLabel}_${provider}_${index}`}
                             className="bordered-cell"
-                            onClick={() => console.log(time)}
+                            onClick={() => 1}
                         >
                             {
                                 appoinmentSlots.map(appoinmentSlot => {
-                                    const timeDiffInMin = getDiffMinutes(appoinmentSlot.endDateTime, appoinmentSlot.startDateTime)
+                                    const timeDiffInMin = getMinutesDiff(appoinmentSlot.endDateTime, appoinmentSlot.startDateTime)
                                     return appoinmentSlot && ( appoinmentSlot.providers.length === 0 && provider === "[No Provider]" || appoinmentSlot.providers.map(provider => provider.name).indexOf(provider) > -1 ) && ( index === 0 && timeDiffInMin <= timeDiff || index === 1 && timeDiffInMin > timeDiff) 
                                     ?  (() => {
                                             const top =  (22 / timeDiff) * new Date(appoinmentSlot.startDateTime).getMinutes() + (index === 1 ? -22 : 0 ) + "px"
-                                            const height = (22 / timeDiff) * getDiffMinutes(appoinmentSlot.endDateTime, appoinmentSlot.startDateTime) + "px"
+                                            const height = (22 / timeDiff) * getMinutesDiff(appoinmentSlot.endDateTime, appoinmentSlot.startDateTime) + "px"
 
                                             const text = new Date(appoinmentSlot.startDateTime).toLocaleTimeString([], {timeStyle: 'short'}) + " - " + new Date(appoinmentSlot.endDateTime).toLocaleTimeString([], {timeStyle: 'short'}) + "\n" + appoinmentSlot.patient.name + " (" + appoinmentSlot.patient.identifier + ")" 
 
@@ -44,14 +44,10 @@ const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff }) =>
 };
 
 
-const AppointmentCalender = ({hoursDiff = 3, appoinments}) => {
+const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="9:30", endOfDay="17:30"}) => {
     const providers = (appoinments.length > 0 ? [...new Set(appoinments.flatMap(appoinment => appoinment.providers && appoinment.providers.length > 0 ? appoinment.providers.map(provider => provider.name ) : "[No Provider]"))] : [null]).sort(function (a, b) {
-        if (a.toLowerCase() > b.toLowerCase()) {
-            return -1;
-        }
-        if (b.toLowerCase() > a.toLowerCase()) {
-            return 1;
-        }
+        if (a.toLowerCase() > b.toLowerCase()) return -1;
+        if (b.toLowerCase() > a.toLowerCase()) return 1;
         return 0;
     })
     return (
@@ -74,12 +70,34 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments}) => {
                 <tbody>
                     {[...Array(24 / hoursDiff).keys()].map(time => {
                         const appoinmentSlots = appoinments.filter(
-                            appoinment =>{
+                            appoinment => {
                                 const hours = new Date(appoinment.startDateTime).getHours()
                                 return hours >= time  * hoursDiff && hours < (time + 1)  * hoursDiff
                             }
                         )
-                        const timeSlotLabel = ((time * hoursDiff) % 12 === 0 ? 12 : (time * hoursDiff) % 12) + ((time * hoursDiff) - 12 < 0 ? "am" : "pm");
+                        // making 0 as 12am and Handling minutes (conveting decimal to time format e.g. 0.50 => 12.30am) to handle configurable timeslot. 
+                        let _timeSlotLabel = ((time * hoursDiff)) 
+                        
+                        let disabled = null
+                        if(_timeSlotLabel >= Number(startOfDay.replace(":",".")) && _timeSlotLabel <=  Number(endOfDay.replace(":","."))){
+                            console.log("IF", _timeSlotLabel, Number(startOfDay.replace(":",".")), Number(endOfDay.replace(":",".")))
+                            if(_timeSlotLabel + ((1 / hoursDiff )* (3 / 5)) >= Number(endOfDay.replace(":",".")))
+                                disabled = 0
+                            else
+                                disabled = 2
+                        }
+                        else if(_timeSlotLabel + ((1 / hoursDiff )* (3 / 5)) >= Number(startOfDay.replace(":",".")) && _timeSlotLabel + ((1 / hoursDiff )* (3 / 5)) <=  Number(endOfDay.replace(":","."))){
+                            console.log("ELSE", _timeSlotLabel,_timeSlotLabel + ((1 / hoursDiff )* (3 / 5)), Number(startOfDay.replace(":",".")), Number(endOfDay.replace(":",".")))
+                            disabled = 1
+                        }
+
+                        _timeSlotLabel %= 12
+
+                        _timeSlotLabel += _timeSlotLabel >= 0.00 && _timeSlotLabel < 1.00 ? 12 : 0
+
+                        _timeSlotLabel = _timeSlotLabel.toFixed(2)
+                        
+                        const timeSlotLabel = (_timeSlotLabel.split(".")[1] > 0 ?  _timeSlotLabel.split(".")[0] + "." + Number(_timeSlotLabel.split(".")[1]) * 3 / 5 : _timeSlotLabel) + ((time * hoursDiff) - 12 < 0 ? "am" : "pm");
                         return (
                             <TimeSlot
                                 key={timeSlotLabel}
@@ -87,6 +105,8 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments}) => {
                                 providers={providers}
                                 appoinmentSlots={appoinmentSlots}
                                 minutesDiff={hoursDiff * 60}
+                                onSelect={onSelect}
+                                isDisabled={disabled}
                             />
                         );
                     })}

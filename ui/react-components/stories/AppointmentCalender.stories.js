@@ -8,4 +8,4 @@ export default {
     title: 'Appointment Calender View',
 }
 
-export const Basic = () => <AppointmentCalender appoinments={data} hoursDiff={1}/>
+export const Basic = () => <AppointmentCalender appoinments={data} hoursDiff={2} onSelect={(a) => alert(a)}/>
