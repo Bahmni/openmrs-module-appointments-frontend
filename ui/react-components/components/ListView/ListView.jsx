@@ -61,7 +61,7 @@ export default function ListView({ columns = {}, rows = [] }) {
     function renderSortIcon(column) {
         const sortIconClassName = ascending ? "fa-caret-up" : "fa-caret-down"
         if (sortColumn === column) {
-            return (<i className={classNames("fa", sortIconClassName)} onClick={() => setAscending(!ascending)}></i>)
+            return (<i data-testid="sortIcon" className={classNames("fa", sortIconClassName)} onClick={() => setAscending(!ascending)}></i>)
         }
         return null
     }

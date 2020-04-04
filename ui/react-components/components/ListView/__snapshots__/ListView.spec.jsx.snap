@@ -1,0 +1,948 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`---------- 1`] = `
+<table
+  className="appointment-list-view"
+>
+  <thead>
+    <tr>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Patient ID
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Patient Name
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Date
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Start Time
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        End Time
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Provider
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Speciality
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Service
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Service Appointment Type
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Status
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Walk In
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Location
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Additional Info
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Notes
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        className=""
+      >
+        GAN203012
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Test Diabetes
+      </td>
+      <td
+        className=""
+      >
+        24 Mar 20
+      </td>
+      <td
+        className=""
+      >
+        10:00 am
+      </td>
+      <td
+        className=""
+      >
+        10:30 am
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Scheduled
+      </td>
+      <td
+        className=""
+      >
+        Yes
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        OPD-1
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        
+      </td>
+    </tr>
+    <tr>
+      <td
+        className=""
+      >
+        GAN203011
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Test Con
+      </td>
+      <td
+        className=""
+      >
+        24 Mar 20
+      </td>
+      <td
+        className=""
+      >
+        9:00 am
+      </td>
+      <td
+        className=""
+      >
+        9:30 am
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Scheduled
+      </td>
+      <td
+        className=""
+      >
+        Yes
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        OPD-1
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Urgent
+      </td>
+    </tr>
+    <tr>
+      <td
+        className=""
+      >
+        GAN203019
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Test Con
+      </td>
+      <td
+        className=""
+      >
+        22 Mar 20
+      </td>
+      <td
+        className=""
+      >
+        11:00 am
+      </td>
+      <td
+        className=""
+      >
+        11:30 am
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Psychology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Psychology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Scheduled
+      </td>
+      <td
+        className=""
+      >
+        Yes
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        General Ward
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Nothing important
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`renders ListView with appointments correctly 1`] = `
+<table
+  className="appointment-list-view"
+>
+  <thead>
+    <tr>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Patient ID
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Patient Name
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Date
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Start Time
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        End Time
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Provider
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Speciality
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Service
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Service Appointment Type
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Status
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Walk In
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Location
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Additional Info
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Notes
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        className=""
+      >
+        GAN203012
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Test Diabetes
+      </td>
+      <td
+        className=""
+      >
+        24 Mar 20
+      </td>
+      <td
+        className=""
+      >
+        10:00 am
+      </td>
+      <td
+        className=""
+      >
+        10:30 am
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Scheduled
+      </td>
+      <td
+        className=""
+      >
+        Yes
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        OPD-1
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        
+      </td>
+    </tr>
+    <tr>
+      <td
+        className=""
+      >
+        GAN203011
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Test Con
+      </td>
+      <td
+        className=""
+      >
+        24 Mar 20
+      </td>
+      <td
+        className=""
+      >
+        9:00 am
+      </td>
+      <td
+        className=""
+      >
+        9:30 am
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Scheduled
+      </td>
+      <td
+        className=""
+      >
+        Yes
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        OPD-1
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Urgent
+      </td>
+    </tr>
+    <tr>
+      <td
+        className=""
+      >
+        GAN203019
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Test Con
+      </td>
+      <td
+        className=""
+      >
+        22 Mar 20
+      </td>
+      <td
+        className=""
+      >
+        11:00 am
+      </td>
+      <td
+        className=""
+      >
+        11:30 am
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Psychology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Psychology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Scheduled
+      </td>
+      <td
+        className=""
+      >
+        Yes
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        General Ward
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Nothing important
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`renders ListView with appointments correctly 2`] = `
+<table
+  className="appointment-list-view"
+>
+  <thead>
+    <tr>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Patient ID
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Patient Name
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Date
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Start Time
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        End Time
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Provider
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Speciality
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Service
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Service Appointment Type
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Status
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Walk In
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Location
+      </th>
+      <th
+        className="table-mid-width"
+        onClick={[Function]}
+      >
+        Additional Info
+      </th>
+      <th
+        className=""
+        onClick={[Function]}
+      >
+        Notes
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        className=""
+      >
+        GAN203012
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Test Diabetes
+      </td>
+      <td
+        className=""
+      >
+        24 Mar 20
+      </td>
+      <td
+        className=""
+      >
+        10:00 am
+      </td>
+      <td
+        className=""
+      >
+        10:30 am
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Scheduled
+      </td>
+      <td
+        className=""
+      >
+        Yes
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        OPD-1
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        
+      </td>
+    </tr>
+    <tr>
+      <td
+        className=""
+      >
+        GAN203011
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Test Con
+      </td>
+      <td
+        className=""
+      >
+        24 Mar 20
+      </td>
+      <td
+        className=""
+      >
+        9:00 am
+      </td>
+      <td
+        className=""
+      >
+        9:30 am
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Cardiology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Scheduled
+      </td>
+      <td
+        className=""
+      >
+        Yes
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        OPD-1
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Urgent
+      </td>
+    </tr>
+    <tr>
+      <td
+        className=""
+      >
+        GAN203019
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Test Con
+      </td>
+      <td
+        className=""
+      >
+        22 Mar 20
+      </td>
+      <td
+        className=""
+      >
+        11:00 am
+      </td>
+      <td
+        className=""
+      >
+        11:30 am
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Psychology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        Psychology
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Scheduled
+      </td>
+      <td
+        className=""
+      >
+        Yes
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        General Ward
+      </td>
+      <td
+        className="table-mid-width"
+      >
+        
+      </td>
+      <td
+        className=""
+      >
+        Nothing important
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`renders ListView with no appointments correctly 1`] = `
+<div
+  className="no-appointments-list-view"
+>
+  No appointments found
+</div>
+`;
