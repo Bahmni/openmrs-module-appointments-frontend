@@ -1,0 +1,13 @@
+.showSelectedContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: OpenSans, Arial, sans-serif, Arial, sans-serif;
+  font-size: 14px;
+  margin: 20px 0;
+
+  b {
+    font-weight: lighter;
+  }
+}
+

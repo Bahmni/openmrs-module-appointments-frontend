@@ -1,0 +1,1124 @@
+[
+  {
+    "appointmentServiceId": 1,
+    "name": "Physiotherapy OPD",
+    "description": null,
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "Physiotherapy",
+      "uuid": "8de35e75-20e0-11e7-a53f-000c29e530d2"
+    },
+    "uuid": "2b87edcf-39ac-4dec-94c9-713b932e847c",
+    "color": "#00CED1",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "70ebf038-1a64-4a21-a257-ebd4dd1bda5f"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "28e71e99-320f-4756-b3ef-40830c19120b"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "279d9eb7-a34b-4285-850e-e1f80033cc8a"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "254591e6-c207-4e87-a7c2-f6319ce30b58"
+      },
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "c2d433a6-570f-4dad-b3cd-82e2a5371663"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "e344c46c-1ffe-4835-9af7-35d720a642dd"
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "0e5bd74c-e48a-4fc9-b2f3-37cc271c5c96"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "69600840-e4d1-4520-a0d0-07ed65a381b5"
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "9a1ca6e8-4197-46cc-82f2-0d05c77b073e"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "dfc15fc7-4057-42aa-9241-33a98e1ba4e3"
+      },
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "08f73a9f-be82-4141-bdc9-d51a15e3cc52"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "d3fbef68-3ffd-4f10-a3b1-4afdd698ddb3"
+      }
+    ],
+    "serviceTypes": [
+      {
+        "duration": 30,
+        "name": "1 session",
+        "uuid": "50ac6a9c-158a-4743-a6b5-a4f9c9317007"
+      },
+      {
+        "duration": 30,
+        "name": "POP",
+        "uuid": "3da42b98-f59a-4aa9-8ea9-3efb25d8f859"
+      },
+      {
+        "duration": 10,
+        "name": "short session",
+        "uuid": "aebd3613-2070-46b4-ba7f-1503b83bcba7"
+      },
+      {
+        "duration": 30,
+        "name": "TRM1",
+        "uuid": "7071617c-1862-4024-ab0f-9472debbd0de"
+      },
+      {
+        "duration": 60,
+        "name": "1x2 session",
+        "uuid": "f1f98ef4-cdad-4494-95d7-9c682b66a7cf"
+      },
+      {
+        "duration": 60,
+        "name": "POP2",
+        "uuid": "358ff9f2-2103-4ccc-9aa0-14a86df2d75b"
+      },
+      {
+        "duration": 20,
+        "name": "Follow-up",
+        "uuid": "69e7441a-3874-4fba-911d-0d9f76f7cff1"
+      },
+      {
+        "duration": 30,
+        "name": "1x session",
+        "uuid": "e7912578-bb5b-4617-ba45-28dd178b46de"
+      },
+      {
+        "duration": 60,
+        "name": "TRM2",
+        "uuid": "fadc96b2-c43b-4615-bf9d-97a3fcc05e1c"
+      },
+      {
+        "duration": 60,
+        "name": "2 sessions",
+        "uuid": "d63f1ea6-2d9a-4541-bb8c-c73a8d372a01"
+      },
+      {
+        "duration": 60,
+        "name": "IA2",
+        "uuid": "53214290-99c0-4422-a9c8-d86f495b8068"
+      },
+      {
+        "duration": 30,
+        "name": "IA1",
+        "uuid": "e52ba258-bcd9-49b5-aa35-fbadba0101fc"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 2,
+    "name": "Dressing",
+    "description": "Dressings for orthopedic, maxillo-facial, plastic, including tissue expander",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "OPD",
+      "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"
+    },
+    "uuid": "7eb76991-cc67-45c1-9cb9-93d91113673a",
+    "color": "#DC143C",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "ae0ca370-ec90-4501-9fa2-1169b1d9a749"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "a0e9b552-82fe-4af5-942d-b6f3a3a9b131"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "9e715ff1-3d2d-4d4b-811e-9ded195817c4"
+      },
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "235daf1f-0ae3-436a-ae7c-e13f84ffd7b9"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "e4361020-23a2-4cdb-b00d-83032221c5bc"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "7d3ff978-ee39-4d00-aadd-91127db5ac27"
+      }
+    ],
+    "serviceTypes": [
+      {
+        "duration": 15,
+        "name": "Maxillo-facial dressing",
+        "uuid": "74d43c99-fee1-4097-904a-e2292711b27f"
+      },
+      {
+        "duration": 20,
+        "name": "Orthopedic dressing",
+        "uuid": "600337fd-8d1c-4a21-8d9e-ba5a717997fb"
+      },
+      {
+        "duration": 15,
+        "name": "Plastic dressing",
+        "uuid": "30f1f014-f934-428e-b435-646963c91eb9"
+      },
+      {
+        "duration": 15,
+        "name": "Tissue expander",
+        "uuid": "3464028a-e950-46c3-987c-507e3e86f5df"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 3,
+    "name": "Orthopedic Consultations",
+    "description": "for the orthopedic surgeons clinics",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "OPD",
+      "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"
+    },
+    "uuid": "37e713fc-4283-453b-993f-9f99dae077d1",
+    "color": "#00BFFF",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "11:00:00",
+        "endTime": "15:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "ba790848-50b7-46c9-b5a7-44b1189cd29e"
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "10:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "b04a0309-6ffe-453c-87e4-477daab93bc8"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "c0c5751c-0ff1-42fe-9515-67dc29cb3378"
+      }
+    ],
+    "serviceTypes": [
+      {
+        "duration": 30,
+        "name": "New patients",
+        "uuid": "173dd652-5ca7-4cfc-80d1-d417b81ebdbb"
+      },
+      {
+        "duration": 20,
+        "name": "Follow-up",
+        "uuid": "4aa8a49f-1eb2-4971-8730-794ec093f3e3"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 4,
+    "name": "Medical Clinic",
+    "description": "medical related consultations - including medical consultations, pain clinic, and ABT clinic",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "OPD",
+      "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"
+    },
+    "uuid": "d86e4137-56f4-4c89-b58b-d725cdc0616b",
+    "color": "#FF8C00",
+    "creatorName": null,
+    "weeklyAvailability": [],
+    "serviceTypes": [
+      {
+        "duration": 20,
+        "name": "Medical",
+        "uuid": "96728358-3629-427a-8c17-3c43418cbfff"
+      },
+      {
+        "duration": 30,
+        "name": "ABT clinic",
+        "uuid": "c2676e97-6ed5-43d6-bffc-40ec51da1051"
+      },
+      {
+        "duration": 30,
+        "name": "Pain clinic",
+        "uuid": "11a1772d-9a48-4a30-991d-4f490d4f048a"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 5,
+    "name": "Plastic Consultations",
+    "description": "consultations for the plastic surgeons",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "OPD",
+      "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"
+    },
+    "uuid": "26f2438a-af89-4919-b425-7ff59c13cb01",
+    "color": "#FF1493",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "10:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "5ce3f060-d3f4-42de-a1d5-e2a7fc6690da"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "10:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "cb90698a-302f-4fa8-a072-7e4ee1e8c5b2"
+      }
+    ],
+    "serviceTypes": [
+      {
+        "duration": 30,
+        "name": "New patients",
+        "uuid": "bfe84a98-5458-4c44-9500-076032629aca"
+      },
+      {
+        "duration": 20,
+        "name": "Follow-up",
+        "uuid": "3643b833-8b04-447b-8a39-66faa1e8e5d5"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 6,
+    "name": "Anaesthesia Clinic",
+    "description": "consultations by the anaesthesia doctors",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "OPD",
+      "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"
+    },
+    "uuid": "a0ed1008-f431-48f3-8daa-cae07477eff8",
+    "color": "#A9A9A9",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "10:00:00",
+        "endTime": "14:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "994639ee-bc4d-418e-aded-da8bbba3cdd7"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "10:00:00",
+        "endTime": "14:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "11b1937f-de0e-407b-8d8a-d89585b7c35d"
+      }
+    ],
+    "serviceTypes": [
+      {
+        "duration": 45,
+        "name": "New patients",
+        "uuid": "b071db67-6616-49e5-8d6e-a0bcf7e7c38d"
+      },
+      {
+        "duration": 20,
+        "name": "Follow-up",
+        "uuid": "248da98c-32e4-4c1c-85a9-00b76af6a09f"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 7,
+    "name": "Maxillo-Facial Consultations",
+    "description": "consultations for the maxillo-facial surgeon",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "OPD",
+      "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"
+    },
+    "uuid": "19ed87a3-6a37-40f5-85c2-792c8381a02b",
+    "color": "#008B8B",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "10:00:00",
+        "endTime": "14:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "22b49c08-438d-4b3f-8c14-2ce4954e1786"
+      }
+    ],
+    "serviceTypes": [
+      {
+        "duration": 20,
+        "name": "Follow-up",
+        "uuid": "bcf4e69d-5ce7-4b30-b106-5e32ad72cd2a"
+      },
+      {
+        "duration": 30,
+        "name": "New patients",
+        "uuid": "e5b10f36-8969-40a1-8be3-b6d94b3c8d2c"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 8,
+    "name": "Admissions",
+    "description": "patients planned to be admitted to the ward the next day",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "OPD",
+      "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"
+    },
+    "uuid": "2c58770c-8649-401d-9aa6-9cf6cb60d463",
+    "color": "#9400D3",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "11:00:00",
+        "endTime": "14:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "1f2b5450-555a-4237-b0c4-c26f85726ea1"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "11:00:00",
+        "endTime": "14:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "2ed00c08-b5a9-4cf2-b44a-d86bc8ed650a"
+      },
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "11:00:00",
+        "endTime": "14:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "46d698d3-ac19-4b32-a0e6-59593c4d8520"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "11:00:00",
+        "endTime": "14:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "5329a4ea-3ba4-4a11-ac9c-80edacb3488b"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "11:00:00",
+        "endTime": "14:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "65d3506a-052f-455d-9c90-0e3895b6c304"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "11:00:00",
+        "endTime": "14:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "4e7cd263-f336-44bb-82da-e822dbfec815"
+      }
+    ],
+    "serviceTypes": []
+  },
+  {
+    "appointmentServiceId": 9,
+    "name": "External Consultations",
+    "description": "patients scheduled for consultations outside the hospital",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {},
+    "uuid": "29ed55f9-1f2b-4317-99db-461d8e8eac12",
+    "color": "#B8860B",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "da5709f7-55b2-44b8-ab5b-fe1c461e70ba"
+      },
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "1b01dd05-8f81-418b-8fe4-881eea624970"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "48c47116-2f74-4a58-85cb-87b32ece3df8"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "cf2ee9af-633d-4f8c-bf9a-114fe31adead"
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "575a77fc-d5a7-437b-982b-898007b9da29"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "88f22332-a6d1-457d-9895-ee6f3d3ceefa"
+      }
+    ],
+    "serviceTypes": []
+  },
+  {
+    "appointmentServiceId": 10,
+    "name": "Psy Clinic",
+    "description": "for Dr. Bah'a",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "OPD",
+      "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"
+    },
+    "uuid": "0ff1a6a8-db48-42d3-83d5-4f89a9ebb9df",
+    "color": "#8B0000",
+    "creatorName": null,
+    "weeklyAvailability": [],
+    "serviceTypes": []
+  },
+  {
+    "appointmentServiceId": 11,
+    "name": "Lab Investigations",
+    "description": "for lab investigations done in Al Mowasah lab",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {},
+    "uuid": "947ce654-0e5e-40a6-a0f2-74a301e611bf",
+    "color": "#8FBC8F",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "3ce0845d-7ebe-4f0a-844f-60e36d67b2d9"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "96d78943-0520-4d31-a6b2-a68db370ebcb"
+      },
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "b880415b-221a-4e84-907e-720dbd50c84e"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "4951b0db-46eb-4146-8f9a-cff85c2fe6aa"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "1eb315b0-6a20-4b3d-89e0-a05e7d1eeb4c"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "56a69f30-6e05-4cc6-9927-ef6f3ef83214"
+      }
+    ],
+    "serviceTypes": []
+  },
+  {
+    "appointmentServiceId": 12,
+    "name": "Physiotherapy Ward",
+    "description": null,
+    "speciality": {
+      "name": "Cardiology",
+      "uuid": "3a1df094-254f-11ea-b004-021fcec9e9b2"
+    },
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "Surgical Ward",
+      "uuid": "8de8e8f8-20e0-11e7-a53f-000c29e530d2"
+    },
+    "uuid": "02549d79-640b-487d-851c-61f21af47483",
+    "color": "#00CED1",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "93bfa29f-3a19-4c97-9947-48f8316fd8a8"
+      },
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "fa9313a6-10a3-4dfc-a29c-e9f41348bc57"
+      },
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "2fa26061-1924-4d10-87d2-aa8c2f1df4e9"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "03e91617-d25b-4d22-bfe3-6079accd0894"
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "8ceb7535-3622-4490-bb17-86023b494de1"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "5f6138f4-733a-4011-aff9-8fe92d0acd6a"
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "1174da11-fa81-4b19-95e2-9fac16dad035"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "db06a537-cc80-4419-af68-106f8e3d974d"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "f840aba7-7bf1-49da-ac9b-419021b6ea7e"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "50a724a9-1d58-4ef3-b837-3d5cfa5ad37b"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "cb6cd5ad-6965-483a-8dd7-1e9db9ef9d7b"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "59ae0ecb-33fe-45f9-aec3-e8bc48bee500"
+      }
+    ],
+    "serviceTypes": [
+      {
+        "duration": 60,
+        "name": "1x2 session",
+        "uuid": "b1ed6636-5d12-4390-a07e-d4ffff145659"
+      },
+      {
+        "duration": 30,
+        "name": "TRM1",
+        "uuid": "1e5b2ec9-83e2-4453-a873-801c5897be39"
+      },
+      {
+        "duration": 60,
+        "name": "IA2",
+        "uuid": "fbdac714-6c39-4e63-bc4b-95f7cc0b3dc7"
+      },
+      {
+        "duration": 60,
+        "name": "POP2",
+        "uuid": "11c6d32c-1c93-49d2-9041-5e8d6c6bb372"
+      },
+      {
+        "duration": 10,
+        "name": "short session",
+        "uuid": "c67a6387-96d5-4564-a30d-0c5828c10255"
+      },
+      {
+        "duration": 30,
+        "name": "IA1",
+        "uuid": "9e431c4b-d7f8-421c-9ffd-fb21cc2df67f"
+      },
+      {
+        "duration": 60,
+        "name": "TRM2",
+        "uuid": "35e5c379-2fa2-43ac-87bc-781bfeef9d09"
+      },
+      {
+        "duration": 30,
+        "name": "1 session",
+        "uuid": "49de88a3-785c-4a00-8af2-779366437f25"
+      },
+      {
+        "duration": 30,
+        "name": "1x session",
+        "uuid": "69a6386a-bde1-4823-a0fa-7b906dbabe36"
+      },
+      {
+        "duration": 60,
+        "name": "2 sessions",
+        "uuid": "7cfd634c-6f2c-40f0-98be-f07fff29ea59"
+      },
+      {
+        "duration": 20,
+        "name": "Follow-up",
+        "uuid": "eb2faf6e-740b-4fb1-b590-5b4ebd79c0fa"
+      },
+      {
+        "duration": 30,
+        "name": "POP",
+        "uuid": "359a01f7-7fbd-4736-b7a8-b7cdaf0d2733"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 13,
+    "name": "Occupational Therapy",
+    "description": null,
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {},
+    "uuid": "fa0a259d-f8f2-4134-9656-8ffe53db834d",
+    "color": "#00008B",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "7e57ab4e-abd4-4576-9cf0-fc06ecf3610c"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "8fe13162-77cb-4fea-9cbf-3a40ff113036"
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "c8b25a1b-5eed-4738-bc82-da8fcf4cad0f"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "9a964751-e117-4389-bf78-608d49068bff"
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "cd0e3f97-d994-4f31-88af-58d9260263b4"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "c33414c0-f821-4bf4-8359-3885a356cc3c"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "bb77dda8-dc89-47d7-a3b4-60ea74dd5e4a"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "c5123a30-fc16-412c-ac65-3a4267a4ea78"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "09:00:00",
+        "endTime": "13:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "87088467-96e1-42c8-bb55-a1288bf143b1"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "14:00:00",
+        "endTime": "16:30:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "896da379-5a8a-4d50-ab1c-d0f6d5b800f1"
+      }
+    ],
+    "serviceTypes": [
+      {
+        "duration": 10,
+        "name": "Screening",
+        "uuid": "7e984037-3d3a-4354-8f6d-f2b5665c6ff5"
+      },
+      {
+        "duration": 60,
+        "name": "1x2",
+        "uuid": "964c2cb9-0d15-44cd-bdd3-afd2739d9645"
+      },
+      {
+        "duration": 30,
+        "name": "1x",
+        "uuid": "45515d32-d6e5-4936-a6b3-de4e4efe6c96"
+      },
+      {
+        "duration": 30,
+        "name": "3D1",
+        "uuid": "bf832fd4-cab9-4d56-8293-48acbde8f135"
+      },
+      {
+        "duration": 30,
+        "name": "Splint 1",
+        "uuid": "08fe0268-d731-4e10-a061-66f0fbbd7eff"
+      },
+      {
+        "duration": 30,
+        "name": "1 session",
+        "uuid": "6d45cde0-d7df-4017-ada6-01a5a2697bd4"
+      },
+      {
+        "duration": 10,
+        "name": "Short session",
+        "uuid": "1cc37349-953c-4026-a3cc-dc5894b593c4"
+      },
+      {
+        "duration": 20,
+        "name": "Follow-up",
+        "uuid": "680ecbf0-9737-43f1-a781-45ac1a73bff1"
+      },
+      {
+        "duration": 60,
+        "name": "2 sessions",
+        "uuid": "d6ecdae6-f4ad-413f-b55e-b7d1add26220"
+      },
+      {
+        "duration": 60,
+        "name": "Splint 2",
+        "uuid": "1858e0d1-06bb-4af0-92c4-c5c8c3838614"
+      },
+      {
+        "duration": 60,
+        "name": "3D2",
+        "uuid": "cbf2ce7d-df2c-4f57-95a8-946ecbf431de"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 14,
+    "name": "Radiology - X-ray",
+    "description": "X-rays performed in Al Mowasah",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "OPD",
+      "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"
+    },
+    "uuid": "488ceee2-122b-45f6-af71-6411feaf247d",
+    "color": "#483D8B",
+    "creatorName": null,
+    "weeklyAvailability": [
+      {
+        "dayOfWeek": "SATURDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "97148bc4-0af0-48fa-bb40-2b061e55b295"
+      },
+      {
+        "dayOfWeek": "SUNDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "0365334f-d648-4149-9de1-21dbee5c8c7b"
+      },
+      {
+        "dayOfWeek": "WEDNESDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "b6d32b5a-ee0e-47c4-85eb-43dc4745f1ce"
+      },
+      {
+        "dayOfWeek": "MONDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "bbd2ab8d-d4cd-45ec-8403-8caa1b2ebb43"
+      },
+      {
+        "dayOfWeek": "TUESDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "837cb822-2f1b-441f-bf88-898ec707f77b"
+      },
+      {
+        "dayOfWeek": "THURSDAY",
+        "startTime": "08:30:00",
+        "endTime": "17:00:00",
+        "maxAppointmentsLimit": null,
+        "uuid": "902962e7-9c4c-4a3f-b3e1-f8757ada9578"
+      }
+    ],
+    "serviceTypes": []
+  },
+  {
+    "appointmentServiceId": 15,
+    "name": "Mental Health",
+    "description": null,
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {
+      "name": "Psycho-Social, Mental Health",
+      "uuid": "8de5abcb-20e0-11e7-a53f-000c29e530d2"
+    },
+    "uuid": "295f9432-057d-4129-8a35-942ec9283833",
+    "color": "#8B0000",
+    "creatorName": null,
+    "weeklyAvailability": [],
+    "serviceTypes": [
+      {
+        "duration": 60,
+        "name": "Counseling FU session",
+        "uuid": "a064354f-60c9-4778-b267-93f47c12a23d"
+      },
+      {
+        "duration": 40,
+        "name": "TRM",
+        "uuid": "ee775c37-e825-439b-a0bf-7f5d34cb426e"
+      },
+      {
+        "duration": 60,
+        "name": "Peer counseling FU",
+        "uuid": "28711dd9-48d3-4c07-a143-a1adf5b05cd9"
+      },
+      {
+        "duration": 90,
+        "name": "Group therapy session",
+        "uuid": "930dea68-a53b-4a82-a3ed-d0e5cceea7ef"
+      },
+      {
+        "duration": 90,
+        "name": "Group peer counseling",
+        "uuid": "1d04a748-1957-401a-bb0c-30e99fb8a606"
+      },
+      {
+        "duration": 40,
+        "name": "Initial assessment",
+        "uuid": "c058a153-b5e7-431a-a5b6-a8268c2106e6"
+      },
+      {
+        "duration": 60,
+        "name": "Psychological FU session",
+        "uuid": "075d68ba-2f22-4fef-afdc-79dcf1a4331e"
+      }
+    ]
+  },
+  {
+    "appointmentServiceId": 16,
+    "name": "automation",
+    "description": "Automation",
+    "speciality": {},
+    "startTime": "01:00:00",
+    "endTime": "02:00:00",
+    "maxAppointmentsLimit": 5,
+    "durationMins": 20,
+    "location": {},
+    "uuid": "805e49fd-ec3d-4508-a02f-a298d48227d6",
+    "color": "#006400",
+    "creatorName": null,
+    "weeklyAvailability": [],
+    "serviceTypes": []
+  },
+  {
+    "appointmentServiceId": 17,
+    "name": "Test Service",
+    "description": "Service without time and availability",
+    "speciality": {},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {},
+    "uuid": "d12af127-06eb-48e8-8f20-66a01ef55981",
+    "color": "#006400",
+    "creatorName": null,
+    "weeklyAvailability": [],
+    "serviceTypes": []
+  }
+]
