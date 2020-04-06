@@ -1,12 +1,20 @@
 import React, { Fragment } from "react";
-
 import "./AppointmentCalender.module.scss";
+import moment  from 'moment';
 
-const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSelect, isDisabled }) => {
+
+const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSelect, onClickAppoinment }) => {
+    
     const timeDiff = minutesDiff / 2
 
-
     const getMinutesDiff = (strTime, endTime) => Math.round((strTime - endTime) / 60000)
+    
+    const handleTimeSlotClick = (timeSlotRowIndex, provider) => {
+        const startTime = moment(timeSlotLabel,"h:mmA").add(timeDiff * timeSlotRowIndex  , "minutes").format("LTS")
+        const endTime = moment(timeSlotLabel,"h:mmA").add(minutesDiff / Math.abs(2 - timeSlotRowIndex) , "minutes").format("LTS")
+        return onSelect(startTime, endTime, provider)
+    }
+
     return (
         <Fragment>
             {[timeSlotLabel, null].map((time, index) => (
@@ -14,9 +22,9 @@ const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSe
                     <td>{time && (minutesDiff % 60 === 0 ?  time.replace(".00","") : time.replace(".",":")) }</td>
                     {providers.map(provider => (
                         <td
-                            key={`${timeSlotLabel}_${provider}_${index}`}
-                            className="bordered-cell"
-                            onClick={() => 1}
+                        key={`${timeSlotLabel}_${provider}_${index}`}
+                        className="bordered-cell"
+                        onClick={() => handleTimeSlotClick(index, provider)}
                         >
                             {
                                 appoinmentSlots.map(appoinmentSlot => {
@@ -25,10 +33,8 @@ const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSe
                                     ?  (() => {
                                             const top =  (22 / timeDiff) * new Date(appoinmentSlot.startDateTime).getMinutes() + (index === 1 ? -22 : 0 ) + "px"
                                             const height = (22 / timeDiff) * getMinutesDiff(appoinmentSlot.endDateTime, appoinmentSlot.startDateTime) + "px"
-
                                             const text = new Date(appoinmentSlot.startDateTime).toLocaleTimeString([], {timeStyle: 'short'}) + " - " + new Date(appoinmentSlot.endDateTime).toLocaleTimeString([], {timeStyle: 'short'}) + "\n" + appoinmentSlot.patient.name + " (" + appoinmentSlot.patient.identifier + ")" 
-
-                                            return <div key={appoinmentSlot.uuid} title={text} className="appointment_label" style={{top,height, backgroundColor: hexToRgbA(appoinmentSlot.service.color, .7), borderColor: appoinmentSlot.service.color}}>
+                                            return <div onClick={(e) => {e.stopPropagation(); onClickAppoinment(appoinmentSlot)}} key={appoinmentSlot.uuid} title={text} className="appointment_label" style={{top,height, backgroundColor: shadeColor(appoinmentSlot.service.color, 30), borderColor: appoinmentSlot.service.color}}>
                                                     {text}
                                                 </div>
                                         })()
@@ -44,7 +50,7 @@ const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSe
 };
 
 
-const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="9:30", endOfDay="17:30"}) => {
+const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="9:30", endOfDay="17:30", onClickAppoinment}) => {
     const providers = (appoinments.length > 0 ? [...new Set(appoinments.flatMap(appoinment => appoinment.providers && appoinment.providers.length > 0 ? appoinment.providers.map(provider => provider.name ) : "[No Provider]"))] : [null]).sort(function (a, b) {
         if (a.toLowerCase() > b.toLowerCase()) return -1;
         if (b.toLowerCase() > a.toLowerCase()) return 1;
@@ -60,7 +66,6 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
                 (()=>{
                         const topModalHeight = (Number(startOfDay.split(':')[0]) * 60+Number(startOfDay.split(':')[1]) ) * (23/(30*hoursDiff))
                         const bottomModalHeight= ((24-Number(endOfDay.split(':')[0])) * 60 - Number(endOfDay.split(':')[1])) * (23/(30 * hoursDiff))
-                        console.log(bottomModalHeight)
                         return <Fragment>
                                 <div className="non-working-hrs-modal" style={{height:topModalHeight}}/>
                                 <div className="non-working-hrs-modal" style={{height: bottomModalHeight,bottom:"0"}}/>
@@ -103,6 +108,7 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
                                 appoinmentSlots={appoinmentSlots}
                                 minutesDiff={hoursDiff * 60}
                                 onSelect={onSelect}
+                                onClickAppoinment={onClickAppoinment}
                             />
                         );
                     })}
@@ -112,17 +118,26 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
     );
 };
 
-const hexToRgbA = (hex, alpha) =>{
-    var c;
-    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-        c= hex.substring(1).split('');
-        if(c.length== 3){
-            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-        }
-        c= '0x'+c.join('');
-        return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',' + alpha + ')';
-    }
-    return hex;
+
+const shadeColor = (color, percent) => {
+
+    var R = parseInt(color.substring(1,3),16);
+    var G = parseInt(color.substring(3,5),16);
+    var B = parseInt(color.substring(5,7),16);
+
+    R = parseInt(R * (100 + percent) / 100);
+    G = parseInt(G * (100 + percent) / 100);
+    B = parseInt(B * (100 + percent) / 100);
+
+    R = (R<255)?R:255;  
+    G = (G<255)?G:255;  
+    B = (B<255)?B:255;  
+
+    var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+    var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+    var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+    return "#"+RR+GG+BB;
 }
 
 
