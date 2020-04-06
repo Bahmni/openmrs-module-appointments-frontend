@@ -1,6 +1,6 @@
 import React from "react";
-import { render } from "@testing-library/react";
-import { getByTestId, queryByTestId } from "@testing-library/dom";
+import { render, fireEvent } from "@testing-library/react";
+import { getByTestId, getByText } from "@testing-library/dom";
 import "@testing-library/jest-dom/extend-expect";
 import AppointmentCalender from './AppointmentCalender';
 
@@ -53,4 +53,23 @@ describe("<AppointmentCalender />", () => {
         expect(container.querySelector("thead>tr").childNodes.length - 1).toEqual(4)
         
     })
+
+    it("should call onSelect function on clicking time slot", () => {
+        const onSelect = jest.fn()
+        const {container} = render(
+            <AppointmentCalender appoinments={data} hoursDiff={1} onSelect={onSelect}/>
+        );
+        fireEvent.click(container.getElementsByClassName("bordered-cell")[0])
+        expect(onSelect).toHaveBeenCalledTimes(1)
+    })
+
+    it("should call onSelectAppointment on clicking appointment label", () => {
+        const onClickAppoinment = jest.fn()
+        const {container} = render(
+            <AppointmentCalender appoinments={data} hoursDiff={1} onClickAppoinment={onClickAppoinment}/>
+        );
+        fireEvent.click(container.getElementsByClassName("appointment_label")[0])
+        expect(onClickAppoinment).toHaveBeenCalledTimes(1)
+    })
 })
+

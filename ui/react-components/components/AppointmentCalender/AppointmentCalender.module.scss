@@ -19,7 +19,13 @@
                 text-align: right;
                 width: 50px;
                 height: 21px;
+                user-select: none;
+                pointer-events: none;
             }
+        }
+
+        td.active{
+            background-color: rgb(238, 248, 250);
         }
     
         .borderless-cell {

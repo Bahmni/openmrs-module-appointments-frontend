@@ -8,4 +8,4 @@ export default {
     title: 'Appointment Calender View',
 }
 
-export const Basic = () => <AppointmentCalender appoinments={data} hoursDiff={1} onSelect={console.log} onClickAppoinment={console.log}/>
+export const Basic = () => <AppointmentCalender appoinments={data} hoursDiff={1} onSelect={(a,b,c) => alert(a+"\n"+b+"\n"+c)} onClickAppoinment={console.log}/>

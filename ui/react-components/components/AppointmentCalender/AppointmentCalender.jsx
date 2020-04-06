@@ -1,18 +1,20 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import "./AppointmentCalender.module.scss";
 import moment  from 'moment';
+import  classNames  from 'classnames';
 
 
-const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSelect, onClickAppoinment }) => {
+
+const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSelect, onClickAppoinment, isMultiSelectEnable, getSelectedCell, selectedCells }) => {
     
     const timeDiff = minutesDiff / 2
 
     const getMinutesDiff = (strTime, endTime) => Math.round((strTime - endTime) / 60000)
     
-    const handleTimeSlotClick = (timeSlotRowIndex, provider) => {
+    const handleTimeSlotClick = (timeSlotRowIndex, provider=null) => {
         const startTime = moment(timeSlotLabel,"h:mmA").add(timeDiff * timeSlotRowIndex  , "minutes").format("LTS")
         const endTime = moment(timeSlotLabel,"h:mmA").add(minutesDiff / Math.abs(2 - timeSlotRowIndex) , "minutes").format("LTS")
-        return onSelect(startTime, endTime, provider)
+        return {startTime, endTime, provider}
     }
 
     return (
@@ -22,10 +24,14 @@ const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSe
                     <td>{time && (minutesDiff % 60 === 0 ?  time.replace(".00","") : time.replace(".",":")) }</td>
                     {providers.map(provider => (
                         <td
-                        key={`${timeSlotLabel}_${provider}_${index}`}
-                        className="bordered-cell"
-                        onClick={() => handleTimeSlotClick(index, provider)}
+                            provider={provider}
+                            onMouseOver={isMultiSelectEnable ? () => getSelectedCell(timeSlotLabel, index) : () => {}}
+                            key={`${timeSlotLabel}_${provider}_${index}`}
+                            data-test={timeSlotLabel+"_"+provider+"_"+index}
+                            className={classNames("bordered-cell", {active: selectedCells.indexOf(timeSlotLabel+"_"+provider+"_"+index) > -1})}
+                            onClick={() => onSelect(handleTimeSlotClick(index, provider))}
                         >
+                            
                             {
                                 appoinmentSlots.map(appoinmentSlot => {
                                     const timeDiffInMin = getMinutesDiff(appoinmentSlot.endDateTime, appoinmentSlot.startDateTime)
@@ -51,6 +57,21 @@ const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSe
 
 
 const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="9:30", endOfDay="17:30", onClickAppoinment}) => {
+
+    const [multiSelect, setMultiSelect] = useState({enable: false, provider: null})
+
+    const [selectedCells, setSelectedCells] = useState([])
+
+
+    const getSelectedCell = (timeSlot, index) => {
+        let newValue = timeSlot + "_"+ multiSelect.provider + "_" + index
+        if(selectedCells.indexOf(newValue) > -1)
+            setSelectedCells([...selectedCells.slice(0,selectedCells.indexOf(newValue) + 1)])
+
+        else
+            setSelectedCells([...selectedCells,timeSlot + "_"+ multiSelect.provider + "_" + index])
+    }
+
     const providers = (appoinments.length > 0 ? [...new Set(appoinments.flatMap(appoinment => appoinment.providers && appoinment.providers.length > 0 ? appoinment.providers.map(provider => provider.name ) : "[No Provider]"))] : [null]).sort(function (a, b) {
         if (a.toLowerCase() > b.toLowerCase()) return -1;
         if (b.toLowerCase() > a.toLowerCase()) return 1;
@@ -72,7 +93,17 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
                         </Fragment>
                 })()
             }
-            <table cellSpacing="0" className="calender-table">
+            <table cellSpacing="0" className="calender-table"                         
+                onMouseDown={(e) => {
+                    setSelectedCells([])
+                    setMultiSelect({enable: true, provider: e.target.getAttribute("provider")})
+                    }
+                }
+                onMouseUp={() => {
+                        setMultiSelect({enable: false})
+                        onSelect(selectedCells[0].split("_")[0], selectedCells.slice(-1)[0].split("_")[0], multiSelect.provider)
+                    }
+                }>
                 {appoinments.length > 0 ? (
                     <thead>
                        <tr>
@@ -88,11 +119,13 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
                     {[...Array(24 / hoursDiff).keys()].map(time => {
                         const appoinmentSlots = appoinments.filter(
                             appoinment => {
+
                                 const hours = new Date(appoinment.startDateTime).getHours()
                                 return hours >= time  * hoursDiff && hours < (time + 1)  * hoursDiff
                             }
                         )
                         // making 0 as 12am and Handling minutes (conveting decimal to time format e.g. 0.50 => 12.30am) to handle configurable timeslot. 
+                        
                         let _timeSlotLabel = ((time * hoursDiff)) % 12
                         
                         _timeSlotLabel += _timeSlotLabel >= 0.00 && _timeSlotLabel < 1.00 ? 12 : 0
@@ -109,6 +142,9 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
                                 minutesDiff={hoursDiff * 60}
                                 onSelect={onSelect}
                                 onClickAppoinment={onClickAppoinment}
+                                isMultiSelectEnable={multiSelect.enable}
+                                getSelectedCell={getSelectedCell}
+                                selectedCells={selectedCells.filter((selectedCell, index) => selectedCells.indexOf(selectedCell) === index)}
                             />
                         );
                     })}
