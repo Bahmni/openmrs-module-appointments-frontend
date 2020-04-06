@@ -16,7 +16,7 @@ const getFilteredNodesOnSearch = (transformedTreeData, searchText) => {
       );
     })
     .map(ele => {
-      const n = Object.assign(
+      const filteredList = Object.assign(
         {},
         ele,
         ele.label
@@ -35,7 +35,7 @@ const getFilteredNodesOnSearch = (transformedTreeData, searchText) => {
             }
           : null
       );
-      return n;
+      return filteredList;
     });
   return searchFilteredNodesList;
 };

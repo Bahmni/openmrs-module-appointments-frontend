@@ -21,7 +21,6 @@ const AppointmentListSidePanelWrapper = props => {
   const [searchText, setSearchText] = useState(null);
 
   const transformedTreeData = TransformTreeData(TreeDataJson);
-
   useEffect(() => {
     setTreeData(transformedTreeData);
   }, [toggleHandler]);

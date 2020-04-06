@@ -16,6 +16,7 @@ const AppointmentListSidePanelSearch = props => {
   return (
     <div className="searchContainer">
       <input
+        data-testid="appointmentSearch"
         type="text"
         placeholder={placeholder}
         value={value === null ? "" : value}
