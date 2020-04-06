@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import classNames from 'classnames';
 import './ListView.module.scss'
-import * as moment from 'moment'
+import moment from 'moment'
 
 export default function ListView({ columns = {}, rows = [] }) {
     const [sortColumn, setSortColumn] = useState("")
@@ -12,9 +12,9 @@ export default function ListView({ columns = {}, rows = [] }) {
     function sort(sortOrder) {
         return [...listItems].sort((listItem1, listItem2) => {
             if (sortColumn.includes("Date")) {
-                const listItem1SortColumn = Date.parse(listItem1[sortColumn]),
-                    listItem2SortColumn = Date.parse(listItem2[sortColumn])
-                return compare(listItem1SortColumn, listItem2SortColumn, sortOrder)
+                const listItem1SortColumn = moment(listItem1[sortColumn]),
+                    listItem2SortColumn = moment(listItem2[sortColumn])
+                return compareTime(listItem1SortColumn, listItem2SortColumn, sortOrder)
             } else if (sortColumn.includes("Time")) {
                 const listItem1SortColumn = moment(listItem1[sortColumn], 'h:mm a'),
                     listItem2SortColumn = moment(listItem2[sortColumn], 'h:mm a')
