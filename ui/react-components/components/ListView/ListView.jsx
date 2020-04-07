@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import classNames from 'classnames';
-import './ListView.module.scss'
+import {appointmentListView, noAppointmentsListView, sortIcon} from './ListView.module.scss'
 import moment from 'moment'
 
 export default function ListView({ columns = {}, rows = [] }) {
@@ -59,21 +59,21 @@ export default function ListView({ columns = {}, rows = [] }) {
 
 
     function renderSortIcon(column) {
-        const sortIconClassName = ascending ? "fa-caret-up" : "fa-caret-down"
+        const caretIcon = ascending ? "fa-caret-up" : "fa-caret-down"
         if (sortColumn === column) {
-            return (<i data-testid="sortIcon" className={classNames("fa", sortIconClassName)} onClick={() => setAscending(!ascending)}></i>)
+            return (<i data-testid="sortIcon" className={classNames("fa", caretIcon, sortIcon)} onClick={() => setAscending(!ascending)}></i>)
         }
         return null
     }
 
     if (listItems.length === 0) {
         return (
-            <div className={classNames("no-appointments-list-view")}>
+            <div className={classNames(noAppointmentsListView)}>
                 No appointments found
             </div>)
     }
     return (
-        <table className={classNames("appointment-list-view")}>
+        <table className={classNames(appointmentListView)}>
             <thead>
                 <tr>
                     {Object.keys(columns).map(column => {

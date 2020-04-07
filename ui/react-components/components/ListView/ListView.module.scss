@@ -1,6 +1,6 @@
 @import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
-.appointment-list-view {
+.appointmentListView {
     overflow-x: auto;
     overflow-y: hidden;
     height: calc(100vh - 230px);
@@ -61,10 +61,10 @@
     }
   }
   
-  .no-appointments-list-view {
+  .noAppointmentsListView {
     text-align: center;
   }
 
-  .fa {
+  .sortIcon {
     padding-left: 8px;
   }

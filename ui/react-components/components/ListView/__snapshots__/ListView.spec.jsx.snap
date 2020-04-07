@@ -3,7 +3,7 @@
 exports[`List View Component renders ListView with appointments correctly 1`] = `
 <DocumentFragment>
   <table
-    class="appointment-list-view"
+    class="appointmentListView"
   >
     <thead>
       <tr>
@@ -284,7 +284,7 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
 exports[`List View Component renders ListView with no appointments correctly 1`] = `
 <DocumentFragment>
   <div
-    class="no-appointments-list-view"
+    class="noAppointmentsListView"
   >
     No appointments found
   </div>
