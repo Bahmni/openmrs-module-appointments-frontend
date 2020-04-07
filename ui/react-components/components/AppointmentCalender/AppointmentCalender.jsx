@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import "./AppointmentCalender.module.scss";
 import moment  from 'moment';
 import  classNames  from 'classnames';
-
+import {sortBy} from 'lodash'
 
 
 const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSelect, onClickAppoinment, isMultiSelectEnable, getSelectedCell, selectedCells }) => {
@@ -25,11 +25,10 @@ const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSe
                     {providers.map(provider => (
                         <td
                             provider={provider}
-                            onMouseOver={isMultiSelectEnable ? () => getSelectedCell(timeSlotLabel, index) : () => {}}
+                            onMouseOver={isMultiSelectEnable ? () => getSelectedCell(handleTimeSlotClick(index), index) : () => {}}
                             key={`${timeSlotLabel}_${provider}_${index}`}
-                            data-test={timeSlotLabel+"_"+provider+"_"+index}
-                            className={classNames("bordered-cell", {active: selectedCells.indexOf(timeSlotLabel+"_"+provider+"_"+index) > -1})}
-                            onClick={() => onSelect(handleTimeSlotClick(index, provider))}
+                            id={`${handleTimeSlotClick(index).startTime}_${handleTimeSlotClick(index).endTime}_${provider}_${index}`}
+                            className={classNames("bordered-cell", {active: selectedCells.indexOf(handleTimeSlotClick(index).startTime + "_" + handleTimeSlotClick(index).endTime +"_"+provider+"_"+index) > -1})}
                         >
                             
                             {
@@ -63,13 +62,16 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
     const [selectedCells, setSelectedCells] = useState([])
 
 
-    const getSelectedCell = (timeSlot, index) => {
-        let newValue = timeSlot + "_"+ multiSelect.provider + "_" + index
-        if(selectedCells.indexOf(newValue) > -1)
-            setSelectedCells([...selectedCells.slice(0,selectedCells.indexOf(newValue) + 1)])
-
+    const getSelectedCell = ({startTime, endTime}, index) => {
+        let currentSelectedCell = startTime + "_" + endTime + "_"+ multiSelect.provider + "_" + index
+        if(selectedCells.indexOf(currentSelectedCell) > -1)
+            setSelectedCells([...selectedCells.slice(0,selectedCells.indexOf(currentSelectedCell) + 1)])
+        else if(selectedCells[0] && moment(selectedCells[0].split("_")[0], "h:mm:ssA").isAfter(moment(startTime, "h:mm:ssA"))){
+            setSelectedCells([startTime + "_"+  endTime + "_" + multiSelect.provider + "_" + index, ...selectedCells])
+            
+        }
         else
-            setSelectedCells([...selectedCells,timeSlot + "_"+ multiSelect.provider + "_" + index])
+            setSelectedCells([...selectedCells,startTime + "_"+  endTime + "_" + multiSelect.provider + "_" + index])
     }
 
     const providers = (appoinments.length > 0 ? [...new Set(appoinments.flatMap(appoinment => appoinment.providers && appoinment.providers.length > 0 ? appoinment.providers.map(provider => provider.name ) : "[No Provider]"))] : [null]).sort(function (a, b) {
@@ -95,13 +97,14 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
             }
             <table cellSpacing="0" className="calender-table"                         
                 onMouseDown={(e) => {
-                    setSelectedCells([])
+                    setSelectedCells([e.target.id])
                     setMultiSelect({enable: true, provider: e.target.getAttribute("provider")})
                     }
                 }
                 onMouseUp={() => {
                         setMultiSelect({enable: false})
-                        onSelect(selectedCells[0].split("_")[0], selectedCells.slice(-1)[0].split("_")[0], multiSelect.provider)
+                        onSelect(selectedCells[0].split("_")[0], selectedCells.slice(-1)[0].split("_")[1], multiSelect.provider)
+                        setSelectedCells([])
                     }
                 }>
                 {appoinments.length > 0 ? (

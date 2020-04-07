@@ -8,10 +8,11 @@
     
         thead>tr>td {
             text-align: center;
+            user-select: none;
+            pointer-events: none;
         }
     
-        td,
-        th {
+        td {
             font-size: 14px;
     
             &:nth-child(1) {
@@ -25,7 +26,7 @@
         }
 
         td.active{
-            background-color: rgb(238, 248, 250);
+            background-color: #f0faff;
         }
     
         .borderless-cell {
@@ -86,7 +87,9 @@
             font-weight: 400;
             overflow: auto;
             border: 1px solid #3a87ad;
-            background-color: #3a87ad;
+            background-color: #9ca0a1;
+            user-select: none;
+            cursor: pointer;
         }
     }
     
