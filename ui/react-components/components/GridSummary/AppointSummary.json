@@ -1,0 +1,73 @@
+[{
+    "appointmentService": {
+        "appointmentServiceId": 1,
+        "name": "cardio",
+        "description": "cardio",
+        "speciality": {},
+        "startTime": "10:00:00",
+        "endTime": "10:45:00",
+        "maxAppointmentsLimit": 5,
+        "durationMins": 45,
+        "location": {},
+        "uuid": "7a672626-c824-4372-a0f2-07aaea693089",
+        "color": "#FF8C00",
+        "initialAppointmentStatus": null,
+        "creatorName": null
+    },
+    "appointmentCountMap": {
+        "2020-04-07": {
+            "allAppointmentsCount": 2,
+            "missedAppointmentsCount": 1,
+            "appointmentDate": 1586197800000,
+            "appointmentServiceUuid": "7a672626-c824-4372-a0f2-07aaea693089"
+        },
+        "2020-04-10": {
+            "allAppointmentsCount": 1,
+            "missedAppointmentsCount": 0,
+            "appointmentDate": 1586457000000,
+            "appointmentServiceUuid": "7a672626-c824-4372-a0f2-07aaea693089"
+        },
+        "2020-04-08": {
+            "allAppointmentsCount": 1,
+            "missedAppointmentsCount": 0,
+            "appointmentDate": 1586284200000,
+            "appointmentServiceUuid": "7a672626-c824-4372-a0f2-07aaea693089"
+        },
+        "2020-04-11": {
+            "allAppointmentsCount": 1,
+            "missedAppointmentsCount": 0,
+            "appointmentDate": 1586543400000,
+            "appointmentServiceUuid": "7a672626-c824-4372-a0f2-07aaea693089"
+        },
+        "2020-04-06": {
+            "allAppointmentsCount": 1,
+            "missedAppointmentsCount": 0,
+            "appointmentDate": 1586111400000,
+            "appointmentServiceUuid": "7a672626-c824-4372-a0f2-07aaea693089"
+        },
+        "2020-04-09": {
+            "allAppointmentsCount": 1,
+            "missedAppointmentsCount": 0,
+            "appointmentDate": 1586370600000,
+            "appointmentServiceUuid": "7a672626-c824-4372-a0f2-07aaea693089"
+        }
+    }
+}, {
+    "appointmentService": {
+        "appointmentServiceId": 2,
+        "name": "ortho",
+        "description": "ortho",
+        "speciality": {},
+        "startTime": "10:45:00",
+        "endTime": "12:30:00",
+        "maxAppointmentsLimit": 8,
+        "durationMins": 45,
+        "location": {},
+        "uuid": "8c0d66d2-7641-43d2-893c-e8ca42603783",
+        "color": "#006400",
+        "initialAppointmentStatus": null,
+        "creatorName": null
+    },
+    "appointmentCountMap": {}
+}]
+
