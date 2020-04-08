@@ -1,0 +1,49 @@
+.table-grid-wrapper{
+    overflow-x: auto;
+
+    .table-grid-summary{
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        margin-bottom:8px;
+        border: none;
+        text-align: center;
+
+        thead>tr>td{
+            font-weight: 600;
+        }
+
+        tbody > tr {
+            td {
+                min-width:110px;
+                padding: 5px;
+                border: 1px solid #ddd;
+                color: #363463;
+                &:first-child{
+                    border:none;
+                    text-align: right;
+                    background-color: white;
+                    min-width: 100px;
+                }
+                a{
+                    text-decoration: none;
+                    color: #2b95ff;
+                    cursor: pointer;
+                }
+                
+            }
+        }
+        
+        .table-total-count{
+            background-color: #f0faff;
+            color: black;
+        }
+    }
+    .missed-count{
+        color:red;
+    }
+}
+
+
+  
+ 
