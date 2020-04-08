@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { injectIntl } from "react-intl";
 import "./GridSummary.scss";
 import moment from "moment";
@@ -23,7 +23,7 @@ const transformGridData=(gridData)=>{
 }
 
 const GridSummary = props => {
-  const { gridData, weekStartDate = moment().startOf("isoweek"), onClick } = props;
+  const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick } = props;
   let week = []
   const gridSummaryData=transformGridData(gridData)
 
@@ -42,7 +42,7 @@ const GridSummary = props => {
                 missedCount: 0
               });
               return (
-                <td key={index}>
+                <td key={'caption'+index}>
                   {moment(moment(weekStartDate).add(index, "days")).format(
                     "D MMM, ddd"
                   )}{" "}
@@ -54,8 +54,8 @@ const GridSummary = props => {
         <tbody>
           {gridSummaryData.map((row,index) => {
             return (
-              <tr>
-                <td key={index}>{row.rowLabel}</td>
+              <tr data-testid='row' key={'row'+index}>
+                <td key={row.rowLabel+index}>{row.rowLabel}</td>
                 {week.map((weekDay,index) => {
                   const a = row.rowDataList.find(
                     ele => ele.date === weekDay.date
@@ -64,7 +64,7 @@ const GridSummary = props => {
                     weekDay.totalCount += a.count;
                     weekDay.missedCount += a.missedCount;
                     return (
-                      <td key={index}>
+                      <td key={row.rowLabel+index+weekDay.date}>
                         <a onClick={() => onClick(weekDay.date)}>{a.count}</a>{" "}
                         <span className="missed-count">
                           {a.missedCount > 0
@@ -74,7 +74,7 @@ const GridSummary = props => {
                       </td>
                     );
                   } else {
-                    return <td></td>;
+                    return <td key={row.rowLabel+index+weekDay.date}></td>;
                   }
                 })}
               </tr>
@@ -84,7 +84,7 @@ const GridSummary = props => {
             <td>Total</td>
             {week.map((weekDay,index) => {
               return (
-                <td key={index}>
+                <td key={'total'+index}>
                   <a onClick={() => onClick(weekDay.date)}>
                     {weekDay.totalCount > 0 ? weekDay.totalCount : ""}
                   </a>
