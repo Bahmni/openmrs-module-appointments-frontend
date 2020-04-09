@@ -1,0 +1,32 @@
+.tab-view {
+  .active {
+    color: #27ae60;
+    background: #f7f7f7;
+    border-color: #95989a;
+    cursor: pointer;
+  }
+
+  li {
+    display: inline-block;
+
+    a {
+      display: inline-block;
+      padding: 10px;
+      margin-left: 20px;
+      border-radius: 3px 3px 0 0;
+      color: #000;
+      border: 1px solid transparent;
+      border-bottom: none;
+      font-size: 12px;
+      outline: 0;
+      font-family: OpenSansBold, sans-serif;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  }
+}
+
+.horizontal-line {
+  position: relative;
+  top: -16px;
+}
