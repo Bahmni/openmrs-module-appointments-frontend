@@ -1,8 +1,9 @@
 import React from "react";
 import { injectIntl } from "react-intl";
-import "./GridSummary.scss";
+import "./GridSummary.module.scss";
 import moment from "moment";
 import { sortBy } from "lodash";
+import classNames from 'classnames'
 
 const transformGridData=(gridData)=>{
   return gridData.map(dataElement => {
@@ -60,21 +61,22 @@ const GridSummary = props => {
                   const a = row.rowDataList.find(
                     ele => ele.date === weekDay.date
                   );
+                    let currentDate=weekDay.date===moment().format("YYYY-MM-DD")
                   if (a) {
                     weekDay.totalCount += a.count;
                     weekDay.missedCount += a.missedCount;
                     return (
-                      <td key={row.rowLabel+index+weekDay.date}>
-                        <a onClick={() => onClick(weekDay.date)}>{a.count}</a>{" "}
+                      <td key={row.rowLabel+index+weekDay.date} className={classNames({'current-date-column':currentDate})}>
+                        <a onClick={() => onClick(weekDay.date)}>{a.count}</a>
                         <span className="missed-count">
                           {a.missedCount > 0
-                            ? "(" + a.missedCount + "missed)"
+                            ? " (" + a.missedCount + " missed)"
                             : ""}
                         </span>
                       </td>
                     );
                   } else {
-                    return <td key={row.rowLabel+index+weekDay.date}></td>;
+                    return <td key={row.rowLabel+index+weekDay.date} className={classNames({'current-date-column':currentDate})}></td>;
                   }
                 })}
               </tr>
@@ -90,7 +92,7 @@ const GridSummary = props => {
                   </a>
                   <span className="missed-count">
                     {weekDay.missedCount > 0
-                      ? "(" + weekDay.missedCount + "missed)"
+                      ? " (" + weekDay.missedCount + " missed)"
                       : ""}
                   </span>
                 </td>
