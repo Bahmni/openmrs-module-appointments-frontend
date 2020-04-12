@@ -1,3 +1,4 @@
+@import '../../variables.scss';
 @import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
 .appointmentListView {
@@ -61,6 +62,14 @@
     }
   }
   
+  .cancelledAppointment {
+    background-color: $color-cancelled-appointment-color
+  }
+
+  .missedAppointment {
+    background-color: $color-missed-appointment-color
+  }
+
   .noAppointmentsListView {
     text-align: center;
   }

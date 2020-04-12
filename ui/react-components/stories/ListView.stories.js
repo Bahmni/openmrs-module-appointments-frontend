@@ -1,5 +1,7 @@
 import ListView from '../components/ListView/ListView'
 import React from 'react'
+import { cancelledAppointment, missedAppointment } from '../components/ListView/ListView.module.scss'
+
 export default { title: 'List View' };
 
 const columns = {
@@ -46,7 +48,7 @@ const rows = [
         "Speciality": "Cardiology",
         "Service": "Cardiology",
         "Service Appointment Type": "",
-        "Status": "Scheduled",
+        "Status": "Cancelled",
         "Walk In": "Yes",
         "Location": "OPD-1",
         "Additional Info": "",
@@ -62,7 +64,7 @@ const rows = [
         "Speciality": "Psychology",
         "Service": "Psychology",
         "Service Appointment Type": "",
-        "Status": "Scheduled",
+        "Status": "Missed",
         "Walk In": "Yes",
         "Location": "General Ward",
         "Additional Info": "",
@@ -70,6 +72,11 @@ const rows = [
     }
 ]
 
-export const withAppointments = () => (<ListView columns={columns} rows={rows}></ListView>);
+function getAppointmentColor(appointment) {
+    const statusToColor = { "Missed": missedAppointment, "Cancelled": cancelledAppointment }
+    return statusToColor[appointment.Status]
+}
+
+export const withAppointments = () => (<ListView columns={columns} rows={rows} colorRow={getAppointmentColor}></ListView>);
 
 export const withoutAppointments = () => (<ListView columns={columns} rows={[]}></ListView>);

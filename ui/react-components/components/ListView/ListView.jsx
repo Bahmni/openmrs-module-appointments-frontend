@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
 import classNames from 'classnames';
-import {appointmentListView, noAppointmentsListView, sortIcon} from './ListView.module.scss'
+import { appointmentListView, noAppointmentsListView, sortIcon } from './ListView.module.scss'
 import moment from 'moment'
 
-export default function ListView({ columns = {}, rows = [] }) {
+export default function ListView({ columns = {}, rows = [], colorRow = () => { } }) {
     const [sortColumn, setSortColumn] = useState("")
     const [ascending, setAscending] = useState(true)
     const [listItems, setListItems] = useState(rows)
 
-    
+
     function sort(sortOrder) {
         return [...listItems].sort((listItem1, listItem2) => {
             if (sortColumn.includes("Date")) {
@@ -48,7 +48,7 @@ export default function ListView({ columns = {}, rows = [] }) {
         }
     }
 
-    
+
     useEffect(() => {
         if (ascending) {
             setListItems(sort(1))
@@ -91,15 +91,15 @@ export default function ListView({ columns = {}, rows = [] }) {
                 </tr>
             </thead>
             <tbody>
-                {listItems.map((listItem,index) => {
+                {listItems.map((listItem, index) => {
                     return (<tr key={index}>
-                        {Object.keys(listItem).map((header,index) => {
+                        {Object.keys(listItem).map((header, index) => {
 
                             let contentLength = ""
                             if (columns[header] === "mid") {
                                 contentLength = "table-mid-width"
                             }
-                            return (<td key={index} className={classNames(contentLength)}>{listItem[header]}</td>)
+                            return (<td key={index} className={classNames(contentLength, colorRow(listItem))}>{listItem[header]}</td>)
                         })}
                     </tr>)
                 })}

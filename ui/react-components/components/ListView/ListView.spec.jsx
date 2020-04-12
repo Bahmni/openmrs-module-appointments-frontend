@@ -1,6 +1,7 @@
 import React from 'react'
 import ListView from './ListView'
 import { render, fireEvent } from '@testing-library/react'
+import {missedAppointment, cancelledAppointment} from './ListView.module.scss'
 import { toHaveClass } from '@testing-library/jest-dom/extend-expect'
 
 describe('List View Component', () => {
@@ -84,6 +85,20 @@ describe('List View Component', () => {
 
         expect(asFragment()).toMatchSnapshot()
     })
+
+    it('renders ListView with background colors based on status', () => {
+        const coloredRows = [
+            { ...rows[0], "Status": "Missed" },
+            { ...rows[1], "Status": "Cancelled" },
+            { ...rows[2], "Status": "Scheduled" }]
+        const { asFragment } = render(<ListView columns={columns} rows={coloredRows} colorRow={(appointment) => {
+            const statusToColor = { "Missed": missedAppointment, "Cancelled": cancelledAppointment }
+            return statusToColor[appointment.Status]
+        }} />)
+
+        expect(asFragment()).toMatchSnapshot()
+    })
+
 
     it('should sort records ascending wrt column and display icon on click of column header', () => {
         rows[0]["Patient Name"] = "Antony"
