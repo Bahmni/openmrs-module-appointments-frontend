@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { createPortal } from 'react-dom'
 
-import './Print.module.scss'
-
 export default function Print({ children, ...props }) {
     const [printRef, setPrintRef] = useState(null)
     const mountNode = printRef && printRef.contentWindow.document.body
@@ -22,7 +20,7 @@ export default function Print({ children, ...props }) {
                         mountNode
                     )}
             </iframe>
-            <i className="fa fa-print" onClick={() => handlePrint()} data-testid="printIcon"></i>
+            <a onClick={() => handlePrint()} data-testid="printIcon"><i className="fas fa-print"></i></a>
         </>
     )
 }
