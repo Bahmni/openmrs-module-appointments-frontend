@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from 'react'
 import classNames from 'classnames';
 import { appointmentListView, noAppointmentsListView, sortIcon, selected } from './ListView.module.scss'
 import moment from 'moment'
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons/faCaretDown'
+import { faCaretUp } from '@fortawesome/free-solid-svg-icons/faCaretUp'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function ListView({ columns = {}, rows = [], colorRow = () => { } }) {
     const [sortColumn, setSortColumn] = useState("")
@@ -59,9 +62,9 @@ export default function ListView({ columns = {}, rows = [], colorRow = () => { }
 
 
     function renderSortIcon(column) {
-        const caretIcon = ascending ? "fa-caret-up" : "fa-caret-down"
+        const icon = ascending ? faCaretUp : faCaretDown
         if (sortColumn === column) {
-            return (<i data-testid="sortIcon" className={classNames("fa", caretIcon, sortIcon)} onClick={() => setAscending(!ascending)}></i>)
+            return <FontAwesomeIcon data-testid="sortIcon" icon={icon} className={classNames(sortIcon)} onClick={() => setAscending(!ascending)} />
         }
         return null
     }

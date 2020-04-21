@@ -107,8 +107,7 @@ describe('List View Component', () => {
         const { getByText, container } = render(<ListView columns={columns} rows={rows} />)
 
         fireEvent.click(getByText('Patient Name'))
-
-        expect(getByText("Patient Name").childNodes[1]).toHaveClass("fa fa-caret-up")
+        expect(getByText("Patient Name").childNodes[1]).toHaveClass("svg-inline--fa fa-caret-up fa-w-10 sortIcon")
 
         const tableBody = container.querySelector("tbody")
         expect(tableBody.children[0].childNodes[1].textContent).toBe("Antony")
@@ -125,7 +124,7 @@ describe('List View Component', () => {
         fireEvent.click(getByText('Patient Name'))
         fireEvent.click(getByTestId("sortIcon"))
 
-        expect(getByText("Patient Name").childNodes[1]).toHaveClass("fa fa-caret-down")
+        expect(getByText("Patient Name").childNodes[1]).toHaveClass("svg-inline--fa fa-caret-down fa-w-10 sortIcon")
 
         const tableBody = container.querySelector("tbody")
         expect(tableBody.children[0].childNodes[1].textContent).toBe("Zenia")
@@ -141,11 +140,11 @@ describe('List View Component', () => {
 
         fireEvent.click(getByText('Patient Name'))
         fireEvent.click(getByTestId("sortIcon"))
-        expect(getByText("Patient Name").childNodes[1]).toHaveClass("fa fa-caret-down")
+        expect(getByText("Patient Name").childNodes[1]).toHaveClass("svg-inline--fa fa-caret-down fa-w-10 sortIcon")
         fireEvent.click(getByText('Patient ID'))
 
         expect(getByText("Patient Name").childNodes.length).toEqual(1)
-        expect(getByText("Patient ID").childNodes[1]).toHaveClass("fa fa-caret-down")
+        expect(getByText("Patient ID").childNodes[1]).toHaveClass("svg-inline--fa fa-caret-down fa-w-10 sortIcon")
         const tableBody = container.querySelector("tbody")
         expect(tableBody.children[0].childNodes[0].textContent).toBe("GAN00020")
         expect(tableBody.children[1].childNodes[0].textContent).toBe("GAN00012")
