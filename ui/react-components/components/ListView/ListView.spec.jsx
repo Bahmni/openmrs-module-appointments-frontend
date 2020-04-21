@@ -1,7 +1,7 @@
 import React from 'react'
 import ListView from './ListView'
 import { render, fireEvent } from '@testing-library/react'
-import {missedAppointment, cancelledAppointment} from './ListView.module.scss'
+import { missedAppointment, cancelledAppointment } from './ListView.module.scss'
 import { toHaveClass } from '@testing-library/jest-dom/extend-expect'
 
 describe('List View Component', () => {
@@ -151,4 +151,18 @@ describe('List View Component', () => {
         expect(tableBody.children[1].childNodes[0].textContent).toBe("GAN00012")
         expect(tableBody.children[2].childNodes[0].textContent).toBe("GAN00001")
     })
+
+    it('should select an appointment if it is clicked and deselect if another is selected', () => {
+        const { container } = render(<ListView columns={columns} rows={rows} />)
+        const row1Appointment = container.querySelector("tbody").children[0]
+        const row2Appointment = container.querySelector("tbody").children[1]
+
+        fireEvent.click(row1Appointment)
+        expect(row1Appointment).toHaveClass('selected')
+
+        fireEvent.click(row2Appointment)
+        expect(row2Appointment).toHaveClass('selected')
+        expect(row1Appointment).not.toHaveClass('selected')
+    })
+
 })

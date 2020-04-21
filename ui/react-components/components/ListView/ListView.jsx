@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 import classNames from 'classnames';
-import { appointmentListView, noAppointmentsListView, sortIcon } from './ListView.module.scss'
+import { appointmentListView, noAppointmentsListView, sortIcon, selected } from './ListView.module.scss'
 import moment from 'moment'
 
 export default function ListView({ columns = {}, rows = [], colorRow = () => { } }) {
     const [sortColumn, setSortColumn] = useState("")
     const [ascending, setAscending] = useState(true)
     const [listItems, setListItems] = useState(rows)
-
+    const [selectedAppointment, setSelectedAppointment] = useState(null)
 
     function sort(sortOrder) {
         return [...listItems].sort((listItem1, listItem2) => {
@@ -92,7 +92,7 @@ export default function ListView({ columns = {}, rows = [], colorRow = () => { }
             </thead>
             <tbody>
                 {listItems.map((listItem, index) => {
-                    return (<tr key={index}>
+                    return (<tr key={index} className={selectedAppointment === listItem ? classNames(selected) : null} onClick={() => setSelectedAppointment(listItem)}>
                         {Object.keys(listItem).map((header, index) => {
 
                             let contentLength = ""
