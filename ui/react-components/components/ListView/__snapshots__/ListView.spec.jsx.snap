@@ -13,7 +13,7 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           Patient ID
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Patient Name
         </th>
@@ -33,7 +33,7 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           End Time
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Provider
         </th>
@@ -43,12 +43,12 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           Speciality
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Service
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Service Appointment Type
         </th>
@@ -63,12 +63,12 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           Walk In
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Location
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Additional Info
         </th>
@@ -87,7 +87,7 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           GAN203012
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Test Diabetes
         </td>
@@ -107,7 +107,7 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           10:30 am
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -115,12 +115,12 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           Cardiology
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Cardiology
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -133,12 +133,12 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           Yes
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           OPD-1
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -151,7 +151,7 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           GAN203011
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Test Con
         </td>
@@ -171,7 +171,7 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           9:30 am
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -179,12 +179,12 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           Cardiology
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Cardiology
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -197,12 +197,12 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           Yes
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           OPD-1
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -217,7 +217,7 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           GAN203019
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Test Con
         </td>
@@ -237,7 +237,7 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           11:30 am
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -245,12 +245,12 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           Psychology
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Psychology
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -263,12 +263,12 @@ exports[`List View Component renders ListView with appointments correctly 1`] = 
           Yes
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           General Ward
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -294,7 +294,7 @@ exports[`List View Component renders ListView with background colors based on st
           Patient ID
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Patient Name
         </th>
@@ -314,7 +314,7 @@ exports[`List View Component renders ListView with background colors based on st
           End Time
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Provider
         </th>
@@ -324,12 +324,12 @@ exports[`List View Component renders ListView with background colors based on st
           Speciality
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Service
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Service Appointment Type
         </th>
@@ -344,12 +344,12 @@ exports[`List View Component renders ListView with background colors based on st
           Walk In
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Location
         </th>
         <th
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Additional Info
         </th>
@@ -368,7 +368,7 @@ exports[`List View Component renders ListView with background colors based on st
           GAN203012
         </td>
         <td
-          class="table-mid-width missedAppointment"
+          class="tableMidWidth missedAppointment"
         >
           Test Diabetes
         </td>
@@ -388,7 +388,7 @@ exports[`List View Component renders ListView with background colors based on st
           10:30 am
         </td>
         <td
-          class="table-mid-width missedAppointment"
+          class="tableMidWidth missedAppointment"
         />
         <td
           class="missedAppointment"
@@ -396,12 +396,12 @@ exports[`List View Component renders ListView with background colors based on st
           Cardiology
         </td>
         <td
-          class="table-mid-width missedAppointment"
+          class="tableMidWidth missedAppointment"
         >
           Cardiology
         </td>
         <td
-          class="table-mid-width missedAppointment"
+          class="tableMidWidth missedAppointment"
         />
         <td
           class="missedAppointment"
@@ -414,12 +414,12 @@ exports[`List View Component renders ListView with background colors based on st
           Yes
         </td>
         <td
-          class="table-mid-width missedAppointment"
+          class="tableMidWidth missedAppointment"
         >
           OPD-1
         </td>
         <td
-          class="table-mid-width missedAppointment"
+          class="tableMidWidth missedAppointment"
         />
         <td
           class="missedAppointment"
@@ -432,7 +432,7 @@ exports[`List View Component renders ListView with background colors based on st
           GAN203011
         </td>
         <td
-          class="table-mid-width cancelledAppointment"
+          class="tableMidWidth cancelledAppointment"
         >
           Test Con
         </td>
@@ -452,7 +452,7 @@ exports[`List View Component renders ListView with background colors based on st
           9:30 am
         </td>
         <td
-          class="table-mid-width cancelledAppointment"
+          class="tableMidWidth cancelledAppointment"
         />
         <td
           class="cancelledAppointment"
@@ -460,12 +460,12 @@ exports[`List View Component renders ListView with background colors based on st
           Cardiology
         </td>
         <td
-          class="table-mid-width cancelledAppointment"
+          class="tableMidWidth cancelledAppointment"
         >
           Cardiology
         </td>
         <td
-          class="table-mid-width cancelledAppointment"
+          class="tableMidWidth cancelledAppointment"
         />
         <td
           class="cancelledAppointment"
@@ -478,12 +478,12 @@ exports[`List View Component renders ListView with background colors based on st
           Yes
         </td>
         <td
-          class="table-mid-width cancelledAppointment"
+          class="tableMidWidth cancelledAppointment"
         >
           OPD-1
         </td>
         <td
-          class="table-mid-width cancelledAppointment"
+          class="tableMidWidth cancelledAppointment"
         />
         <td
           class="cancelledAppointment"
@@ -498,7 +498,7 @@ exports[`List View Component renders ListView with background colors based on st
           GAN203019
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Test Con
         </td>
@@ -518,7 +518,7 @@ exports[`List View Component renders ListView with background colors based on st
           11:30 am
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -526,12 +526,12 @@ exports[`List View Component renders ListView with background colors based on st
           Psychology
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           Psychology
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""
@@ -544,12 +544,12 @@ exports[`List View Component renders ListView with background colors based on st
           Yes
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         >
           General Ward
         </td>
         <td
-          class="table-mid-width"
+          class="tableMidWidth"
         />
         <td
           class=""

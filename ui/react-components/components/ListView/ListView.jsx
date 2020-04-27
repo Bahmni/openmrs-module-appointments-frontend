@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames';
-import { appointmentListView, noAppointmentsListView, sortIcon, selected } from './ListView.module.scss'
+import { appointmentListView, noAppointmentsListView, sortIcon, selected, tableMidWidth } from './ListView.module.scss'
 import moment from 'moment'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons/faCaretDown'
 import { faCaretUp } from '@fortawesome/free-solid-svg-icons/faCaretUp'
@@ -82,7 +82,7 @@ export default function ListView({ columns = {}, rows = [], colorRow = () => { }
                     {Object.keys(columns).map(column => {
                         let contentLength = ""
                         if (columns[column] === "mid") {
-                            contentLength = "table-mid-width"
+                            contentLength = tableMidWidth
                         }
                         return (
                             <th key={column} className={classNames(contentLength)} onClick={() => setSortColumn(column)}>
@@ -100,7 +100,7 @@ export default function ListView({ columns = {}, rows = [], colorRow = () => { }
 
                             let contentLength = ""
                             if (columns[header] === "mid") {
-                                contentLength = "table-mid-width"
+                                contentLength = tableMidWidth
                             }
                             return (<td key={index} className={classNames(contentLength, colorRow(listItem))}>{listItem[header]}</td>)
                         })}
