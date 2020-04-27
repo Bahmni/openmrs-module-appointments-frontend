@@ -8,7 +8,7 @@ import TreeDataJson from "../AppointmentListSidePanelTree/SampleDataForTree.json
 import TransformTreeData from "../../utils/AppointmentListSidePanelWrapper/transformTreeData";
 import GetFilteredNodesOnToggle from "../../utils/AppointmentListSidePanelWrapper/getFilteredNodesOnToggle";
 import GetFilteredNodesOnSearch from "../../utils/AppointmentListSidePanelWrapper/getFilteredNodesOnSearch";
-
+import classNames from "classnames";
 import { useEffect } from "react";
 import { injectIntl } from "react-intl";
 import PropTypes from "prop-types";
@@ -64,14 +64,14 @@ const AppointmentListSidePanelWrapper = props => {
   };
 
   return (
-    <div className="AppointmentListSidePanelContainer">
+    <div className={classNames("AppointmentListSidePanelContainer")}>
       <AppointmentListSidePanelSearch
         onChange={searchHandler}
         disabledInputSearch={flagForToggleButton}
         value={searchText}
         onClearText={clearSearchTextHandler}
       />
-      <div className="showSelectedContainer">
+      <div className={classNames("showSelectedContainer")}>
         <Label
           forInput="show-selected"
           translationKey="SHOW_SELECTED_LABEL"

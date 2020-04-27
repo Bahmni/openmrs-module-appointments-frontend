@@ -12,20 +12,22 @@ import {
 import "./AppointmentListSidePanelTree.module.scss";
 import { injectIntl } from "react-intl";
 import PropTypes from "prop-types";
+import classNames from "classnames";
+
 const AppointmentListSidePanelTree = props => {
   const { nodes, getChecked, intl } = props;
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
 
   const icons = {
-    check: <MdCheckBox className="mdCheckBox" />,
-    uncheck: <MdCheckBoxOutlineBlank className="mdCheckBoxOutlineBlank" />,
-    halfCheck: <MdIndeterminateCheckBox className="mdIndeterminateCheckBox" />,
+    check: <MdCheckBox className={classNames("mdCheckBox")} />,
+    uncheck: <MdCheckBoxOutlineBlank className={classNames("mdCheckBoxOutlineBlank")} />,
+    halfCheck: <MdIndeterminateCheckBox className={classNames("mdIndeterminateCheckBox")} />,
     expandClose: <MdAdd />,
     expandOpen: <MdRemove />,
     expandAll: <MdAddBox />,
     collapseAll: (
-      <MdIndeterminateCheckBox className="mdIndeterminateCheckBox" />
+      <MdIndeterminateCheckBox className={classNames("mdIndeterminateCheckBox")} />
     ),
     parentClose: "",
     parentOpen: "",

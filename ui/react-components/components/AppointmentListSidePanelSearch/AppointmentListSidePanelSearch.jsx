@@ -2,6 +2,7 @@ import React from "react";
 import "./AppointmentListSidePanelSearch.module.scss";
 import { injectIntl } from "react-intl";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 const AppointmentListSidePanelSearch = props => {
   const {
     value,
@@ -13,8 +14,12 @@ const AppointmentListSidePanelSearch = props => {
     intl
   } = props;
 
+  const searchClass = classNames(style, {
+    disabled: disabledInputSearch
+  });
+
   return (
-    <div className="searchContainer">
+    <div className={classNames("searchContainer")}>
       <input
         data-testid="appointmentSearch"
         type="text"
@@ -22,20 +27,20 @@ const AppointmentListSidePanelSearch = props => {
         value={value === null ? "" : value}
         onChange={onChange}
         disabled={disabledInputSearch}
-        className={`${style} ${disabledInputSearch ? "disabled" : ""}`}
+        className={searchClass}
       />
       <button
-        className="icon"
+        className={classNames("icon")}
         disabled={disabledInputSearch}
         onClick={onClearText}
       >
         {value == null || "" ? (
-          <i className="fa fa-search " data-testid="search"></i>
+          <i className={classNames("fa fa-search")} data-testid="search"></i>
         ) : (
           <i
-            className={`fa fa-times ${
-              disabledInputSearch ? "fa-times-disabled" : ""
-            }`}
+            className={classNames("fa fa-times", {
+              "fa-times-disabled": disabledInputSearch
+            })}
             data-testid="times"
           ></i>
         )}
