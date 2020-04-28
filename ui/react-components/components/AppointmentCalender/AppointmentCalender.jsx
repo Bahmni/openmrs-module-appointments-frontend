@@ -2,10 +2,9 @@ import React, { Fragment, useState } from "react";
 import "./AppointmentCalender.module.scss";
 import moment  from 'moment';
 import  classNames  from 'classnames';
-import {sortBy} from 'lodash'
 
 
-const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onSelect, onClickAppoinment, isMultiSelectEnable, getSelectedCell, selectedCells }) => {
+const TimeSlot = ({ timeSlotLabel, providers, appoinmentSlots, minutesDiff, onClickAppoinment, isMultiSelectEnable, getSelectedCell, selectedCells }) => {
     
     const timeDiff = minutesDiff / 2
 
