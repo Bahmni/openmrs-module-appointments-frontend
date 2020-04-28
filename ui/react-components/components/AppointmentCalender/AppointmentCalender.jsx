@@ -74,7 +74,16 @@ const AppointmentCalender = ({hoursDiff = 3, appoinments, onSelect, startOfDay="
             setSelectedCells([...selectedCells,startTime + "_"+  endTime + "_" + multiSelect.provider + "_" + index])
     }
 
-    const providers = (appoinments.length > 0 ? [...new Set(appoinments.flatMap(appoinment => appoinment.providers && appoinment.providers.length > 0 ? appoinment.providers.map(provider => provider.name ) : "[No Provider]"))] : [null]).sort(function (a, b) {
+    const providers = (appoinments.length > 0 ? [
+      ...new Set(
+        appoinments.reduce((acc,appoinment) =>
+          acc.concat(appoinment.providers && appoinment.providers.length > 0
+            ? appoinment.providers.map((provider) => provider.name)
+            : "[No Provider]")
+            ,[])
+      ),
+    ]
+  : [null]).sort(function (a, b) {
         if (a.toLowerCase() > b.toLowerCase()) return -1;
         if (b.toLowerCase() > a.toLowerCase()) return 1;
         return 0;

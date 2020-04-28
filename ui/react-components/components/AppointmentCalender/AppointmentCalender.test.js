@@ -53,18 +53,6 @@ describe("<AppointmentCalender />", () => {
         expect(container.querySelector("thead>tr").childNodes.length - 1).toEqual(4)
         
     })
-<<<<<<< HEAD
-})
-=======
-
-    it("should call onSelect function on clicking time slot", () => {
-        const onSelect = jest.fn()
-        const {container} = render(
-            <AppointmentCalender appoinments={data} hoursDiff={1} onSelect={onSelect}/>
-        );
-        fireEvent.click(container.getElementsByClassName("bordered-cell")[0])
-        expect(onSelect).toHaveBeenCalledTimes(1)
-    })
 
     it("should call onSelectAppointment on clicking appointment label", () => {
         const onClickAppoinment = jest.fn()
@@ -76,4 +64,3 @@ describe("<AppointmentCalender />", () => {
     })
 })
 
->>>>>>> master
