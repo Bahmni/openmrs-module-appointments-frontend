@@ -112,11 +112,11 @@ const AppointmentCalender = ({
   const providers = (appoinments.length > 0
     ? [
         ...new Set(
-          appoinments.flatMap(appoinment =>
-            appoinment.providers && appoinment.providers.length > 0
+          appoinments.reduce((acc,appoinment) =>
+            acc.concat(appoinment.providers && appoinment.providers.length > 0
               ? appoinment.providers.map(provider => provider.name)
-              : "[No Provider]"
-          )
+              : "[No Provider]")
+              ,[])
         )
       ]
     : [null]
