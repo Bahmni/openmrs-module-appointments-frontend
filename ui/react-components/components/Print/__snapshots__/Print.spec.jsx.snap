@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Print render print icon 1`] = `
+<DocumentFragment>
+  <iframe
+    data-testid="printFrame"
+    style="display: none;"
+  />
+  <a
+    data-testid="printIcon"
+  >
+    <i
+      class="fas fa-print"
+    />
+  </a>
+</DocumentFragment>
+`;
