@@ -65,7 +65,11 @@ const AppointmentStatus = props => {
 };
 
 AppointmentStatus.propTypes = {
+<<<<<<< HEAD
   intl: PropTypes.object,
+=======
+  intl: PropTypes.object.isRequired,
+>>>>>>> master
   onChange: PropTypes.func,
   isDisabled: PropTypes.bool
 };
