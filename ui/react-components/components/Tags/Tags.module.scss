@@ -1,7 +1,7 @@
 @import '../../variables.scss';
+$customBoxShadow:0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
 .tag {
-
   display: flex;
   flex-wrap: wrap;
 
@@ -54,6 +54,26 @@
       pointer-events: none;
     }
   }
+}
 
+//Tags styles are different in filter appointments
+.customTag {
+  @extend .tag;
+  flex-direction: column;
+  position: relative;
+  .customTagHolder{
+    @extend .tagHolder;
+      background-color: #fff !important;
+  }
+  .customTagLabel{
+    @extend .tagLabel;
+      color: $secondary-color-2 !important;
+      padding: 6px !important;
+      box-shadow: $customBoxShadow;
+  }
+  .customTagRemove{
+    position: absolute;
+    right: 5px;
+  }
 }
 
