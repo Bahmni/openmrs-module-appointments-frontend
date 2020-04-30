@@ -2,10 +2,10 @@ import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {injectIntl} from 'react-intl';
-import {getAllByTag} from "../../api/locationApi";
+// import {getAllByTag} from "../../api/locationApi";
+import {getAllByTag} from "../../api/__mocks__/locationApi";
 import {locationTagName} from "../../constants";
 import {forEach} from 'lodash';
-import {locationsResposne} from './locations'
 import Tags from "../Tags/Tags.jsx";
 import {searchFeildOnChangeHandler,searchFeildOnRemoveHandler} from '../../helper';
 
@@ -18,18 +18,17 @@ const LocationSearch = (props) => {
         const options = [];
         forEach(locations, function (location) {
             options.push({
-                value: props.onChange?location:location.name,
+                value: location,
                 label: location.name
             });
         });
         return options;
     };
 
-    const [locations, setLocations] = useState(createDropdownOptions(locationsResposne.results)); //loadLocations()
+    const [locations, setLocations] = useState([]);
     const [selectedLocations, setSelectedLocations] = useState([]);
 
     useEffect(() => {
-        if(props.onChange)
           setLocations(loadLocations());
     }, []);
 
