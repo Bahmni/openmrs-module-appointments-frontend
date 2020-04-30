@@ -4,7 +4,7 @@ import ProviderSearch from "../Provider/ProviderSearch";
 import LocationSearch from "../Location/LocationSearch";
 import AppointmentStatus from "../AppointmentStatus/AppointmentStatus";
 import classNames from "classnames";
-import "./FilterWrapper.module.scss";
+import {appointmentFilterItems} from "./FilterWrapper.module.scss";
 import { getAllProviders } from "../../api/providerApi";
 import { PROVIDER_RESPONSES } from "../../constants";
 
@@ -23,7 +23,7 @@ const customSelectComponents={
 const FilterWrapper = props => {
   return (
     <div>
-      <div className={classNames("appointment-filter-items")}>
+      <div className={classNames(appointmentFilterItems)}>
         <Label translationKey="PROVIDER_FILTER" defaultValue="Provider" />
         <ProviderSearch
           openMenuOnClick={false}
@@ -33,7 +33,7 @@ const FilterWrapper = props => {
           customSelectStyle={customSelectStyle}
         />
       </div>
-      <div className={classNames("appointment-filter-items")}>
+      <div className={classNames(appointmentFilterItems)}>
         <Label translationKey="LOCATION_FILTER" defaultValue="Location" />
         <LocationSearch
           showTags={true}
@@ -44,7 +44,7 @@ const FilterWrapper = props => {
           customSelectStyle={customSelectStyle}
         />
       </div>
-      <div className={classNames("appointment-filter-items")}>
+      <div className={classNames(appointmentFilterItems)}>
         <Label
           translationKey="APPOINTMENT_STATUS_FILTER"
           defaultValue="Appointment Status"

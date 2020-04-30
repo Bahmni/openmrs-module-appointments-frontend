@@ -66,7 +66,6 @@ const ProviderSearch = props => {
 
   const loadProviders = async () => {
     const providers = await getAllProviders();
-    console.log("providers", providers);
     setProviders(createDropdownOptions(providers));
   };
 
