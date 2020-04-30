@@ -17,8 +17,8 @@ describe('Filter Wrapper for Search Fields',()=>{
     it('Location Search rendered ',()=>{
         const {getByLabelText,getAllByText} = renderWithReactIntl(<FilterWrapper/>)
 
-        expect(getByLabelText('Location')).toBeInTheDocument()
-        expect(getAllByText('Location')[1]).toBeTruthy()
+        expect(getAllByText('Location').length).toEqual(2)
+        // expect(getAllByText('Location')[1]).toBeTruthy()
     })
     it('Appoitment Status Search rendered ',()=>{
         const {getByText} = renderWithReactIntl(<FilterWrapper/>)
