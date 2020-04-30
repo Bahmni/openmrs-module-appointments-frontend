@@ -1,4 +1,5 @@
-import { getAllProviders } from "../../api/providerApi";
+// import { getAllProviders } from "../../api/providerApi";
+import { getAllProviders } from "../../api/__mocks__/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, { useEffect, useState } from "react";
 import Tags from "../Tags/Tags.jsx";
@@ -12,7 +13,6 @@ import {
   searchFeildOnChangeHandler,
   searchFeildOnRemoveHandler
 } from "../../helper";
-import { providersResult } from "./providers";
 
 const ProviderSearch = props => {
   const {
@@ -57,13 +57,11 @@ const ProviderSearch = props => {
     );
   };
 
-  const [providers, setProviders] = useState(
-    createDropdownOptions(providersResult.results)
-  ); //loadProviders()
+  const [providers, setProviders] = useState([])
   const [selectedProvider, setSelectedProvider] = useState([]);
 
   useEffect(() => {
-    if (props.onChange) setProviders(loadProviders());
+    setProviders(loadProviders());
   }, []);
 
   const loadProviders = async () => {
