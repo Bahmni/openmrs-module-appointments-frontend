@@ -1,0 +1,78 @@
+@import '../../variables.scss';
+
+.appointmentListView {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: calc(100vh - 230px);
+    position: relative;
+    border-collapse: collapse;
+    th, td {
+      font-size: 14px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      width: 90px;
+      min-width: 90px;
+      max-width: 90px;
+      overflow: hidden;
+      text-align: center;
+      word-wrap: break-word;
+      &.tableMidWidth {
+        width: 180px;
+        min-width: 180px;
+        max-width: 180px;
+      }
+      &:last-child {
+        width: 540px;
+        min-width: 540px;
+        max-width: 540px;
+      }
+    }
+    thead {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      th {
+        font-weight: 900;
+        color: #4c4c4c;
+        background: #e2e1e1;
+        border-color: #e2e1e1;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+    tbody {
+      position: absolute;
+      height: calc(100% - 51px);
+      overflow-y: auto;
+      top: 33px;
+      tr {
+        &:nth-child(even) {
+          background: #F2F1F1;
+        }
+        &.selected {
+          td {
+            color: inherit;
+            background: #298dd5;
+            border-color: #298dd5;
+          }
+        }
+      }
+    }
+  }
+  
+  .cancelledAppointment {
+    background-color: $color-cancelled-appointment-color
+  }
+
+  .missedAppointment {
+    background-color: $color-missed-appointment-color
+  }
+
+  .noAppointmentsListView {
+    text-align: center;
+  }
+
+  .sortIcon {
+    padding-left: 8px;
+  }
