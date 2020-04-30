@@ -1,7 +1,7 @@
 import React from 'react';
 // import LocationSearch from '../components/Location/LocationSearch';
 import {IntlProvider} from "react-intl";
-import FilterWrapper from '../components/FilterWrapper/FilterWrapper';
+import FilterWrapper from '../components/AppointmentFilterWrapper/FilterWrapper';
 
 
 export default { title: 'Filter Search Wrapper' };
