@@ -45,7 +45,7 @@ const ProviderSearch = props => {
           : false
       ) {
         options.push({
-          value: provider.uuid,
+          value: provider.person.display,
           label: provider.person.display,
           comments: null,
           response: PROVIDER_RESPONSES.ACCEPTED
