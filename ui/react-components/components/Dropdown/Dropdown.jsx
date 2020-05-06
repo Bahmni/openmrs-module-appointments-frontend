@@ -63,8 +63,8 @@ const Dropdown = (props) => {
         isDisabled={isDisabled}
         value={selectedValue}
         isClearable={isClearable}
-        openMenuOnClick={openMenuOnClick} //need to get from props for different behaviour with dropdown as it open onClcik for AddAppointment component
-        openMenuOnFocus={openMenuOnFocus}
+        // openMenuOnClick={openMenuOnClick} //need to get from props for different behaviour with dropdown as it open onClcik for AddAppointment component
+        // openMenuOnFocus={openMenuOnFocus}
         styles={customSelectStyle}
       />
     </div>
