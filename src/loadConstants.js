@@ -12,3 +12,14 @@ export async function loadAngularConstants() {
             })
         })
 }
+
+export async function loadReactConstants() {
+    //todo: cache the JSON constants files
+    // https://bahmni.atlassian.net/browse/AP-21
+    return fetch("./constants/react-constants.json")
+        .then((res) =>
+            res.json().then((data) => {
+                localStorage.setItem("reactConstants", JSON.stringify(data));
+            })
+        );
+}
