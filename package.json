@@ -4,10 +4,13 @@
     "description": "An appointment app for bahmni/openmrs.",
     "license": "AGPLv3",
     "scripts": {
-        "build": "webpack --mode=development",
-        "bundle": "webpack --mode=production",
-        "dev": "webpack-dev-server --mode=development",
-        "test": "npm run build && karma start"
+        "build-react": "cd ui && npm run build-react",
+        "build": "npm run build-react && webpack --mode=development",
+        "bundle": "npm run build-react && webpack --mode=production",
+        "test-react": "cd ui && npm run test-react",
+        "test-angular": "npm run build && karma start",
+        "test": "npm run test-react && npm run test-angular",
+        "preinstall": "cd ui && npm install"
     },
     "repository": {
         "type": "git",

@@ -1,5 +1,5 @@
 'use strict';
-
+console.log("appoinment service test");
 window.Bahmni = window.Bahmni || {};
 Bahmni.Appointments = Bahmni.Appointments || {};
 
@@ -112,13 +112,15 @@ require("./controllers/manage/appointmentsSummaryController.js" );
 require("./controllers/manage/appointmentsFilterController.js");
 require("./filters/appointmentsFilter.js");
 
-require("../ui/dist/reactAngularAdaptor.js")
-
 async function loadConstants() {
-    return  require("./loadConstants").loadAngularConstants();
+    return Promise.all([
+        require("./loadConstants").loadAngularConstants(),
+        require("./loadConstants").loadReactConstants()
+    ]);
 }
 
 (async () => {
     await loadConstants();
+    require("../ui/dist/reactAngularAdaptor.js");
     angular.bootstrap(document, ['bahmni.appointments']);
 })();

@@ -1,30 +1,26 @@
-const hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host')) : "";
-const restWestV1 = `${hostUrl}/openmrs/ws/rest/v1`;
-const bahmniCore = `${restWestV1}/bahmnicore`;
+const reactConstants = JSON.parse(localStorage.getItem("reactConstants"));
+export const appointmentService = reactConstants["appointmentService"];
+export const searchPatientUrl = reactConstants["searchPatientUrl"];
+export const servicesDefaultUrl = reactConstants["servicesDefaultUrl"];
+export const providerUrl = reactConstants["providerUrl"];
+export const providerParams = reactConstants["providerParams"];
+export const locationUrl = reactConstants["locationUrl"];
+export const specialityUrl = reactConstants["specialityUrl"];
+export const appointmentSaveUrl = reactConstants["appointmentSaveUrl"];
+export const appointmentsSaveUrl = reactConstants["appointmentsSaveUrl"];
+export const appointmentByUuidUrl = reactConstants["appointmentByUuidUrl"];
+export const recurringAppointmentFetchUrl = reactConstants["recurringAppointmentFetchUrl"];
+export const recurringAppointmentsSaveUrl = reactConstants["recurringAppointmentsSaveUrl"];
+export const appointmentConflictsUrl = reactConstants["appointmentConflictsUrl"];
+export const recurringAppointmentsConflictsUrl = reactConstants["recurringAppointmentsConflictsUrl"];
 
-export const appointmentService = `${restWestV1}/appointmentService`;
-export const searchPatientUrl = `${bahmniCore}/search/patient`;
-export const servicesDefaultUrl = `${appointmentService}/all/default`;
-export const providerUrl = `${restWestV1}/provider`;
-export const providerParams = `v=custom:(display,person,uuid,retired,attributes:(attributeType:(display),value,voided))`;
-export const availableForAppointments = "Available for appointments";
-export const locationUrl = `${restWestV1}/location`;
-export const specialityUrl = `${restWestV1}/speciality/all`;
-export const appointmentsSaveUrl = `${restWestV1}/appointments`;
-export const appointmentSaveUrl = `${restWestV1}/appointment`;
-export const appointmentByUuidUrl = `${restWestV1}/appointment/`;
-export const recurringAppointmentFetchUrl = `${restWestV1}/recurring-appointments/`;
-export const recurringAppointmentsSaveUrl = `${restWestV1}/recurring-appointments`;
-export const appointmentConflictsUrl = `${appointmentsSaveUrl}/conflicts`;
-export const recurringAppointmentsConflictsUrl = `${recurringAppointmentsSaveUrl}/conflicts`;
-
-export const i18nConfigPath = '/bahmni_config/openmrs/i18n/';
+export const i18nConfigPath = reactConstants["i18nConfigPath"];
+export const BAHMNI_CONFIG_URL = reactConstants["BAHMNI_CONFIG_URL"];
+export const IMPLEMENTATION_CONFIG_URL = reactConstants["IMPLEMENTATION_CONFIG_URL"];
+export const locationTagName = reactConstants["locationTagName"];
 
 export const appName = 'appointments';
-
-export const BAHMNI_CONFIG_URL = `${hostUrl}/bahmni_config/openmrs/apps`;
-export const IMPLEMENTATION_CONFIG_URL = `${hostUrl}/implementation_config/openmrs/apps`;
-export const locationTagName = 'Appointment Location';
+export const availableForAppointments = "Available for appointments";
 export const minDurationForAppointment = 30;
 export const MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH = 3;
 export const DEFAULT_MAX_APPOINTMENT_PROVIDERS = 1;
