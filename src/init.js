@@ -1,5 +1,4 @@
 'use strict';
-console.log("appoinment service test");
 window.Bahmni = window.Bahmni || {};
 Bahmni.Appointments = Bahmni.Appointments || {};
 

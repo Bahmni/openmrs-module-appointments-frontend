@@ -54,6 +54,7 @@
     "is-wsl": "^2.1.1",
     "jest": "^24.9.0",
     "jest-environment-jsdom-fourteen": "^0.1.0",
+    "jest-localstorage-mock": "^2.4.2",
     "jest-mock-axios": "^3.1.1",
     "jest-watch-typeahead": "^0.4.2",
     "matchdep": "^0.3.0",
@@ -102,7 +103,8 @@
       "!src/**/*.d.ts"
     ],
     "setupFiles": [
-      "react-app-polyfill/jsdom"
+      "react-app-polyfill/jsdom",
+      "<rootDir>/react-components/__mocks__/mockLocalStorage.js"
     ],
     "setupFilesAfterEnv": [],
     "testMatch": [
