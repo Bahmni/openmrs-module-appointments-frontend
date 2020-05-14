@@ -1,6 +1,5 @@
 import axios from 'axios';
-import {servicesDefaultUrl} from "../constants";
-import {appointmentService} from "../constants";
+import {appointmentService, servicesDefaultUrl} from "../config";
 
 export const getAllServices = async () => {
     try {

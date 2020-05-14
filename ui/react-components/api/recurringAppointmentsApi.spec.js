@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios";
 import {getRecurringAppointment, recurringConflictsFor, saveRecurringAppointments, updateRecurringAppointments} from "./recurringAppointmentsApi";
-import {recurringAppointmentFetchUrl, appointmentConflictsUrl, recurringAppointmentsConflictsUrl, recurringAppointmentsSaveUrl} from "../constants";
+import {recurringAppointmentFetchUrl,recurringAppointmentsConflictsUrl, recurringAppointmentsSaveUrl} from "../config";
 
 describe('Recurring Appointments Api', () => {
     let payload = {

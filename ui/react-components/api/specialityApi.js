@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {specialityUrl} from "../constants";
+import {specialityUrl} from "../config";
 
 export const getAllSpecialities = async () => {
     try {

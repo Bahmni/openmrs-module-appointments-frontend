@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {BAHMNI_CONFIG_URL, IMPLEMENTATION_CONFIG_URL} from '../constants';
+import {BAHMNI_CONFIG_URL, IMPLEMENTATION_CONFIG_URL} from '../config';
 import {mergeObjects} from '../utils/MergeObjectUtil';
 
 const APP_FILE = 'app.json';

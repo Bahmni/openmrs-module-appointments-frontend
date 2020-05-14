@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {mergeObjects} from '../utils/MergeObjectUtil';
-import {i18nConfigPath} from "../constants";
+import {i18nConfigPath} from "../config";
 
 const baseLocaleUrl = 'i18n/';
 

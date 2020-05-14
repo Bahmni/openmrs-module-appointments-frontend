@@ -1,5 +1,5 @@
 import mockAxios from "jest-mock-axios";
-import {locationUrl} from "../constants";
+import {locationUrl} from "../config";
 import {getAllByTag} from "./locationApi";
 
 afterEach(() => {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {recurringAppointmentFetchUrl, recurringAppointmentsConflictsUrl, recurringAppointmentsSaveUrl} from "../constants";
+import {recurringAppointmentFetchUrl, recurringAppointmentsConflictsUrl, recurringAppointmentsSaveUrl} from "../config";
 
 export const saveRecurringAppointments = async data => {
     try {

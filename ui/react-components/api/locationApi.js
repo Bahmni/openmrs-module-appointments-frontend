@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {locationUrl} from "../constants";
+import {locationUrl} from "../config";
 
 export const getAllByTag = async (tags, operator) => {
     try {

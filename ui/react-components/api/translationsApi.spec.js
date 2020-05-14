@@ -1,11 +1,11 @@
 import mockAxios from 'jest-mock-axios';
 import {getTranslations} from './translationsApi';
-import {BAHMNI_CONFIG_URL} from "../constants";
+
 afterEach(() => {
     mockAxios.reset();
 });
 const appName = 'appointments';
-const i18nBahmniConfigPath = '/bahmni_config/openmrs/i18n/';
+
 const baseLocaleUrl = 'i18n/';
 const fileURL = `${appName}/locale_en.json`;
 describe('Translations Api', () => {

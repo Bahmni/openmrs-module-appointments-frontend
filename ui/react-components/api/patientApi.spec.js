@@ -1,7 +1,7 @@
 import React from 'react';
 import {getPatientsByLocation} from './patientApi.js';
 import mockAxios from 'jest-mock-axios';
-import {searchPatientUrl} from '../constants.js';
+import {searchPatientUrl} from '../config';
 
 afterEach(() => {
     mockAxios.reset();

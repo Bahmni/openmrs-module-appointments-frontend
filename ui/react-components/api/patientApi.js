@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {searchPatientUrl} from '../constants';
+import {searchPatientUrl} from '../config';
 
 export const getPatientsByLocation = async (locationUuid, searchQuery, startIndex = 0) => {
     try {

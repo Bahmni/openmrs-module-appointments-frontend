@@ -1,5 +1,5 @@
 import mockAxios from "jest-mock-axios";
-import {specialityUrl} from "../constants";
+import {specialityUrl} from "../config";
 import {getAllSpecialities} from "./specialityApi";
 
 afterEach(() => {
