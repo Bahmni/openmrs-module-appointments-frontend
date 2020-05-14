@@ -1,25 +1,3 @@
-const reactConstants = JSON.parse(localStorage.getItem("reactConstants"));
-
-export const appointmentService = reactConstants["appointmentService"];
-export const searchPatientUrl = reactConstants["searchPatientUrl"];
-export const servicesDefaultUrl = reactConstants["servicesDefaultUrl"];
-export const providerUrl = reactConstants["providerUrl"];
-export const providerParams = reactConstants["providerParams"];
-export const locationUrl = reactConstants["locationUrl"];
-export const specialityUrl = reactConstants["specialityUrl"];
-export const appointmentSaveUrl = reactConstants["appointmentSaveUrl"];
-export const appointmentsSaveUrl = reactConstants["appointmentsSaveUrl"];
-export const appointmentByUuidUrl = reactConstants["appointmentByUuidUrl"];
-export const recurringAppointmentFetchUrl = reactConstants["recurringAppointmentFetchUrl"];
-export const recurringAppointmentsSaveUrl = reactConstants["recurringAppointmentsSaveUrl"];
-export const appointmentConflictsUrl = reactConstants["appointmentConflictsUrl"];
-export const recurringAppointmentsConflictsUrl = reactConstants["recurringAppointmentsConflictsUrl"];
-
-export const i18nConfigPath = reactConstants["i18nConfigPath"];
-export const BAHMNI_CONFIG_URL = reactConstants["BAHMNI_CONFIG_URL"];
-export const IMPLEMENTATION_CONFIG_URL = reactConstants["IMPLEMENTATION_CONFIG_URL"];
-export const locationTagName = reactConstants["locationTagName"];
-
 export const appName = 'appointments';
 export const availableForAppointments = "Available for appointments";
 export const minDurationForAppointment = 30;
@@ -42,6 +20,7 @@ export const CHECKED_IN_APPOINTMENT_STATUS = "CheckedIn";
 
 export const RECURRENCE_TERMINATION_AFTER = "After";
 export const RECURRENCE_TERMINATION_ON = "On";
+
 export const PROVIDER_RESPONSES = {
     ACCEPTED: "ACCEPTED"
 };

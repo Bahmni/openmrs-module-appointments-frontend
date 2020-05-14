@@ -1,5 +1,5 @@
 import mockAxios from "jest-mock-axios";
-import {appointmentConflictsUrl, appointmentByUuidUrl, appointmentSaveUrl} from "../constants";
+import {appointmentConflictsUrl, appointmentByUuidUrl, appointmentSaveUrl} from "../config";
 import {getAppointment, conflictsFor, saveOrUpdateAppointment} from "./appointmentsApi";
 
 describe('Appointments Api', () => {

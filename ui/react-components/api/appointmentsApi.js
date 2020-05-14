@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {appointmentByUuidUrl, appointmentConflictsUrl, appointmentSaveUrl} from "../constants";
+import {appointmentByUuidUrl, appointmentConflictsUrl, appointmentSaveUrl} from "../config";
 
 export const saveOrUpdateAppointment = async (data) => {
     try {

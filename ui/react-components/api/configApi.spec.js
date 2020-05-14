@@ -1,6 +1,6 @@
 import mockAxios from 'jest-mock-axios';
 import {getAppConfigs} from './configApi';
-import {BAHMNI_CONFIG_URL, IMPLEMENTATION_CONFIG_URL} from '../constants';
+import {BAHMNI_CONFIG_URL, IMPLEMENTATION_CONFIG_URL} from '../config';
 
 afterEach(() => {
     mockAxios.reset();

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {availableForAppointments, providerParams, providerUrl} from "../constants";
+import {availableForAppointments} from "../constants";
+import {providerParams, providerUrl} from "../config";
 import _ from 'lodash';
 
 export const getAllProviders = async () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import mockAxios from 'jest-mock-axios';
 import {getAllServices, getService} from "./serviceApi";
-import {appointmentService, searchPatientUrl, servicesDefaultUrl} from "../constants";
+import {appointmentService, servicesDefaultUrl} from "../config";
 
 afterEach(() => {
     mockAxios.reset();

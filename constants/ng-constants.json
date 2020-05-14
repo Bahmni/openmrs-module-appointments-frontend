@@ -6,7 +6,7 @@
       "dateDisplayFormat": "DD-MMM-YYYY",
       "timeDisplayFormat": "hh:mm",
       "locationUrl": "/openmrs/ws/rest/v1/location",
-      "bahmniSearchUrl": "/openmrs/ws/rest/v1/bahmnicommons/search",
+      "bahmniSearchUrl": "/openmrs/ws/rest/v1/bahmnicore/search",
       "conceptUrl": "/openmrs/ws/rest/v1/concept",
       "openmrsUrl": "/openmrs",
       "loggingUrl": "/log/",
@@ -26,7 +26,7 @@
       "patientAttributeDateFieldFormat": "org.openmrs.util.AttributableDate",
       "platform": "user.platform",
       "RESTWS_V1": "/openmrs/ws/rest/v1",
-      "baseUrl": "/openmrs/frontend/bahmniapps/config/",
+      "baseUrl": "/bahmni_config/openmrs/apps/",
       "customUrl": "/implementation_config/openmrs/apps/",
       "faviconUrl": "/bahmni/favicon.ico",
       "platformType": {
@@ -79,13 +79,13 @@
       "fetchLoginLocationURL": "/openmrs/ws/rest/v1/appui/session",
       "openMRSSystemSettingUrl": "/openmrs/ws/rest/v1/systemsetting/",
       "baseLocaleURL": "./i18n/",
-      "customLocaleURL": "/openmrs/frontend/bahmniapps/i18n/",
-      "loginPageUrl": "/openmrs/login.htm"
+      "customLocaleURL": "/bahmni_config/openmrs/i18n/",
+      "loginPageUrl": "../../bahmni/home/index.html#/login"
     }
   },
   "Appointments": {
     "Constants": {
-      "homeUrl": "/openmrs",
+      "homeUrl": "../../home",
       "createServiceUrl": "/openmrs/ws/rest/v1/appointmentService",
       "getServiceLoad": "/openmrs/ws/rest/v1/appointmentService/load",
       "getAllSpecialitiesUrl": "/openmrs/ws/rest/v1/speciality/all",
@@ -98,6 +98,7 @@
       "searchAppointmentUrl": "/openmrs/ws/rest/v1/appointment/search",
       "searchAppointmentsUrl": "/openmrs/ws/rest/v1/appointments/search",
       "getAppointmentsSummaryUrl": "/openmrs/ws/rest/v1/appointment/appointmentSummary",
+      "changeProviderResponseUrl": "/openmrs/ws/rest/v1/appointments/{{appointmentUuid}}/providerResponse",
       "defaultServiceTypeDuration": 15,
       "defaultCalendarSlotLabelInterval": "01:00",
       "defaultCalendarSlotDuration": "00:30",
@@ -110,8 +111,8 @@
       "minDurationForAppointment": 30,
       "appointmentStatusList": ["Scheduled","CheckedIn","Completed","Cancelled","Missed"],
       "regexForTime": "(?:(?:1[0-2]|0?[1-9]):[0-5]\\d\\s*[AaPp][Mm])?",
-      "privilegeForAdmin": "Manage Appointment Services",
-      "privilegeManageAppointments": "Manage Appointments",
+      "privilegeManageAppointments": "app:appointments:manageAppointmentsTab",
+      "privilegeForAdmin": "app:appointments:adminTab",
       "privilegeOwnAppointments": "Manage Own Appointments",
       "privilegeResetAppointmentStatus": "Reset Appointment Status",
       "availableForAppointments": "Available for appointments",
