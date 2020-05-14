@@ -1,4 +1,5 @@
 const reactConstants = JSON.parse(localStorage.getItem("reactConstants"));
+
 export const appointmentService = reactConstants["appointmentService"];
 export const searchPatientUrl = reactConstants["searchPatientUrl"];
 export const servicesDefaultUrl = reactConstants["servicesDefaultUrl"];
