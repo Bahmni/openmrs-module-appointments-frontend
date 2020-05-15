@@ -1,4 +1,4 @@
-const reactConfig = JSON.parse(localStorage.getItem("reactConstants"));
+const reactConfig = JSON.parse(localStorage.getItem("reactConfig"));
 
 export const appointmentService = reactConfig["appointmentService"];
 export const searchPatientUrl = reactConfig["searchPatientUrl"];

@@ -1,5 +1,5 @@
 export async function loadAngularConstants() {
-    return fetch("./constants/ng-constants.json")
+    return fetch("./config/ng-config.json")
         .then((res) => {
             return res.json().then((data) => {
                 window.Bahmni = window.Bahmni || {};
@@ -16,10 +16,10 @@ export async function loadAngularConstants() {
 export async function loadReactConstants() {
     //todo: cache the JSON constants files
     // https://bahmni.atlassian.net/browse/AP-21
-    return fetch("./constants/react-constants.json")
+    return fetch("./config/react-config.json")
         .then((res) =>
             res.json().then((data) => {
-                localStorage.setItem("reactConstants", JSON.stringify(data));
+                localStorage.setItem("reactConfig", JSON.stringify(data));
             })
         );
 }
