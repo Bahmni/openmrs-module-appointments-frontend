@@ -13,6 +13,9 @@ const Dropdown = props => {
     const {options, placeholder, onChange, isDisabled, intl, selectedValue, isClearable, autoFocus} = props;
     const noOptionsMessage = intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'No Options'});
 
+    const [value, setValue]=useState(selectedValue)
+
+    const {openMenuOnClick=true, openMenuOnFocus=true, components={IndicatorSeparator, ValueContainer, DropdownIndicator}, customSelectStyle}=props
     const dropdownRef = useRef(null);
     useEffect(() => {
         autoFocus && dropdownRef && !isDisabled && dropdownRef.current.focus();
@@ -26,7 +29,7 @@ const Dropdown = props => {
                 ref={dropdownRef}
                 className={classNames(resetSelectContainer, 'react-select-container')}
                 classNamePrefix="react-select"
-                components={{IndicatorSeparator, ValueContainer, DropdownIndicator}}
+                components={components}               //Handle search icon and down-icon from different parents
                 options={options}
                 noOptionsMessage={() => noOptionsMessage}
                 placeholder={placeholder}
@@ -34,6 +37,9 @@ const Dropdown = props => {
                 isDisabled={isDisabled}
                 value={selectedValue}
                 isClearable={isClearable}
+                openMenuOnClick={openMenuOnClick}      //need to get from props for different behaviour with dropdown as it open onClcik for AddAppointment component
+                openMenuOnFocus={openMenuOnFocus}
+                styles={customSelectStyle}
             />
         </div>
     );
