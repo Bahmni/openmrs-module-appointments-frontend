@@ -15,5 +15,4 @@ const withReactIntl = (GridSummary) => {
 
 const InternationalizedGridSummary = withReactIntl(GridSummary);
 
-export const withPlaceholder = () => <InternationalizedGridSummary gridData={dummyData} onClick={(date)=>alert(date)}/>
-
+export const withPlaceholder = () => <InternationalizedGridSummary gridData={dummyData} weekStartDate="2020-04-06" onClick={(date)=>alert(date)}/>
