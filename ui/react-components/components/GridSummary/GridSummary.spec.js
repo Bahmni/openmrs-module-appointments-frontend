@@ -8,7 +8,7 @@ import data from './AppointSummary.json'
 describe("Grid Summary",()=>{
     it("should render table for grid summary",()=>{
         const {container} = renderWithReactIntl(<GridSummary gridData={data}/>);
-        expect(container.querySelector('.table-grid-summary')).toBeInTheDocument()
+        expect(container.querySelector('.tableGridSummary')).toBeInTheDocument()
 
     });
 
