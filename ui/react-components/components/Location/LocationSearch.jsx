@@ -2,8 +2,8 @@ import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {injectIntl} from 'react-intl';
-// import {getAllByTag} from "../../api/locationApi";
-import {getAllByTag} from "../../api/__mocks__/locationApi";
+import {getAllByTag} from "../../api/locationApi";
+// import {getAllByTag} from "../../api/__mocks__/locationApi";
 import {locationTagName} from "../../constants";
 import {forEach} from 'lodash';
 import Tags from "../Tags/Tags.jsx";
@@ -42,8 +42,8 @@ const LocationSearch = (props) => {
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_LOCATION', defaultMessage: 'Location'
     });
 
-    const onChangeHandler = e => searchFeildOnChangeHandler(locations,setLocations,selectedLocations,setSelectedLocations,e)
-    const onRemoveHandler = e => searchFeildOnRemoveHandler(locations,setLocations,selectedLocations,setSelectedLocations,e)    
+    const onChangeHandler = eventChangedValue => searchFeildOnChangeHandler(locations,setLocations,selectedLocations,setSelectedLocations,eventChangedValue)
+    const onRemoveHandler = eventChangedValue => searchFeildOnRemoveHandler(locations,setLocations,selectedLocations,setSelectedLocations,eventChangedValue)    
     
     return (
         <div>

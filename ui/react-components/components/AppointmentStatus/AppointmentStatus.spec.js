@@ -66,7 +66,5 @@ describe('Service Search', () => {
 
     //After remove, option added back to dropdown op
     
-
-    
 });
 

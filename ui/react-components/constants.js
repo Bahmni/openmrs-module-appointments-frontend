@@ -71,3 +71,10 @@ export const appointmentEndTimeProps = endTime => {
     return {...appointmentTimeProps, defaultValue: 'To', defaultTime: endTime, translationKey: 'APPOINTMENT_TIME_TO_LABEL'}
 };
 
+export const appointmentStatusList = [
+  { value: "Scheduled", label: "Scheduled" },
+  { value: "CheckedIn", label: "CheckedIn" },
+  { value: "Completed", label: "Completed" },
+  { value: "Cancelled", label: "Cancelled" },
+  { value: "Missed", label: "Missed" }
+];

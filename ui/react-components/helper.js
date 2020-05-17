@@ -34,22 +34,22 @@ export const getValidProviders = providers => {
     return providers && providers.filter(provider => provider.response === PROVIDER_RESPONSES.ACCEPTED);
 };
 
-export const searchFeildOnChangeHandler=(state,setState,selectedState,setSelectedState,e)=>{
+export const searchFeildOnChangeHandler=(state,setState,selectedState,setSelectedState,eventChangedValue)=>{
     setSelectedState([
         ...selectedState,
-        e
+        eventChangedValue
       ]);
       setState(() =>
-        [...state].filter(item => item != e)
+        [...state].filter(item => item != eventChangedValue)
       );
 }
 
-export const searchFeildOnRemoveHandler=(state,setState,selectedState,setSelectedState,e)=>{
+export const searchFeildOnRemoveHandler=(state,setState,selectedState,setSelectedState,eventChangedValue)=>{
     setSelectedState(() =>
-      [...selectedState].filter(item => item.value !== e)
+      [...selectedState].filter(item => item.value !== eventChangedValue)
     );
     setState([
       ...state,
-      { value: e, label: e }
+      { value: eventChangedValue, label: eventChangedValue }
     ]);
 }

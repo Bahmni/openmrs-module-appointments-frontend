@@ -1,5 +1,5 @@
-// import { getAllProviders } from "../../api/providerApi";
-import { getAllProviders } from "../../api/__mocks__/providerApi";
+import { getAllProviders } from "../../api/providerApi";
+// import { getAllProviders } from "../../api/__mocks__/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, { useEffect, useState } from "react";
 import Tags from "../Tags/Tags.jsx";
@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
 import { sortBy } from "lodash";
 import { getValidProviders } from "../../helper";
-import { PROVIDER_RESPONSES } from "../../constants";
+import { PROVIDER_RESPONSES,availableForAppointments } from "../../constants";
 import {
   searchFeildOnChangeHandler,
   searchFeildOnRemoveHandler
@@ -41,7 +41,7 @@ const ProviderSearch = props => {
       if (
         provider.attributes.length > 0
           ? provider.attributes[0].attributeType.display ===
-            "Available for appointments"
+          availableForAppointments
           : false
       ) {
         options.push({
@@ -54,7 +54,7 @@ const ProviderSearch = props => {
     });
     return sortBy(options, providerOption =>
       providerOption.label.toLowerCase()
-    );
+    )
   };
 
   const [providers, setProviders] = useState([])
@@ -66,7 +66,12 @@ const ProviderSearch = props => {
 
   const loadProviders = async () => {
     const providers = await getAllProviders();
-    setProviders(createDropdownOptions(providers));
+    if(providers.length===undefined){
+      setProviders([])
+    }else{
+      setProviders(createDropdownOptions(providers));
+    }
+    // console.log(providers)
   };
 
   const onProviderSelect = selectedProviderOption => {

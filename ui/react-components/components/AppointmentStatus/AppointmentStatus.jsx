@@ -4,14 +4,7 @@ import Tags from "../Tags/Tags.jsx";
 import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
 import {searchFeildOnChangeHandler,searchFeildOnRemoveHandler} from '../../helper';
-
-const appointmentStatusList = [
-  { value: "Scheduled", label: "Scheduled" },
-  { value: "CheckedIn", label: "CheckedIn" },
-  { value: "Completed", label: "Completed" },
-  { value: "Cancelled", label: "Cancelled" },
-  { value: "Missed", label: "Missed" }
-];
+import {appointmentStatusList} from '../../constants'
 
 const AppointmentStatus = props => {
   const { intl, onChange=e=>onChangehandler(e),isDisabled } = props;
