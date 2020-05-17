@@ -1,0 +1,573 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List View Component renders ListView with appointments correctly 1`] = `
+<DocumentFragment>
+  <table
+    class="appointmentListView"
+  >
+    <thead>
+      <tr>
+        <th
+          class=""
+        >
+          Patient ID
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Patient Name
+        </th>
+        <th
+          class=""
+        >
+          Date
+        </th>
+        <th
+          class=""
+        >
+          Start Time
+        </th>
+        <th
+          class=""
+        >
+          End Time
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Provider
+        </th>
+        <th
+          class=""
+        >
+          Speciality
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Service
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Service Appointment Type
+        </th>
+        <th
+          class=""
+        >
+          Status
+        </th>
+        <th
+          class=""
+        >
+          Walk In
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Location
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Additional Info
+        </th>
+        <th
+          class=""
+        >
+          Notes
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          class=""
+        >
+          GAN203012
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          Test Diabetes
+        </td>
+        <td
+          class=""
+        >
+          24 Mar 20
+        </td>
+        <td
+          class=""
+        >
+          10:00 am
+        </td>
+        <td
+          class=""
+        >
+          10:30 am
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Cardiology
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          Cardiology
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Scheduled
+        </td>
+        <td
+          class=""
+        >
+          Yes
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          OPD-1
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        />
+      </tr>
+      <tr>
+        <td
+          class=""
+        >
+          GAN203011
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          Test Con
+        </td>
+        <td
+          class=""
+        >
+          24 Mar 20
+        </td>
+        <td
+          class=""
+        >
+          9:00 am
+        </td>
+        <td
+          class=""
+        >
+          9:30 am
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Cardiology
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          Cardiology
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Scheduled
+        </td>
+        <td
+          class=""
+        >
+          Yes
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          OPD-1
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Urgent
+        </td>
+      </tr>
+      <tr>
+        <td
+          class=""
+        >
+          GAN203019
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          Test Con
+        </td>
+        <td
+          class=""
+        >
+          22 Mar 20
+        </td>
+        <td
+          class=""
+        >
+          11:00 am
+        </td>
+        <td
+          class=""
+        >
+          11:30 am
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Psychology
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          Psychology
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Scheduled
+        </td>
+        <td
+          class=""
+        >
+          Yes
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          General Ward
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Nothing important
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</DocumentFragment>
+`;
+
+exports[`List View Component renders ListView with background colors based on status 1`] = `
+<DocumentFragment>
+  <table
+    class="appointmentListView"
+  >
+    <thead>
+      <tr>
+        <th
+          class=""
+        >
+          Patient ID
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Patient Name
+        </th>
+        <th
+          class=""
+        >
+          Date
+        </th>
+        <th
+          class=""
+        >
+          Start Time
+        </th>
+        <th
+          class=""
+        >
+          End Time
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Provider
+        </th>
+        <th
+          class=""
+        >
+          Speciality
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Service
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Service Appointment Type
+        </th>
+        <th
+          class=""
+        >
+          Status
+        </th>
+        <th
+          class=""
+        >
+          Walk In
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Location
+        </th>
+        <th
+          class="tableMidWidth"
+        >
+          Additional Info
+        </th>
+        <th
+          class=""
+        >
+          Notes
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          class="missedAppointment"
+        >
+          GAN203012
+        </td>
+        <td
+          class="tableMidWidth missedAppointment"
+        >
+          Test Diabetes
+        </td>
+        <td
+          class="missedAppointment"
+        >
+          24 Mar 20
+        </td>
+        <td
+          class="missedAppointment"
+        >
+          10:00 am
+        </td>
+        <td
+          class="missedAppointment"
+        >
+          10:30 am
+        </td>
+        <td
+          class="tableMidWidth missedAppointment"
+        />
+        <td
+          class="missedAppointment"
+        >
+          Cardiology
+        </td>
+        <td
+          class="tableMidWidth missedAppointment"
+        >
+          Cardiology
+        </td>
+        <td
+          class="tableMidWidth missedAppointment"
+        />
+        <td
+          class="missedAppointment"
+        >
+          Missed
+        </td>
+        <td
+          class="missedAppointment"
+        >
+          Yes
+        </td>
+        <td
+          class="tableMidWidth missedAppointment"
+        >
+          OPD-1
+        </td>
+        <td
+          class="tableMidWidth missedAppointment"
+        />
+        <td
+          class="missedAppointment"
+        />
+      </tr>
+      <tr>
+        <td
+          class="cancelledAppointment"
+        >
+          GAN203011
+        </td>
+        <td
+          class="tableMidWidth cancelledAppointment"
+        >
+          Test Con
+        </td>
+        <td
+          class="cancelledAppointment"
+        >
+          24 Mar 20
+        </td>
+        <td
+          class="cancelledAppointment"
+        >
+          9:00 am
+        </td>
+        <td
+          class="cancelledAppointment"
+        >
+          9:30 am
+        </td>
+        <td
+          class="tableMidWidth cancelledAppointment"
+        />
+        <td
+          class="cancelledAppointment"
+        >
+          Cardiology
+        </td>
+        <td
+          class="tableMidWidth cancelledAppointment"
+        >
+          Cardiology
+        </td>
+        <td
+          class="tableMidWidth cancelledAppointment"
+        />
+        <td
+          class="cancelledAppointment"
+        >
+          Cancelled
+        </td>
+        <td
+          class="cancelledAppointment"
+        >
+          Yes
+        </td>
+        <td
+          class="tableMidWidth cancelledAppointment"
+        >
+          OPD-1
+        </td>
+        <td
+          class="tableMidWidth cancelledAppointment"
+        />
+        <td
+          class="cancelledAppointment"
+        >
+          Urgent
+        </td>
+      </tr>
+      <tr>
+        <td
+          class=""
+        >
+          GAN203019
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          Test Con
+        </td>
+        <td
+          class=""
+        >
+          22 Mar 20
+        </td>
+        <td
+          class=""
+        >
+          11:00 am
+        </td>
+        <td
+          class=""
+        >
+          11:30 am
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Psychology
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          Psychology
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Scheduled
+        </td>
+        <td
+          class=""
+        >
+          Yes
+        </td>
+        <td
+          class="tableMidWidth"
+        >
+          General Ward
+        </td>
+        <td
+          class="tableMidWidth"
+        />
+        <td
+          class=""
+        >
+          Nothing important
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</DocumentFragment>
+`;
+
+exports[`List View Component renders ListView with no appointments correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="noAppointmentsListView"
+  >
+    No appointments found
+  </div>
+</DocumentFragment>
+`;
