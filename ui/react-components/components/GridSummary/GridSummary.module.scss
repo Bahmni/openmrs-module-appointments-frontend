@@ -1,7 +1,7 @@
-.table-grid-wrapper{
+.tableGridWrapper{
     overflow-x: auto;
 
-    .table-grid-summary{
+    .tableGridSummary{
         border-collapse: collapse;
         border-spacing: 0;
         width: 100%;
@@ -30,23 +30,19 @@
                     color: #2b95ff;
                     cursor: pointer;
                 }
-                
+
             }
         }
-        
-        .table-total-count{
+
+        .tableTotalCount{
             background-color: #f0faff;
             color: black;
         }
     }
-    .missed-count{
+    .missedCount{
         color:red;
     }
-    .current-date-column{
+    .currentDateColumn{
         background-color: #f5f5f5;
     }
 }
-
-
-  
- 
