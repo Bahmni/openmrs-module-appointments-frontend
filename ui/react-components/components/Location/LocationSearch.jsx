@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {injectIntl} from 'react-intl';
 import {getAllByTag} from "../../api/locationApi";
-// import {getAllByTag} from "../../api/__mocks__/locationApi";
 import {locationTagName} from "../../constants";
 import {forEach} from 'lodash';
 import Tags from "../Tags/Tags.jsx";

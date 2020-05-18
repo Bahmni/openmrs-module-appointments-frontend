@@ -5,8 +5,6 @@ import LocationSearch from "../Location/LocationSearch";
 import AppointmentStatus from "../AppointmentStatus/AppointmentStatus";
 import classNames from "classnames";
 import {appointmentFilterItems} from "./FilterWrapper.module.scss";
-import { getAllProviders } from "../../api/providerApi";
-import { PROVIDER_RESPONSES } from "../../constants";
 
 const customSelectStyle={
   option: (provided, state) => ({

@@ -1,5 +1,4 @@
 import { getAllProviders } from "../../api/providerApi";
-// import { getAllProviders } from "../../api/__mocks__/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, { useEffect, useState } from "react";
 import Tags from "../Tags/Tags.jsx";
@@ -71,7 +70,6 @@ const ProviderSearch = props => {
     }else{
       setProviders(createDropdownOptions(providers));
     }
-    // console.log(providers)
   };
 
   const onProviderSelect = selectedProviderOption => {
