@@ -33,3 +33,23 @@ export const isServiceTypeEnabled = appConfig => {
 export const getValidProviders = providers => {
     return providers && providers.filter(provider => provider.response === PROVIDER_RESPONSES.ACCEPTED);
 };
+
+export const searchFieldOnChangeHandler=(state, setState, selectedState, setSelectedState, eventChangedValue)=>{
+    setSelectedState([
+        ...selectedState,
+        eventChangedValue
+      ]);
+      setState(() =>
+        [...state].filter(item => item !== eventChangedValue)
+      );
+}
+
+export const searchFieldOnRemoveHandler=(state, setState, selectedState, setSelectedState, eventChangedValue)=>{
+    setSelectedState(() =>
+      [...selectedState].filter(item => item.value !== eventChangedValue)
+    );
+    setState([
+      ...state,
+      { value: eventChangedValue, label: eventChangedValue }
+    ]);
+}

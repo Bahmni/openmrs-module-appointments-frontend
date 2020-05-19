@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, waitForElement} from "@testing-library/react";
+import {fireEvent, waitForElement, wait} from "@testing-library/react";
 import ProviderSearch from "./ProviderSearch.jsx";
 import React from "react";
 import {renderWithReactIntl} from '../../utils/TestUtil';
 
 jest.mock('../../api/providerApi');
 jest.mock('../../utils/CookieUtil');
-const providerApi = require('../../api/providerApi');
+const providerApi = require('../../api/__mocks__/providerApi');
 let getAllProviders;
 
 describe('Provider Search', () => {
@@ -35,24 +35,15 @@ describe('Provider Search', () => {
     });
 
     it('should call onChange when any provider is selected from dropdown', async () => {
-        const selectedProviders = [{
-            comments: null, label: "Name 1", response: "ACCEPTED", value: "8e459c7d-20e0-11e7-a53f-000c29e530d1"
-        }, {
-            comments: null, label: "Name 2", response: "ACCEPTED", value: "8e459c7d-20e0-11e7-a53f-000c29e530d2"
-        }, {
-            comments: null, label: "Name 3", response: "ACCEPTED", value: "8e459c7d-20e0-11e7-a53f-000c29e530d3"
-        }];
-        const selectedProvider = "Provider One";
+        const provider = "Provider One";
         const onChangeSpy = jest.fn();
         const {container, getByText} = renderWithReactIntl(
-            <ProviderSearch onChange={onChangeSpy} maxAppointmentProvidersAllowed = {5}
-                            selectedProviders={selectedProviders} onProviderRemove={jest.fn()}/>);
+          <ProviderSearch onChange={onChangeSpy} />);
         const inputBox = container.querySelector('.react-select__input input');
         fireEvent.change(inputBox, {target: {value: "One"}});
         await waitForElement(() => (container.querySelector('.react-select__menu')));
-        const option = getByText(selectedProvider);
-        fireEvent.click(option);
-        expect(getAllProviders).toHaveBeenCalled();
+        const selectedProvider = getByText(provider);
+        fireEvent.click(selectedProvider);
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
 
