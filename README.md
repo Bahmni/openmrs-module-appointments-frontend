@@ -29,6 +29,8 @@ Few libraries(angular, jquery) used in BahmniApps export themselves as global va
 
 ## Running it with bahmni
 * Clone the repo
+* Go to UI folder and install dependencies `cd ui && npm install`
+* Switch back to root folder `cd ..`
 * Run `npm install`
 * RUN `npm run build`
 * Take a backup of `/var/www/bahmniapps/appointments`.(vagrant)
