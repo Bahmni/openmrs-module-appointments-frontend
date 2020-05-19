@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Tags from "../Tags/Tags.jsx";
 import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
-import {searchFeildOnChangeHandler,searchFeildOnRemoveHandler} from '../../helper';
+import {searchFieldOnChangeHandler,searchFieldOnRemoveHandler} from '../../helper';
 import {appointmentStatusList} from '../../constants'
 
 const AppointmentStatus = props => {
@@ -30,8 +30,8 @@ const AppointmentStatus = props => {
     setAppointStatusOptions(appointmentStatusList);
   }, [appointmentStatusList, setAppointStatusOptions]);
 
-  const onChangeHandler = e => searchFeildOnChangeHandler(appointmentStatusOptions,setAppointStatusOptions,selectedAppointmentStatusOptions,setSelectedAppointmentStatusOptions,e)
-  const onRemoveHandler = e => searchFeildOnRemoveHandler(appointmentStatusOptions,setAppointStatusOptions,selectedAppointmentStatusOptions,setSelectedAppointmentStatusOptions,e)
+  const onChangeHandler = e => searchFieldOnChangeHandler(appointmentStatusOptions,setAppointStatusOptions,selectedAppointmentStatusOptions,setSelectedAppointmentStatusOptions,e)
+  const onRemoveHandler = e => searchFieldOnRemoveHandler(appointmentStatusOptions,setAppointStatusOptions,selectedAppointmentStatusOptions,setSelectedAppointmentStatusOptions,e)
 
   return (
     <div>

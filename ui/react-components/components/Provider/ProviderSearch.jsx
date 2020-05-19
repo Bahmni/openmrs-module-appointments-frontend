@@ -9,8 +9,8 @@ import { sortBy } from "lodash";
 import { getValidProviders } from "../../helper";
 import { PROVIDER_RESPONSES,availableForAppointments } from "../../constants";
 import {
-  searchFeildOnChangeHandler,
-  searchFeildOnRemoveHandler
+  searchFieldOnChangeHandler,
+  searchFieldOnRemoveHandler
 } from "../../helper";
 
 const ProviderSearch = props => {
@@ -19,9 +19,7 @@ const ProviderSearch = props => {
     selectedProviders,
     onChange,
     onProviderRemove = e => onRemoveHandler(e),
-    isDisabled
-  } = props;
-  const {
+    isDisabled,
     openMenuOnClick = true,
     openMenuOnFocus = true,
     style = "",
@@ -60,16 +58,17 @@ const ProviderSearch = props => {
   const [selectedProvider, setSelectedProvider] = useState([]);
 
   useEffect(() => {
-    setProviders(loadProviders());
+    loadProviders().then((providers) => {
+      setProviders(providers)
+    })
   }, []);
 
   const loadProviders = async () => {
-    const providers = await getAllProviders();
+    let providers = await getAllProviders();
     if(providers.length===undefined){
-      setProviders([])
-    }else{
-      setProviders(createDropdownOptions(providers));
+      return []
     }
+    return createDropdownOptions(providers)
   };
 
   const onProviderSelect = selectedProviderOption => {
@@ -82,7 +81,7 @@ const ProviderSearch = props => {
   };
 
   const onChangeHandler = e =>
-    searchFeildOnChangeHandler(
+    searchFieldOnChangeHandler(
       providers,
       setProviders,
       selectedProvider,
@@ -90,7 +89,7 @@ const ProviderSearch = props => {
       e
     );
   const onRemoveHandler = e =>
-    searchFeildOnRemoveHandler(
+    searchFieldOnRemoveHandler(
       providers,
       setProviders,
       selectedProvider,
@@ -104,7 +103,7 @@ const ProviderSearch = props => {
         isDisabled={isDisabled}
         options={providers}
         placeholder={placeHolder}
-        onChange={props.onChange ? onProviderSelect : onChangeHandler}
+        onChange={onChange ? onProviderSelect : onChangeHandler}
         selectedValue={""}
         openMenuOnClick={openMenuOnClick}
         openMenuOnFocus={openMenuOnFocus}

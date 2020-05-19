@@ -6,7 +6,7 @@ import {getAllByTag} from "../../api/locationApi";
 import {locationTagName} from "../../constants";
 import {forEach} from 'lodash';
 import Tags from "../Tags/Tags.jsx";
-import {searchFeildOnChangeHandler,searchFeildOnRemoveHandler} from '../../helper';
+import {searchFieldOnChangeHandler,searchFieldOnRemoveHandler} from '../../helper';
 
 const LocationSearch = (props) => {
 
@@ -41,9 +41,9 @@ const LocationSearch = (props) => {
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_LOCATION', defaultMessage: 'Location'
     });
 
-    const onChangeHandler = eventChangedValue => searchFeildOnChangeHandler(locations,setLocations,selectedLocations,setSelectedLocations,eventChangedValue)
-    const onRemoveHandler = eventChangedValue => searchFeildOnRemoveHandler(locations,setLocations,selectedLocations,setSelectedLocations,eventChangedValue)    
-    
+    const onChangeHandler = eventChangedValue => searchFieldOnChangeHandler(locations,setLocations,selectedLocations,setSelectedLocations,eventChangedValue)
+    const onRemoveHandler = eventChangedValue => searchFieldOnRemoveHandler(locations,setLocations,selectedLocations,setSelectedLocations,eventChangedValue)
+
     return (
         <div>
         <Dropdown
