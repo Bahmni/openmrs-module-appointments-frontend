@@ -1,17 +1,12 @@
 import { getAllProviders } from "../../api/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Tags from "../Tags/Tags.jsx";
-import { forEach, find } from "lodash";
+import {find, forEach, isEqual, sortBy} from "lodash";
 import PropTypes from "prop-types";
-import { injectIntl } from "react-intl";
-import { sortBy } from "lodash";
-import { getValidProviders } from "../../helper";
-import { PROVIDER_RESPONSES,availableForAppointments } from "../../constants";
-import {
-  searchFieldOnChangeHandler,
-  searchFieldOnRemoveHandler
-} from "../../helper";
+import {injectIntl} from "react-intl";
+import {getValidProviders} from "../../helper";
+import {availableForAppointments, PROVIDER_RESPONSES} from "../../constants";
 
 const ProviderSearch = props => {
   const {
@@ -32,6 +27,13 @@ const ProviderSearch = props => {
     defaultMessage: "Choose Provider"
   });
 
+  const createProviderOption = provider => ({
+    value: provider.uuid,
+    label: provider.person.display,
+    comments: null,
+    response: PROVIDER_RESPONSES.ACCEPTED
+  });
+
   const createDropdownOptions = results => {
     const options = [];
     forEach(results, provider => {
@@ -41,12 +43,7 @@ const ProviderSearch = props => {
           availableForAppointments
           : false
       ) {
-        options.push({
-          value: provider.uuid,
-          label: provider.person.display,
-          comments: null,
-          response: PROVIDER_RESPONSES.ACCEPTED
-        });
+        options.push(createProviderOption(provider));
       }
     });
     return sortBy(options, providerOption =>
@@ -54,12 +51,13 @@ const ProviderSearch = props => {
     )
   };
 
-  const [providers, setProviders] = useState([])
+  const [allProviders, setAllProviders] = useState([])
+  const [providerOptions, setProviderOptions] = useState([])
   const [selectedProvider, setSelectedProvider] = useState([]);
 
   useEffect(() => {
-    loadProviders().then((providers) => {
-      setProviders(providers)
+    loadProviders().then((providerOptions) => {
+      setProviderOptions(providerOptions)
     })
   }, []);
 
@@ -68,40 +66,34 @@ const ProviderSearch = props => {
     if(providers.length===undefined){
       return []
     }
+    setAllProviders(providers);
     return createDropdownOptions(providers)
   };
 
   const onProviderSelect = selectedProviderOption => {
     setSelectedProvider(null);
-    const selectedProviderObj = find(providers, [
+    const selectedProviderObj = find(providerOptions, [
       "value",
       selectedProviderOption.value
     ]);
     onChange(selectedProviderObj);
   };
 
-  const onChangeHandler = e =>
-    searchFieldOnChangeHandler(
-      providers,
-      setProviders,
-      selectedProvider,
-      setSelectedProvider,
-      e
-    );
-  const onRemoveHandler = e =>
-    searchFieldOnRemoveHandler(
-      providers,
-      setProviders,
-      selectedProvider,
-      setSelectedProvider,
-      e
-    );
+  const onChangeHandler = eventChangedValue => {
+    setSelectedProvider([...selectedProvider, eventChangedValue]);
+    setProviderOptions(() => [...providerOptions].filter(providerOption => providerOption.value !== eventChangedValue.value));
+  };
+
+  const onRemoveHandler = eventChangedValue => {
+    setSelectedProvider(() => [...selectedProvider].filter(providerOption => providerOption.value !== eventChangedValue));
+    setProviderOptions([...providerOptions, createProviderOption(find(allProviders, ["uuid", eventChangedValue]))]);
+  };
 
   return (
     <div>
       <Dropdown
         isDisabled={isDisabled}
-        options={providers}
+        options={providerOptions}
         placeholder={placeHolder}
         onChange={onChange ? onProviderSelect : onChangeHandler}
         selectedValue={""}
