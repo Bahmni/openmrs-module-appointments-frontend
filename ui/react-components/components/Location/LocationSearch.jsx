@@ -17,7 +17,7 @@ const LocationSearch = (props) => {
         const options = [];
         forEach(locations, function (location) {
             options.push({
-                value: location.name,
+                value: location,
                 label: location.name
             });
         });
