@@ -1,7 +1,8 @@
 import React from 'react';
 import {getPatientsByLocation} from './patientApi.js';
 import mockAxios from 'jest-mock-axios';
-import {searchPatientUrl} from '../config';
+import {patientUrl, searchPatientUrl} from '../config';
+import {getPatient} from "./patientApi";
 
 afterEach(() => {
     mockAxios.reset();
@@ -87,4 +88,41 @@ describe('Patient Api', () => {
             .toHaveBeenCalledWith(
                 `${searchPatientUrl}?loginLocationUuid=${locationUuid}&q=${searchQuery}&startIndex=${startIndex}`);
     });
+
+    it('should fetch patient by given uuid', async () =>{
+        const uuid = "1dfff08c-141b-46df-b6a2-6b69080a5000";
+        let mockResponse =
+            {
+                "uuid": uuid,
+                "birthDate": "1982-05-05",
+                "extraIdentifiers": "{\"National ID\":\"NAT2804\"}",
+                "personId": 74,
+                "deathDate": null,
+                "identifier": "GAN203006",
+                "addressFieldValue": "",
+                "givenName": "Test",
+                "middleName": null,
+                "familyName": "Hyperthyroidism",
+                "gender": "M",
+                "dateCreated": 1493967811000,
+                "activeVisitUuid": "22c33dfa-d99f-4497-b9d8-b954db9e68ac",
+                "customAttribute": null,
+                "patientProgramAttributeValue": null,
+                "hasBeenAdmitted": false,
+                "age": "37"
+            };
+        mockAxios.get.mockImplementationOnce(() =>
+            Promise.resolve({
+                data: mockResponse
+            })
+        );
+
+        let patient = await getPatient(uuid);
+
+        expect(mockAxios.get)
+            .toHaveBeenCalledWith(
+                `${patientUrl}/${uuid}`);
+        expect(patient).toEqual(mockResponse);
+    });
+
 });

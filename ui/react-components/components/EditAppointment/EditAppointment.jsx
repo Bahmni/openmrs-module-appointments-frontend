@@ -624,7 +624,8 @@ EditAppointment.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object,
     appointmentUuid: PropTypes.string.isRequired,
-    isRecurring: PropTypes.string.isRequired
+    isRecurring: PropTypes.string.isRequired,
+    currentProvider: PropTypes.object,
 };
 
 export default injectIntl(EditAppointment);

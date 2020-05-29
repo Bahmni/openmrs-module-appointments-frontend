@@ -57,10 +57,12 @@ import AppointmentEditorCommonFieldsWrapper
     from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
+import * as patientApi from "../../api/patientApi";
+import {mapOpenMRSPatient} from "../../mapper/patientMapper";
 
 const AddAppointment = props => {
 
-    const {appConfig, intl, appointmentParams, currentProvider} = props;
+    const {appConfig, intl, appointmentParams, currentProvider, urlParams } = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
 
@@ -113,7 +115,16 @@ const AddAppointment = props => {
         if (appointmentDetails.occurrences === undefined)
             updateAppointmentDetails({occurrences: getDefaultOccurrences(appConfig)});
         updateAppointmentDetails({weekDays: getWeekDays(appConfig && appConfig.startOfWeek)});
+        if(urlParams && urlParams.patient) {
+            populatePatientDetails(urlParams.patient).then();
+        }
     }, [appConfig]);
+
+    async function populatePatientDetails(patientUuid) {
+        const patient = await patientApi.getPatient(patientUuid);
+        const patientForDropdown = mapOpenMRSPatient(patient);
+        return updateAppointmentDetails({patient: patientForDropdown});
+    }
 
     const reInitialiseComponent = () => {
         updateAppointmentDetails({
@@ -561,7 +572,8 @@ AddAppointment.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object,
     appointmentParams: PropTypes.object,
-    currentProvider: PropTypes.object
+    currentProvider: PropTypes.object,
+    urlParams: PropTypes.object
 };
 
 export default injectIntl(AddAppointment);

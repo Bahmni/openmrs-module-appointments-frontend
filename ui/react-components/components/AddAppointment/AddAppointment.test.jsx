@@ -5,6 +5,7 @@ import {fireEvent, waitForElement} from "@testing-library/react";
 import * as addAppointmentService from "./AddAppointmentService.js";
 import moment from "moment";
 import {AppContext} from "../AppContext/AppContext";
+import {getPatient} from "../../api/patientApi";
 
 jest.mock('../../api/patientApi');
 jest.mock('../../api/serviceApi');
@@ -23,6 +24,7 @@ let getPatientByLocationSpy;
 let getAllServicesSpy;
 let getAllSpecialitiesSpy;
 let getAllProvidersSpy;
+let getPatientSpy;
 
 const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'months');
@@ -35,6 +37,7 @@ const clickOnFirstDayOfNextMonth = (container) => {
 describe('Add Appointment', () => {
     beforeEach(() => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
+        getPatientSpy = jest.spyOn(patientApi, 'getPatient');
         getAllServicesSpy = jest.spyOn(serviceApi, 'getAllServices');
         getAllSpecialitiesSpy = jest.spyOn(specialityApi, 'getAllSpecialities');
         getAllProvidersSpy = jest.spyOn(providerApi, 'getAllProviders');
@@ -45,6 +48,7 @@ describe('Add Appointment', () => {
         getAllServicesSpy.mockRestore();
         getAllSpecialitiesSpy.mockRestore();
         getAllProvidersSpy.mockRestore();
+        getPatientSpy.mockRestore();
     });
 
     it('should render an editor', () => {
@@ -523,7 +527,11 @@ describe('Add Appointment', () => {
         const dateInputField = getByPlaceholderText('mm/dd/yyyy');
         expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
 
-    })
+    });
+    it('should fetch patient details on load if patient is present in url params', () => {
+        const {findByText} = renderWithReactIntl(<AddAppointment urlParams={{patient:"6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad"}}/>);
+        expect(findByText('Test Patient')).not.toBeNull();
+    });
 });
 
 describe('Add appointment with appointment request enabled', () => {
@@ -536,7 +544,7 @@ describe('Add appointment with appointment request enabled', () => {
         fireEvent.blur(inputBox);
         fireEvent.change(inputBox, {target: {value: "abc"}});
         await waitForElement(
-            () => (container.querySelector('.react-select__menu'))
+            () => (getByText(targetPatient))
         );
         const option = getByText(targetPatient);
         fireEvent.click(option);
