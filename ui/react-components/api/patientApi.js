@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {searchPatientUrl} from '../config';
+import {patientUrl, searchPatientUrl} from '../config';
 
 export const getPatientsByLocation = async (locationUuid, searchQuery, startIndex = 0) => {
     try {
@@ -10,3 +10,13 @@ export const getPatientsByLocation = async (locationUuid, searchQuery, startInde
         return error.response;
     }
 };
+
+export const getPatient = async (uuid) => {
+    try {
+        const response = await axios.get(`${patientUrl}/${uuid}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return error.response;
+    }
+}
