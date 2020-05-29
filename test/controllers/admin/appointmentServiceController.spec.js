@@ -45,6 +45,8 @@ describe("AppointmentServiceController", function () {
                 return colorsForAppointmentService;
             } else if (key === 'enableCalendarView') {
                 return true;
+            } else if (key === 'enableAppointmentRequests') {
+                return true;
             }
         });
         confirmBox = jasmine.createSpy('confirmBox');
@@ -234,6 +236,7 @@ describe("AppointmentServiceController", function () {
                 description: 'For cancer',
                 startTime: new Date().toString(),
                 endTime: new Date().toString(),
+                initialAppointmentStatus: 'Requested',
                 weeklyAvailability: [{
                     startTime: new Date().toString(),
                     endTime: new Date().toString(),

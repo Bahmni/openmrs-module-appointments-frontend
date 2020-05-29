@@ -98,6 +98,7 @@ window.Bahmni.Appointments.Constants = {
   "searchAppointmentUrl": "/openmrs/ws/rest/v1/appointment/search",
   "searchAppointmentsUrl": "/openmrs/ws/rest/v1/appointments/search",
   "getAppointmentsSummaryUrl": "/openmrs/ws/rest/v1/appointment/appointmentSummary",
+  "changeProviderResponseUrl": "/openmrs/ws/rest/v1/appointments/{{appointmentUuid}}/providerResponse",
   "defaultServiceTypeDuration": 15,
   "defaultCalendarSlotLabelInterval": "01:00",
   "defaultCalendarSlotDuration": "00:30",
@@ -108,7 +109,7 @@ window.Bahmni.Appointments.Constants = {
   "angularCalendarDaysOfWeek": [0, 1, 2, 3, 4, 5, 6],
   "defaultWeekStartDayName": "Sunday",
   "minDurationForAppointment": 30,
-  "appointmentStatusList": ["Scheduled", "CheckedIn", "Completed", "Cancelled", "Missed"],
+  "appointmentStatusList": ["Requested", "Scheduled", "CheckedIn", "Completed", "Cancelled", "Missed"],
   "regexForTime": "(?:(?:1[0-2]|0?[1-9]):[0-5]\\d\\s*[AaPp][Mm])?",
   "privilegeManageAppointments": "app:appointments:manageAppointmentsTab",
   "privilegeForAdmin": "app:appointments:adminTab",
@@ -123,6 +124,14 @@ window.Bahmni.Appointments.Constants = {
     "Friday": 5,
     "Saturday": 6,
     "Sunday": 7
+  },
+  "appointmentStatuses": {
+    "Requested": "Requested",
+    "Scheduled": "Scheduled",
+    "CheckedIn": "CheckedIn",
+    "Completed": "Completed",
+    "Missed": "Missed",
+    "Cancelled": "Cancelled"
   },
   "providerResponses": {
     "ACCEPTED": "ACCEPTED",

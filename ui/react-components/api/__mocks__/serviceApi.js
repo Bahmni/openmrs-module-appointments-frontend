@@ -24,6 +24,21 @@ const services = [{
     "uuid": "7eb76991-cc67-45c1-9cb9-93d91113673a",
     "color": "#DC143C",
     "creatorName": null
+},
+{
+    "appointmentServiceId": 3,
+    "name": "Ortho Requested",
+    "description": "Dressings for orthopedic, maxillo-facial, plastic, including tissue expander",
+    "speciality": {"name": "Cardiology", "uuid": "78ec2222-2222-457d-b798-fe37c3dc7256"},
+    "startTime": "",
+    "endTime": "",
+    "maxAppointmentsLimit": null,
+    "durationMins": null,
+    "location": {"name": "OPD", "uuid": "71361c6a-9f64-11e7-b330-000c29e530d2"},
+    "uuid": "7eb76991-cc67-45c1-9cb9-93d91113672b",
+    "color": "#DC143C",
+    "creatorName": null,
+    "initialAppointmentStatus": "Requested"
 }];
 
 const service = {

@@ -11,7 +11,9 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
+
             $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
+            $scope.isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
@@ -40,6 +42,7 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
@@ -273,6 +276,38 @@ angular.module('bahmni.appointments')
                 var scope = {};
                 scope.message = $translate.instant('APPOINTMENT_RESET_CONFIRM_MESSAGE');
                 scope.yes = resetStatus;
+                showPopUp(scope);
+            };
+
+            const findCurrentProviderInAppointment = function(appointment) {
+                return _.find(appointment.providers, function (provider) {
+                    return provider.uuid === currentProviderUuId;
+                });
+            };
+
+            $scope.isSelectedAppointmentAwaitingForCurrentProvider = function(){
+                if (!$scope.isAppointmentRequestEnabled || !$scope.selectedAppointment) return false;
+                const currentProviderInAppointment = findCurrentProviderInAppointment($scope.selectedAppointment);
+                return !(_.isUndefined(currentProviderInAppointment)) &&
+                    currentProviderInAppointment.response === Bahmni.Appointments.Constants.providerResponses.AWAITING;
+            };
+
+            function acceptAppointmentInvite(closeConfirmBox) {
+                const currentProviderInAppointment = findCurrentProviderInAppointment($scope.selectedAppointment);
+
+                const message = $translate.instant('PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE');
+                return appointmentsService.changeProviderResponse($scope.selectedAppointment.uuid, currentProviderInAppointment.uuid,
+                    Bahmni.Appointments.Constants.providerResponses.ACCEPTED).then(function () {
+                    currentProviderInAppointment.response = Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
+                    closeConfirmBox();
+                    messagingService.showMessage('info', message);
+                });
+            }
+
+            $scope.acceptInviteForCurrentProvider = function() {
+                var scope = {};
+                scope.message = $translate.instant('APPOINTMENT_ACCEPT_CONFIRM_MESSAGE');
+                scope.yes = acceptAppointmentInvite;
                 showPopUp(scope);
             };
 

@@ -94,6 +94,53 @@ const providers = [
                 "voided": false
             }
         ]
+    },
+    {
+        "display": "Provider Three",
+        "person": {
+            "uuid": "70e7bad3-e1c4-1234-a8a5-05066f40f780",
+            "display": "Provider Three",
+            "gender": "M",
+            "age": null,
+            "birthdate": null,
+            "birthdateEstimated": true,
+            "dead": false,
+            "deathDate": null,
+            "causeOfDeath": null,
+            "preferredName": {
+                "uuid": "0054d19a-224f-4829-bc71-04dd505b0450",
+                "display": "Eric Leaming",
+                "links": [
+                    {
+                        "rel": "self",
+                        "uri": ""
+                    }
+                ]
+            },
+            "preferredAddress": null,
+            "attributes": [],
+            "voided": false,
+            "deathdateEstimated": false,
+            "birthtime": null,
+            "links": [
+                {
+                    "rel": "full",
+                    "uri": ""
+                }
+            ],
+            "resourceVersion": "1.11"
+        },
+        "uuid": "ef3643ff-12er-4f27-8189-16689a821a9e",
+        "retired": false,
+        "attributes": [
+            {
+                "attributeType": {
+                    "display": "Available for appointments"
+                },
+                "value": true,
+                "voided": false
+            }
+        ]
     }
 ];
 

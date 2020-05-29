@@ -1,6 +1,7 @@
-import {CHECKED_IN_APPOINTMENT_STATUS, SCHEDULED_APPOINTMENT_STATUS} from "../constants";
+import {APPOINTMENT_STATUSES} from "../constants";
 
 export const isAppointmentScheduledOrCheckedIn = (appointment) => {
-    return appointment.status === SCHEDULED_APPOINTMENT_STATUS
-        || appointment.status === CHECKED_IN_APPOINTMENT_STATUS;
+    return appointment.status === APPOINTMENT_STATUSES.Scheduled
+        || appointment.status === APPOINTMENT_STATUSES.CheckedIn
+        || appointment.status === APPOINTMENT_STATUSES.Requested;
 };

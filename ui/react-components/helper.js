@@ -30,8 +30,12 @@ export const isServiceTypeEnabled = appConfig => {
     return appConfig && appConfig.enableServiceTypes;
 };
 
+export const isActiveProvider = function (provider) {
+    return provider.response !== PROVIDER_RESPONSES.CANCELLED;
+};
+
 export const getValidProviders = providers => {
-    return providers && providers.filter(provider => provider.response === PROVIDER_RESPONSES.ACCEPTED);
+    return providers && providers.filter(isActiveProvider);
 };
 
 export const searchFieldOnChangeHandler=(state, setState, selectedState, setSelectedState, eventChangedValue)=>{

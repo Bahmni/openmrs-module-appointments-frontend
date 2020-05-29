@@ -4,6 +4,7 @@ import React from "react";
 import {conflictsFor, getAppointment} from "../../api/appointmentsApi";
 import {act, fireEvent, waitForElement} from "@testing-library/react";
 import moment from "moment";
+import {AppContext} from "../AppContext/AppContext";
 
 
 jest.mock('../../api/appointmentsApi');
@@ -36,8 +37,8 @@ const clickOnFirstDayOfNextMonth = (container) => {
     return nextMonth;
 }
 
+const flushPromises = () => new Promise(setImmediate);
 describe('Edit Appointment', () => {
-    const flushPromises = () => new Promise(setImmediate);
 
     beforeEach(() => {
         appointmentsApiSpy = jest.spyOn(appointmentsApi, 'getAppointment');
@@ -184,7 +185,7 @@ describe('Edit Appointment', () => {
     });
 
     it('should check the walk in appointment when clicked', () => {
-        const {container} = renderWithReactIntl(<EditAppointment isRecurring={false} appointmentUuid="appt-uuid"/>);
+        const {container} = renderWithReactIntl(<EditAppointment isRecurring={false} appointmentUuid="36fdc60e-7ae5-4708-9fcc-8c98daba0ca9"/>);
         const walkInCheckBox = container.querySelectorAll('.rc-checkbox-input')[1];
         fireEvent.click(walkInCheckBox);
         expect(walkInCheckBox.checked).toBeTruthy();
@@ -339,7 +340,7 @@ describe('Edit Appointment', () => {
         };
         act(() => {
             const {getByText, container, getByTestId, getAllByTitle} = renderWithReactIntl(<EditAppointment
-                appointmentUuid={'DAY'} isRecurring="false" appConfig={config}/>);
+                appointmentUuid={"36fdc60e-7ae5-4708-9fcc-8c98daba0ca9"} isRecurring="false" appConfig={config}/>);
             getByTextInDom = getByText;
             containerInDom = container;
             getByTestIdInDom = getByTestId;
@@ -367,7 +368,7 @@ describe('Edit Appointment', () => {
         };
         act(() => {
             const {getByText, getAllByText, container, getByTestId, getAllByTitle} = renderWithReactIntl(<EditAppointment
-                appointmentUuid={'DAY'} isRecurring="true" appConfig={config}/>);
+                appointmentUuid={"36fdc60e-7ae5-4708-9fcc-8c98daba0ca9"} isRecurring="true" appConfig={config}/>);
             getByTextInDom = getByText;
             getAllByTextInDom = getAllByText;
             containerInDom = container;
@@ -497,7 +498,7 @@ describe('Edit Appointment', () => {
         let getByPlaceholderTextInDom= undefined;
         act(() => {
             const {getByText, container, getByPlaceholderText} = renderWithReactIntl(<EditAppointment
-                appointmentUuid='active-appointment-uuid'  isRecurring="false" />);
+                appointmentUuid="36fdc60e-7ae5-4708-9fcc-8c98daba0ca9" isRecurring="false" />);
             getByTextInDom = getByText;
             containerInDom = container;
             getByPlaceholderTextInDom = getByPlaceholderText
@@ -505,5 +506,227 @@ describe('Edit Appointment', () => {
         await flushPromises();
         const dateSelectedField = containerInDom.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe("11");
+    })
+});
+
+describe('Edit appointment with appointment request enabled', () => {
+    const config = {enableAppointmentRequests: true, maxAppointmentProviders: 10};
+    const currentProvider = {uuid: "f9badd80-ab76-11e2-9e96-0800200c9a66"};
+
+    const selectPatient = async (container, getByText) => {
+        const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
+        const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.blur(inputBox);
+        fireEvent.change(inputBox, {target: {value: "abc"}});
+        await waitForElement(
+            () => (container.querySelector('.react-select__menu'))
+        );
+        const option = getByText(targetPatient);
+        fireEvent.click(option);
+        let singleValue;
+        await waitForElement(
+            () =>
+                (singleValue = container.querySelector(
+                    '.react-select__single-value'
+                ))
+        );
+    };
+
+    const selectService = async (container, getByText) => {
+        const targetService = 'Ortho Requested';
+        const inputBoxService = container.querySelectorAll('.react-select__input input')[1];
+        fireEvent.change(inputBoxService, {target: {value: "Ort"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        const optionService = getByText(targetService);
+        fireEvent.click(optionService);
+        let singleValueService;
+        await waitForElement(
+            () =>
+                (singleValueService = container.querySelector(
+                    '.react-select__single-value'
+                ))
+        );
+    };
+
+    const getAppointmentTime = () => {
+        const today = moment();
+        const todayInMilliseconds = today.toDate().getTime();
+        const addTwoHoursFromNow = moment().add(2, 'hours');
+        const addTwoHoursFromNowInMilliseconds = addTwoHoursFromNow.toDate().getTime();
+        return {
+            startDateTime: todayInMilliseconds,
+            endDateTime: addTwoHoursFromNowInMilliseconds,
+        };
+    };
+
+    const selectProvider = async (container, getByText, searchValue, providerName) => {
+        const inputBox = container.querySelectorAll('.react-select__input input')[3];
+        fireEvent.change(inputBox, {target: {value: searchValue}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        const optionOne = getByText(providerName);
+        fireEvent.click(optionOne);
+
+    };
+
+    let getConflictsSpy;
+    let saveAppointmentSpy;
+    let appointmentTime;
+
+    beforeEach(() => {
+        getConflictsSpy = jest.spyOn(appointmentsApi, 'conflictsFor')
+            .mockImplementation((param) => Promise.resolve({status: 204}));
+        saveAppointmentSpy = jest.spyOn(appointmentsApi, "saveOrUpdateAppointment")
+            .mockImplementation((param) => Promise.resolve({
+                status: 200,
+                data: {startDateTime: appointmentTime.startDateTime}
+            }));
+        appointmentTime = getAppointmentTime();
+    });
+
+    afterEach(() => {
+        getConflictsSpy.mockRestore();
+        saveAppointmentSpy.mockRestore();
+    });
+    it('should update the appointment status and provider responses for edits when appointment date/time is changed', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        act(() => {
+            const {container, getByText, queryByText, getByTestId} = renderWithReactIntl(
+                <AppContext.Provider value={{setViewDate: jest.fn()}}>
+                    renderWithReactIntl(<EditAppointment appConfig={config} appointmentUuid={'123tr5-7ae5-4708-9fcc-8c98daba0ca9'}
+                                                         isRecurring="false" currentProvider={currentProvider} />);
+                </AppContext.Provider>
+
+            );
+            getByTextInDom = getByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+        });
+
+        await flushPromises();
+        clickOnFirstDayOfNextMonth(containerInDom);
+        fireEvent.click(getByTextInDom('Update'));
+        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+        fireEvent.click(await getByTestIdInDom("update-confirm-button"));
+        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+
+        expect(getConflictsSpy).toHaveBeenCalled();
+        expect(saveAppointmentSpy).toHaveBeenCalled();
+
+        const appointmentRequestData = saveAppointmentSpy.mock.calls[0][0];
+        expect(appointmentRequestData.status).toEqual("Requested");
+        expect(appointmentRequestData.providers.length).toEqual(2);
+        expect(appointmentRequestData.providers[0].response).toEqual("AWAITING");
+        expect(appointmentRequestData.providers[1].response).toEqual("AWAITING");
+    });
+
+    it('should not update the appointment status and provider responses for edits if time is not changed', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        act(() => {
+            const {container, getByText, queryByText, getByTestId} = renderWithReactIntl(
+                <AppContext.Provider value={{setViewDate: jest.fn()}}>
+                    renderWithReactIntl(<EditAppointment appConfig={config} appointmentUuid={'123tr5-7ae5-4708-9fcc-8c98daba0ca9'}
+                                                         isRecurring="false" currentProvider={currentProvider} />);
+                </AppContext.Provider>
+
+            );
+            getByTextInDom = getByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+        });
+
+        await flushPromises();
+        fireEvent.click(getByTextInDom('Update'));
+        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+        fireEvent.click(await getByTestIdInDom("update-confirm-button"));
+        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+
+        expect(getConflictsSpy).toHaveBeenCalled();
+        expect(saveAppointmentSpy).toHaveBeenCalled();
+
+        const appointmentRequestData = saveAppointmentSpy.mock.calls[0][0];
+        expect(appointmentRequestData.status).toEqual("Scheduled");
+        expect(appointmentRequestData.providers.length).toEqual(2);
+        expect(appointmentRequestData.providers[0].response).toEqual("ACCEPTED");
+        expect(appointmentRequestData.providers[1].response).toEqual("ACCEPTED");
+    });
+
+    it('should update the provider responses for newly added providers even if time is not changed', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        act(() => {
+            const {container, getByText, queryByText, getByTestId} = renderWithReactIntl(
+                <AppContext.Provider value={{setViewDate: jest.fn()}}>
+                    renderWithReactIntl(<EditAppointment appConfig={config} appointmentUuid={'123tr5-7y65-4708-9fcc-8c98daba0ca9'}
+                                                         isRecurring="false" currentProvider={currentProvider} />);
+                </AppContext.Provider>
+
+            );
+            getByTextInDom = getByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+        });
+        await flushPromises();
+
+        selectProvider(containerInDom, getByTextInDom, "Three", "Provider Three");
+
+        fireEvent.click(getByTextInDom('Update'));
+        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+        fireEvent.click(await getByTestIdInDom("update-confirm-button"));
+        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+
+        expect(getConflictsSpy).toHaveBeenCalled();
+        expect(saveAppointmentSpy).toHaveBeenCalled();
+
+        const appointmentRequestData = saveAppointmentSpy.mock.calls[0][0];
+        expect(appointmentRequestData.status).toEqual("Scheduled");
+        expect(appointmentRequestData.providers.length).toEqual(3);
+        expect(appointmentRequestData.providers[0].name).toEqual("Provider One");
+        expect(appointmentRequestData.providers[0].response).toEqual("ACCEPTED");
+        expect(appointmentRequestData.providers[1].name).toEqual("Provider Two");
+        expect(appointmentRequestData.providers[1].response).toEqual("AWAITING");
+        expect(appointmentRequestData.providers[2].name).toEqual("Provider Three");
+        expect(appointmentRequestData.providers[2].response).toEqual("AWAITING");
+    });
+
+    it('should update the status as scheduled when current provider is added to appointment', async () => {
+        let getByTextInDom = undefined;
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        act(() => {
+            const {container, getByText, queryByText, getByTestId} = renderWithReactIntl(
+                <AppContext.Provider value={{setViewDate: jest.fn()}}>
+                    renderWithReactIntl(<EditAppointment appConfig={config}
+                                                         appointmentUuid={'45hj76-7y65-4708-9fcc-8c98daba0ca9'}
+                                                         isRecurring="false" currentProvider={currentProvider} currentProvider={currentProvider}/>);
+                </AppContext.Provider>
+            );
+            getByTextInDom = getByText;
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+        });
+        await flushPromises();
+
+        selectProvider(containerInDom, getByTextInDom, "One", "Provider One");
+
+        fireEvent.click(getByTextInDom('Update'));
+        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+        fireEvent.click(await getByTestIdInDom("update-confirm-button"));
+        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+
+        expect(getConflictsSpy).toHaveBeenCalled();
+        expect(saveAppointmentSpy).toHaveBeenCalled();
+
+        const appointmentRequestData = saveAppointmentSpy.mock.calls[0][0];
+        expect(appointmentRequestData.status).toEqual("Scheduled");
+        expect(appointmentRequestData.providers.length).toEqual(2);
+        expect(appointmentRequestData.providers[0].name).toEqual("Provider Two");
+        expect(appointmentRequestData.providers[0].response).toEqual("AWAITING");
+        expect(appointmentRequestData.providers[1].name).toEqual("Provider One");
+        expect(appointmentRequestData.providers[1].response).toEqual("ACCEPTED");
     })
 });

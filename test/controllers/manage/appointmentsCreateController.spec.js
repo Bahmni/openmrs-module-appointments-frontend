@@ -56,24 +56,24 @@ describe("AppointmentsCreateController", function () {
             };
         });
         return controller('AppointmentsCreateController', {
-            $scope: $scope,
-            $rootScope: rootScope,
-            $q: q,
-            $state: $state,
-            appointmentsServiceService: appointmentsServiceService,
-            messagingService: messagingService,
-            ngDialog: ngDialog,
-            appService: appService,
-            $window: $window,
-            spinner: spinner,
-            appointmentsService: appointmentsService,
-            patientService: patientService,
-            $translate: $translate,
-            $stateParams: $stateParams,
-            appointmentCreateConfig: appointmentCreateConfig,
-            appointmentContext: appointmentContext,
-            $http: $http
-        }
+                $scope: $scope,
+                $rootScope: rootScope,
+                $q: q,
+                $state: $state,
+                appointmentsServiceService: appointmentsServiceService,
+                messagingService: messagingService,
+                ngDialog: ngDialog,
+                appService: appService,
+                $window: $window,
+                spinner: spinner,
+                appointmentsService: appointmentsService,
+                patientService: patientService,
+                $translate: $translate,
+                $stateParams: $stateParams,
+                appointmentCreateConfig: appointmentCreateConfig,
+                appointmentContext: appointmentContext,
+                $http: $http
+            }
         );
     };
 
@@ -217,22 +217,22 @@ describe("AppointmentsCreateController", function () {
             createController();
             $scope.createAppointmentForm = {$invalid: false};
             var cancelledAppointment = {
-                date: moment().toDate(),
-                startTime: '09:00 am',
-                endTime: '09:30 am',
-                patient: {uuid: 'patientUuid'},
-                service: {uuid: 'serviceUuid'},
-                status: 'Cancelled',
-                uuid: 'uuid'
-            },
-            newAppointment = {
-                date: moment().toDate(),
-                startTime: '09:00 am',
-                endTime: '09:30 am',
-                patient: {uuid: 'patientUuid'},
-                service: {uuid: 'serviceUuid'},
-                uuid: 'newUuid'
-            };
+                    date: moment().toDate(),
+                    startTime: '09:00 am',
+                    endTime: '09:30 am',
+                    patient: {uuid: 'patientUuid'},
+                    service: {uuid: 'serviceUuid'},
+                    status: 'Cancelled',
+                    uuid: 'uuid'
+                },
+                newAppointment = {
+                    date: moment().toDate(),
+                    startTime: '09:00 am',
+                    endTime: '09:30 am',
+                    patient: {uuid: 'patientUuid'},
+                    service: {uuid: 'serviceUuid'},
+                    uuid: 'newUuid'
+                };
             $scope.patientAppointments = [cancelledAppointment];
             $state.params = {};
             $scope.appointment = newAppointment;
@@ -245,22 +245,22 @@ describe("AppointmentsCreateController", function () {
             createController();
             $scope.createAppointmentForm = {$invalid: false};
             var previousAppointment = {
-                date: moment().toDate(),
-                startTime: '09:15:00',
-                endTime: '12:20:00',
-                patient: {uuid: 'patientUuid'},
-                service: {uuid: 'serviceUuid'},
-                status: 'Scheduled',
-                uuid: 'uuid'
-            },
-            newAppointment = {
-                date: moment().toDate(),
-                startTime: '12:20:00',
-                endTime: '13:20:00',
-                patient: {uuid: 'patientUuid'},
-                service: {uuid: 'serviceUuid'},
-                uuid: 'newUuid'
-            };
+                    date: moment().toDate(),
+                    startTime: '09:15:00',
+                    endTime: '12:20:00',
+                    patient: {uuid: 'patientUuid'},
+                    service: {uuid: 'serviceUuid'},
+                    status: 'Scheduled',
+                    uuid: 'uuid'
+                },
+                newAppointment = {
+                    date: moment().toDate(),
+                    startTime: '12:20:00',
+                    endTime: '13:20:00',
+                    patient: {uuid: 'patientUuid'},
+                    service: {uuid: 'serviceUuid'},
+                    uuid: 'newUuid'
+                };
             previousAppointment = Bahmni.Appointments.Appointment.create(previousAppointment);
             $scope.patientAppointments = [previousAppointment];
             $state.params = {};
@@ -274,9 +274,9 @@ describe("AppointmentsCreateController", function () {
             var patientAppointmentsData = [{
                 uuid: 'veryNewUuid'
             },
-            {
-                uuid: 'newUuid'
-            }];
+                {
+                    uuid: 'newUuid'
+                }];
             var patientAppointments = {
                 data: patientAppointmentsData
             };
@@ -1033,7 +1033,7 @@ describe("AppointmentsCreateController", function () {
     });
 
     it("should dropDown have times list which are having entered number in hours of the allowed list", function () {
-       createController();
+        createController();
         $scope.startTimes = ['10:00 am', '11:00 am', '12:00 pm', '01:00 pm', '02:00 pm'];
         $scope.showStartTimes = [];
         $scope.appointment= { startTime: 2 };
@@ -1220,8 +1220,8 @@ describe("AppointmentsCreateController", function () {
             appointmentCreateConfig.providers = allAvailableProviders;
             appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}]};
             rootScope = {
-            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
-            currentProvider: {uuid: '3'}};
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
+                currentProvider: {uuid: '3'}};
             createController();
 
             expect($scope.isFieldEditNotAllowed()).toBeTruthy();

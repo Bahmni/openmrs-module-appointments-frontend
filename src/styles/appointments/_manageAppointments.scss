@@ -449,6 +449,21 @@
       min-width: 540px;
       max-width: 540px;
     }
+
+    label.provider-name{
+      &:after, &:before {
+        font-family: FontAwesome;
+        content: "";
+      }
+      &.AWAITING:before {
+        content: "\f059";
+        color: darkgray;
+      }
+      &.ACCEPTED:before {
+        content: "\f00c";
+        color: darkgreen;
+      }
+    }
   }
   thead {
     position: absolute;
@@ -545,6 +560,7 @@
         @extend .appBtn;
         border: none;
         color: #fff;
+        margin-bottom: 0.5em;
 
         &:disabled {
           cursor: not-allowed;
@@ -616,6 +632,9 @@
   &.Completed:after {
      content: "\f00c";
    }
+  &.Requested:after {
+     content: "\f059";
+   }
   &.Missed:after {
     content: "\f05e";
   }
@@ -625,5 +644,23 @@
   &.bed-accom:before {
     content: "\f236";
     right: 20px;
+  }
+}
+
+.confirm-box {
+  span.provider-name {
+    margin-right: 0.5em;
+    &:after, &:before {
+      font-family: FontAwesome;
+      content: "";
+    }
+    &.AWAITING:before {
+      content: "\f059";
+      color: darkgray;
+    }
+    &.ACCEPTED:before {
+      content: "\f00c";
+      color: darkgreen;
+    }
   }
 }

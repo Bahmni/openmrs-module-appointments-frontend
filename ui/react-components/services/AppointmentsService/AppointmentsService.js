@@ -9,6 +9,7 @@ const getProviders = providers => providers.map(provider => {
     return {
         name: provider.label,
         uuid: provider.value,
+        response: provider.response
     }
 });
 

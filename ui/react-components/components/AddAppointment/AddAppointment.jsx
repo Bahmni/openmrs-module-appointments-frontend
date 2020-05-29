@@ -1,7 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import classNames from 'classnames';
 import {
-    apiErrorContainer,
     appointmentEditor,
     appointmentPlanContainer,
     dateHeading,
@@ -10,8 +9,6 @@ import {
     recurringContainerLeft,
     recurringContainerRight,
     searchFieldsContainer,
-    searchFieldsContainerLeft,
-    searchFieldsContainerRight,
     timeSelector,
     weekDaysContainer
 } from './AddAppointment.module.scss';
@@ -45,23 +42,25 @@ import {
     dayRecurrenceType,
     FROM,
     MINUTES,
-    RECURRING_APPOINTMENT_TYPE, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
+    RECURRING_APPOINTMENT_TYPE,
+    SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     TODAY,
     WALK_IN_APPOINTMENT_TYPE
 } from "../../constants";
 import moment from "moment";
-import {getDefaultOccurrences, getDuration, getYesterday} from "../../helper.js";
+import {getDefaultOccurrences, getDuration} from "../../helper.js";
 import {getSelectedWeekDays, getWeekDays} from "../../services/WeekDaysService/WeekDaysService";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {isEmpty, isNil} from 'lodash';
-import AppointmentEditorCommonFieldsWrapper from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
+import AppointmentEditorCommonFieldsWrapper
+    from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
-import {getLocale} from "../../utils/LocalStorageUtil";
+import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
 
 const AddAppointment = props => {
 
-    const {appConfig, intl, appointmentParams} = props;
+    const {appConfig, intl, appointmentParams, currentProvider} = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
 
@@ -234,7 +233,11 @@ const AddAppointment = props => {
         }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
     };
 
+
     const save = async appointmentRequest => {
+        if (appConfig.enableAppointmentRequests) {
+            await checkAndUpdateAppointmentStatus(appointmentRequest, false);
+        }
         const response = await saveAppointment(appointmentRequest);
         const status = response.status;
         if (status === 200) {
@@ -264,7 +267,15 @@ const AddAppointment = props => {
         }
     };
 
+    const checkAndUpdateAppointmentStatus = async function (appointmentRequest, isRecurring) {
+        const appointmentRequestData = isRecurring ? appointmentRequest.appointmentRequest : appointmentRequest;
+        await updateAppointmentStatusAndProviderResponse(appointmentDetails, appointmentRequestData, currentProvider.uuid, [], false);
+    };
+
     const saveRecurringAppointments = async recurringAppointmentRequest => {
+        if (appConfig.enableAppointmentRequests) {
+            await checkAndUpdateAppointmentStatus(recurringAppointmentRequest, true);
+        }
         const response = await saveRecurring(recurringAppointmentRequest);
         const status = response.status;
         if (status === 200) {
@@ -404,11 +415,11 @@ const AddAppointment = props => {
                                 endDateType={appointmentDetails.endDateType}/>
                             <AppointmentDatePicker
                                 onChange={date => {
-                                    updateAppointmentDetails({recurringEndDate: date!=='' && !_.isNil(date)
+                                    updateAppointmentDetails({recurringEndDate: date!=='' && !isNil(date)
                                             ? moment(date).endOf('day') : undefined});
                                     updateErrorIndicators({endDateError: !date});
                                 }}
-                                isDisabled={appointmentDetails.endDateType !== on || (appointmentDetails.endDateType === on && _.isNil(appointmentDetails.recurringStartDate))}
+                                isDisabled={appointmentDetails.endDateType !== on || (appointmentDetails.endDateType === on && isNil(appointmentDetails.recurringStartDate))}
                                 value={appointmentDetails.recurringEndDate}
                                 minDate={appointmentDetails.recurringStartDate}/>
                             <ErrorMessage message={getEndDateTypeErrorMessage()}/>
@@ -549,7 +560,8 @@ const AddAppointment = props => {
 AddAppointment.propTypes = {
     intl: PropTypes.object.isRequired,
     appConfig: PropTypes.object,
-    appointmentParams: PropTypes.object
+    appointmentParams: PropTypes.object,
+    currentProvider: PropTypes.object
 };
 
 export default injectIntl(AddAppointment);

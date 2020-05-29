@@ -2,18 +2,23 @@ import React from "react";
 import AddAppointment from "./AddAppointment.jsx";
 import {renderWithReactIntl} from "../../utils/TestUtil";
 import {fireEvent, waitForElement} from "@testing-library/react";
-import * as apiService from "./AddAppointmentService.js";
+import * as addAppointmentService from "./AddAppointmentService.js";
 import moment from "moment";
+import {AppContext} from "../AppContext/AppContext";
 
 jest.mock('../../api/patientApi');
 jest.mock('../../api/serviceApi');
 jest.mock('../../api/specialityApi');
 jest.mock('../../api/providerApi');
 jest.mock('../../utils/CookieUtil');
+jest.mock('../../api/appointmentsApi');
+
 const patientApi = require('../../api/patientApi');
 const serviceApi = require('../../api/serviceApi');
 const specialityApi = require('../../api/specialityApi');
 const providerApi = require('../../api/providerApi');
+const appointmentsApi = require('../../api/appointmentsApi');
+
 let getPatientByLocationSpy;
 let getAllServicesSpy;
 let getAllSpecialitiesSpy;
@@ -25,7 +30,8 @@ const clickOnFirstDayOfNextMonth = (container) => {
     fireEvent.click(nextButton);
     fireEvent.click(container.querySelector('.react-datepicker__day--001'));
     return nextMonth;
-}
+};
+
 describe('Add Appointment', () => {
     beforeEach(() => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
@@ -101,7 +107,7 @@ describe('Add Appointment', () => {
     it('should display error messages when checkAndSave is clicked and required fields are not selected', () => {
         const {getByText, getAllByText} = renderWithReactIntl(<AddAppointment/>);
         const button = getByText('Check and Save');
-        const saveAppointmentSpy = jest.spyOn(apiService, 'saveAppointment');
+        const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveAppointment');
         fireEvent.click(button);
         getByText('Please select patient');
         getByText('Please select service');
@@ -112,13 +118,14 @@ describe('Add Appointment', () => {
     });
 
     it('should display time error message when time is not selected and remaining fields are selected ', async () => {
-        const {container, getByText, queryByText, getByPlaceholderText, getAllByText} = renderWithReactIntl(<AddAppointment/>);
+        const {container, getByText, queryByText, getByPlaceholderText, getAllByText} = renderWithReactIntl(
+            <AddAppointment/>);
 
         //select patient
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const inputBox = container.querySelector('.react-select__input input');
         fireEvent.blur(inputBox);
-        fireEvent.change(inputBox, { target: { value: "abc" } });
+        fireEvent.change(inputBox, {target: {value: "abc"}});
         await waitForElement(
             () => (container.querySelector('.react-select__menu'))
         );
@@ -135,7 +142,7 @@ describe('Add Appointment', () => {
         //select service
         const targetService = 'Physiotherapy OPD';
         const inputBoxService = container.querySelectorAll('.react-select__input input')[1];
-        fireEvent.change(inputBoxService, { target: { value: "Phy" } });
+        fireEvent.change(inputBoxService, {target: {value: "Phy"}});
         await waitForElement(() => (container.querySelector('.react-select__menu')));
         const optionService = getByText(targetService);
         fireEvent.click(optionService);
@@ -216,7 +223,7 @@ describe('Add Appointment', () => {
     it('should display error messages when checkAndSave is clicked and required recurring fields are not selected', () => {
         const {getByText, queryByText, getAllByTestId, getAllByText, container} = renderWithReactIntl(
             <AddAppointment/>);
-        const saveAppointmentSpy = jest.spyOn(apiService, 'saveRecurring');
+        const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveRecurring');
         const checkBox = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBox);
         const checkAndSaveButton = getByText('Check and Save');
@@ -240,7 +247,7 @@ describe('Add Appointment', () => {
         };
         const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AddAppointment
             appConfig={config}/>);
-        const saveAppointmentSpy = jest.spyOn(apiService, 'saveRecurring');
+        const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveRecurring');
         const checkBox = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBox);
         const todayButton = getByTestId("today-radio-button");
@@ -307,7 +314,7 @@ describe('Add Appointment', () => {
     //TODO need to add test for conflicts api on click of check and save
     //TODO Not able to do because onChange of time picket is not getting called. Need to fix that
 
-    it('should toggle the selection of checkbox when changing the other',() => {
+    it('should toggle the selection of checkbox when changing the other', () => {
         const {container} = renderWithReactIntl(<AddAppointment/>);
         const recurringCheckBox = container.querySelectorAll('.rc-checkbox-input')[0];
         fireEvent.click(recurringCheckBox);
@@ -394,7 +401,8 @@ describe('Add Appointment', () => {
             startDateTime: todayInMilliseconds,
             endDateTime: addTwoHoursFromNowInMilliseconds,
         };
-        const {container, getByPlaceholderText} = renderWithReactIntl(<AddAppointment appointmentParams={appointmentParams}/>);
+        const {container, getByPlaceholderText} = renderWithReactIntl(<AddAppointment
+            appointmentParams={appointmentParams}/>);
         expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe(today.format('h:mm A').toLowerCase());
         expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe(addTwoHoursFromNow.format('h:mm A').toLowerCase());
         const dateInputField = getByPlaceholderText('mm/dd/yyyy');
@@ -410,7 +418,8 @@ describe('Add Appointment', () => {
             startDateTime: todayInMilliseconds,
             endDateTime: addTwoHoursFromNowInMilliseconds,
         };
-        const {container, getAllByPlaceholderText} = renderWithReactIntl(<AddAppointment appointmentParams={appointmentParams}/>);
+        const {container, getAllByPlaceholderText} = renderWithReactIntl(<AddAppointment
+            appointmentParams={appointmentParams}/>);
         const checkBoxService = container.querySelector('.rc-checkbox-input');
         fireEvent.click(checkBoxService);
         expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe(today.format('h:mm A').toLowerCase());
@@ -477,7 +486,8 @@ describe('Add Appointment', () => {
 
     it('should not add provider if selected twice', async () => {
         const config = {maxAppointmentProviders: 2};
-        const {container, getByText, queryByText, queryAllByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        const {container, getByText, queryByText, queryAllByText} = renderWithReactIntl(<AddAppointment
+            appConfig={config}/>);
         let selectedProvider = "Provider One";
 
         const inputBox = container.querySelectorAll('.react-select__input input')[3];
@@ -501,7 +511,7 @@ describe('Add Appointment', () => {
         expect(queryAllByText("Provider Two").length).toBe(1);
     });
 
-    it('should change appointment date when a new date is selected', async () =>{
+    it('should change appointment date when a new date is selected', async () => {
         const today = moment();
         const {container, getByPlaceholderText, queryByText} = renderWithReactIntl(<AddAppointment/>);
         const nextMonth = clickOnFirstDayOfNextMonth(container);
@@ -510,8 +520,143 @@ describe('Add Appointment', () => {
         const dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(selectedDate.date().toFixed(0));
 
-       const dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
         expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
 
     })
 });
+
+describe('Add appointment with appointment request enabled', () => {
+    const config = {enableAppointmentRequests: true, maxAppointmentProviders: 10};
+    const currentProvider = {uuid: "f9badd80-ab76-11e2-9e96-0800200c9a66"};
+
+    const selectPatient = async (container, getByText) => {
+        const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
+        const inputBox = container.querySelector('.react-select__input input');
+        fireEvent.blur(inputBox);
+        fireEvent.change(inputBox, {target: {value: "abc"}});
+        await waitForElement(
+            () => (container.querySelector('.react-select__menu'))
+        );
+        const option = getByText(targetPatient);
+        fireEvent.click(option);
+        let singleValue;
+        await waitForElement(
+            () =>
+                (singleValue = container.querySelector(
+                    '.react-select__single-value'
+                ))
+        );
+    };
+
+    const selectService = async (container, getByText) => {
+        const targetService = 'Ortho Requested';
+        const inputBoxService = container.querySelectorAll('.react-select__input input')[1];
+        fireEvent.change(inputBoxService, {target: {value: "Ort"}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        const optionService = getByText(targetService);
+        fireEvent.click(optionService);
+        let singleValueService;
+        await waitForElement(
+            () =>
+                (singleValueService = container.querySelector(
+                    '.react-select__single-value'
+                ))
+        );
+    };
+
+    const getAppointmentTime = () => {
+        const today = moment();
+        const todayInMilliseconds = today.toDate().getTime();
+        const addTwoHoursFromNow = moment().add(2, 'hours');
+        const addTwoHoursFromNowInMilliseconds = addTwoHoursFromNow.toDate().getTime();
+        return {
+            startDateTime: todayInMilliseconds,
+            endDateTime: addTwoHoursFromNowInMilliseconds,
+        };
+    };
+
+    const selectProvider = async (container, getByText, searchValue, providerName) => {
+        const inputBox = container.querySelectorAll('.react-select__input input')[3];
+        fireEvent.change(inputBox, {target: {value: searchValue}});
+        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        const optionOne = getByText(providerName);
+        fireEvent.click(optionOne);
+
+    };
+
+    let getConflictsSpy;
+    let saveAppointmentSpy;
+    let appointmentTime;
+    beforeEach(() => {
+        appointmentTime = getAppointmentTime();
+        getConflictsSpy = jest.spyOn(appointmentsApi, 'conflictsFor')
+            .mockImplementation((param) => Promise.resolve({status: 204}));
+        saveAppointmentSpy = jest.spyOn(appointmentsApi, "saveOrUpdateAppointment")
+            .mockImplementation((param) => Promise.resolve({
+                status: 200,
+                data: {startDateTime: appointmentTime.startDateTime}
+            }));
+    });
+
+    afterEach(() => {
+        getConflictsSpy.mockRestore();
+        saveAppointmentSpy.mockRestore();
+    });
+
+    it('should update the appointment status and provider responses if the AppointmentRequest is Enabled', async () => {
+        const {container, getByText, queryByText} = renderWithReactIntl(
+            <AppContext.Provider value={{setViewDate: jest.fn()}}>
+                <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider}/>
+            </AppContext.Provider>
+
+        );
+        await selectPatient(container, getByText);
+        await selectService(container, getByText);
+        await selectProvider(container, getByText, "Two", "Provider Two");
+        await selectProvider(container, getByText, "Three", "Provider Three");
+
+        const button = getByText('Check and Save');
+        fireEvent.click(button);
+        await waitForElement(() => (container.querySelector('.popup-overlay')));
+
+        expect(getConflictsSpy).toHaveBeenCalled();
+        expect(saveAppointmentSpy).toHaveBeenCalled();
+
+        const appointmentRequestData = saveAppointmentSpy.mock.calls[0][0];
+        expect(appointmentRequestData.status).toEqual("Requested");
+        expect(appointmentRequestData.providers.length).toEqual(2);
+        expect(appointmentRequestData.providers[0].response).toEqual("AWAITING");
+        expect(appointmentRequestData.providers[1].response).toEqual("AWAITING");
+    });
+
+    it('should update the appointment status as Scheduled when current provider is part of appointment', async () => {
+        const {container, getByText, queryByText} = renderWithReactIntl(
+            <AppContext.Provider value={{setViewDate: jest.fn()}}>
+                <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider}/>
+            </AppContext.Provider>
+
+        );
+        await selectPatient(container, getByText);
+        await selectService(container, getByText);
+        await selectProvider(container, getByText, "One", "Provider One");
+        await selectProvider(container, getByText, "Two", "Provider Two");
+
+        const button = getByText('Check and Save');
+        fireEvent.click(button);
+        await waitForElement(() => (container.querySelector('.popup-overlay')));
+
+        expect(getConflictsSpy).toHaveBeenCalled();
+        expect(saveAppointmentSpy).toHaveBeenCalled();
+
+        const appointmentRequestData = saveAppointmentSpy.mock.calls[0][0];
+        expect(appointmentRequestData.status).toEqual("Scheduled");
+        expect(appointmentRequestData.providers.length).toEqual(2);
+        expect(appointmentRequestData.providers[0].name).toEqual("Provider One");
+        expect(appointmentRequestData.providers[0].response).toEqual("ACCEPTED");
+        expect(appointmentRequestData.providers[1].name).toEqual("Provider Two");
+        expect(appointmentRequestData.providers[1].response).toEqual("AWAITING");
+    })
+});
+
+

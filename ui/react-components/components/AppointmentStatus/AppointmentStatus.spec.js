@@ -17,7 +17,7 @@ jest.mock('../../utils/CookieUtil');
 const locationApi = require('../../api/locationApi');
 let getAllByTagSpy;
 
-describe('Service Search', () => {
+describe('AppointmentStatus', () => {
    
     // placeholer check
     it('should display placeholder as "Enter Status Name"', async () => {

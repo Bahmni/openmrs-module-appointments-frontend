@@ -69,6 +69,7 @@ module.exports = function (webpackEnv) {
         output: {
             path: rootDir + '/dist',
             filename: '[name].js',
+            chunkFilename: 'AppointmentStatusHandler.js',
         },
         performance : {
             hints : false
@@ -119,6 +120,7 @@ module.exports = function (webpackEnv) {
                     parallel: !isWsl,
                     // Enable file caching
                     cache: true,
+                    exclude: "AppointmentStatusHandler.js",
                     sourceMap:false ,
                 }),
                 // This is only used in production mode
