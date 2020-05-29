@@ -40,6 +40,7 @@ Bahmni.Appointments.AppointmentService = (function () {
             durationMins: serviceDetails.durationMins,
             maxAppointmentsLimit: serviceDetails.maxAppointmentsLimit,
             color: serviceDetails.color,
+            initialAppointmentStatus: serviceDetails.initialAppointmentStatus,
             startTime: getTime(serviceDetails.startTime),
             endTime: getTime(serviceDetails.endTime),
             specialityUuid: serviceDetails.specialityUuid,

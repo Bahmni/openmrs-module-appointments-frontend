@@ -16,6 +16,7 @@ describe('AppointmentServiceViewModel', function () {
         },
         startTime: dateUtil.getDateTimeInSpecifiedFormat(startDateTime, timeFormat),
         endTime: dateUtil.getDateTimeInSpecifiedFormat(endDateTime, timeFormat),
+        initialAppointmentStatus: 'Requested',
         maxAppointmentsLimit: 40,
         durationMins: 20,
         location: {
@@ -66,6 +67,7 @@ describe('AppointmentServiceViewModel', function () {
         expect(appointmentServiceModel.endTime.toString()).toEqual(endDateTime.toString());
         expect(appointmentServiceModel.description).toBe(serviceResponse.description);
         expect(appointmentServiceModel.locationUuid).toBe('locationUuid');
+        expect(appointmentServiceModel.initialAppointmentStatus).toBe('Requested');
         expect(appointmentServiceModel.color).toBe('#00ff00 ');
     });
 

@@ -1,10 +1,10 @@
 import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
-import {CHECKED_IN_APPOINTMENT_STATUS, SCHEDULED_APPOINTMENT_STATUS} from "../../constants";
+import {APPOINTMENT_STATUSES} from "../../constants";
 
 describe('Disable components helper', () => {
     it('should disable service and speciality when appointment status is scheduled and isServiceOnAppointmentEditable ' +
         'config is false', () => {
-        const componentDisableStatus = getComponentsDisableStatus({status: SCHEDULED_APPOINTMENT_STATUS}, false);
+        const componentDisableStatus = getComponentsDisableStatus({status: APPOINTMENT_STATUSES.Scheduled}, false);
 
         expect(componentDisableStatus.service).toBeTruthy();
         expect(componentDisableStatus.speciality).toBeTruthy();
@@ -20,7 +20,7 @@ describe('Disable components helper', () => {
 
     it('should enable service and speciality when appointment status is scheduled and ' +
         'isServiceOnAppointmentEditable config is true', () => {
-        const componentStatus = getComponentsDisableStatus({status: CHECKED_IN_APPOINTMENT_STATUS}, true);
+        const componentStatus = getComponentsDisableStatus({status: APPOINTMENT_STATUSES.CheckedIn}, true);
 
         expect(componentStatus.service).toBeFalsy();
         expect(componentStatus.speciality).toBeFalsy();
@@ -58,7 +58,7 @@ describe('Disable components helper', () => {
 
     it('should enable location, providers, service type, start date, time, occurrences and end date' +
         'when appointment status is scheduled', () => {
-        const componentStatus = getComponentsDisableStatus({status: SCHEDULED_APPOINTMENT_STATUS});
+        const componentStatus = getComponentsDisableStatus({status: APPOINTMENT_STATUSES.Scheduled});
 
         expect(componentStatus.serviceType).toBeFalsy();
         expect(componentStatus.providers).toBeFalsy();
@@ -71,7 +71,7 @@ describe('Disable components helper', () => {
 
     it('should enable location, providers, service type start date, time, occurrences and end date' +
         ' when appointment status is checked in', () => {
-        const componentStatus = getComponentsDisableStatus({status: CHECKED_IN_APPOINTMENT_STATUS});
+        const componentStatus = getComponentsDisableStatus({status: APPOINTMENT_STATUSES.CheckedIn});
 
         expect(componentStatus.serviceType).toBeFalsy();
         expect(componentStatus.providers).toBeFalsy();
@@ -85,7 +85,7 @@ describe('Disable components helper', () => {
     it('should disable location, providers, service, speciality, service type start date, time, occurrences ' +
         'and end date when appointment status is checked in', () => {
         const componentStatus = getComponentsDisableStatus(
-            {status: CHECKED_IN_APPOINTMENT_STATUS,
+            {status: APPOINTMENT_STATUSES.CheckedIn,
             //year 2007
             startDateTime: new Date(1174166254)}
             );
@@ -113,7 +113,7 @@ describe('Disable components helper', () => {
     it('should enable walkIn and disable recurring for normal appointment', () => {
         const componentStatus = getComponentsDisableStatus(
             {
-                status: SCHEDULED_APPOINTMENT_STATUS,
+                status: APPOINTMENT_STATUSES.Scheduled,
                 recurring: false
             }
         );
@@ -125,7 +125,7 @@ describe('Disable components helper', () => {
     it('should enable walkIn and disable recurring for walkIn appointment', () => {
         const componentStatus = getComponentsDisableStatus(
             {
-                status: SCHEDULED_APPOINTMENT_STATUS,
+                status: APPOINTMENT_STATUSES.Scheduled,
                 recurring: false,
             }
         );
@@ -137,7 +137,7 @@ describe('Disable components helper', () => {
     it('should disable walkIn and recurring recurring for scheduled recurring appointment', () => {
         const componentStatus = getComponentsDisableStatus(
             {
-                status: SCHEDULED_APPOINTMENT_STATUS,
+                status: APPOINTMENT_STATUSES.Scheduled,
                 recurring: true,
             }
         );

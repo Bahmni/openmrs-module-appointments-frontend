@@ -39,6 +39,7 @@ Bahmni.Appointments.Appointment = (function () {
             providerUuid: appointmentDetails.provider && appointmentDetails.provider.uuid,
             providers: getAppointmentProviders(appointmentDetails.providers),
             locationUuid: appointmentDetails.location && appointmentDetails.location.uuid,
+            status: appointmentDetails.status,
             appointmentKind: appointmentDetails.appointmentKind,
             comments: appointmentDetails.comments
         });

@@ -8,12 +8,14 @@ angular.module('bahmni.appointments')
                   messagingService, specialityService, ngDialog, appService, appointmentServiceContext, confirmBox) {
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
+            $scope.enableAppointmentRequests = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.enableCalendarView = appService.getAppDescriptor().getConfigValue('enableCalendarView');
             $scope.colorsForAppointmentService = appService.getAppDescriptor().getConfigValue('colorsForAppointmentService');
             var serviceDetails = appointmentServiceContext ? appointmentServiceContext.service : {};
             $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceDetails);
             $scope.service.color = $scope.service.color || $scope.colorsForAppointmentService && $scope.colorsForAppointmentService[0] || "#008000";
+            $scope.initialAppointmentStatusOptions = ["Scheduled", "Requested"];
 
             var save = function () {
                 clearValuesIfDisabledAndInvalid();

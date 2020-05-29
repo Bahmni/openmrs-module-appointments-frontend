@@ -35,6 +35,7 @@ describe('AppointmentService', function () {
             startTime: startDateTime,
             color: "#fffff0",
             endTime: endDateTime,
+            initialAppointmentStatus: "Requested",
             maxAppointmentsLimit: 30,
             specialityUuid: 'specUuid',
             locationUuid: 'locUuid'
@@ -48,6 +49,7 @@ describe('AppointmentService', function () {
         expect(appointmentService.endTime).toBe(dateUtil.getDateTimeInSpecifiedFormat(endDateTime, timeFormat));
         expect(appointmentService.locationUuid).toBe(service.locationUuid);
         expect(appointmentService.specialityUuid).toBe(service.specialityUuid);
+        expect(appointmentService.initialAppointmentStatus).toBe(service.initialAppointmentStatus);
         expect(appointmentService.color).toBe("#fffff0");
     });
 

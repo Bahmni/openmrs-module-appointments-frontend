@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, {Fragment, useEffect, useState} from "react";
 import {FormattedMessage, injectIntl} from "react-intl";
+import {filter, isEqual} from "lodash";
 import classNames from "classnames";
 import {
     appointmentEditor,
@@ -9,8 +10,7 @@ import {
     recurringContainer,
     recurringContainerLeft,
     recurringContainerRight,
-    searchFieldsContainer,
-    isRecurring
+    searchFieldsContainer
 } from "../AddAppointment/AddAppointment.module.scss";
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import AppointmentEditorCommonFieldsWrapper
@@ -20,15 +20,20 @@ import {getAppointment} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
 import moment from "moment";
 import 'moment-timezone';
-import {getDuration, getValidProviders, getYesterday} from "../../helper";
+import {getDuration, getValidProviders, isActiveProvider} from "../../helper";
 import {
     appointmentEndTimeProps,
     appointmentStartTimeProps,
     CANCEL_CONFIRMATION_MESSAGE_EDIT,
-    MINUTES, RECURRENCE_TERMINATION_AFTER, RECURRENCE_TERMINATION_ON,
+    MINUTES,
+    PROVIDER_RESPONSES,
+    RECURRENCE_TERMINATION_AFTER,
+    RECURRENCE_TERMINATION_ON,
     RECURRING_APPOINTMENT_TYPE,
-    SCHEDULED_APPOINTMENT_TYPE, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
-    WALK_IN_APPOINTMENT_TYPE, weekRecurrenceType
+    SCHEDULED_APPOINTMENT_TYPE,
+    SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
+    WALK_IN_APPOINTMENT_TYPE,
+    weekRecurrenceType
 } from "../../constants";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import Label from "../Label/Label.jsx";
@@ -38,9 +43,9 @@ import {
     editAppointment,
     recurringDetailsEdit,
     recurringEndDateContainer,
+    recurringEndDateLabel,
     recurringTerminationDetails,
-    weekDaySelector,
-    recurringEndDateLabel
+    weekDaySelector
 } from './EditAppointment.module.scss'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import InputNumber from "../InputNumber/InputNumber.jsx";
@@ -64,15 +69,14 @@ import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
 import UpdateSuccessModal from "../SuccessModal/UpdateSuccessModal.jsx";
 import UpdateConfirmationModal from "../UpdateConfirmationModal/UpdateConfirmationModal.jsx";
 import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
-import {isEqual} from "lodash";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {AppContext} from "../AppContext/AppContext";
-
+import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
 
 const EditAppointment = props => {
 
-    const {appConfig, appointmentUuid, isRecurring, intl} = props;
+    const {appConfig, appointmentUuid, isRecurring, intl, currentProvider} = props;
 
     const {setViewDate} = React.useContext(AppContext);
 
@@ -120,6 +124,8 @@ const EditAppointment = props => {
     const [originalOccurrences, setOriginalOccurrences] = useState(undefined);
     const [applyForAll, setApplyForAll] = useState(false);
     const [serviceErrorMessage, setServiceErrorMessage] = useState('');
+    const [existingProvidersUuids, setExistingProvidersUuids] = useState([]);
+    const [appointmentTimeBeforeEdit, setAppointmentTimeBeforeEdit] = useState({});
 
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
@@ -175,6 +181,7 @@ const EditAppointment = props => {
             providers: getValidProviders(appointmentDetails.providers),
             locationUuid: appointmentDetails.location && appointmentDetails.location.value && appointmentDetails.location.value.uuid,
             appointmentKind: appointmentDetails.appointmentKind,
+            status: appointmentDetails.status,
             comments: appointmentDetails.notes
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
@@ -214,7 +221,7 @@ const EditAppointment = props => {
         setTimeout(function () {
             setServiceErrorMessage('');
         }, SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL);
-    }
+    };
 
     const checkAndSave = async () => {
         if (isValidAppointment()) {
@@ -238,7 +245,30 @@ const EditAppointment = props => {
         setShowUpdateSuccessPopup(true);
     };
 
+    const isRescheduled = function (appointmentTimeBeforeEdit) {
+        if (!moment(appointmentDetails.appointmentDate).isSame(moment(appointmentTimeBeforeEdit.date))) {
+            return true;
+        }
+        const newStart = moment(appointmentDetails.startTime, 'hh:mm a');
+        const previousStart = moment(appointmentTimeBeforeEdit.startTime, 'hh:mm a');
+        const newEnd = moment(appointmentDetails.endTime, 'hh:mm a');
+        const previousEnd = moment(appointmentTimeBeforeEdit.endTime, 'hh:mm a');
+
+        const isSameStart = newStart.isSame(previousStart, 'minutes');
+        const isSameEnd = newEnd.isSame(previousEnd, 'minutes');
+        return !(isSameStart && isSameEnd);
+    };
+
+    const checkAndUpdateAppointmentStatus = async function (appointmentRequest, isRecurring) {
+        const appointmentRequestData = isRecurring ? appointmentRequest.appointmentRequest : appointmentRequest;
+        await updateAppointmentStatusAndProviderResponse(appointmentDetails, appointmentRequestData, currentProvider.uuid,
+            existingProvidersUuids, isRescheduled(appointmentTimeBeforeEdit));
+    };
+
     const save = async appointmentRequest => {
+        if (appConfig.enableAppointmentRequests) {
+            await checkAndUpdateAppointmentStatus(appointmentRequest, false);
+        }
         const response = await saveAppointment(appointmentRequest);
         const status = response.status;
         if (status === 200) {
@@ -253,6 +283,9 @@ const EditAppointment = props => {
     };
 
     const updateAllAppointments = async recurringAppointmentRequest => {
+        if (appConfig.enableAppointmentRequests) {
+            await checkAndUpdateAppointmentStatus(recurringAppointmentRequest, true);
+        }
         const response = await updateRecurring(recurringAppointmentRequest);
         const status = response.status;
         if (status === 200) {
@@ -322,6 +355,15 @@ const EditAppointment = props => {
 
     const isValidEndDate = () => appointmentDetails.recurringEndDate || (appointmentDetails.occurrences && appointmentDetails.occurrences > 0);
 
+    function storePreviousAppointmentDatetime(date, startTime, endTime) {
+        setAppointmentTimeBeforeEdit({date: date, startTime: startTime, endTime: endTime});
+    }
+
+    function storeExistingProviderUuids(existingProviders) {
+        const existingProvidersUuids = filter(existingProviders, isActiveProvider).map(provider => provider.uuid);
+        setExistingProvidersUuids(existingProvidersUuids);
+    }
+
     const generateAppointmentDetails = async (callback) => {
         const appointment = isRecurringAppointment()
             ? await getRecurringAppointment(appointmentUuid) : await getAppointment(appointmentUuid);
@@ -332,7 +374,7 @@ const EditAppointment = props => {
             ? (appointment && appointment.data && appointment.data.recurringPattern) || undefined : undefined;
         if (appointmentResponse) {
             setOriginalAppointmentDate(moment(new Date(appointmentResponse.startDateTime)));
-            updateAppointmentDetails({
+            const appointmentDetailsFromResponse = {
                 patient: getPatientForDropdown(appointmentResponse.patient),
                 providers: getProviderDropDownOptions(appointmentResponse.providers),
                 service: {label: appointmentResponse.service.name, value: appointmentResponse.service},
@@ -347,7 +389,10 @@ const EditAppointment = props => {
                 status: appointmentResponse.status,
                 appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE :
                     appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined
-            });
+            };
+            updateAppointmentDetails(appointmentDetailsFromResponse);
+            storePreviousAppointmentDatetime(appointmentDetailsFromResponse.appointmentDate, appointmentDetailsFromResponse.startTime, appointmentDetailsFromResponse.endTime);
+            storeExistingProviderUuids(appointmentResponse.providers);
             setCurrentStartTime(moment(new Date(appointmentResponse.startDateTime)).format('hh:mm a'));
             setCurrentEndTime(moment(new Date(appointmentResponse.endDateTime)).format('hh:mm a'));
             if (isRecurringAppointment()) {

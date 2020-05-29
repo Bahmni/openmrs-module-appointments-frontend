@@ -4,7 +4,7 @@ import Tags from "../Tags/Tags.jsx";
 import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
 import {searchFieldOnChangeHandler,searchFieldOnRemoveHandler} from '../../helper';
-import {appointmentStatusList} from '../../constants'
+import {APPOINTMENT_STATUSES} from '../../constants'
 
 const AppointmentStatus = props => {
   const { intl, onChange=e=>onChangehandler(e),isDisabled } = props;
@@ -26,9 +26,14 @@ const AppointmentStatus = props => {
     setSelectedAppointmentStatusOptions
   ] = useState([]);
 
+
   useEffect(() => {
+    const appointmentStatusList = Object.keys(APPOINTMENT_STATUSES).map(status => {
+      return {value: status, label: APPOINTMENT_STATUSES[status]}
+    });
     setAppointStatusOptions(appointmentStatusList);
-  }, [appointmentStatusList, setAppointStatusOptions]);
+  }, [APPOINTMENT_STATUSES, setAppointStatusOptions]);
+
 
   const onChangeHandler = e => searchFieldOnChangeHandler(appointmentStatusOptions,setAppointStatusOptions,selectedAppointmentStatusOptions,setSelectedAppointmentStatusOptions,e)
   const onRemoveHandler = e => searchFieldOnRemoveHandler(appointmentStatusOptions,setAppointStatusOptions,selectedAppointmentStatusOptions,setSelectedAppointmentStatusOptions,e)

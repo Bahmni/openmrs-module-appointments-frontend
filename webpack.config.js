@@ -75,6 +75,7 @@ module.exports = {
         }),
         new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/),
         new CopyPlugin([
+            {from: __dirname + '/ui/dist/AppointmentStatusHandler.js', to: distDirPath + '/AppointmentStatusHandler.js'},
             {from: __dirname + '/i18n/', to: distDirPath + '/i18n'},
             {from: __dirname + '/config/', to: distDirPath + '/config'},
         ])
