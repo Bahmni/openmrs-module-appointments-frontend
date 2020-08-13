@@ -1,10 +1,10 @@
 import CustomPopup from "../CustomPopup/CustomPopup";
 import {popup} from "./ListViewAction.module.scss";
 import React from "react";
-import useListViewAction from "./ListViewAction";
+import useListViewAction from "./useListViewAction";
 
 export default function CompleteAction() {
-  const [show, handleClose] = useListViewAction();
+  const {show, handleClose} = useListViewAction();
 
   function content() {
     return (

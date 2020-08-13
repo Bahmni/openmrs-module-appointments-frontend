@@ -1,10 +1,10 @@
 import CustomPopup from "../CustomPopup/CustomPopup";
 import {checkinPopup} from "./ListViewAction.module.scss";
-import useListViewAction from "./ListViewAction";
+import useListViewAction from "./useListViewAction";
 import React from "react";
 
 export default function CheckinAction() {
-  const [show, handleClose] = useListViewAction();
+  const {show, handleClose} = useListViewAction();
 
   const currentTime = () => {
     const today = new Date();

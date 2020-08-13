@@ -5,5 +5,5 @@ export default function useListViewAction() {
 
   const handleClose = () => setShow(false);
 
-  return [show, handleClose]
-}
+  return {show, handleClose};
+};
