@@ -11,7 +11,7 @@ export default function CancelAction() {
       <>
         <p>Are you sure, you want to mark appointment as Cancelled?</p>
 
-        <button onClick={() => console.log("Clicked Yes")}>Yes</button>
+        <button onClick={() => handleClose()}>Yes</button>
         <button onClick={() => handleClose()}>No</button>
 
       </>

@@ -52,7 +52,7 @@ exports[`List View Actions should render Checkin Action 1`] = `
         </sup>
         <input
           type="time"
-          value="21:27"
+          value="14:44"
         />
       </p>
       <p>

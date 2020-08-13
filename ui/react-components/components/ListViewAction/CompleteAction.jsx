@@ -10,7 +10,7 @@ export default function CompleteAction() {
     return (
       <>
         <p>Are you sure, you want to mark appointment as Completed?</p>
-        <button onClick={() => console.log("Clicked Yes")}>Yes</button>
+        <button onClick={() => handleClose()}>Yes</button>
         <button onClick={() => handleClose()}>No</button>
       </>
     )

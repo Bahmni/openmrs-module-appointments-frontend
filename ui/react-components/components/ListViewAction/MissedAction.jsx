@@ -11,7 +11,7 @@ export default function MissedAction() {
       <>
         <p>Are you sure, you want to mark appointment as Missed?</p>
 
-        <button onClick={() => console.log("Clicked yes")}>Yes</button>
+        <button onClick={() => handleClose()}>Yes</button>
         <button onClick={() => handleClose()}>No</button>
 
       </>
