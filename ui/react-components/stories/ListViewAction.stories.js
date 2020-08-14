@@ -1,7 +1,5 @@
 import CheckinAction from "../components/ListViewAction/CheckinAction";
-import MissedAction from "../components/ListViewAction/MissedAction";
-import CompleteAction from "../components/ListViewAction/CompleteAction";
-import CancelAction from "../components/ListViewAction/CancelAction";
+import ListViewAction from "../components/ListViewAction/ListViewAction";
 import {IntlProvider} from "react-intl";
 import React from "react";
 
@@ -13,7 +11,7 @@ const messages = {
 };
 
 export default {title: 'List View Actions'};
-export const missed = () => <IntlProvider locale='en' messages={messages}><MissedAction/></IntlProvider>;
+export const missed = () => <IntlProvider locale='en' messages={messages}><ListViewAction status="Missed"/></IntlProvider>;
 export const checkin = () => <IntlProvider locale='en' messages={messages}><CheckinAction/></IntlProvider>;
-export const complete = () => <IntlProvider locale='en' messages={messages}><CompleteAction/></IntlProvider>;
-export const cancel = () => <IntlProvider locale='en' messages={messages}><CancelAction/></IntlProvider>;
+export const complete = () => <IntlProvider locale='en' messages={messages}><ListViewAction status="Completed"/></IntlProvider>;
+export const cancel = () => <IntlProvider locale='en' messages={messages}><ListViewAction status="Cancelled"/></IntlProvider>;
