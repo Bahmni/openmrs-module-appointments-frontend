@@ -1,10 +1,12 @@
 import CustomPopup from "../CustomPopup/CustomPopup";
 import {checkinPopup} from "./ListViewAction.module.scss";
 import useListViewAction from "./useListViewAction";
+import {useIntl} from "react-intl";
 import React from "react";
 
 export default function CheckinAction() {
   const {show, handleClose} = useListViewAction();
+  const intl = useIntl();
 
   const currentTime = () => {
     const today = new Date();
@@ -16,15 +18,15 @@ export default function CheckinAction() {
       <>
         {show &&
         <>
-          <p>Are you sure, you want to mark appointment as CheckedIn?</p>
+          <p>{intl.formatMessage({id: "APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE"}, {toStatus: "CheckedIn"})}</p>
           <p>
-            <b>Check in time:</b>
+            <b>{`${intl.formatMessage({id: "APPOINTMENT_CHECKIN_TIME_KEY", defaultMessage: "Check in time"})}:`}</b>
             <sup>*</sup>
             <input type="time" defaultValue={currentTime()}/>
           </p>
           <p>
-            <button onClick={() => handleClose()}>Yes</button>
-            <button onClick={() => handleClose()}>No</button>
+            <button onClick={() => handleClose()}>{intl.formatMessage({id: "YES_KEY", defaultMessage: "Yes"})}</button>
+            <button onClick={() => handleClose()}>{intl.formatMessage({id: "NO_KEY", defaultMessage: "No"})}</button>
           </p>
         </>}
       </>);
