@@ -79,6 +79,7 @@ const AddAppointment = props => {
         startTime: appointmentParams && moment(appointmentParams.startDateTime),
         endTime: appointmentParams && moment(appointmentParams.endDateTime),
         appointmentType: undefined,
+        isTeleconsultationEnabled: false,
         notes: undefined,
         startDateType: appointmentParams && moment(new Date(appointmentParams.startDateTime)) ? FROM : undefined,
         endDateType: undefined,
@@ -150,6 +151,7 @@ const AddAppointment = props => {
 
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
+    const isTeleConsultationAppointmentEnabled = () => appointmentDetails.isTeleconsultationEnabled;
 
     const getAppointmentRequest = () => {
         let appointment = {
@@ -166,6 +168,7 @@ const AddAppointment = props => {
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
             appointmentKind: isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : "Scheduled",
+            isTeleconsultationEnabled: isTeleConsultationAppointmentEnabled(),
             comments: appointmentDetails.notes
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
@@ -374,21 +377,26 @@ const AddAppointment = props => {
 
     const on = "On";
     return (<Fragment>
-        <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring: '')}>
+        <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
-                                   updateAppointmentDetails={updateAppointmentDetails}
-                                   updateErrorIndicators={updateErrorIndicators}
-                                   endTimeBasedOnService={endTimeBasedOnService}
-                                   appConfig={appConfig} errors={errors} autoFocus={true}/>
+                updateAppointmentDetails={updateAppointmentDetails}
+                updateErrorIndicators={updateErrorIndicators}
+                endTimeBasedOnService={endTimeBasedOnService}
+                appConfig={appConfig} errors={errors} autoFocus={true} />
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
-                                     onChange={(e) => {
-                                         if (appointmentDetails.appointmentType === e.target.name)
-                                             updateAppointmentDetails({appointmentType: undefined});
-                                         else
-                                             updateAppointmentDetails({appointmentType: e.target.name})
-                                     }}/>
+                        isTeleconsultationEnabled={appointmentDetails.isTeleconsultationEnabled}
+                        onChange={(e) => {
+                            if (appointmentDetails.isTeleconsultationEnabled && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ isTeleconsultationEnabled: false });
+                            else if (!appointmentDetails.isTeleconsultationEnabled && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ isTeleconsultationEnabled: true });
+                            else if (appointmentDetails.appointmentType === e.target.name)
+                                updateAppointmentDetails({ appointmentType: undefined });
+                            else
+                                updateAppointmentDetails({ appointmentType: e.target.name })
+                        }} />
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
