@@ -41,6 +41,7 @@ Bahmni.Appointments.Appointment = (function () {
             locationUuid: appointmentDetails.location && appointmentDetails.location.uuid,
             status: appointmentDetails.status,
             appointmentKind: appointmentDetails.appointmentKind,
+            isTeleconsultationEnabled: appointmentDetails.isTeleconsultationEnabled,
             comments: appointmentDetails.comments
         });
         return appointment;
