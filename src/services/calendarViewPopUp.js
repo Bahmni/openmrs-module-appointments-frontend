@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state', '$translate', 'appointmentsService',
+    .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state','$window', '$translate', 'appointmentsService',
         'confirmBox', 'checkinPopUp', 'appService', 'messagingService', 'appointmentCommonService',
-        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp, appService, messagingService, appointmentCommonService) {
+        function ($rootScope, ngDialog, $state, $window, $translate, appointmentsService, confirmBox, checkinPopUp, appService, messagingService, appointmentCommonService) {
             var calendarViewPopUp = function (config) {
                 var popUpScope = $rootScope.$new();
                 var dialog;
@@ -40,6 +40,11 @@ angular.module('bahmni.appointments')
                         $state.go($state.current, params, {reload: true});
                     }
                     popUpScope.$destroy();
+                };
+
+                popUpScope.openJitsiMeet = function (appointment) {
+                    var jitsiMeetingUrl = 'https://meet.jit.si/' + appointment.uuid
+                    $window.open(jitsiMeetingUrl,'_blank');
                 };
 
                 var closeConfirmBox = function (closeConfirmBox) {

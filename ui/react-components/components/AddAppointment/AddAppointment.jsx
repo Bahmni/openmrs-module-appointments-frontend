@@ -45,6 +45,7 @@ import {
     RECURRING_APPOINTMENT_TYPE,
     SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     TODAY,
+    TELECONSULTATION_APPOINTMENT,
     WALK_IN_APPOINTMENT_TYPE
 } from "../../constants";
 import moment from "moment";

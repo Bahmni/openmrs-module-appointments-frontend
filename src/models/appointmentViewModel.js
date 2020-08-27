@@ -68,6 +68,7 @@ Bahmni.Appointments.AppointmentViewModel = (function () {
             startTime: getTimeWithoutDate(appointmentDetails.startDateTime),
             endTime: getTimeWithoutDate(appointmentDetails.endDateTime),
             appointmentKind: appointmentDetails.appointmentKind,
+            isTeleconsultationEnabled: appointmentDetails.isTeleconsultationEnabled,
             status: appointmentDetails.status,
             comments: appointmentDetails.comments
         });
