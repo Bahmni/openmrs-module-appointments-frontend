@@ -33,7 +33,8 @@ jobs:
         run: |
           echo "PACKAGE_FILENAME '$PACKAGE_FILENAME'"
           cd dist
-          for FILE in *; do zip -r $PACKAGE_FILENAME $FILE; done
+          for FILE in *; do zip -r ../$PACKAGE_FILENAME $FILE; done
+          cd ..
 
       - name: Install Octopus CLI
         run: |
