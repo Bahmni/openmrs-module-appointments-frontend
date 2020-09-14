@@ -49,8 +49,12 @@ jobs:
       - name: Publish to octopus
         run: |
           echo "PACKAGE_FILENAME '$PACKAGE_FILENAME'"
-          octo push --server="$OCTOPUS_SERVER" --apiKey="${{ secrets.OCTOPUS_API_KEY }}" --space="${{ secrets.OCTOPUS_SPACE_URL_FRAGMENT }}" --package="$PACKAGE_FILENAME"
+          octo push \
+            --server="$OCTOPUS_SERVER" --apiKey="${{ secrets.OCTOPUS_API_KEY }}" --space="${{ secrets.OCTOPUS_SPACE_URL_FRAGMENT }}" \
+            --package="$PACKAGE_FILENAME"
 
       - name: Create Release and Deploy
         run: |
-          octo create-release --server="$OCTOPUS_SERVER" --apiKey="${{ secrets.OCTOPUS_API_KEY }}" --space="${{ secrets.OCTOPUS_SPACE_URL_FRAGMENT }}" --project="openmrs-module-appointments-frontend" --packageVersion="$PACKAGE_VERSION" --deployTo="$OCTOPUS_ENVIROMENT"
+          octo create-release \
+            --server="$OCTOPUS_SERVER" --apiKey="${{ secrets.OCTOPUS_API_KEY }}" --space="${{ secrets.OCTOPUS_SPACE_URL_FRAGMENT }}" \
+            --project="openmrs-module-appointments-frontend" --packageVersion="$PACKAGE_VERSION" --deployTo="$OCTOPUS_ENVIROMENT"
