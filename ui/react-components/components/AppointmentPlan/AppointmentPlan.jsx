@@ -55,7 +55,7 @@ const AppointmentPlan = props => {
                 disabled={isWalkInDisabled}
             />
             <Label forInput="teleconsultation-checkbox" translationKey="TELECONSULTATION_APPOINTMENT_LABEL"
-                   defaultValue="Add Teleconsultat!on!"
+                   defaultValue="Add Teleconsultation"
                    disabled={isTeleconsultationDisabled}/>
         </div>
     </div>)
