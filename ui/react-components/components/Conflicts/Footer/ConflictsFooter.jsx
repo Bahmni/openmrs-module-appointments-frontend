@@ -10,7 +10,7 @@ const ConflictsFooter = props => {
         <div className={classNames(footer, conflictsFooter)}>
             <div className={classNames(footerElements)}>
                 <button className={classNames(button)} data-testid="conflictsSaveAnyway" onClick={props.saveAnyway}
-                        tabIndex={3}>
+                        tabIndex={3} disabled={props.disableSaveAnywayButton}>
                     <i className={classNames("fa", "fa-check")}/>
                     <span>
                         <FormattedMessage id={'APPOINTMENT_SAVE_ANYWAY'} defaultMessage={'Save Anyway'}/>
@@ -30,7 +30,8 @@ const ConflictsFooter = props => {
 };
 ConflictsFooter.propTypes = {
     saveAnyway: PropTypes.func,
-    modifyInformation: PropTypes.func
+    modifyInformation: PropTypes.func,
+    disableSaveAnywayButton: PropTypes.bool
 };
 
 export default injectIntl(ConflictsFooter);

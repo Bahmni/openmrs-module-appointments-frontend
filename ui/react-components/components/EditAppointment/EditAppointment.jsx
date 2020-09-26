@@ -126,6 +126,7 @@ const EditAppointment = props => {
     const [serviceErrorMessage, setServiceErrorMessage] = useState('');
     const [existingProvidersUuids, setExistingProvidersUuids] = useState([]);
     const [appointmentTimeBeforeEdit, setAppointmentTimeBeforeEdit] = useState({});
+    const [disableUpdateButton, setDisableUpdateButton] = useState(false);
 
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
@@ -225,6 +226,7 @@ const EditAppointment = props => {
 
     const checkAndSave = async () => {
         if (isValidAppointment()) {
+            setDisableUpdateButton(true);
             const appointment = getAppointmentRequest();
             const response = await getAppointmentConflicts(appointment);
             const status = response.status;
@@ -237,6 +239,7 @@ const EditAppointment = props => {
                 setServiceErrorMessageFromResponse(response.data);
                 resetServiceErrorMessage();
             }
+            setDisableUpdateButton(false);
         }
     };
 
@@ -266,6 +269,7 @@ const EditAppointment = props => {
     };
 
     const save = async appointmentRequest => {
+        setDisableUpdateButton(true);
         if (appConfig.enableAppointmentRequests) {
             await checkAndUpdateAppointmentStatus(appointmentRequest, false);
         }
@@ -280,9 +284,11 @@ const EditAppointment = props => {
             setServiceErrorMessageFromResponse(response.data);
             resetServiceErrorMessage();
         }
+        setDisableUpdateButton(false);
     };
 
     const updateAllAppointments = async recurringAppointmentRequest => {
+        setDisableUpdateButton(true);
         if (appConfig.enableAppointmentRequests) {
             await checkAndUpdateAppointmentStatus(recurringAppointmentRequest, true);
         }
@@ -297,10 +303,12 @@ const EditAppointment = props => {
             setServiceErrorMessageFromResponse(response.data);
             resetServiceErrorMessage();
         }
+        setDisableUpdateButton(false);
     };
 
     const checkAndUpdateRecurringAppointments = async (applyForAllInd) => {
         if (isValidRecurringAppointment()) {
+            setDisableUpdateButton(true);
             const recurringRequest = getRecurringAppointmentRequest(applyForAllInd);
             const response = applyForAllInd ? await getRecurringAppointmentsConflicts(recurringRequest) :
                 await getAppointmentConflicts(recurringRequest.appointmentRequest);
@@ -314,6 +322,7 @@ const EditAppointment = props => {
                 setServiceErrorMessageFromResponse(response.data);
                 resetServiceErrorMessage();
             }
+            setDisableUpdateButton(false);
         }
     };
 
@@ -593,7 +602,7 @@ const EditAppointment = props => {
                 checkAndSave={applyForAllInd => updateAppointments(applyForAllInd)}
                 isEdit={true}
                 isOptionsRequired={isRecurringAppointment() && isApplicableForAll()}
-                disableUpdateButton={isStartDateModified() && (isEndDateModified() || isOccurrencesModified())}
+                disableSaveAndUpdateButton={disableUpdateButton || (isStartDateModified() && (isEndDateModified() || isOccurrencesModified()))}
                 cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_EDIT}
             />
             {conflicts &&
@@ -603,6 +612,7 @@ const EditAppointment = props => {
                          onClose={() => setConflicts(undefined)}
                          popupContent={<Conflicts saveAnyway={saveAppointments}
                                                   modifyInformation={() => setConflicts(undefined)}
+                                                  disableSaveAnywayButton={disableUpdateButton}
                                                   conflicts={conflicts} service={appointmentDetails.service}/>}/>}
             {showUpdateSuccessPopup ? React.cloneElement(updateSuccessPopup, {
                 open: true,
