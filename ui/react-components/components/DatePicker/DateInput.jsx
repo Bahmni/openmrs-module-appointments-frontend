@@ -10,7 +10,6 @@ import {isValidUSDate} from '../../utils/DateUtil'
 import PropTypes from "prop-types";
 import moment from "moment";
 import {isNil} from 'lodash'
-
 const DateInput = (props) =>{
     const validateDate= ({dateValue, minDate, maxDate}) =>{
         const isDateFormatValid = isValidUSDate(dateValue) || dateValue==='';
@@ -26,14 +25,12 @@ const DateInput = (props) =>{
         }
         return isDateFormatValid;
     };
-
     const inputRef = useRef(null);
     const {value, onBlur, minDate, maxDate, isDisabled, handleTab} = props;
     const [componentValue, setComponentValue] = useState(validateDate({dateValue: value, minDate,maxDate})? value:'');
     useEffect(() => {
         setComponentValue(validateDate({dateValue: value, minDate,maxDate})?value:'');
     }, [value, minDate]);
-
     const handleBlur=(e) =>{
         const inputValue = e.target.value;
         const isValidDate = validateDate({dateValue: inputValue, minDate, maxDate});
@@ -47,7 +44,6 @@ const DateInput = (props) =>{
             inputRef.current.focus();
         }
     };
-
     const handleClear = (e) =>{
         if(!isDisabled) {
             setComponentValue('');
@@ -55,7 +51,6 @@ const DateInput = (props) =>{
             inputRef.current.focus();
         }
     };
-
     const handleKeyDown= (e) => {
         if (e.key === 'Enter') {
             inputRef.current.blur();
@@ -67,16 +62,13 @@ const DateInput = (props) =>{
         else if(e.key === 'Tab')
             handleTab && handleTab();
     };
-
     const inputClearStyles= [dateInputClear];
     isDisabled && inputClearStyles.push(disable);
-
     const inputFieldStyles= [dateInputBox];
     isDisabled && inputFieldStyles.push(disable);
-
     return(
         <div className={classNames(dateTextHolder)}>
-            <input placeholder="mm/dd/yyyy" onChange={(e) => setComponentValue(e.target.value)}
+            <input placeholder={isDisabled ? value : "mm/dd/yyyy"} onChange={(e) => setComponentValue(e.target.value)}
                    className={classNames(inputFieldStyles)}
                    onKeyDown={handleKeyDown}
                    ref={inputRef}
@@ -86,7 +78,6 @@ const DateInput = (props) =>{
         </div>
     )
 }
-
 DateInput.propTypes = {
     onBlur: PropTypes.func.isRequired,
     value: PropTypes.string,
@@ -95,5 +86,4 @@ DateInput.propTypes = {
     isDisabled: PropTypes.bool,
     handleTab: PropTypes.func
 };
-
 export default DateInput;
