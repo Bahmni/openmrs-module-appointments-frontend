@@ -11,7 +11,6 @@ import classNames from 'classnames';
 import moment from 'moment';
 import DateInput from './DateInput.jsx';
 import DatePickerCustomHeader from './DatePickerCustomHeader.jsx';
-
 const dateToMomentDate = (date) => date === '' || date === null || date === undefined ? date
     : moment(date, 'MM/DD/YYYY');
 const AppointmentDatePicker = (props) => {
@@ -19,17 +18,13 @@ const AppointmentDatePicker = (props) => {
     let calendarStyles = [appointmentDatePicker];
     isDisabled && calendarStyles.push(disable);
     const selectedDate = value ? value.toDate() : value;
-
     let containerStyles = [];
     isDisabled && containerStyles.push(disable);
-
     const handleBlurOfDateInput = (date) => {
         const valueEntered = dateToMomentDate(date);
         onChange(valueEntered);
     };
-
-    const dateInputValue = isDisabled ? '' : (value && value !== '' ? value.format('MM/DD/YYYY') : value);
-
+    const dateInputValue = value && value !== "" ? value.format("MM/DD/YYYY") : value;
     return (
         <div data-testid="datePicker" className={classNames(containerStyles)}>
             <DateInput value={dateInputValue}
@@ -39,7 +34,7 @@ const AppointmentDatePicker = (props) => {
                        handleTab={handleDateSelection}
             />
             <div disabled={isDisabled} data-testid="datePicker-Calendar"><DatePicker
-                selected={isDisabled ? '' : selectedDate}
+                selected={selectedDate}
                 onSelect={() => handleDateSelection && handleDateSelection()}
                 onChange={(date) => onChange(dateToMomentDate(date))}
                 inline
@@ -58,7 +53,6 @@ const AppointmentDatePicker = (props) => {
         </div>
     );
 };
-
 AppointmentDatePicker.propTypes = {
     onChange: PropTypes.func,
     value: PropTypes.instanceOf(moment),
@@ -66,5 +60,4 @@ AppointmentDatePicker.propTypes = {
     isDisabled: PropTypes.bool,
     handleDateSelection: PropTypes.func
 };
-
 export default AppointmentDatePicker;
