@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment';
 import {fireEvent} from '@testing-library/react';
 import {renderWithReactIntl} from '../../utils/TestUtil';
 import '@testing-library/jest-dom/extend-expect';
