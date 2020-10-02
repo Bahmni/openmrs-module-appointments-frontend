@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import ColorPicker from "../ColorPicker/ColorPicker";
 import "./AddService.scss"
+import LocationSearch from "../Location/LocationSearch";
 import ServiceAvailability from "../ServiceAvailability/ServiceAvailability";
-import {IntlProvider} from "react-intl";
+import SpecialitySearch from "../Speciality/SpecialitySearch";
+import { IntlProvider } from "react-intl";
 
 export default function AddService() {
   const colors = ["#006400", "#DC143C", "#00008B", "#3F51B5", "#B8860B", "#A9A9A9", "#BDB76B", "#8B008B", "#556B2F",
     "#FF8C00", "#9932CC", "#8B0000", "#8FBC8F", "#483D8B", "#2F4F4F", "#3E2723", "#00CED1", "#9400D3", "#FF1493", "#00BFFF"];
+
+  const initialServiceState = {
+    location: null,
+    speciality: null,
+  }
+
+  const [serviceDetails, setServiceDetails] = useState(initialServiceState);
+
+  const updateServiceDetails = modifiedServiceDetails => setServiceDetails(prevServiceDetails => {
+    return {...prevServiceDetails, ...modifiedServiceDetails}
+  });
+
   return <div className="service-wrapper">
     <div className="services-title">
       <h2>Services</h2>
@@ -50,17 +64,23 @@ export default function AddService() {
             <label htmlFor="speciality">
               Speciality
             </label>
-            <select id="speciality">
-              <option value="" selected="selected">Select a speciality</option>
-            </select>
+            <IntlProvider locale="en">
+              <SpecialitySearch autoFocus={false}
+                                isDisabled={false} 
+                                onChange={(optionSelected) => updateServiceDetails({speciality: optionSelected})}
+                                value={serviceDetails.speciality} />
+            </IntlProvider>
           </p>
           <p>
             <label htmlFor="location">
               Location
             </label>
-            <select id="location">
-              <option value="" selected="selected">Select a location</option>
-            </select>
+            <IntlProvider locale="en">
+              <LocationSearch autoFocus={false}
+                              isDisabled={false}
+                              onChange={(optionSelected) => updateServiceDetails({location: optionSelected})}
+                              value={serviceDetails.location}/>
+            </IntlProvider>
           </p>
           <p>
             <label htmlFor="labelColour">Label Colour</label>
