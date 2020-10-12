@@ -29,13 +29,13 @@ class AppointmentContainer extends Component {
 
     render() {
         const {locale, messages, appConfig} = this.state;
-        const {appointmentUuid,isRecurring, setViewDate, onBack, appointmentParams, currentProvider, urlParams} = this.props;
+        const {appointmentUuid,isRecurring, setViewDate, onBack, appointmentParams, currentProvider, urlParams, currentLoad, maxAppointmentsLimit} = this.props;
         return (
             <AppContext.Provider value={{onBack: onBack, setViewDate: setViewDate}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
                     {appointmentUuid
                         ? <EditAppointment appConfig={appConfig} appointmentUuid={appointmentUuid} isRecurring={isRecurring}  currentProvider={currentProvider}/>
-                        : <AddAppointment appConfig={appConfig} appointmentParams={appointmentParams} currentProvider={currentProvider} urlParams={urlParams}/>}
+                        : <AddAppointment appConfig={appConfig} appointmentParams={appointmentParams} currentProvider={currentProvider} urlParams={urlParams} currentLoad={currentLoad} maxAppointmentsLimit={maxAppointmentsLimit} messages={messages}/>}
                 </IntlProvider>
             </AppContext.Provider>);
     }
@@ -50,7 +50,9 @@ AppointmentContainer .propTypes = {
     isCancel: PropTypes.bool,
     appointmentParams: PropTypes.object,
     currentProvider: PropTypes.object,
-    urlParams: PropTypes.object
+    urlParams: PropTypes.object,
+    currentLoad: PropTypes.number,
+    maxAppointmentsLimit: PropTypes.number
 };
 
 export default AppointmentContainer;

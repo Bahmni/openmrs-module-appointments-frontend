@@ -12,7 +12,7 @@ angular.module('bahmni.appointments')
 angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
     template: '<react-add-appointment on-back="onBack" set-view-date="setViewDate" appointment-uuid="appointmentUuid"' +
         ' is-recurring="isRecurring" state="state" current-provider="currentProvider" appointment-params="appointmentParams"' +
-        'url-params="urlParams" >',
+        'url-params="urlParams" current-load="currentLoad" max-appointments-limit="maxAppointmentsLimit" >',
     controller: reactAddAppointmentController
 });
 

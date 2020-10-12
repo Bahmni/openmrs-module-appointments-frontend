@@ -17,6 +17,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
 import {injectIntl} from "react-intl";
 import PropTypes from "prop-types";
+import AppointmentAvailableSlots from "../AppointmentAvailableSlots/AppointmentAvailableSlots"
 import {
     getAppointmentConflicts,
     getRecurringAppointmentsConflicts,
@@ -62,7 +63,7 @@ import {mapOpenMRSPatient} from "../../mapper/patientMapper";
 
 const AddAppointment = props => {
 
-    const {appConfig, intl, appointmentParams, currentProvider, urlParams } = props;
+    const {appConfig, intl, appointmentParams, currentProvider, urlParams, currentLoad, maxAppointmentsLimit, messages } = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
 
@@ -537,6 +538,11 @@ const AddAppointment = props => {
                                               }}/>
                                 <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                             </div>
+                            <AppointmentAvailableSlots
+                                currentLoad
+                                maxAppointmentsLimit
+                                messages
+                            />
                             <ErrorMessage
                                 message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
                         </div>
@@ -573,7 +579,10 @@ AddAppointment.propTypes = {
     appConfig: PropTypes.object,
     appointmentParams: PropTypes.object,
     currentProvider: PropTypes.object,
-    urlParams: PropTypes.object
+    urlParams: PropTypes.object,
+    currentLoad: PropTypes.number,
+    maxAppointmentsLimit: PropTypes.number,
+    messages: PropTypes.object
 };
 
 export default injectIntl(AddAppointment);
