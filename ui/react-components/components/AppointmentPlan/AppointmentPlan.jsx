@@ -10,7 +10,7 @@ import {RECURRING_APPOINTMENT_TYPE, WALK_IN_APPOINTMENT_TYPE, TELECONSULTATION_A
 
 const AppointmentPlan = props => {
 
-    const {onChange, appointmentType, isTeleconsultationEnabled, isWalkInDisabled, isRecurringDisabled , isTeleconsultationDisabled} = props;
+    const {onChange, appointmentType, teleconsultation, isWalkInDisabled, isRecurringDisabled , isTeleconsultationDisabled} = props;
 
     return (<div className={classNames(container)}>
         <span className={classNames(planLabel)}><Label className={classNames(planLabel)} translationKey="PLAN_LABEL"
@@ -50,7 +50,7 @@ const AppointmentPlan = props => {
                 className={classNames(checkbox)}
                 id="teleconsultation-checkbox"
                 onChange={onChange}
-                checked={isTeleconsultationEnabled}
+                checked={teleconsultation}
                 name={TELECONSULTATION_APPOINTMENT}
                 disabled={isWalkInDisabled}
             />

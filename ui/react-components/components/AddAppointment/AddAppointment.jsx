@@ -80,7 +80,7 @@ const AddAppointment = props => {
         startTime: appointmentParams && moment(appointmentParams.startDateTime),
         endTime: appointmentParams && moment(appointmentParams.endDateTime),
         appointmentType: undefined,
-        isTeleconsultationEnabled: false,
+        teleconsultation: false,
         notes: undefined,
         startDateType: appointmentParams && moment(new Date(appointmentParams.startDateTime)) ? FROM : undefined,
         endDateType: undefined,
@@ -152,7 +152,7 @@ const AddAppointment = props => {
 
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
-    const isTeleConsultationAppointmentEnabled = () => appointmentDetails.isTeleconsultationEnabled;
+    const isTeleConsultation = () => appointmentDetails.teleconsultation;
 
     const getAppointmentRequest = () => {
         let appointment = {
@@ -169,7 +169,7 @@ const AddAppointment = props => {
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
             appointmentKind: isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : "Scheduled",
-            isTeleconsultationEnabled: isTeleConsultationAppointmentEnabled(),
+            teleconsultation: isTeleConsultation(),
             comments: appointmentDetails.notes
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
@@ -387,12 +387,12 @@ const AddAppointment = props => {
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
-                        isTeleconsultationEnabled={appointmentDetails.isTeleconsultationEnabled}
+                        teleconsultation={appointmentDetails.teleconsultation}
                         onChange={(e) => {
-                            if (appointmentDetails.isTeleconsultationEnabled && e.target.name === TELECONSULTATION_APPOINTMENT)
-                                updateAppointmentDetails({ isTeleconsultationEnabled: false });
-                            else if (!appointmentDetails.isTeleconsultationEnabled && e.target.name === TELECONSULTATION_APPOINTMENT)
-                                updateAppointmentDetails({ isTeleconsultationEnabled: true });
+                            if (appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: false });
+                            else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: true });
                             else if (appointmentDetails.appointmentType === e.target.name)
                                 updateAppointmentDetails({ appointmentType: undefined });
                             else
