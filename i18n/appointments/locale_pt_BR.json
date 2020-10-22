@@ -151,5 +151,6 @@
   "PLACEHOLDER_APPOINTMENT_REQUEST": "Selecionar status do compromisso",
   "ACCEPT_APPOINTMENT_REQUEST": "Aceitar",
   "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Convite para compromisso aceito com sucesso.",
-  "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "Tem certeza de que deseja aceitar o convite para o compromisso?"
+  "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "Tem certeza de que deseja aceitar o convite para o compromisso?",
+  "JOIN_TELE_CONSULTATION":"Join Teleconsultation"
 }

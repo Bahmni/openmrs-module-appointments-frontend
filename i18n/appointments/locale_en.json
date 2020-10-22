@@ -174,5 +174,6 @@
   "PLACEHOLDER_APPOINTMENT_REQUEST": "Select Appointment Status",
   "ACCEPT_APPOINTMENT_REQUEST": "Accept",
   "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Appointment invitation accepted successfully.",
-  "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "Are you sure, you want to accept the appointment invite?"
+  "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "Are you sure, you want to accept the appointment invite?",
+  "JOIN_TELE_CONSULTATION":"Join Teleconsultation"
 }
