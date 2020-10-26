@@ -9,6 +9,7 @@ import {
     recurringContainerLeft,
     recurringContainerRight,
     searchFieldsContainer,
+    appointmentTypeContainer,
     timeSelector,
     weekDaysContainer
 } from './AddAppointment.module.scss';
@@ -28,6 +29,7 @@ import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
+import AppointmentType from "../AppointmentType/AppointmentType.jsx"
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
 import {AppContext} from "../AppContext/AppContext";
@@ -397,6 +399,22 @@ const AddAppointment = props => {
                                 updateAppointmentDetails({ appointmentType: undefined });
                             else
                                 updateAppointmentDetails({ appointmentType: e.target.name })
+                        }} />
+                </div>
+            </div>
+            <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
+                <div className={classNames(appointmentPlanContainer)}>
+                    <AppointmentType appointmentType={appointmentDetails.appointmentType}
+                        teleconsultation={appointmentDetails.teleconsultation}
+                        onChange={(e) => {
+                            if (appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: false });
+                            else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: true });
+                            // else if (appointmentDetails.appointmentType === e.target.name)
+                            //     updateAppointmentDetails({ appointmentType: undefined });
+                            // else
+                            //     updateAppointmentDetails({ appointmentType: e.target.name })
                         }} />
                 </div>
             </div>
