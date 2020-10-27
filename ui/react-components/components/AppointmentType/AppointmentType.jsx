@@ -39,7 +39,3 @@ AppointmentType.propTypes = {
 };
 
 export default injectIntl(AppointmentType);
-
-// Questions?
-// translationKey for PLAN_LABEL?
-// disabled when isWalkInDisabled? Shouldn't it be when isTeleconsultationDisabled? Add test
