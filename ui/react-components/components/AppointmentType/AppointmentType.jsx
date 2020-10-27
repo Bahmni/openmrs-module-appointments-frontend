@@ -1,6 +1,6 @@
 import React from "react";
 import Label from "../Label/Label.jsx";
- import {checkbox, checkboxContainer, container, appointmentTypeLabel} from "./AppointmentType.module.scss";
+import {checkbox, checkboxContainer, container, appointmentTypeLabel} from "./AppointmentType.module.scss";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
