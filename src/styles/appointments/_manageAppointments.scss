@@ -229,6 +229,16 @@
   &.calendar-view-btn-container {
     height: 51px;
   }
+  .copy-chip{
+    width: 25px;
+    height: 30px;
+    background:url('../images/copy_24px.png') no-repeat left center;
+  }  
+   .copy-chip[disabled]{
+    width: 25px;
+    height: 30px;
+    background:url('../images/copy_24px.png') no-repeat left center;
+  }  
 }
 
 /*----- create new appointment styles -----*/

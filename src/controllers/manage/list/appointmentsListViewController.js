@@ -186,6 +186,19 @@ angular.module('bahmni.appointments')
             
                 var jitsiMeetingUrl = 'https://meet.jit.si/' + $scope.selectedAppointment.uuid;
                     window.open(jitsiMeetingUrl,'_blank');
+            }; 
+            
+            $scope.copyToClipboard = function () {
+            
+                var jitsiMeetingUrl = 'https://meet.jit.si/' + $scope.selectedAppointment.uuid;
+                
+                    const el = document.createElement('textarea');
+                    el.value = jitsiMeetingUrl;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                  
             };
 
             $scope.checkinAppointment = function () {
