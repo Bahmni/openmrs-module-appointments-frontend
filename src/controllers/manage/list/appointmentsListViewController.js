@@ -427,8 +427,7 @@ angular.module('bahmni.appointments')
 
             $scope.isTeleconsultingAllowed = function () {
                 if (!_.isUndefined($scope.selectedAppointment)) {
-                    var isTeleconsultationEnabled = $scope.selectedAppointment.isTeleconsultationEnabled;
-                    return isTeleconsultationEnabled  ? true : false;
+                    return $scope.selectedAppointment.teleconsultation;
                 }
                 return false;
             };
