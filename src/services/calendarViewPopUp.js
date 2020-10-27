@@ -45,6 +45,15 @@ angular.module('bahmni.appointments')
                 popUpScope.openJitsiMeet = function (appointment) {
                     var jitsiMeetingUrl = 'https://meet.jit.si/' + appointment.uuid
                     $window.open(jitsiMeetingUrl,'_blank');
+                };  
+                popUpScope.copyToClipboard = function (appointment) {
+                    var jitsiMeetingUrl = 'https://meet.jit.si/' + appointment.uuid
+                    const el = document.createElement('textarea');
+                    el.value = jitsiMeetingUrl;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
                 };
 
                 var closeConfirmBox = function (closeConfirmBox) {
