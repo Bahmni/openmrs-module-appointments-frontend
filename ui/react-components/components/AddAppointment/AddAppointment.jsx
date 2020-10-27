@@ -411,10 +411,6 @@ const AddAppointment = props => {
                                 updateAppointmentDetails({ teleconsultation: false });
                             else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
                                 updateAppointmentDetails({ teleconsultation: true });
-                            // else if (appointmentDetails.appointmentType === e.target.name)
-                            //     updateAppointmentDetails({ appointmentType: undefined });
-                            // else
-                            //     updateAppointmentDetails({ appointmentType: e.target.name })
                         }} />
                 </div>
             </div>

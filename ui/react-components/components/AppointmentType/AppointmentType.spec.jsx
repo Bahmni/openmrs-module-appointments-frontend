@@ -1,7 +1,6 @@
 import React from 'react';
 import {renderWithReactIntl} from '../../utils/TestUtil';
 import AppointmentType from "./AppointmentType.jsx";
-import {fireEvent} from '@testing-library/react';
 
 
 describe('Appointment type', () => {
