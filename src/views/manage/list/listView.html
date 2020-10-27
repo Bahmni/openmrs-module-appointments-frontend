@@ -57,7 +57,10 @@
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" ng-click="openJitsiMeet()" 
         ng-disabled="!isTeleconsultingAllowed()">
         {{::'JOIN_TELE_CONSULTATION' |translate}}</button>
-            
+
+        <button class="copy-chip" show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
+        ng-click="copyToClipboard()" ng-disabled="!isTeleconsultingAllowed()"></button>
+
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" ng-click="editAppointment()"
         ng-disabled="!isEditAllowed()">
             {{::'EDIT_APPOINTMENT' |translate}}
