@@ -182,6 +182,12 @@ angular.module('bahmni.appointments')
                 $state.go('home.manage.appointments.list.edit', params);
             };
 
+            $scope.openJitsiMeet = function () {
+            
+                var jitsiMeetingUrl = 'https://meet.jit.si/' + $scope.selectedAppointment.uuid;
+                    window.open(jitsiMeetingUrl,'_blank');
+            };
+
             $scope.checkinAppointment = function () {
                 var scope = $rootScope.$new();
                 scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
@@ -415,6 +421,13 @@ angular.module('bahmni.appointments')
                 if (!_.isUndefined($scope.selectedAppointment)) {
                     var appointmentProvider = $scope.selectedAppointment.providers;
                     return maxAppointmentProviders > 1 ? true : appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId);
+                }
+                return false;
+            };
+
+            $scope.isTeleconsultingAllowed = function () {
+                if (!_.isUndefined($scope.selectedAppointment)) {
+                    return $scope.selectedAppointment.teleconsultation;
                 }
                 return false;
             };

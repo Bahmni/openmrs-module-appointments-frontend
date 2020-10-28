@@ -167,5 +167,6 @@
   "PLACEHOLDER_APPOINTMENT_REQUEST": "Sélectionnez statut rendez-vous",
   "ACCEPT_APPOINTMENT_REQUEST": "Acceptez",
   "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Invitation à le rendez-vous acceptée avec succès.",
-  "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "Êtes-vous sûr de vouloir accepter l'invitation au rendez-vous?"
+  "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "Êtes-vous sûr de vouloir accepter l'invitation au rendez-vous?",
+  "JOIN_TELE_CONSULTATION":"Join Teleconsultation"
 }
