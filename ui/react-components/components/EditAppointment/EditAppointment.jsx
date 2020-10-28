@@ -10,7 +10,8 @@ import {
     recurringContainer,
     recurringContainerLeft,
     recurringContainerRight,
-    searchFieldsContainer
+    searchFieldsContainer,
+    appointmentTypeContainer
 } from "../AddAppointment/AddAppointment.module.scss";
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import AppointmentEditorCommonFieldsWrapper
@@ -33,9 +34,11 @@ import {
     SCHEDULED_APPOINTMENT_TYPE,
     SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     WALK_IN_APPOINTMENT_TYPE,
-    weekRecurrenceType
+    weekRecurrenceType,
+    TELECONSULTATION_APPOINTMENT
 } from "../../constants";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
+import AppointmentType from "../AppointmentType/AppointmentType.jsx";
 import Label from "../Label/Label.jsx";
 import {
     currentTimeSlot,
@@ -463,6 +466,18 @@ const EditAppointment = props => {
                                      }
                                     isRecurringDisabled={componentsDisableStatus.recurring}
                                     isWalkInDisabled={componentsDisableStatus.walkIn}/>
+                </div>
+            </div>
+            <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
+                <div className={classNames(appointmentPlanContainer)}>
+                    <AppointmentType appointmentType={appointmentDetails.appointmentType}
+                        teleconsultation={appointmentDetails.teleconsultation}
+                        onChange={(e) => {
+                            if (appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: false });
+                            else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: true });
+                        }} />
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
