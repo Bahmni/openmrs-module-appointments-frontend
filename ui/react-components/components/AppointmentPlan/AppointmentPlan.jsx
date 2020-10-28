@@ -6,11 +6,11 @@ import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import Checkbox from 'rc-checkbox';
 import 'rc-checkbox/assets/index.css';
-import {RECURRING_APPOINTMENT_TYPE, WALK_IN_APPOINTMENT_TYPE, TELECONSULTATION_APPOINTMENT} from "../../constants";
+import {RECURRING_APPOINTMENT_TYPE, WALK_IN_APPOINTMENT_TYPE} from "../../constants";
 
 const AppointmentPlan = props => {
 
-    const {onChange, appointmentType, teleconsultation, isWalkInDisabled, isRecurringDisabled , isTeleconsultationDisabled} = props;
+    const {onChange, appointmentType, isWalkInDisabled, isRecurringDisabled } = props;
 
     return (<div className={classNames(container)}>
         <span className={classNames(planLabel)}><Label className={classNames(planLabel)} translationKey="PLAN_LABEL"
@@ -44,20 +44,6 @@ const AppointmentPlan = props => {
                    disabled={isWalkInDisabled}/>
         </div>
 
-        <div className={classNames(checkboxContainer)} data-test-id="add-tele-consultation">
-            <Checkbox
-                defaultChecked={false}
-                className={classNames(checkbox)}
-                id="teleconsultation-checkbox"
-                onChange={onChange}
-                checked={teleconsultation}
-                name={TELECONSULTATION_APPOINTMENT}
-                disabled={isWalkInDisabled}
-            />
-            <Label forInput="teleconsultation-checkbox" translationKey="TELECONSULTATION_APPOINTMENT_LABEL"
-                   defaultValue="Add Teleconsultation"
-                   disabled={isTeleconsultationDisabled}/>
-        </div>
     </div>)
 };
 
