@@ -229,13 +229,13 @@
   &.calendar-view-btn-container {
     height: 51px;
   }
-  .copy-chip,.copy-chip:disabled{
+  .copy-clip,.copy-clip:disabled,.copy-clip:hover{
     width: 25px;
     height: 30px;
     background:url('../images/copy_24px.png') no-repeat left center;
+    padding: 10px;
   }  
 }
-
 /*----- create new appointment styles -----*/
 .create-new-app-wrapper {
   top: 52px;
