@@ -186,7 +186,8 @@ const EditAppointment = props => {
             locationUuid: appointmentDetails.location && appointmentDetails.location.value && appointmentDetails.location.value.uuid,
             appointmentKind: appointmentDetails.appointmentKind,
             status: appointmentDetails.status,
-            comments: appointmentDetails.notes
+            comments: appointmentDetails.notes,
+            teleconsultation:appointmentDetails.teleconsultation
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
