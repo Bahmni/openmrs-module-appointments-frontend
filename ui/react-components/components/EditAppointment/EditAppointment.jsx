@@ -113,7 +113,8 @@ const EditAppointment = props => {
         occurrences: undefined,
         period: undefined,
         weekDays: undefined,
-        endDateType: undefined
+        endDateType: undefined,
+        teleconsultation:undefined
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
@@ -391,7 +392,8 @@ const EditAppointment = props => {
                 appointmentKind: appointmentResponse.appointmentKind,
                 status: appointmentResponse.status,
                 appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE :
-                    appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined
+                    appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined,
+                teleconsultation:appointmentResponse.teleconsultation
             };
             updateAppointmentDetails(appointmentDetailsFromResponse);
             storePreviousAppointmentDatetime(appointmentDetailsFromResponse.appointmentDate, appointmentDetailsFromResponse.startTime, appointmentDetailsFromResponse.endTime);
