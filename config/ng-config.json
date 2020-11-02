@@ -80,7 +80,10 @@
       "openMRSSystemSettingUrl": "/openmrs/ws/rest/v1/systemsetting/",
       "baseLocaleURL": "./i18n/",
       "customLocaleURL": "/bahmni_config/openmrs/i18n/",
-      "loginPageUrl": "../../bahmni/home/index.html#/login"
+      "loginPageUrl": "../../bahmni/home/index.html#/login",
+      "https": "https://",
+      "patientsURL": "/bahmni/clinical/index.html#/default/patient/",
+      "patientsURLGeneralInformationTab": "/dashboard?currentTab=DASHBOARD_TAB_GENERAL_KEY"
     }
   },
   "Appointments": {
