@@ -175,7 +175,7 @@ angular.module('bahmni.appointments')
                 return appointmentType === 'WalkIn' ? 'Yes' : 'No';
             };
 
-            $scope.editAppointment = function () {
+            $scope.editAppointment = function () {     
                 var params = $stateParams;
                 params.uuid = $scope.selectedAppointment.uuid;
                 params.isRecurring = $scope.selectedAppointment.recurring;
@@ -183,9 +183,15 @@ angular.module('bahmni.appointments')
             };
 
             $scope.openJitsiMeet = function () {
-            
                 var jitsiMeetingUrl = 'https://meet.jit.si/' + $scope.selectedAppointment.uuid;
-                    window.open(jitsiMeetingUrl,'_blank');
+                window.open(jitsiMeetingUrl,'_blank');
+                
+                window.open(Bahmni.Common.Constants.https + 
+                    window.location.hostname + 
+                    Bahmni.Common.Constants.patientsURL + 
+                    $scope.selectedAppointment.patient.uuid +
+                    Bahmni.Common.Constants.patientsURLGeneralInformationTab
+                    , '_self')
             }; 
             
             $scope.copyToClipboard = function () {
