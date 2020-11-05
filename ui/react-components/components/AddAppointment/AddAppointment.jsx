@@ -110,6 +110,7 @@ const AddAppointment = props => {
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
+    const [showEmailWarning, setShowEmailWarning] = useState(false);
     const [conflicts, setConflicts] = useState();
     const [errors, setErrors] = useState(initialErrorsState);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -260,6 +261,7 @@ const AddAppointment = props => {
         if (status === 200) {
             setConflicts(undefined);
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
+            setShowEmailWarning(response.data.emailIdAvailable);
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
@@ -336,7 +338,8 @@ const AddAppointment = props => {
 
     const savePopup = <CustomPopup style={customPopup} popupContent={<SuccessConfirmation
       resetAppointmentModal={reInitialiseComponent}
-      patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}/>}/>;
+      patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}
+      showEmailWarning={showEmailWarning}/>}/>;
 
     const endTimeBasedOnService = (time, service, serviceType) => {
         const currentTime = moment(time);

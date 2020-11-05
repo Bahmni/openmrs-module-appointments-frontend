@@ -8,7 +8,8 @@ import {
     saveModal,
     saveModalBody,
     saveModalCloseIcon,
-    saveModalTitle
+    saveModalTitle,
+    saveModalWarning
 } from "./SuccessModal.module.scss";
 import PropTypes from "prop-types";
 import {AppContext} from "../AppContext/AppContext";
@@ -16,10 +17,25 @@ import useFocusLock from "../../utils/hooks/useFocusLock.jsx";
 
 const SuccessModal = (props) => {
 
-    const {intl, patientDetails, resetAppointmentModal} = props;
+    const {intl, patientDetails, resetAppointmentModal, showEmailWarning} = props;
+
     const {onBack} = React.useContext(AppContext);
 
     const defaultSaveSuccessMessage = 'The new appointment for the patient {patientDetails} has been saved.';
+
+    const saveSucessHelpText = ()=>{
+        return(<div className={classNames(saveModalBody)} >
+            <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_HELP_TEXT'}
+            defaultMessage={'Please check Appointment calendar for the updated schedule'}/> 
+        </div>)
+    }
+    
+    const emailWarningHelpText = ()=>{
+      return ( <div className={classNames(saveModalWarning)} >
+           <FormattedMessage id={'EMAIL_WARNING'}
+           defaultMessage={'Warning: No Email ID present for patient to share Teleconsultation communication'}/>
+        </div>)
+    }
 
     return (
         <div className={classNames(saveModal)}>
@@ -40,8 +56,7 @@ const SuccessModal = (props) => {
                                           values={{patientDetails: <strong>{patientDetails}</strong>}}/>
                     </span>
                     <br/><br/>
-                    <FormattedMessage id={'APPOINTMENT_SAVE_SUCCESS_HELP_TEXT'}
-                                      defaultMessage={'Please check Appointment calendar for the updated schedule'}/>
+                   {showEmailWarning == true ? saveSucessHelpText() : emailWarningHelpText()}
                 </div>
 
                 <div className={classNames(saveConfirmationFooter)}>
