@@ -260,8 +260,8 @@ const AddAppointment = props => {
         const status = response.status;
         if (status === 200) {
             setConflicts(undefined);
+            setShowEmailWarning((response.data.teleconsultation && (!response.data.emailIdAvailable)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
-            setShowEmailWarning(response.data.emailIdAvailable);
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);

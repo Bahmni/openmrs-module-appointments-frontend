@@ -56,7 +56,7 @@ const SuccessModal = (props) => {
                                           values={{patientDetails: <strong>{patientDetails}</strong>}}/>
                     </span>
                     <br/><br/>
-                   {showEmailWarning == true ? saveSucessHelpText() : emailWarningHelpText()}
+                   {showEmailWarning === true ? emailWarningHelpText() : saveSucessHelpText() }
                 </div>
 
                 <div className={classNames(saveConfirmationFooter)}>
