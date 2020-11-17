@@ -13,10 +13,10 @@ jobs:
       - name: define variables
         run: |
           PACKAGE_VERSION=0.0.${{ github.run_number }}
-          echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
-          echo "::set-env name=PACKAGE_FILENAME::openmrs_appointments_app.$PACKAGE_VERSION.zip"
-          echo "::set-env name=OCTOPUS_SERVER::https://${{ secrets.OCTOPUS_ORG }}.octopus.app/"
-          echo "::set-env name=OCTOPUS_ENVIROMENT::QA-DEMO"
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          echo "PACKAGE_FILENAME=openmrs_appointments_app.$PACKAGE_VERSION.zip" >> $GITHUB_ENV
+          echo "OCTOPUS_SERVER=https://${{ secrets.OCTOPUS_ORG }}.octopus.app/" >> $GITHUB_ENV
+          echo "OCTOPUS_ENVIROMENT=QA-DEMO" >> $GITHUB_ENV
 
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
