@@ -10,7 +10,7 @@ import {RECURRING_APPOINTMENT_TYPE, WALK_IN_APPOINTMENT_TYPE} from "../../consta
 
 const AppointmentPlan = props => {
 
-    const {onChange, appointmentType, isWalkInDisabled, isRecurringDisabled } = props;
+    const {onChange, appointmentType, isWalkInDisabled, isRecurringDisabled} = props;
 
     return (<div className={classNames(container)}>
         <span className={classNames(planLabel)}><Label className={classNames(planLabel)} translationKey="PLAN_LABEL"
@@ -43,7 +43,6 @@ const AppointmentPlan = props => {
                    defaultValue="Walk-in Appointment"
                    disabled={isWalkInDisabled}/>
         </div>
-
     </div>)
 };
 
