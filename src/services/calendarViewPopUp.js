@@ -43,8 +43,6 @@ angular.module('bahmni.appointments')
                 };
 
                 popUpScope.openJitsiMeet = function (appointment) {
-                    //var jitsiMeetingUrl = 'https://meet.jit.si/' + appointment.uuid
-                    //$window.open(jitsiMeetingUrl,'_blank');
 
                     $window.open("https://" + 
                         window.location.hostname + 
