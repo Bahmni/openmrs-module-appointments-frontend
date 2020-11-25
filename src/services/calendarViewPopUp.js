@@ -46,7 +46,7 @@ angular.module('bahmni.appointments')
                     //var jitsiMeetingUrl = 'https://meet.jit.si/' + appointment.uuid
                     //$window.open(jitsiMeetingUrl,'_blank');
 
-                    $window.open(Bahmni.Common.Constants.https + 
+                    $window.open("https://" + 
                         window.location.hostname + 
                         Bahmni.Common.Constants.patientsURL + 
                         appointment.patient.uuid +
