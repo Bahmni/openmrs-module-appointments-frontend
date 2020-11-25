@@ -184,7 +184,7 @@ angular.module('bahmni.appointments')
 
             $scope.openJitsiMeet = function () {
                 
-                window.open(Bahmni.Common.Constants.https + 
+                window.open("https://" + 
                     window.location.hostname + 
                     Bahmni.Common.Constants.patientsURL + 
                     $scope.selectedAppointment.patient.uuid +
@@ -192,8 +192,7 @@ angular.module('bahmni.appointments')
                     , '_self')
             }; 
             
-            $scope.copyToClipboard = function () {
-            
+            $scope.copyTeleConsultationMeetingURL = function () {
                 var jitsiMeetingUrl = 'https://meet.jit.si/' + $scope.selectedAppointment.uuid;
                 
                     const el = document.createElement('textarea');
@@ -444,7 +443,7 @@ angular.module('bahmni.appointments')
 
             $scope.isTeleconsultingAllowed = function () {
                 if (!_.isUndefined($scope.selectedAppointment)) {
-                    return $scope.selectedAppointment.teleconsultation && $scope.selectedAppointment.status == "Scheduled";
+                    return $scope.selectedAppointment.teleconsultation && $scope.selectedAppointment.status == window.Bahmni.Appointments.Constants.appointmentStatuses.Scheduled;
                 }
                 return false;
             };
