@@ -152,6 +152,6 @@
   "ACCEPT_APPOINTMENT_REQUEST": "Aceitar",
   "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Convite para compromisso aceito com sucesso.",
   "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "Tem certeza de que deseja aceitar o convite para o compromisso?",
-  "COPY_LINK": "Copy Link",
+  "COPY_LINK": "copiar link de teleconsulta",
   "JOIN_TELE_CONSULTATION":"Junte-se Teleconsulta"
 }
