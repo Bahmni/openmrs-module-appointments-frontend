@@ -53,7 +53,7 @@ angular.module('bahmni.appointments')
                         Bahmni.Common.Constants.patientsURLGeneralInformationTab
                         , '_self')
                 };  
-                popUpScope.copyToClipboard = function (appointment) {
+                popUpScope.copyTeleConsultationMeetingURL = function (appointment) {
                     var jitsiMeetingUrl = 'https://meet.jit.si/' + appointment.uuid
                     const el = document.createElement('textarea');
                     el.value = jitsiMeetingUrl;
