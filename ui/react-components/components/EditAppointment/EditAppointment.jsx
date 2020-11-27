@@ -10,7 +10,8 @@ import {
     recurringContainer,
     recurringContainerLeft,
     recurringContainerRight,
-    searchFieldsContainer
+    searchFieldsContainer,
+    appointmentTypeContainer
 } from "../AddAppointment/AddAppointment.module.scss";
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import AppointmentEditorCommonFieldsWrapper
@@ -33,9 +34,11 @@ import {
     SCHEDULED_APPOINTMENT_TYPE,
     SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     WALK_IN_APPOINTMENT_TYPE,
-    weekRecurrenceType
+    weekRecurrenceType,
+    TELECONSULTATION_APPOINTMENT
 } from "../../constants";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
+import AppointmentType from "../AppointmentType/AppointmentType.jsx";
 import Label from "../Label/Label.jsx";
 import {
     currentTimeSlot,
@@ -110,7 +113,8 @@ const EditAppointment = props => {
         occurrences: undefined,
         period: undefined,
         weekDays: undefined,
-        endDateType: undefined
+        endDateType: undefined,
+        teleconsultation:undefined
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
@@ -183,7 +187,8 @@ const EditAppointment = props => {
             locationUuid: appointmentDetails.location && appointmentDetails.location.value && appointmentDetails.location.value.uuid,
             appointmentKind: appointmentDetails.appointmentKind,
             status: appointmentDetails.status,
-            comments: appointmentDetails.notes
+            comments: appointmentDetails.notes,
+            teleconsultation:appointmentDetails.teleconsultation
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
@@ -397,7 +402,8 @@ const EditAppointment = props => {
                 appointmentKind: appointmentResponse.appointmentKind,
                 status: appointmentResponse.status,
                 appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE :
-                    appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined
+                    appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined,
+                teleconsultation:appointmentResponse.teleconsultation
             };
             updateAppointmentDetails(appointmentDetailsFromResponse);
             storePreviousAppointmentDatetime(appointmentDetailsFromResponse.appointmentDate, appointmentDetailsFromResponse.startTime, appointmentDetailsFromResponse.endTime);
@@ -472,6 +478,18 @@ const EditAppointment = props => {
                                      }
                                     isRecurringDisabled={componentsDisableStatus.recurring}
                                     isWalkInDisabled={componentsDisableStatus.walkIn}/>
+                </div>
+            </div>
+            <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
+                <div className={classNames(appointmentPlanContainer)}>
+                    <AppointmentType appointmentType={appointmentDetails.appointmentType}
+                        teleconsultation={appointmentDetails.teleconsultation}
+                        onChange={(e) => {
+                            if (appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: false });
+                            else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: true });
+                        }} />
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>

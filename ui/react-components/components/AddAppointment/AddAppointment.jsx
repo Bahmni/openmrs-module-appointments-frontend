@@ -9,6 +9,7 @@ import {
     recurringContainerLeft,
     recurringContainerRight,
     searchFieldsContainer,
+    appointmentTypeContainer,
     timeSelector,
     weekDaysContainer
 } from './AddAppointment.module.scss';
@@ -28,6 +29,7 @@ import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
+import AppointmentType from "../AppointmentType/AppointmentType.jsx";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
 import {AppContext} from "../AppContext/AppContext";
@@ -45,6 +47,7 @@ import {
     RECURRING_APPOINTMENT_TYPE,
     SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     TODAY,
+    TELECONSULTATION_APPOINTMENT,
     WALK_IN_APPOINTMENT_TYPE
 } from "../../constants";
 import moment from "moment";
@@ -79,6 +82,7 @@ const AddAppointment = props => {
         startTime: appointmentParams && moment(appointmentParams.startDateTime),
         endTime: appointmentParams && moment(appointmentParams.endDateTime),
         appointmentType: undefined,
+        teleconsultation: false,
         notes: undefined,
         startDateType: appointmentParams && moment(new Date(appointmentParams.startDateTime)) ? FROM : undefined,
         endDateType: undefined,
@@ -106,6 +110,7 @@ const AddAppointment = props => {
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
+    const [showEmailWarning, setShowEmailWarning] = useState(false);
     const [conflicts, setConflicts] = useState();
     const [errors, setErrors] = useState(initialErrorsState);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -151,6 +156,7 @@ const AddAppointment = props => {
 
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
+    const isTeleConsultation = () => appointmentDetails.teleconsultation;
 
     const getAppointmentRequest = () => {
         let appointment = {
@@ -167,6 +173,7 @@ const AddAppointment = props => {
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
             appointmentKind: isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : "Scheduled",
+            teleconsultation: isTeleConsultation(),
             comments: appointmentDetails.notes
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
@@ -255,6 +262,7 @@ const AddAppointment = props => {
         const status = response.status;
         if (status === 200) {
             setConflicts(undefined);
+            setShowEmailWarning((response.data.teleconsultation && (!response.data.emailIdAvailable)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
@@ -339,7 +347,8 @@ const AddAppointment = props => {
 
     const savePopup = <CustomPopup style={customPopup} popupContent={<SuccessConfirmation
       resetAppointmentModal={reInitialiseComponent}
-      patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}/>}/>;
+      patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}
+      showEmailWarning={showEmailWarning}/>}/>;
 
     const endTimeBasedOnService = (time, service, serviceType) => {
         const currentTime = moment(time);
@@ -383,21 +392,38 @@ const AddAppointment = props => {
 
     const on = "On";
     return (<Fragment>
-        <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring: '')}>
+        <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
-                                   updateAppointmentDetails={updateAppointmentDetails}
-                                   updateErrorIndicators={updateErrorIndicators}
-                                   endTimeBasedOnService={endTimeBasedOnService}
-                                   appConfig={appConfig} errors={errors} autoFocus={true}/>
+                updateAppointmentDetails={updateAppointmentDetails}
+                updateErrorIndicators={updateErrorIndicators}
+                endTimeBasedOnService={endTimeBasedOnService}
+                appConfig={appConfig} errors={errors} autoFocus={true} />
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
-                                     onChange={(e) => {
-                                         if (appointmentDetails.appointmentType === e.target.name)
-                                             updateAppointmentDetails({appointmentType: undefined});
-                                         else
-                                             updateAppointmentDetails({appointmentType: e.target.name})
-                                     }}/>
+                        teleconsultation={appointmentDetails.teleconsultation}
+                        onChange={(e) => {
+                            if (appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: false });
+                            else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: true });
+                            else if (appointmentDetails.appointmentType === e.target.name)
+                                updateAppointmentDetails({ appointmentType: undefined });
+                            else
+                                updateAppointmentDetails({ appointmentType: e.target.name })
+                        }} />
+                </div>
+            </div>
+            <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
+                <div className={classNames(appointmentPlanContainer)}>
+                    <AppointmentType appointmentType={appointmentDetails.appointmentType}
+                        teleconsultation={appointmentDetails.teleconsultation}
+                        onChange={(e) => {
+                            if (appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: false });
+                            else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
+                                updateAppointmentDetails({ teleconsultation: true });
+                        }} />
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
