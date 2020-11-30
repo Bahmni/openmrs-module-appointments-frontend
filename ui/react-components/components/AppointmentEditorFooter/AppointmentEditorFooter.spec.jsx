@@ -55,15 +55,23 @@ describe('Appointment editor Footer Search', () => {
     });
 
     it('should disable update button', () => {
-        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} disableUpdateButton={true} />);
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} disableSaveAndUpdateButton={true} />);
         const update = getByTestId('check-and-save');
         expect(update.disabled).toBe(true);
     });
 
     it('should not disable update button', () => {
-        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} disableUpdateButton={false} />);
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} disableSaveAndUpdateButton={false} />);
         const update = getByTestId('check-and-save');
         expect(update.disabled).toBe(false);
     });
+
+    it('should disable check and save button on click of the button', () => {
+        const {getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} checkAndSave={() => jest.fn()} disableSaveAndUpdateButton={true} />);
+        const checkAndSave = getByTestId('check-and-save');
+        fireEvent.click(checkAndSave);
+        expect(checkAndSave.disabled).toBe(true);
+    });
+
 
 });

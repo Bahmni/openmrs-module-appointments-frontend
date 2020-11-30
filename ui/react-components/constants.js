@@ -13,6 +13,7 @@ export const MINUTES = "minutes";
 
 export const RECURRING_APPOINTMENT_TYPE = "Recurring";
 export const WALK_IN_APPOINTMENT_TYPE = "WalkIn";
+export const TELECONSULTATION_APPOINTMENT = "Teleconsultation";
 export const SCHEDULED_APPOINTMENT_TYPE = "Scheduled";
 
 export const APPOINTMENT_STATUSES = {

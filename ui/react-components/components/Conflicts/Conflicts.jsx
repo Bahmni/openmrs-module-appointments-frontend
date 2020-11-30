@@ -18,7 +18,7 @@ const Conflicts = props => {
                 <ConflictsBody conflicts={props.conflicts} service={props.service} isRecurring={props.isRecurring}/>
             </div>
             <div data-testid="conflicts-footer">
-                <ConflictsFooter saveAnyway={props.saveAnyway} modifyInformation={props.modifyInformation}/>
+                <ConflictsFooter saveAnyway={props.saveAnyway} modifyInformation={props.modifyInformation} disableSaveAnywayButton={props.disableSaveAnywayButton}/>
             </div>
         </div>
     )
@@ -27,6 +27,7 @@ Conflicts.proptypes = {
     saveAnyway: PropTypes.func.isRequired,
     modifyInformation: PropTypes.func.isRequired,
     conflicts: PropTypes.object.isRequired,
-    service: PropTypes.object.isRequired
+    service: PropTypes.object.isRequired,
+    disableSaveAnywayButton: PropTypes.bool
 };
 export default injectIntl(useFocusLock(Conflicts));
