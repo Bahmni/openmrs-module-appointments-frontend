@@ -36,4 +36,12 @@ describe('ConflictsFooter', () => {
 
         expect(modifyInformationSpy).toHaveBeenCalled();
     });
+
+    it('should disable Save Anyway button on click of the button', () => {
+        const saveAnywaySpy = jest.fn();
+        const {getByText, getByTestId} = renderWithReactIntl(<ConflictsFooter saveAnyway={saveAnywaySpy} disableSaveAnywayButton={true} />);
+        const saveAnywayButton = getByTestId('conflictsSaveAnyway');
+        fireEvent.click(saveAnywayButton);
+        expect(saveAnywayButton.disabled).toBe(true);
+    });
 });

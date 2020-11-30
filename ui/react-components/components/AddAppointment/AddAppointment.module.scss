@@ -66,4 +66,20 @@
   letter-spacing: normal;
 }
 
+.appointmentTypeContainer {
+  top: 50px;
+  position: relative;
+  padding: 1% 2% 0 2%;
+  display: flex;
+  justify-content: space-between;
+
+  &:nth-child(2) {
+    padding-top: 0;
+  }
+
+  .appointmentPlanContainer {
+    width: 70%;
+    margin-bottom: 25px;
+  }
+}
 

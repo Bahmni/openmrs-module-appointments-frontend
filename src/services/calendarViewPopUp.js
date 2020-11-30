@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state', '$translate', 'appointmentsService',
+    .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state','$window', '$translate', 'appointmentsService',
         'confirmBox', 'checkinPopUp', 'appService', 'messagingService', 'appointmentCommonService',
-        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp, appService, messagingService, appointmentCommonService) {
+        function ($rootScope, ngDialog, $state, $window, $translate, appointmentsService, confirmBox, checkinPopUp, appService, messagingService, appointmentCommonService) {
             var calendarViewPopUp = function (config) {
                 var popUpScope = $rootScope.$new();
                 var dialog;
@@ -40,6 +40,25 @@ angular.module('bahmni.appointments')
                         $state.go($state.current, params, {reload: true});
                     }
                     popUpScope.$destroy();
+                };
+
+                popUpScope.openJitsiMeet = function (appointment) {
+
+                    $window.open("https://" +
+                        window.location.hostname + 
+                        Bahmni.Common.Constants.patientsURL + 
+                        appointment.patient.uuid +
+                        Bahmni.Common.Constants.patientsURLGeneralInformationTab
+                        , '_self')
+                };  
+                popUpScope.copyTeleConsultationMeetingURL = function (appointment) {
+                    var jitsiMeetingUrl = 'https://meet.jit.si/' + appointment.uuid
+                    const el = document.createElement('textarea');
+                    el.value = jitsiMeetingUrl;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
                 };
 
                 var closeConfirmBox = function (closeConfirmBox) {
