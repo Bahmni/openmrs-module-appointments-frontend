@@ -20,7 +20,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit, isOptionsRequired, disableUpdateButton, cancelConfirmationMessage, errorMessage} = props;
+    const {checkAndSave, isEdit, isOptionsRequired, disableSaveAndUpdateButton, cancelConfirmationMessage, errorMessage} = props;
     const[showUpdateButtons, setShowUpdateButtons] = useState(false);
 
     const getUpdateButtons =() =>{
@@ -45,14 +45,14 @@ const AppointmentEditorFooter = props => {
                 {isEdit
                     ? <button className={classNames(button, save)}
                               onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}
-                              disabled={disableUpdateButton}
+                              disabled={disableSaveAndUpdateButton}
                               data-testid="check-and-save">
                         <i className={classNames("fa", "fa-check")}/>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_UPDATE_LABEL'} defaultMessage={'Update'}/>
                     </span>
                     </button>
-                    : <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save">
+                    : <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save" disabled={disableSaveAndUpdateButton}>
                         <i className={classNames("fa", "fa-check")}/>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
@@ -70,7 +70,7 @@ AppointmentEditorFooter.propTypes = {
     checkAndSave: PropTypes.func,
     isEdit: PropTypes.bool,
     isOptionsRequired: PropTypes.bool,
-    disableUpdateButton: PropTypes.bool,
+    disableSaveAndUpdateButton: PropTypes.bool,
     cancelConfirmationMessage: PropTypes.shape({
       translationKey: PropTypes.string.isRequired,
       defaultMessage: PropTypes.string.isRequired

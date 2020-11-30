@@ -43,17 +43,15 @@ angular.module('bahmni.appointments')
                 };
 
                 popUpScope.openJitsiMeet = function (appointment) {
-                    //var jitsiMeetingUrl = 'https://meet.jit.si/' + appointment.uuid
-                    //$window.open(jitsiMeetingUrl,'_blank');
 
-                    $window.open(Bahmni.Common.Constants.https + 
-                        window.location.hostname + 
-                        Bahmni.Common.Constants.patientsURL + 
+                    $window.open("https://" +
+                        window.location.hostname +
+                        Bahmni.Common.Constants.patientsURL +
                         appointment.patient.uuid +
                         Bahmni.Common.Constants.patientsURLGeneralInformationTab
                         , '_self')
-                };  
-                popUpScope.copyToClipboard = function (appointment) {
+                };
+                popUpScope.copyTeleConsultationMeetingURL = function (appointment) {
                     var jitsiMeetingUrl = 'https://meet.jit.si/' + appointment.uuid
                     const el = document.createElement('textarea');
                     el.value = jitsiMeetingUrl;

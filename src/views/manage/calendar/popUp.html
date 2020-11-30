@@ -31,11 +31,11 @@
         {{scope.appointments[0].endDateTime | bahmniTime}}</p>
      <p ng-if="appointment.teleconsultation"><b>
         <button  ng-click="openJitsiMeet(appointment)">
-           Join Teleconsultation
+           {{::'JOIN_TELE_CONSULTATION' | translate}}
         </button>
-        <button ng-click="copyToClipboard(appointment)" class="copy-clip" title="Copy Link">
+        <button ng-click="copyTeleConsultationMeetingURL(appointment)" class="copy-clip" title="{{::'COPY_LINK' | translate}}">
         </button>
-      <p><b>  
+      <p><b>
     <p class="app-dialog-btn-wrap">
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #039BE5"
                 ng-show="isAppointmentRequestEnabled"

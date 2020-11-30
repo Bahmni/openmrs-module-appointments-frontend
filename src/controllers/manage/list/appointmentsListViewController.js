@@ -175,7 +175,7 @@ angular.module('bahmni.appointments')
                 return appointmentType === 'WalkIn' ? 'Yes' : 'No';
             };
 
-            $scope.editAppointment = function () {     
+            $scope.editAppointment = function () {
                 var params = $stateParams;
                 params.uuid = $scope.selectedAppointment.uuid;
                 params.isRecurring = $scope.selectedAppointment.recurring;
@@ -183,28 +183,25 @@ angular.module('bahmni.appointments')
             };
 
             $scope.openJitsiMeet = function () {
-              //  var jitsiMeetingUrl = 'https://meet.jit.si/' + $scope.selectedAppointment.uuid;
-                //window.open(jitsiMeetingUrl,'_blank');
-                
-                window.open(Bahmni.Common.Constants.https + 
-                    window.location.hostname + 
-                    Bahmni.Common.Constants.patientsURL + 
+
+                window.open("https://" +
+                    window.location.hostname +
+                    Bahmni.Common.Constants.patientsURL +
                     $scope.selectedAppointment.patient.uuid +
                     Bahmni.Common.Constants.patientsURLGeneralInformationTab
                     , '_self')
-            }; 
-            
-            $scope.copyToClipboard = function () {
-            
+            };
+
+            $scope.copyTeleConsultationMeetingURL = function () {
                 var jitsiMeetingUrl = 'https://meet.jit.si/' + $scope.selectedAppointment.uuid;
-                
+
                     const el = document.createElement('textarea');
                     el.value = jitsiMeetingUrl;
                     document.body.appendChild(el);
                     el.select();
                     document.execCommand('copy');
                     document.body.removeChild(el);
-                  
+
             };
 
             $scope.checkinAppointment = function () {
@@ -446,7 +443,7 @@ angular.module('bahmni.appointments')
 
             $scope.isTeleconsultingAllowed = function () {
                 if (!_.isUndefined($scope.selectedAppointment)) {
-                    return $scope.selectedAppointment.teleconsultation && $scope.selectedAppointment.status == "Scheduled";
+                    return $scope.selectedAppointment.teleconsultation && $scope.selectedAppointment.status == window.Bahmni.Appointments.Constants.appointmentStatuses.Scheduled;
                 }
                 return false;
             };

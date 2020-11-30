@@ -133,7 +133,7 @@
   "APPOINTMENT_ENTER_PROVIDER_NAME_KEY": "Enter provider name",
   "NO_SPECIALITY_KEY": "No Speciality",
   "PLACEHOLDER_SERVICE_TYPE_DURATION_MIN": "min",
-  "APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE": "Are you sure, you want to mark appointment as {{toStatus}}?",
+  "APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE": "Are you sure, you want to mark appointment as {toStatus}?",
   "CHECK_IN_APPOINTMENT_TIME_VALIDATION": "Enter valid check in time.",
   "YES_KEY": "Yes",
   "NO_KEY": "No",

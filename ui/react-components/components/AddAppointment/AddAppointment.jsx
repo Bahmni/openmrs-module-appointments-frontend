@@ -115,6 +115,7 @@ const AddAppointment = props => {
     const [errors, setErrors] = useState(initialErrorsState);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [serviceErrorMessage, setServiceErrorMessage] = useState('');
+    const [disableSaveButton, setDisableSaveButton] = useState(false);
 
     useEffect(() => {
         if (appointmentDetails.occurrences === undefined)
@@ -253,6 +254,7 @@ const AddAppointment = props => {
 
 
     const save = async appointmentRequest => {
+        setDisableSaveButton(true);
         if (appConfig.enableAppointmentRequests) {
             await checkAndUpdateAppointmentStatus(appointmentRequest, false);
         }
@@ -267,10 +269,12 @@ const AddAppointment = props => {
             setServiceErrorMessageFromResponse(response.data);
             resetServiceErrorMessage();
         }
+        setDisableSaveButton(false);
     };
 
     const checkAndSave = async () => {
         if (isValidAppointment()) {
+            setDisableSaveButton(true);
             const appointment = getAppointmentRequest();
             const response = await getAppointmentConflicts(appointment);
             const status = response.status;
@@ -283,6 +287,7 @@ const AddAppointment = props => {
                 setServiceErrorMessageFromResponse(response.data);
                 resetServiceErrorMessage();
             }
+            setDisableSaveButton(false);
         }
     };
 
@@ -292,6 +297,7 @@ const AddAppointment = props => {
     };
 
     const saveRecurringAppointments = async recurringAppointmentRequest => {
+        setDisableSaveButton(true);
         if (appConfig.enableAppointmentRequests) {
             await checkAndUpdateAppointmentStatus(recurringAppointmentRequest, true);
         }
@@ -310,12 +316,14 @@ const AddAppointment = props => {
             setServiceErrorMessageFromResponse(response.data);
             resetServiceErrorMessage();
         }
+        setDisableSaveButton(false);
     };
 
 
 
     const checkAndSaveRecurringAppointments = async () => {
         if (isValidRecurringAppointment()) {
+            setDisableSaveButton(true);
             const recurringRequest = getRecurringAppointmentRequest();
             const response = await getRecurringAppointmentsConflicts(recurringRequest);
             const status = response.status;
@@ -328,6 +336,7 @@ const AddAppointment = props => {
                 setServiceErrorMessageFromResponse(response.data);
                 resetServiceErrorMessage();
             }
+            setDisableSaveButton(false);
         }
     };
 
@@ -575,7 +584,9 @@ const AddAppointment = props => {
             <AppointmentEditorFooter
                 errorMessage={serviceErrorMessage}
                 checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
-                cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}/>
+                cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
+                disableSaveAndUpdateButton={disableSaveButton}
+            />
             {conflicts &&
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
@@ -584,6 +595,7 @@ const AddAppointment = props => {
                              popupContent={<Conflicts saveAnyway={saveAppointments}
                                                       modifyInformation={() => setConflicts(undefined)}
                                                       conflicts={conflicts} service={appointmentDetails.service}
+                                                      disableSaveAnywayButton={disableSaveButton}
                                                       isRecurring={appointmentDetails.isRecurring}/>}/>}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
