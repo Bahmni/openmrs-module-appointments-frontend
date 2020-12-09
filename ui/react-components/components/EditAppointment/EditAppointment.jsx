@@ -188,6 +188,7 @@ const EditAppointment = props => {
             appointmentKind: appointmentDetails.appointmentKind,
             status: appointmentDetails.status,
             comments: appointmentDetails.notes,
+            timezone: appointmentDetails.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
             teleconsultation:appointmentDetails.teleconsultation
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
