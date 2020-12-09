@@ -175,7 +175,7 @@ const AddAppointment = props => {
             appointmentKind: isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : "Scheduled",
             teleconsultation: isTeleConsultation(),
             comments: appointmentDetails.notes,
-            timezoneOffset: Intl.DateTimeFormat().resolvedOptions().timeZone
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
