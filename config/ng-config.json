@@ -82,7 +82,8 @@
       "customLocaleURL": "/bahmni_config/openmrs/i18n/",
       "loginPageUrl": "../../bahmni/home/index.html#/login",
       "patientsURL": "/bahmni/clinical/index.html#/default/patient/",
-      "patientsURLGeneralInformationTab": "/dashboard?currentTab=DASHBOARD_TAB_GENERAL_KEY"
+      "patientsURLGeneralInformationTab": "/dashboard?currentTab=DASHBOARD_TAB_GENERAL_KEY",
+      "patientDashboardURL": "/openmrs/coreapps/clinicianfacing/patient.page"
     }
   },
   "Appointments": {

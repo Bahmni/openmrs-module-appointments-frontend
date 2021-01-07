@@ -17,6 +17,8 @@ angular.module('bahmni.appointments')
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
+            $scope.patientDashboardURL = Bahmni.Common.Constants.patientDashboardURL;
+            $scope.shouldShowPatientDashboardHref = !!Bahmni.Common.Constants.patientDashboardURL;
             $scope.searchedPatient = false;
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
