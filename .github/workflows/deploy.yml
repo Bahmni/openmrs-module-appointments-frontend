@@ -1,0 +1,58 @@
+name: Openmrs-module-appointments - Frontend - Github actions CI/CD
+
+on:
+  push:
+    branches: [ stream3/master ]
+
+jobs:
+  build:
+    env:
+      PACKAGE_NAME: appointments_frontend_${{ github.run_number }}.zip
+      CODEDEPLOY_APPLICATION_NAME: appointments-frontend
+      S3_BUCKET_NAME: bahmni-covid-19-qa-demo
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install npm
+        run: npm install
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run:  npm run build
+
+      - name: Package
+        run: |
+          mkdir staging
+          cp -r dist staging/openmrs_appointments_app
+          cp deployment_script/* staging/ 
+          cd staging
+          zip -r ../$PACKAGE_NAME *
+
+      - name: Configure AWS deploy credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_DEPLOY_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_DEPLOY_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Push to s3
+        run: |
+          aws s3 cp $PACKAGE_NAME s3://$S3_BUCKET_NAME/$CODEDEPLOY_APPLICATION_NAME/$PACKAGE_NAME
+
+      - name: Create deployment
+        run: |
+          aws deploy create-deployment \
+            --application-name $CODEDEPLOY_APPLICATION_NAME \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name qa-demo \
+            --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$CODEDEPLOY_APPLICATION_NAME/$PACKAGE_NAME
+

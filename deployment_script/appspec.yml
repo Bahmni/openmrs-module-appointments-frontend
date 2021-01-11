@@ -1,0 +1,16 @@
+version: 0.0
+os: linux
+files:
+  - source: openmrs_appointments_app 
+    destination: /opt/bahmni-web/etc/bahmniapps/appointments
+permissions:
+  - object: /opt/bahmni-web/etc/bahmniapps
+    owner: bahmni
+    group: bahmni
+    pattern: '**'
+    type:
+      - directory
+      - file
+hooks:
+  BeforeInstall:
+    - location: cleanup.sh
