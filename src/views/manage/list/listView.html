@@ -25,8 +25,8 @@
             <tbody>
             <tr ng-repeat="appointment in filteredAppointments" ng-click="select(appointment)" ng-style="{'background-color': colorsForListView[appointment.status]}" ng-class="{'selected' : isSelected(appointment)}">
                 <td>
-                    <a ng-show="shouldShowPatientDashboardHref" href="#" target="_blank" ng-click="$event.stopPropagation()" ng-href="{{patientDashboardURL + '?patientId=' + appointment.patient.uuid}}">{{::appointment.patient.identifier}}</a>
-                    <span ng-hide="shouldShowPatientDashboardHref">{{::appointment.patient.identifier}}</span>
+                    <a ng-show="shouldShowAppointmentsListPatientLink" href="#" target="_blank" ng-click="$event.stopPropagation()" ng-href="{{generateAppointmentsListPatientLink(appointment)}}">{{::appointment.patient.identifier}}</a>
+                    <span ng-hide="shouldShowAppointmentsListPatientLink">{{::appointment.patient.identifier}}</span>
                 </td>
                 <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
                 <td>{{::appointment.startDateTime | bahmniDate}}</td>

@@ -17,8 +17,7 @@ angular.module('bahmni.appointments')
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
-            $scope.patientDashboardURL = Bahmni.Common.Constants.patientDashboardURL;
-            $scope.shouldShowPatientDashboardHref = !!Bahmni.Common.Constants.patientDashboardURL;
+            $scope.shouldShowAppointmentsListPatientLink = !!Bahmni.Common.Constants.appointmentsListPatientLink;
             $scope.searchedPatient = false;
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
@@ -217,6 +216,10 @@ angular.module('bahmni.appointments')
                     className: "ngdialog-theme-default app-dialog-container"
                 });
             };
+
+            $scope.generateAppointmentsListPatientLink = function (appointment) {
+                return appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.appointmentsListPatientLink, { patientId: appointment.patient.uuid });
+            }
 
             function isNullOrEmpty(obj) {
                 return obj === null || obj === undefined || Object.keys(obj).length === 0;
