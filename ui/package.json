@@ -1,6 +1,6 @@
 {
   "name": "react-appointments-frontend",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "React Appointments Frontend",
   "main": "dist/reactAngularAdaptor.js",
   "directories": {
