@@ -83,7 +83,7 @@
       "loginPageUrl": "../../bahmni/home/index.html#/login",
       "patientsURL": "/bahmni/clinical/index.html#/default/patient/",
       "patientsURLGeneralInformationTab": "/dashboard?currentTab=DASHBOARD_TAB_GENERAL_KEY",
-      "appointmentsListPatientLink": "/openmrs/coreapps/clinicianfacing/patient.page?patientId={{patientId}}"
+      "appointmentsListPatientLink": "/bahmni/clinical/index.html#/default/patient/{{patientId}}/dashboard?currentTab=DASHBOARD_TAB_GENERAL_KEY"
     }
   },
   "Appointments": {
