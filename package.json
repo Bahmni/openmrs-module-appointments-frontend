@@ -46,7 +46,7 @@
     },
     "dependencies": {
         "@uirouter/angularjs": "0.2.18",
-        "angular": "1.5.7",
+        "angular": "1.8.0",
         "angular-bindonce": "github:pasvaz/bindonce#0.3.3",
         "angular-cookies": "1.4.9",
         "angular-elastic": "~2.5.0",
