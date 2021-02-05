@@ -17,7 +17,7 @@ import useFocusLock from "../../utils/hooks/useFocusLock.jsx";
 
 const SuccessModal = (props) => {
 
-    const {intl, patientDetails, resetAppointmentModal, showEmailWarning} = props;
+    const {intl, patientDetails, resetAppointmentModal, showEmailWarning, showEmailNotSentWarning} = props;
 
     const {onBack} = React.useContext(AppContext);
 
@@ -35,6 +35,13 @@ const SuccessModal = (props) => {
            <FormattedMessage id={'EMAIL_WARNING'}
            defaultMessage={'Warning: No Email ID present for patient to share Teleconsultation communication'}/>
         </div>)
+    }
+
+    const emailNotSentWarningHelpText = () => {
+        return (<div className={classNames(saveModalWarning)} >
+        <FormattedMessage id={'EMAIL_NOT_SENT_WARNING'}
+        defaultMessage={'Warning: Unable to share teleconsultation communication, Please contact your support team.'}/>
+     </div>)
     }
 
     return (
@@ -56,7 +63,7 @@ const SuccessModal = (props) => {
                                           values={{patientDetails: <strong>{patientDetails}</strong>}}/>
                     </span>
                     <br/><br/>
-                   {showEmailWarning === true ? emailWarningHelpText() : saveSucessHelpText() }
+                   {showEmailNotSentWarning === true ? emailNotSentWarningHelpText() : showEmailWarning === true ? emailWarningHelpText() : saveSucessHelpText() }
                 </div>
 
                 <div className={classNames(saveConfirmationFooter)}>

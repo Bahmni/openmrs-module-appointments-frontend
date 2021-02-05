@@ -111,6 +111,7 @@ const AddAppointment = props => {
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
     const [showEmailWarning, setShowEmailWarning] = useState(false);
+    const [showEmailNotSentWarning, setShowEmailNotSentWarning] = useState(false);
     const [conflicts, setConflicts] = useState();
     const [errors, setErrors] = useState(initialErrorsState);
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -263,6 +264,7 @@ const AddAppointment = props => {
         if (status === 200) {
             setConflicts(undefined);
             setShowEmailWarning((response.data.teleconsultation && (!response.data.emailIdAvailable)));
+            setShowEmailNotSentWarning((response.data.teleconsultation && (!response.data.emailSent)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
@@ -348,7 +350,8 @@ const AddAppointment = props => {
     const savePopup = <CustomPopup style={customPopup} popupContent={<SuccessConfirmation
       resetAppointmentModal={reInitialiseComponent}
       patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}
-      showEmailWarning={showEmailWarning}/>}/>;
+      showEmailWarning={showEmailWarning}
+      showEmailNotSentWarning={showEmailNotSentWarning}/>}/>;
 
     const endTimeBasedOnService = (time, service, serviceType) => {
         const currentTime = moment(time);
