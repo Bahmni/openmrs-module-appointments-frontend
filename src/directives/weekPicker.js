@@ -43,6 +43,10 @@ angular.module('bahmni.appointments')
                 $scope.onChange($scope.weekStartDate, $scope.weekEndDate);
             });
 
+            $scope.changeFormat = function (date) {
+                return moment(date).format('D MMM');
+            };
+
             init();
         }];
         return {
