@@ -11,6 +11,9 @@ import classNames from 'classnames';
 import moment from 'moment';
 import DateInput from './DateInput.jsx';
 import DatePickerCustomHeader from './DatePickerCustomHeader.jsx';
+import {getUserLocale} from "../../utils/DateUtil";
+
+var locale = getUserLocale();
 
 const dateToMomentDate = (date) => date === '' || date === null || date === undefined ? date
     : moment(date, 'MM/DD/YYYY');
@@ -44,6 +47,7 @@ const AppointmentDatePicker = (props) => {
                 onChange={(date) => onChange(dateToMomentDate(date))}
                 inline
                 fixedHeight
+                locale={locale}
                 readOnly={true}
                 calendarClassName={calendarStyles}
                 minDate={minDate && minDate.toDate()}

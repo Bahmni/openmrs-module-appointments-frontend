@@ -15,6 +15,7 @@ import{
 } from './DatePickerCustomHeader.module.scss'
 import {isNil} from 'lodash';
 import PropTypes from "prop-types";
+import {getUserLocale} from "../../utils/DateUtil";
 
 const DatePickerCustomHeader = (props) => {
     const [showMonthYear, setShowMonthYear] = useState(false)
@@ -42,6 +43,7 @@ const DatePickerCustomHeader = (props) => {
         setShowMonthYear(false);
     };
 
+    const locale = getUserLocale();
     return <div className={classNames(customHeaderWrapper)} tabIndex={1}>
          <span data-testid="date-picker-header-label" className={classNames(monthYearDropdownLabel)}
                onClick={() =>{setShowMonthYear(!showMonthYear)}}>
@@ -74,6 +76,7 @@ const DatePickerCustomHeader = (props) => {
             showMonthYearPicker
             inline
             fixedHeight
+            locale={locale}
             minDate={moment(minDate).startOf('month').toDate()}
         /></div>}
     </div>
