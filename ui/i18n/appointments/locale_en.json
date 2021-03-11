@@ -219,11 +219,15 @@
   "APPOINTMENT_SAVE_SUCCESS_TITLE": "Save successful",
   "APPOINTMENT_SAVE_SUCCESS_HELP_TEXT": "Please check Appointment calendar for the updated schedule",
   "APPOINTMENT_SAVE_SUCCESS_CLOSE": "Close",
-  "ADD_NEW_APPOINTMENT": "Add New Appointment",
   "NUMBER_OF_OCCURRENCE_LABEL": "# of occurrences",
   "APPOINTMENT_UPDATE_CONFIRMATION_TITLE": "Kindly Confirm",
   "APPOINTMENT_UPDATE_CONFIRMATION_TEXT_RECURRING_APPOINTMENT": "This will update the details of the entire appointment series. This cannot be reversed!",
   "APPOINTMENT_UPDATE_CONFIRMATION_TEXT_SINGLE_APPOINTMENT": "This will update the details of the selected appointment. This cannot be reversed!",
   "APPOINTMENT_UPDATE_CONFIRMATION_NO": "No, go back",
-  "APPOINTMENT_UPDATE_CONFIRMATION_YES": "Yes, I confirm"
+  "APPOINTMENT_UPDATE_CONFIRMATION_YES": "Yes, I confirm",
+  "APPOINTMENT_SAVE_SUCCESS_TEXT": "The new appointment for the patient {patientDetails} has been saved.",
+  "CHANGE_DATE_TO_LABEL": "Change ${moment(originalAppointmentDate).format('Do MMM')} to",
+  "PATIENT_DOUBLE_BOOKING_CONFLICT_MESSAGE": "Current {currentAppointmentService} request conflicts with {existingAppointmentService} appointment on and",
+  "NO_SERVICE_CONFLICTS_DEFAULT_TEXT": "The {label} service you had selected for the appointment(s) is not available during below listed dates",
+  "PROVIDER_ERROR_MESSAGE": "Please select only a maximum of {maxAppointmentProviders} provider(s)",
 }
