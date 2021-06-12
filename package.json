@@ -52,7 +52,7 @@
         "angular-elastic": "~2.5.0",
         "angular-ivh-treeview": "^1.1.0",
         "angular-sanitize": "1.4.9",
-        "angular-translate": "2.7.2",
+        "angular-translate": "2.18.4",
         "angular-translate-handler-log": "*",
         "angular-translate-loader-static-files": "*",
         "angular-translate-storage-local": "*",
