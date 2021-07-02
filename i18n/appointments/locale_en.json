@@ -176,7 +176,7 @@
   "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Appointment invitation accepted successfully.",
   "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "Are you sure, you want to accept the appointment invite?",
   "JOIN_TELE_CONSULTATION":"Join Teleconsultation",
-  "COPY_LINK": "Copy TeleConsultation Link"
+  "COPY_LINK": "Copy TeleConsultation Link",
   "RECURRENCE_INDICATION_MESSAGE": "This is a recurring appointment",
   "APPOINTMENT_TIME_LABEL": "Choose a time slot",
   "APPOINTMENT_TIME_FROM_LABEL": "From",
