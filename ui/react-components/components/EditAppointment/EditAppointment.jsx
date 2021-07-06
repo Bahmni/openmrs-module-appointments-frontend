@@ -35,7 +35,8 @@ import {
     SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     WALK_IN_APPOINTMENT_TYPE,
     weekRecurrenceType,
-    TELECONSULTATION_APPOINTMENT
+    TELECONSULTATION_APPOINTMENT,
+    VIRTUAL_APPOINTMENT_TYPE
 } from "../../constants";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import AppointmentType from "../AppointmentType/AppointmentType.jsx";
@@ -174,6 +175,16 @@ const EditAppointment = props => {
                                                     updateSeries={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE && applyForAll}
                                                     save={saveAppointments}/>}/>;
 
+    const requestAppointmentType = () => {
+        if (appointmentDetails.teleconsultation) {
+            return VIRTUAL_APPOINTMENT_TYPE;
+        }
+        if (isRecurringAppointment()) {
+            return SCHEDULED_APPOINTMENT_TYPE;
+        }
+        return isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : SCHEDULED_APPOINTMENT_TYPE;
+    };
+                                                    
     const getAppointmentRequest = () => {
         let appointment = {
             uuid: appointmentUuid,
@@ -185,10 +196,9 @@ const EditAppointment = props => {
             endDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
             providers: getValidProviders(appointmentDetails.providers),
             locationUuid: appointmentDetails.location && appointmentDetails.location.value && appointmentDetails.location.value.uuid,
-            appointmentKind: appointmentDetails.appointmentKind,
+            appointmentKind: requestAppointmentType(),
             status: appointmentDetails.status,
-            comments: appointmentDetails.notes,
-            teleconsultation:appointmentDetails.teleconsultation
+            comments: appointmentDetails.notes
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
@@ -403,7 +413,7 @@ const EditAppointment = props => {
                 status: appointmentResponse.status,
                 appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE :
                     appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined,
-                teleconsultation:appointmentResponse.teleconsultation
+                teleconsultation:appointmentResponse.appointmentKind === VIRTUAL_APPOINTMENT_TYPE
             };
             updateAppointmentDetails(appointmentDetailsFromResponse);
             storePreviousAppointmentDatetime(appointmentDetailsFromResponse.appointmentDate, appointmentDetailsFromResponse.startTime, appointmentDetailsFromResponse.endTime);
@@ -468,14 +478,17 @@ const EditAppointment = props => {
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan isEdit={true} appointmentType={appointmentDetails.appointmentType}
-                                     onChange={(e) => e.target.name === WALK_IN_APPOINTMENT_TYPE ?
-                                         updateAppointmentDetails({
-                                             appointmentType: isWalkInAppointment()
-                                                 ? undefined : WALK_IN_APPOINTMENT_TYPE,
-                                             appointmentKind: isWalkInAppointment()
-                                             ? SCHEDULED_APPOINTMENT_TYPE : WALK_IN_APPOINTMENT_TYPE
-                                         }) : undefined
-                                     }
+                                     onChange={(e) => {
+                                         if (e.target.name === WALK_IN_APPOINTMENT_TYPE) {
+                                            updateAppointmentDetails({
+                                                appointmentType: isWalkInAppointment() ? undefined : WALK_IN_APPOINTMENT_TYPE,
+                                                appointmentKind: isWalkInAppointment() ? SCHEDULED_APPOINTMENT_TYPE : WALK_IN_APPOINTMENT_TYPE
+                                            });
+                                            if (e.target.name === WALK_IN_APPOINTMENT_TYPE) {
+                                                updateAppointmentDetails({ teleconsultation: false});
+                                            }
+                                         }
+                                     }}
                                     isRecurringDisabled={componentsDisableStatus.recurring}
                                     isWalkInDisabled={componentsDisableStatus.walkIn}/>
                 </div>
@@ -483,12 +496,14 @@ const EditAppointment = props => {
             <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentType appointmentType={appointmentDetails.appointmentType}
-                        teleconsultation={appointmentDetails.teleconsultation}
+                        isTeleconsultation={appointmentDetails.teleconsultation}
                         onChange={(e) => {
-                            if (appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
-                                updateAppointmentDetails({ teleconsultation: false });
-                            else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
-                                updateAppointmentDetails({ teleconsultation: true });
+                            if (e.target.name === TELECONSULTATION_APPOINTMENT) {
+                                updateAppointmentDetails({ teleconsultation: e.target.checked });
+                                if (e.target.checked) {
+                                    updateAppointmentDetails({ appointmentType: VIRTUAL_APPOINTMENT_TYPE });
+                                }
+                            }
                         }} />
                 </div>
             </div>

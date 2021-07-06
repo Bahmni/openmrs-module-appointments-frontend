@@ -11,10 +11,12 @@ export const TODAY = "TODAY";
 export const FROM = "FROM";
 export const MINUTES = "minutes";
 
+export const TELECONSULTATION_APPOINTMENT = "Teleconsultation";
+
 export const RECURRING_APPOINTMENT_TYPE = "Recurring";
 export const WALK_IN_APPOINTMENT_TYPE = "WalkIn";
-export const TELECONSULTATION_APPOINTMENT = "Teleconsultation";
 export const SCHEDULED_APPOINTMENT_TYPE = "Scheduled";
+export const VIRTUAL_APPOINTMENT_TYPE = "Virtual";
 
 export const APPOINTMENT_STATUSES = {
     "Requested": "Requested",
