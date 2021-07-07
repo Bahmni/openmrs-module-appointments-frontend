@@ -11,6 +11,7 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
+            var allowVirtualConsultation = appService.getAppDescriptor().getConfigValue('allowVirtualConsultation');
 
             $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
             $scope.isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
@@ -442,6 +443,10 @@ angular.module('bahmni.appointments')
                 }
                 return false;
             };
+
+            $scope.isVirtualConsultationEnabled = function () {
+                return allowVirtualConsultation === true;
+            }
 
             $scope.isTeleconsultationAllowed = function () {
                 if (!_.isUndefined($scope.selectedAppointment)) {

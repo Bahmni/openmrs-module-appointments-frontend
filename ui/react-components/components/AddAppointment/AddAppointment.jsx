@@ -424,6 +424,28 @@ const AddAppointment = props => {
         }
     };
 
+    const showAppointmentTypeControl = () => {
+        var allowVirtualConsultation = appConfig && appConfig.allowVirtualConsultation;
+        if (allowVirtualConsultation) {
+            return <AppointmentType appointmentType={appointmentDetails.appointmentType}
+                    isTeleconsultation={appointmentDetails.teleconsultation}     
+                    onChange={(e) => {
+                        if (e.target.name === TELECONSULTATION_APPOINTMENT) {
+                            updateAppointmentDetails({ teleconsultation: e.target.checked });
+                            if (e.target.checked && appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE) {
+                                updateAppointmentDetails({ appointmentType: VIRTUAL_APPOINTMENT_TYPE });
+                            }
+                            if (!e.target.checked && appointmentDetails.appointmentType === VIRTUAL_APPOINTMENT_TYPE) {
+                                updateAppointmentDetails({ appointmentType: undefined });
+                            }
+                        }
+                    }} />;
+
+        } else {
+            return <div></div>
+        }
+    };
+
 
     const on = "On";
     return (<Fragment>
@@ -450,16 +472,7 @@ const AddAppointment = props => {
             </div>
             <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
-                    <AppointmentType appointmentType={appointmentDetails.appointmentType}
-                        isTeleconsultation={appointmentDetails.teleconsultation}     
-                        onChange={(e) => {
-                            if (e.target.name === TELECONSULTATION_APPOINTMENT) {
-                                updateAppointmentDetails({ teleconsultation: e.target.checked });
-                                if (e.target.checked) {
-                                    updateAppointmentDetails({ appointmentType: VIRTUAL_APPOINTMENT_TYPE });
-                                }
-                            }
-                        }} />
+                    {showAppointmentTypeControl()}
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
