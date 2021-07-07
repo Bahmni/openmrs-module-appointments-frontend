@@ -64,8 +64,12 @@
             {{::'JOIN_TELE_CONSULTATION' |translate}}
         </button>
 
-        <button class="copy-clip" title="{{::'COPY_LINK' | translate}}" show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
-        ng-click="copyTeleConsultationMeetingURL()" ng-disabled="!isTeleconsultationAllowed()"></button>
+        <button class="copy-clip" title="{{::'COPY_LINK' | translate}}" 
+            ng-if="isVirtualConsultationEnabled()"
+            show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
+            ng-click="copyTeleConsultationMeetingURL()" 
+            ng-disabled="!isTeleconsultationAllowed()">
+        </button>
 
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" ng-click="editAppointment()"
         ng-disabled="!isEditAllowed()">
