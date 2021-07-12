@@ -8,9 +8,15 @@ import Checkbox from 'rc-checkbox';
 import 'rc-checkbox/assets/index.css';
 import {TELECONSULTATION_APPOINTMENT} from "../../constants";
 
+
+
 const AppointmentType = props => {
 
-    const {onChange, teleconsultation, isTeleconsultationDisabled } = props;
+    const {onChange, appointmentType, isTeleconsultation, isTeleconsultationDisabled } = props;
+
+    const isVirtual = () => {
+        return appointmentType === "Virtual" || isTeleconsultation;
+    }
 
     return (<div className={classNames(container)}>
         <span className={classNames(appointmentTypeLabel)}><Label className={classNames(appointmentTypeLabel)} translationKey="APPOINTMENT_TYPE_LABEL"
@@ -21,7 +27,7 @@ const AppointmentType = props => {
                 className={classNames(checkbox)}
                 id="teleconsultation-checkbox"
                 onChange={onChange}
-                checked={teleconsultation}
+                checked={isVirtual()}
                 name={TELECONSULTATION_APPOINTMENT}
                 disabled={isTeleconsultationDisabled}
             />
@@ -35,6 +41,7 @@ const AppointmentType = props => {
 AppointmentType.propTypes = {
     onChange: PropTypes.func,
     appointmentType: PropTypes.string,
+    isTeleconsultation: PropTypes.bool,
     isTeleconsultationDisabled: PropTypes.bool
 };
 

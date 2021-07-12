@@ -57,12 +57,19 @@
     <div ui-view="content@appointment"></div>
     <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'disabled': !selectedAppointment}">
 
-        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" ng-click="openJitsiMeet()" 
-        ng-disabled="!isTeleconsultingAllowed()">
-        {{::'JOIN_TELE_CONSULTATION' |translate}}</button>
+        <button ng-if="isVirtualConsultationEnabled()"
+            show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" 
+            ng-click="openTeleConsultation()" 
+            ng-disabled="!isTeleconsultationAllowed()">
+            {{::'JOIN_TELE_CONSULTATION' |translate}}
+        </button>
 
-        <button class="copy-clip" title="{{::'COPY_LINK' | translate}}" show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
-        ng-click="copyTeleConsultationMeetingURL()" ng-disabled="!isTeleconsultingAllowed()"></button>
+        <button class="copy-clip" title="{{::'COPY_LINK' | translate}}" 
+            ng-if="isVirtualConsultationEnabled()"
+            show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
+            ng-click="copyTeleConsultationMeetingURL()" 
+            ng-disabled="!isTeleconsultationAllowed()">
+        </button>
 
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" ng-click="editAppointment()"
         ng-disabled="!isEditAllowed()">

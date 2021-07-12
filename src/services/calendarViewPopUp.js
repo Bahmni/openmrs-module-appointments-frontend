@@ -42,7 +42,7 @@ angular.module('bahmni.appointments')
                     popUpScope.$destroy();
                 };
 
-                popUpScope.openJitsiMeet = function (appointment) {
+                popUpScope.openTeleConsultation = function (appointment) {
 
                     $window.open("https://" +
                         window.location.hostname + 
@@ -184,6 +184,10 @@ angular.module('bahmni.appointments')
                         return providerNames;
                     }
                     return '';
+                };
+
+                popUpScope.isVirtualAppointment = function (appointment) {
+                    return appointment.appointmentKind === "Virtual";
                 };
 
                 dialog = ngDialog.open({

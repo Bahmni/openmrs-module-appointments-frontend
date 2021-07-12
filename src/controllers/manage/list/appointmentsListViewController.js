@@ -11,6 +11,7 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
+            var allowVirtualConsultation = appService.getAppDescriptor().getConfigValue('allowVirtualConsultation');
 
             $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
             $scope.isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
@@ -183,8 +184,7 @@ angular.module('bahmni.appointments')
                 $state.go('home.manage.appointments.list.edit', params);
             };
 
-            $scope.openJitsiMeet = function () {
-                
+            $scope.openTeleConsultation = function () {
                 window.open("https://" + 
                     window.location.hostname + 
                     Bahmni.Common.Constants.patientsURL + 
@@ -194,15 +194,13 @@ angular.module('bahmni.appointments')
             }; 
             
             $scope.copyTeleConsultationMeetingURL = function () {
-                var jitsiMeetingUrl = 'https://meet.jit.si/' + $scope.selectedAppointment.uuid;
-                
-                    const el = document.createElement('textarea');
-                    el.value = jitsiMeetingUrl;
-                    document.body.appendChild(el);
-                    el.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(el);
-                  
+                var jitsiMeetingUrl = $scope.selectedAppointment.teleconsultationLink;
+                const el = document.createElement('textarea');
+                el.value = jitsiMeetingUrl;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
             };
 
             $scope.checkinAppointment = function () {
@@ -446,9 +444,13 @@ angular.module('bahmni.appointments')
                 return false;
             };
 
-            $scope.isTeleconsultingAllowed = function () {
+            $scope.isVirtualConsultationEnabled = function () {
+                return allowVirtualConsultation === true;
+            }
+
+            $scope.isTeleconsultationAllowed = function () {
                 if (!_.isUndefined($scope.selectedAppointment)) {
-                    return $scope.selectedAppointment.teleconsultation && $scope.selectedAppointment.status == window.Bahmni.Appointments.Constants.appointmentStatuses.Scheduled;
+                    return $scope.selectedAppointment.appointmentKind === "Virtual" && $scope.selectedAppointment.status == window.Bahmni.Appointments.Constants.appointmentStatuses.Scheduled;
                 }
                 return false;
             };

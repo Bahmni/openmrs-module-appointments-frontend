@@ -48,7 +48,9 @@ import {
     SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     TODAY,
     TELECONSULTATION_APPOINTMENT,
-    WALK_IN_APPOINTMENT_TYPE
+    WALK_IN_APPOINTMENT_TYPE,
+    VIRTUAL_APPOINTMENT_TYPE,
+    SCHEDULED_APPOINTMENT_TYPE
 } from "../../constants";
 import moment from "moment";
 import {getDefaultOccurrences, getDuration} from "../../helper.js";
@@ -159,6 +161,16 @@ const AddAppointment = props => {
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
     const isTeleConsultation = () => appointmentDetails.teleconsultation;
 
+    const requestAppointmentType = () => {
+        if (appointmentDetails.teleconsultation) {
+            return VIRTUAL_APPOINTMENT_TYPE;
+        }
+        if (isRecurringAppointment()) {
+            return SCHEDULED_APPOINTMENT_TYPE;
+        }
+        return isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : SCHEDULED_APPOINTMENT_TYPE;
+    };
+
     const getAppointmentRequest = () => {
         let appointment = {
             patientUuid: appointmentDetails.patient && appointmentDetails.patient.value.uuid,
@@ -173,8 +185,7 @@ const AddAppointment = props => {
                 : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
-            appointmentKind: isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : "Scheduled",
-            teleconsultation: isTeleConsultation(),
+            appointmentKind: requestAppointmentType(),
             comments: appointmentDetails.notes
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
@@ -263,8 +274,8 @@ const AddAppointment = props => {
         const status = response.status;
         if (status === 200) {
             setConflicts(undefined);
-            setShowEmailWarning((response.data.teleconsultation && (!response.data.emailIdAvailable)));
-            setShowEmailNotSentWarning((response.data.teleconsultation && (!response.data.emailSent)));
+            setShowEmailWarning((isVirtual(response.data) && !checkPatientEmailAvailability(response.data)));
+            setShowEmailNotSentWarning((isVirtual(response.data) && !checkNotificationStatus(response.data)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
@@ -273,6 +284,27 @@ const AddAppointment = props => {
         }
         setDisableSaveButton(false);
     };
+
+    const isVirtual = (appt) => {
+        return appt.appointmentKind === VIRTUAL_APPOINTMENT_TYPE;
+    }
+
+    const checkPatientEmailAvailability = (appt) => {
+        if (appt.extensions && appt.extensions.patientEmailDefined) {
+            console.log("appt.extensions.patientEmailDefined: " + appt.extensions.patientEmailDefined);
+            return appt.extensions.patientEmailDefined;
+        }
+        return false;
+    }
+
+    const checkNotificationStatus = (appt) => {
+        if (appt.extensions && appt.extensions.notificationResults) {
+            var success = appt.extensions.notificationResults.filter(nr => nr.medium.toUpperCase() === "EMAIL" && nr.status === 0);
+            console.log("appt.extensions.notification result: " + success);
+            return success.length > 0;
+        }
+        return false;
+    }
 
     const checkAndSave = async () => {
         if (isValidAppointment()) {
@@ -392,6 +424,28 @@ const AddAppointment = props => {
         }
     };
 
+    const showAppointmentTypeControl = () => {
+        var allowVirtualConsultation = appConfig && appConfig.allowVirtualConsultation;
+        if (allowVirtualConsultation) {
+            return <AppointmentType appointmentType={appointmentDetails.appointmentType}
+                    isTeleconsultation={appointmentDetails.teleconsultation}     
+                    onChange={(e) => {
+                        if (e.target.name === TELECONSULTATION_APPOINTMENT) {
+                            updateAppointmentDetails({ teleconsultation: e.target.checked });
+                            if (e.target.checked && appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE) {
+                                updateAppointmentDetails({ appointmentType: VIRTUAL_APPOINTMENT_TYPE });
+                            }
+                            if (!e.target.checked && appointmentDetails.appointmentType === VIRTUAL_APPOINTMENT_TYPE) {
+                                updateAppointmentDetails({ appointmentType: undefined });
+                            }
+                        }
+                    }} />;
+
+        } else {
+            return <div></div>
+        }
+    };
+
 
     const on = "On";
     return (<Fragment>
@@ -404,29 +458,21 @@ const AddAppointment = props => {
             <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
-                        teleconsultation={appointmentDetails.teleconsultation}
                         onChange={(e) => {
-                            if (appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
-                                updateAppointmentDetails({ teleconsultation: false });
-                            else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
-                                updateAppointmentDetails({ teleconsultation: true });
-                            else if (appointmentDetails.appointmentType === e.target.name)
-                                updateAppointmentDetails({ appointmentType: undefined });
-                            else
-                                updateAppointmentDetails({ appointmentType: e.target.name })
+                            if (appointmentDetails.appointmentType === e.target.name) {
+                                updateAppointmentDetails({ appointmentType: undefined });    
+                            } else {
+                                updateAppointmentDetails({ appointmentType: e.target.name });
+                            }
+                            if (e.target.name === WALK_IN_APPOINTMENT_TYPE) {
+                                updateAppointmentDetails({ teleconsultation: false});
+                            }
                         }} />
                 </div>
             </div>
             <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
-                    <AppointmentType appointmentType={appointmentDetails.appointmentType}
-                        teleconsultation={appointmentDetails.teleconsultation}
-                        onChange={(e) => {
-                            if (appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
-                                updateAppointmentDetails({ teleconsultation: false });
-                            else if (!appointmentDetails.teleconsultation && e.target.name === TELECONSULTATION_APPOINTMENT)
-                                updateAppointmentDetails({ teleconsultation: true });
-                        }} />
+                    {showAppointmentTypeControl()}
                 </div>
             </div>
             <div className={classNames(recurringContainer)}>
