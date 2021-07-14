@@ -307,8 +307,8 @@ const AddAppointment = props => {
     }
 
     const checkAndSave = async () => {
+        setDisableSaveButton(true);
         if (isValidAppointment()) {
-            setDisableSaveButton(true);
             const appointment = getAppointmentRequest();
             const response = await getAppointmentConflicts(appointment);
             const status = response.status;
@@ -321,8 +321,8 @@ const AddAppointment = props => {
                 setServiceErrorMessageFromResponse(response.data);
                 resetServiceErrorMessage();
             }
-            setDisableSaveButton(false);
         }
+        setDisableSaveButton(false);
     };
 
     const checkAndUpdateAppointmentStatus = async function (appointmentRequest, isRecurring) {
@@ -356,8 +356,8 @@ const AddAppointment = props => {
 
 
     const checkAndSaveRecurringAppointments = async () => {
+        setDisableSaveButton(true);
         if (isValidRecurringAppointment()) {
-            setDisableSaveButton(true);
             const recurringRequest = getRecurringAppointmentRequest();
             const response = await getRecurringAppointmentsConflicts(recurringRequest);
             const status = response.status;
@@ -370,8 +370,8 @@ const AddAppointment = props => {
                 setServiceErrorMessageFromResponse(response.data);
                 resetServiceErrorMessage();
             }
-            setDisableSaveButton(false);
         }
+        setDisableSaveButton(false);
     };
 
     const saveAppointments = () => {
