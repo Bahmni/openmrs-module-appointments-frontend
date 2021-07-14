@@ -299,7 +299,7 @@ const AddAppointment = props => {
 
     const checkNotificationStatus = (appt) => {
         if (appt.extensions && appt.extensions.notificationResults) {
-            var success = appt.extensions.notificationResults.filter(nr => nr.medium.toUpperCase() === "EMAIL" && nr.status === 0);
+            var success = appt.extensions.notificationResults.filter(nr => nr.medium.toUpperCase() === "EMAIL" && nr.status === "0");
             console.log("appt.extensions.notification result: " + success);
             return success.length > 0;
         }
