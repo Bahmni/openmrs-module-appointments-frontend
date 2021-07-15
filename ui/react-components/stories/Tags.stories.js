@@ -9,7 +9,7 @@ const colourOptions = [
   { value: "green", label: "Green" },
   { value: "forest", label: "Forest" },
   { value: "slate", label: "Slate" },
-  { value: "silver", label: "Silver" }
+  { value: "silver", label: "Silver" },
 ];
 
 export default { title: "Tag" };

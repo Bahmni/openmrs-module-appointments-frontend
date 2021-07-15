@@ -1,20 +1,7 @@
 import React from "react";
 import AppSpecialityFilter from "../components/AppSpecialityFilter/AppSpecialityFilter";
-import { IntlProvider } from "react-intl";
 export default { title: "AppSpecilaityFilter" };
-
-const withReactIntl = (AppSpecialityFilter) => {
-  return (props) => {
-    return (
-      <IntlProvider
-        locale="en"
-        messages={{ DROPDOWN_NO_OPTIONS_MESSAGE: "no option" }}
-      >
-        <AppSpecialityFilter {...props} />
-      </IntlProvider>
-    );
-  };
-};
+import { withReactIntl } from "./util";
 const nodes = [
   {
     value: "Physiotherapy OPD",

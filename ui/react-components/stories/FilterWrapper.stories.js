@@ -1,21 +1,13 @@
-import React from 'react';
+import React from "react";
 // import LocationSearch from '../components/Location/LocationSearch';
-import {IntlProvider} from "react-intl";
-import FilterWrapper from '../components/AppointmentFilterWrapper/FilterWrapper';
+import FilterWrapper from "../components/AppointmentFilterWrapper/FilterWrapper";
+import { withReactIntl } from "./util";
 
-
-export default { title: 'Filter Search Wrapper' };
+export default { title: "Filter Search Wrapper" };
 // const locationSearch=<LocationSearch value="Enter Location" />
 
-const withReactIntl = (FilterWrapper) => {
-    return (props) =>{
-        return <IntlProvider locale='en' messages={{'Filter': 'Filter Wrapper for Appointments'}}>
-            <FilterWrapper {...props}/>
-        </IntlProvider>
-    }
-}
+const InternationalizedLocation = withReactIntl(FilterWrapper, {
+  Filter: "Filter Wrapper for Appointments",
+});
 
-const InternationalizedLocation=withReactIntl(FilterWrapper)
-
-export const basic = () => (<InternationalizedLocation/>);
-
+export const basic = () => <InternationalizedLocation />;

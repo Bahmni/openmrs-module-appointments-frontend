@@ -1,19 +1,11 @@
-import React, {useState} from 'react';
-import AppointmentStatus from '../components/AppointmentStatus/AppointmentStatus.jsx';
-import {IntlProvider} from "react-intl";
+import React from "react";
+import AppointmentStatus from "../components/AppointmentStatus/AppointmentStatus.jsx";
+import { withReactIntl } from "./util";
 
-export default { title: 'Appointment Status' };
+export default { title: "Appointment Status" };
 
-const withReactIntl = (AppointmentStatus) => {
-    return (props) =>{
-        return <IntlProvider locale='en' messages={{'Appointment_Status': 'no status selected'}}>
-            <AppointmentStatus {...props}/>
-        </IntlProvider>
-    }
-}
+const InternationalizedAppointmentStatus = withReactIntl(AppointmentStatus, {
+  Appointment_Status: "no status selected",
+});
 
-const InternationalizedAppointmentStatus=withReactIntl(AppointmentStatus)
-
-
-export const basic = () => (<InternationalizedAppointmentStatus />);
-
+export const basic = () => <InternationalizedAppointmentStatus />;

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AppointmentListSidePanelWrapper from "../components/AppointmentListSidePanelWrapper/AppointmentListSidePanelWrapper";
-import { IntlProvider, injectIntl } from "react-intl";
+import { withReactIntl } from "./util";
 
 const serviceList = [
   {
@@ -1132,15 +1132,10 @@ const serviceList = [
 
 export default { title: "AppointmentListSidePanelWrapper" };
 
-const withReactIntl = (AppointmentListSidePanelWrapper) => {
+const InternationalizedDropDown = withReactIntl(
+  AppointmentListSidePanelWrapper
+);
 
-  return (props) => {
-    return <IntlProvider locale='en' messages={{ 'DROPDOWN_NO_OPTIONS_MESSAGE': 'no option' }}>
-      <AppointmentListSidePanelWrapper {...props} serviceData={serviceList} />
-    </IntlProvider>
-  }
-}
-
-const InternationalizedDropDown = withReactIntl(AppointmentListSidePanelWrapper);
-
-export const SearchTree = () => <InternationalizedDropDown />;
+export const SearchTree = () => (
+  <InternationalizedDropDown serviceData={serviceList} />
+);
