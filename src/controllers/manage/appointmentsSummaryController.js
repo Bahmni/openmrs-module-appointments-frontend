@@ -59,5 +59,9 @@ angular.module('bahmni.appointments')
                 }
             };
 
+            $scope.changeFormat = function (date) {
+                return moment(date).format('D MMM, ddd');
+            };
+
             return init();
         }]);
