@@ -1,5 +1,7 @@
 import moment from "moment";
 import _ from 'lodash'
+import {getLocale} from "./LocalStorageUtil";
+
 export const getDateTime = (appointmentDate, appointmentTime) => {
     if (!appointmentDate && !appointmentTime) return appointmentDate;
     const formattedTime = moment(appointmentTime, ["hh:mm a"]).format("HH:mm");
@@ -49,4 +51,10 @@ const parseDateToUTC = (longDate) => {
     return longDate ? moment(longDate, "YYYY-MM-DDTHH:mm:ss.SSSZZ").toDate() : null;
 };
 
+export const getUserLocale = () => {
+    let locale = getLocale();
+    const a = {en: "en-US", pt_BR: "pt-BR"};
+    a[locale]? locale = a[locale]: locale = "en-US";
+    return require('date-fns/locale/' + locale);
+}
 

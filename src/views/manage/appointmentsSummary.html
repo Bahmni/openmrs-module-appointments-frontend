@@ -7,7 +7,7 @@
             <tr>
                 <th></th>
                 <th ng-repeat="dateInfo in weekDatesInfo">
-                    {{dateInfo.date | date:'d MMM, EEE'}}
+                    {{changeFormat(dateInfo.date)}}
                 </th>
             </tr>
             </thead>
