@@ -1,6 +1,6 @@
 {
     "name": "openmrs-module-appointments-frontend",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "An appointment app for bahmni/openmrs.",
     "license": "AGPLv3",
     "scripts": {
