@@ -1,18 +1,16 @@
-import React from 'react';
-import GridSummary from '../components/GridSummary/GridSummary';
-import {IntlProvider} from "react-intl";
-import dummyData from '../components/GridSummary/AppointSummary.json';
-export default { title: 'GridSummary' };
+import React from "react";
+import GridSummary from "../components/GridSummary/GridSummary";
+import dummyData from "../components/GridSummary/AppointSummary.json";
+import { withReactIntl } from "./util";
 
-
-const withReactIntl = (GridSummary) => {
-    return (props) =>{
-        return <IntlProvider locale='en' messages={{'DROPDOWN_NO_OPTIONS_MESSAGE': 'no option'}}>
-            <GridSummary {...props}/>
-        </IntlProvider>
-    }
-}
+export default { title: "GridSummary" };
 
 const InternationalizedGridSummary = withReactIntl(GridSummary);
 
-export const withPlaceholder = () => <InternationalizedGridSummary gridData={dummyData} weekStartDate="2020-04-06" onClick={(date)=>alert(date)}/>
+export const withPlaceholder = () => (
+  <InternationalizedGridSummary
+    gridData={dummyData}
+    weekStartDate="2020-04-06"
+    onClick={(date) => alert(date)}
+  />
+);

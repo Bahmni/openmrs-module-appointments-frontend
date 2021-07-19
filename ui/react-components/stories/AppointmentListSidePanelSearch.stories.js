@@ -1,6 +1,8 @@
 import React from "react";
 import Search from "../components/AppointmentListSidePanelSearch/AppointmentListSidePanelSearch";
+import { withReactIntl } from "./util";
 
 export default { title: "AppointmentListSidePanelSearch" };
 
-export const basic = () => <Search></Search>;
+const InternaltionalizedSearch = withReactIntl(Search);
+export const basic = () => <InternaltionalizedSearch />;

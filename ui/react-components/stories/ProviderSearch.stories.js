@@ -1,19 +1,11 @@
-import React from 'react'
-import {IntlProvider} from "react-intl";
-import ProviderSearch from '../components/Provider/ProviderSearch';
+import React from "react";
+import { withReactIntl } from "./util";
+import ProviderSearch from "../components/Provider/ProviderSearch";
 
+export default { title: "Provider Search" };
 
-export default { title: 'Provider Search' };
+const InternationalizedProviderSearch = withReactIntl(ProviderSearch, {
+  Provider: "no Provider selected",
+});
 
-const withReactIntl = (ProviderSearch) => {
-    return (props) =>{
-        return <IntlProvider locale='en' messages={{'Provider': 'no Provider selected'}}>
-            <ProviderSearch {...props}/>
-        </IntlProvider>
-    }
-}
-
-const InternationalizedProviderSearch=withReactIntl(ProviderSearch)
-
-export const basic = () => (<InternationalizedProviderSearch/>);
-
+export const basic = () => <InternationalizedProviderSearch />;
