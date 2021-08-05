@@ -55,6 +55,6 @@ export const getUserLocale = () => {
     let locale = getLocale();
     const a = {en: "en-US", pt_BR: "pt-BR"};
     a[locale]? locale = a[locale]: locale = "en-US";
-    return require('date-fns/locale/' + locale);
-}
+    return require('date-fns/locale/' + locale + '/index.js');
+};
 
