@@ -1,4 +1,4 @@
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import React, {useState} from "react";
 import moment from "moment";
@@ -44,6 +44,7 @@ const DatePickerCustomHeader = (props) => {
     };
 
     const locale = getUserLocale();
+    registerLocale(locale.code, locale);
     return <div className={classNames(customHeaderWrapper)} tabIndex={1}>
          <span data-testid="date-picker-header-label" className={classNames(monthYearDropdownLabel)}
                onClick={() =>{setShowMonthYear(!showMonthYear)}}>
@@ -76,7 +77,7 @@ const DatePickerCustomHeader = (props) => {
             showMonthYearPicker
             inline
             fixedHeight
-            locale={locale}
+            locale={locale.code}
             minDate={moment(minDate).startOf('month').toDate()}
         /></div>}
     </div>
