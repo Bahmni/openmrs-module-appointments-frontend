@@ -15,7 +15,6 @@ import{
 } from './DatePickerCustomHeader.module.scss'
 import {isNil} from 'lodash';
 import PropTypes from "prop-types";
-import {getUserLocale} from "../../utils/DateUtil";
 
 const DatePickerCustomHeader = (props) => {
     const [showMonthYear, setShowMonthYear] = useState(false)
@@ -27,7 +26,8 @@ const DatePickerCustomHeader = (props) => {
         prevMonthButtonDisabled,
         nextMonthButtonDisabled,
         minDate,
-        currentDate}= props;
+        currentDate,
+        locale}= props;
     const isCurrentDateNotSelected = isNil(currentDate);
     const prevMonthArrowStyles=[arrow]
     prevMonthButtonDisabled && prevMonthArrowStyles.push(disable)
@@ -43,8 +43,6 @@ const DatePickerCustomHeader = (props) => {
         setShowMonthYear(false);
     };
 
-    const locale = getUserLocale();
-    registerLocale(locale.code, locale);
     return <div className={classNames(customHeaderWrapper)} tabIndex={1}>
          <span data-testid="date-picker-header-label" className={classNames(monthYearDropdownLabel)}
                onClick={() =>{setShowMonthYear(!showMonthYear)}}>
@@ -77,7 +75,7 @@ const DatePickerCustomHeader = (props) => {
             showMonthYearPicker
             inline
             fixedHeight
-            locale={locale.code}
+            locale={locale}
             minDate={moment(minDate).startOf('month').toDate()}
         /></div>}
     </div>
@@ -92,7 +90,8 @@ DatePickerCustomHeader.propTypes = {
     prevMonthButtonDisabled:PropTypes.bool,
     nextMonthButtonDisabled:PropTypes.bool,
     minDate:PropTypes.instanceOf(Date),
-    currentDate: PropTypes.instanceOf(Date)
+    currentDate: PropTypes.instanceOf(Date),
+    locale:PropTypes.string
 };
 
 

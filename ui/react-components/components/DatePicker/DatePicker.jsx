@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import DatePicker from "react-datepicker";
+import DatePicker, {registerLocale} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
     appointmentDatePicker,
@@ -13,7 +13,10 @@ import DateInput from './DateInput.jsx';
 import DatePickerCustomHeader from './DatePickerCustomHeader.jsx';
 import {getUserLocale} from "../../utils/DateUtil";
 
-var locale = getUserLocale();
+let locale = getUserLocale();
+if (locale) {
+    registerLocale(locale.code, locale);
+}
 
 const dateToMomentDate = (date) => date === '' || date === null || date === undefined ? date
     : moment(date, 'MM/DD/YYYY');
@@ -47,7 +50,7 @@ const AppointmentDatePicker = (props) => {
                 onChange={(date) => onChange(dateToMomentDate(date))}
                 inline
                 fixedHeight
-                locale={locale}
+                locale={locale?locale.code:"en-US"}
                 readOnly={true}
                 calendarClassName={calendarStyles}
                 minDate={minDate && minDate.toDate()}
@@ -55,7 +58,10 @@ const AppointmentDatePicker = (props) => {
                 renderCustomHeader={(params) => {
                     return (<DatePickerCustomHeader {...params}
                                                     minDate={minDate && minDate.toDate()}
-                                                    currentDate={selectedDate}/>
+                                                    locale={locale?locale.code:"en-US"}
+                                                    currentDate={selectedDate}
+
+                        />
                     )
                 }}
             /></div>
