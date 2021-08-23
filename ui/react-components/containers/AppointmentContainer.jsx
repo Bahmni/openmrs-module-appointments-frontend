@@ -16,15 +16,15 @@ class AppointmentContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            locale: getLocale(),
+            locale: getLocale() === 'pt_BR' ? 'pt-BR': getLocale(),
             messages: translations[props.locale],
             appConfig: null
         };
         (async () => {
-            this.setState({messages: await getMessages(this.state.locale)});
+            this.setState({messages: await getMessages(getLocale())});
             this.setState({appConfig: await getAppConfig()});
         })();
-        moment.locale(getLocale());
+        moment.locale(getLocale() === 'pt_BR' ? 'pt-BR': getLocale());
     }
 
     render() {
