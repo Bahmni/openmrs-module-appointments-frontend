@@ -3,6 +3,9 @@ import '@testing-library/jest-dom/extend-expect';
 import {render, fireEvent, wait, act} from '@testing-library/react';
 import CalendarPicker from "../CalendarPicker/CalendarPicker.jsx";
 import moment from "moment";
+jest.mock('../../utils/LocalStorageUtil.js', () => ({
+    getLocale: jest.fn().mockReturnValue("en-US"),
+}));
 
 const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'months');
@@ -10,7 +13,7 @@ const clickOnFirstDayOfNextMonth = (container) => {
     fireEvent.click(nextButton);
     fireEvent.click(container.querySelector('.react-datepicker__day--001'));
     return nextMonth;
-}
+};
 
 describe('CalendarPicker', () =>{
     it('should open a date picker on click of calendar icon', () =>{

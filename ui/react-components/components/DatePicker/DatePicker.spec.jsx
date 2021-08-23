@@ -3,6 +3,11 @@ import '@testing-library/jest-dom/extend-expect';
 import {render, fireEvent, wait, within} from '@testing-library/react';
 import AppointmentDatePicker from './DatePicker.jsx';
 import moment from 'moment';
+import DatePicker from "react-datepicker";
+
+jest.mock('../../utils/LocalStorageUtil.js', () => ({
+    getLocale: jest.fn().mockReturnValue("en-US"),
+}));
 
 describe('DatePicker', () => {
     const handleDateSelectionSpy = jest.fn();

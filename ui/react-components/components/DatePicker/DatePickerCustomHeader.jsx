@@ -1,4 +1,4 @@
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import React, {useState} from "react";
 import moment from "moment";
@@ -15,7 +15,6 @@ import{
 } from './DatePickerCustomHeader.module.scss'
 import {isNil} from 'lodash';
 import PropTypes from "prop-types";
-import {getUserLocale} from "../../utils/DateUtil";
 
 const DatePickerCustomHeader = (props) => {
     const [showMonthYear, setShowMonthYear] = useState(false)
@@ -27,7 +26,8 @@ const DatePickerCustomHeader = (props) => {
         prevMonthButtonDisabled,
         nextMonthButtonDisabled,
         minDate,
-        currentDate}= props;
+        currentDate,
+        locale}= props;
     const isCurrentDateNotSelected = isNil(currentDate);
     const prevMonthArrowStyles=[arrow]
     prevMonthButtonDisabled && prevMonthArrowStyles.push(disable)
@@ -43,7 +43,6 @@ const DatePickerCustomHeader = (props) => {
         setShowMonthYear(false);
     };
 
-    const locale = getUserLocale();
     return <div className={classNames(customHeaderWrapper)} tabIndex={1}>
          <span data-testid="date-picker-header-label" className={classNames(monthYearDropdownLabel)}
                onClick={() =>{setShowMonthYear(!showMonthYear)}}>
@@ -91,7 +90,8 @@ DatePickerCustomHeader.propTypes = {
     prevMonthButtonDisabled:PropTypes.bool,
     nextMonthButtonDisabled:PropTypes.bool,
     minDate:PropTypes.instanceOf(Date),
-    currentDate: PropTypes.instanceOf(Date)
+    currentDate: PropTypes.instanceOf(Date),
+    locale:PropTypes.string
 };
 
 
