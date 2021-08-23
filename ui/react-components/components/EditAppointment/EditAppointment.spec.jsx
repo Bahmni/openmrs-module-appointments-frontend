@@ -11,6 +11,10 @@ jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/recurringAppointmentsApi');
 jest.mock('../../api/serviceApi');
 jest.mock('../../api/providerApi');
+jest.mock('../../utils/LocalStorageUtil.js', () => ({
+    getLocale: jest.fn().mockReturnValue("en-US"),
+}));
+
 const appointmentsApi = require('../../api/appointmentsApi');
 const recurringAppointmentsApi = require('../../api/recurringAppointmentsApi');
 const serviceApi = require('../../api/serviceApi');

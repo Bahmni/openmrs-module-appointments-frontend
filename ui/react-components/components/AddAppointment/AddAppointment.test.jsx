@@ -12,6 +12,10 @@ jest.mock('../../api/serviceApi');
 jest.mock('../../api/specialityApi');
 jest.mock('../../api/providerApi');
 jest.mock('../../utils/CookieUtil');
+jest.mock('../../utils/LocalStorageUtil.js', () => ({
+    getLocale: jest.fn().mockReturnValue("en-US"),
+}));
+
 jest.mock('../../api/appointmentsApi');
 
 const patientApi = require('../../api/patientApi');
@@ -666,5 +670,3 @@ describe('Add appointment with appointment request enabled', () => {
         expect(appointmentRequestData.providers[1].response).toEqual("AWAITING");
     })
 });
-
-
