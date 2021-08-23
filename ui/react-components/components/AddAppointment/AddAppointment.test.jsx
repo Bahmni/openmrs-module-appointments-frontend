@@ -10,6 +10,10 @@ jest.mock('../../api/serviceApi');
 jest.mock('../../api/specialityApi');
 jest.mock('../../api/providerApi');
 jest.mock('../../utils/CookieUtil');
+jest.mock('../../utils/LocalStorageUtil.js', () => ({
+    getLocale: jest.fn().mockReturnValue("en-US"),
+}));
+
 const patientApi = require('../../api/patientApi');
 const serviceApi = require('../../api/serviceApi');
 const specialityApi = require('../../api/specialityApi');
