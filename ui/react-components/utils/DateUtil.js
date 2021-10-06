@@ -52,7 +52,7 @@ const parseDateToUTC = (longDate) => {
 };
 
 export const getUserLocale = () => {
-    let locale = getLocale();
+    let locale = getLocale() ? getLocale() : 'en-US';
     const a = {en: "en-US", pt_BR: "pt-BR"};
     a[locale]? locale = a[locale]: locale;
     return require('date-fns/locale/' + locale + '/index.js');
