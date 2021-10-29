@@ -10,7 +10,11 @@ Bahmni.Appointments.AppointmentService = (function () {
         var dateUtil = Bahmni.Common.Util.DateUtil;
 
         var getTime = function (dateTime) {
-            return dateTime ? dateUtil.getDateTimeInSpecifiedFormat(dateTime, timeFormat) : undefined;
+            let now = new Date();
+            now.setHours(dateTime.getHours());
+            now.setMinutes(dateTime.getMinutes());
+            now.setSeconds(dateTime.getSeconds());
+            return dateTime ? now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds() : undefined;
         };
 
         var constructAvailabilityPerDay = function (result, availability) {
