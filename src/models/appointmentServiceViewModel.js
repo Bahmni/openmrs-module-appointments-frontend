@@ -30,7 +30,7 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
 
     Service.createFromResponse = function (serviceDetails) {
         var getDateTime = function (time) {
-            return time ? new Date("January 01, 1970 " + time) : undefined;
+            return time ? new Date(time) : undefined;
         };
 
         var parseAvailability = function (avbsByDay) {
