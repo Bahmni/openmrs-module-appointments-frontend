@@ -18,6 +18,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '12.x'
-    - run: npm install
-    - run: npm test
-    - run: npm run build
+    - run: yarn --frozen-lockfile
+    - run: yarn audit-ci --critical
+    - run: cd ui && yarn audit-ci --critical
+    - run: yarn test
+    - run: yarn run build
