@@ -189,6 +189,8 @@
   "APPOINTMENT_UPDATE_LABEL": "Update",
   "PATIENT_ERROR_MESSAGE": "Please select patient",
   "SERVICE_ERROR_MESSAGE": "Please select service",
+  "LOCATION_ERROR_MESSAGE": "Please select a location",
+  "SERVICE_APP_TYPE_ERROR_MESSAGE": "Please select a service App Type",
   "DATE_ERROR_MESSAGE": "Please select date",
   "OCCURRENCE_ERROR_MESSAGE": "Please select valid occurrences",
   "ENDDATE_TYPE_ERROR_MESSAGE": "Please select recurrence end type",

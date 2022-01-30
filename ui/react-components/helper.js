@@ -1,4 +1,10 @@
-import {DEFAULT_MAX_APPOINTMENT_PROVIDERS, minDurationForAppointment, PROVIDER_RESPONSES} from "./constants";
+import {
+    DEFAULT_MAX_APPOINTMENT_PROVIDERS,
+    LOCATION,
+    minDurationForAppointment,
+    PROVIDER_RESPONSES,
+    SERVICE_TYPE
+} from "./constants";
 import moment from "moment";
 
 export const isSpecialitiesEnabled = appConfig => {
@@ -32,4 +38,12 @@ export const isServiceTypeEnabled = appConfig => {
 
 export const getValidProviders = providers => {
     return providers && providers.filter(provider => provider.response === PROVIDER_RESPONSES.ACCEPTED);
+};
+
+export const isLocationMandatory = appConfig => {
+    return appConfig && !_.isEmpty(appConfig.mandatoryAttributes.filter(fieldName => fieldName.toLowerCase() === LOCATION));
+};
+
+export const isServiceTypeMandatory = appConfig => {
+    return appConfig && !_.isEmpty(appConfig.mandatoryAttributes.filter(fieldName => fieldName.toLowerCase() === SERVICE_TYPE));
 };

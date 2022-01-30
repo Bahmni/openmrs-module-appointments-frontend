@@ -10,8 +10,8 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
 import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
 import {
-    getValidProviders,
-    isServiceTypeEnabled,
+    getValidProviders, isLocationMandatory,
+    isServiceTypeEnabled, isServiceTypeMandatory,
     isSpecialitiesEnabled,
     maxAppointmentProvidersAllowed
 } from "../../helper";
@@ -108,16 +108,35 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                             <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
                                 updateAppointmentDetails({serviceType: optionSelected});
                                 optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
+                                if(isServiceTypeMandatory(appConfig) && !componentsDisableStatus.serviceType){
+                                    updateErrorIndicators({serviceTypeError: !optionSelected})
+                                }
                             }}
                                                serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
                                                isDisabled={componentsDisableStatus.serviceType}/>
+                            {isServiceTypeMandatory(appConfig) && !componentsDisableStatus.serviceType ?
+                                <ErrorMessage
+                                    message={errors.serviceTypeError ? errorTranslations.serviceTypeErrorMessage : undefined}/> :
+                                <ErrorMessage message={undefined}/>
+                            }
                         </div> : undefined}
                     <div data-testid="location-search">
                         <LocationSearch value={appointmentDetails.location}
-                                        onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
+                                        onChange={
+                                            (optionSelected) => {
+                                                updateAppointmentDetails({location: optionSelected});
+                                                if(isLocationMandatory(appConfig) && !componentsDisableStatus.location){
+                                                    updateErrorIndicators({locationError: !optionSelected})
+                                                }
+                                            }
+                                        }
                                         isDisabled={componentsDisableStatus.location}
                                         autoFocus={componentsDisableStatus.patient && componentsDisableStatus.speciality && componentsDisableStatus.service}/>
-                        <ErrorMessage message={undefined}/>
+                        {isLocationMandatory(appConfig) && !componentsDisableStatus.location ?
+                            <ErrorMessage
+                                message={errors.locationError ? errorTranslations.locationErrorMessage : undefined}/> :
+                            <ErrorMessage message={undefined}/>
+                        }
                     </div>
                 </div>
                 <div className={classNames(searchFieldsContainerRight)} data-testid="provider-search">

@@ -32,7 +32,13 @@ export const getErrorTranslations = intl => {
         }),
         unexpectedServiceErrorMessage: intl.formatMessage({
             id: 'UNEXPECTED_SERVICE_ERROR', defaultMessage: 'There was an unexpected issue on the server. Please try again'
-        })
+        }),
+        locationErrorMessage: intl.formatMessage({
+            id: 'LOCATION_ERROR_MESSAGE', defaultMessage: 'Please select a location'
+        }),
+        serviceTypeErrorMessage: intl.formatMessage({
+            id: 'SERVICE_APP_TYPE_ERROR_MESSAGE', defaultMessage: 'Please select a service App Type'
+        }),
     };
 };
 

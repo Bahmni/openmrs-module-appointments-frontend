@@ -58,6 +58,7 @@ import {isEmpty, isNil} from 'lodash';
 import AppointmentEditorCommonFieldsWrapper from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
 import {getLocale} from "../../utils/LocalStorageUtil";
+import {isLocationMandatory, isServiceTypeMandatory} from "../../helper";
 
 const AddAppointment = props => {
 
@@ -180,21 +181,31 @@ const AddAppointment = props => {
     const isValidAppointment = () => {
         const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.value.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
+        const isLocationMandatoryAndEmpty = isLocationMandatory(appConfig) ? _.isEmpty(appointmentDetails.location) : false;
+        const isServiceTypeMandatoryAndEmpty = isServiceTypeMandatory(appConfig) ? _.isEmpty(appointmentDetails.serviceType) : false;
         updateCommonErrorIndicators(isValidPatient, startTimeBeforeEndTime);
-        updateErrorIndicators({appointmentDateError: !appointmentDetails.appointmentDate});
-        return isValidPatient && appointmentDetails.service && appointmentDetails.appointmentDate && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime;
+        updateErrorIndicators({
+            appointmentDateError: !appointmentDetails.appointmentDate,
+            locationError: isLocationMandatoryAndEmpty,
+            serviceTypeError: isServiceTypeMandatoryAndEmpty
+        });
+        return isValidPatient && appointmentDetails.service && appointmentDetails.appointmentDate && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime && !isLocationMandatoryAndEmpty && !isServiceTypeMandatoryAndEmpty ;
     };
 
     const isValidRecurringAppointment = () => {
         const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.value.uuid;
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
+        const isLocationMandatoryAndEmpty = isLocationMandatory(appConfig) ? _.isEmpty(appointmentDetails.location): false;
+        const isServiceTypeMandatoryAndEmpty = isServiceTypeMandatory(appConfig) ? _.isEmpty(appointmentDetails.serviceType) : false;
         const selectedWeekDays = getSelectedWeekDays(appointmentDetails.weekDays);
         updateCommonErrorIndicators(isValidPatient, startTimeBeforeEndTime);
         updateErrorIndicators({
             recurrencePeriodError: !appointmentDetails.period || appointmentDetails.period < 1,
             endDateTypeError: !appointmentDetails.endDateType,
             weekDaysError: appointmentDetails.recurrenceType === 'WEEK' && isEmpty(selectedWeekDays),
-            startDateError: !appointmentDetails.startDateType || !appointmentDetails.recurringStartDate
+            startDateError: !appointmentDetails.startDateType || !appointmentDetails.recurringStartDate,
+            locationError: isLocationMandatoryAndEmpty,
+            serviceTypeError: isServiceTypeMandatoryAndEmpty
         });
         if (appointmentDetails.endDateType) {
             updateErrorIndicators({
@@ -205,7 +216,8 @@ const AddAppointment = props => {
         return isValidPatient && appointmentDetails.service && appointmentDetails.startTime
             && appointmentDetails.endTime && startTimeBeforeEndTime && appointmentDetails.recurrenceType
             && appointmentDetails.period && appointmentDetails.period > 0 && appointmentDetails.recurringStartDate
-            && isValidEndDate() && (appointmentDetails.recurrenceType === dayRecurrenceType || !isEmpty(selectedWeekDays));
+            && isValidEndDate() && (appointmentDetails.recurrenceType === dayRecurrenceType || !isEmpty(selectedWeekDays))
+            && !isLocationMandatoryAndEmpty && !isServiceTypeMandatoryAndEmpty;
     };
 
     const updateCommonErrorIndicators = (isValidPatient, startTimeBeforeEndTime) => updateErrorIndicators({
