@@ -23,7 +23,9 @@ export const i18nConfigPath = '/bahmni_config/openmrs/i18n/';
 export const appName = 'appointments';
 
 export const LOCATION = 'location';
-export const SERVICE_TYPE = 'serviceAppType';
+export const SERVICE_TYPE = 'serviceapptype';
+export const PROVIDER = 'provider';
+export const SPECIALITY = 'speciality';
 
 export const BAHMNI_CONFIG_URL = `${hostUrl}/bahmni_config/openmrs/apps`;
 export const IMPLEMENTATION_CONFIG_URL = `${hostUrl}/implementation_config/openmrs/apps`;

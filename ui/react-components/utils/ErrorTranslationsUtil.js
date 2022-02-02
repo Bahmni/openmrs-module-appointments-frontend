@@ -39,6 +39,12 @@ export const getErrorTranslations = intl => {
         serviceTypeErrorMessage: intl.formatMessage({
             id: 'SERVICE_APP_TYPE_ERROR_MESSAGE', defaultMessage: 'Please select a service App Type'
         }),
+        specialityErrorMessage: intl.formatMessage({
+            id: 'SPECIALITY_ERROR_MESSAGE', defaultMessage: 'Please select a speciality'
+        }),
+        providerMandatoryErrorMessage: intl.formatMessage({
+            id: 'PROVIDER_MANDATORY_ERROR_MESSAGE', defaultMessage: 'Please select a provider'
+        }),
     };
 };
 

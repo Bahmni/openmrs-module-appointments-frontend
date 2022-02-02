@@ -10,8 +10,8 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
 import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
 import {
-    getValidProviders, isLocationMandatory,
-    isServiceTypeEnabled, isServiceTypeMandatory,
+    getValidProviders, isMandatory,
+    isServiceTypeEnabled,
     isSpecialitiesEnabled,
     maxAppointmentProvidersAllowed
 } from "../../helper";
@@ -25,7 +25,7 @@ import {filter, isEmpty} from "lodash";
 import {
     DEFAULT_MAX_APPOINTMENT_PROVIDERS,
     PROVIDER_RESPONSES,
-    PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL
+    PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL, SERVICE_TYPE, SPECIALITY, LOCATION, PROVIDER
 } from "../../constants";
 
 const AppointmentEditorCommonFieldsWrapper = props => {
@@ -36,13 +36,18 @@ const AppointmentEditorCommonFieldsWrapper = props => {
     const errorTranslations = getErrorTranslations(intl);
 
     const updateLocationBasedOnService = (selectedService) => {
-        selectedService && isEmpty(selectedService.value.location) ? updateAppointmentDetails({location: null})
-            : updateAppointmentDetails({
+        if (selectedService && isEmpty(selectedService.value.location)) {
+            updateAppointmentDetails({location: null});
+            updateErrorIndicators({locationError: true});
+        } else {
+            updateAppointmentDetails({
                 location: {
                     value: selectedService.value.location,
                     label: selectedService.value.location.name
                 }
             });
+            updateErrorIndicators({locationError: false})
+        }
     };
 
     const addOrUpdateProvider = selectedProvider => {
@@ -56,6 +61,14 @@ const AppointmentEditorCommonFieldsWrapper = props => {
         } else {
             updateAppointmentDetails({providers: [...appointmentDetails.providers, selectedProvider]})
         }
+    };
+
+    const getProviderErrorMessages = () => {
+        if (errors.providerError) {
+            return getMaxAppointmentProvidersErrorMessage(intl,
+                appConfig && appConfig.maxAppointmentProviders || DEFAULT_MAX_APPOINTMENT_PROVIDERS).providerErrorMessage;
+        }
+        if (errors.providerMandatoryError) return errorTranslations.providerMandatoryErrorMessage;
     };
 
     return (
@@ -78,14 +91,22 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     {isSpecialitiesEnabled(appConfig) ?
                         <div data-testid="speciality-search">
                             <SpecialitySearch value={appointmentDetails.speciality}
-                                              onChange={(optionSelected) => updateAppointmentDetails({
-                                                  speciality: optionSelected,
-                                                  service: null,
-                                                  serviceType: null,
-                                                  location: null
-                                              })}
+                                              onChange={(optionSelected) => {
+                                                  updateAppointmentDetails({
+                                                      speciality: optionSelected,
+                                                      service: null,
+                                                      serviceType: null,
+                                                      location: null
+                                                  });
+                                                  updateErrorIndicators({specialityErrorMessage: !optionSelected})
+                                              }}
                                               isDisabled={componentsDisableStatus.speciality}
                                               autoFocus={componentsDisableStatus.patient}/>
+                            {isMandatory(appConfig, SPECIALITY) && !componentsDisableStatus.speciality ?
+                                <ErrorMessage
+                                    message={errors.specialityErrorMessage ? errorTranslations.specialityErrorMessage : undefined}/> :
+                                <ErrorMessage message={undefined}/>
+                            }
                         </div> : null
                     }
                     <div data-testid="service-search">
@@ -108,13 +129,11 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                             <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
                                 updateAppointmentDetails({serviceType: optionSelected});
                                 optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
-                                if(isServiceTypeMandatory(appConfig) && !componentsDisableStatus.serviceType){
-                                    updateErrorIndicators({serviceTypeError: !optionSelected})
-                                }
+                                updateErrorIndicators({serviceTypeError: !optionSelected})
                             }}
                                                serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
                                                isDisabled={componentsDisableStatus.serviceType}/>
-                            {isServiceTypeMandatory(appConfig) && !componentsDisableStatus.serviceType ?
+                            {isMandatory(appConfig, SERVICE_TYPE) && !componentsDisableStatus.serviceType ?
                                 <ErrorMessage
                                     message={errors.serviceTypeError ? errorTranslations.serviceTypeErrorMessage : undefined}/> :
                                 <ErrorMessage message={undefined}/>
@@ -125,14 +144,12 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                         onChange={
                                             (optionSelected) => {
                                                 updateAppointmentDetails({location: optionSelected});
-                                                if(isLocationMandatory(appConfig) && !componentsDisableStatus.location){
-                                                    updateErrorIndicators({locationError: !optionSelected})
-                                                }
+                                                updateErrorIndicators({locationError: !optionSelected})
                                             }
                                         }
                                         isDisabled={componentsDisableStatus.location}
                                         autoFocus={componentsDisableStatus.patient && componentsDisableStatus.speciality && componentsDisableStatus.service}/>
-                        {isLocationMandatory(appConfig) && !componentsDisableStatus.location ?
+                        {isMandatory(appConfig, LOCATION) && !componentsDisableStatus.location ?
                             <ErrorMessage
                                 message={errors.locationError ? errorTranslations.locationErrorMessage : undefined}/> :
                             <ErrorMessage message={undefined}/>
@@ -144,6 +161,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         onChange={selectedProvider => {
                             if (getValidProviders(appointmentDetails.providers).length < maxAppointmentProvidersAllowed(appConfig)) {
                                 addOrUpdateProvider(selectedProvider);
+                                updateErrorIndicators({providerMandatoryError: !selectedProvider})
                             } else {
                                 if (!appointmentDetails.providerError) {
                                     updateErrorIndicators({providerError: true});
@@ -153,11 +171,15 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                 }
                             }
                         }}
-                        onProviderRemove={providerIdentifier => updateAppointmentDetails({providers: filter(appointmentDetails.providers, provider => provider.value !== providerIdentifier)})}
+                        onProviderRemove={providerIdentifier =>
+                        {
+                            var updatedProviders = filter(appointmentDetails.providers, provider => provider.value !== providerIdentifier);
+                            updateAppointmentDetails({providers: updatedProviders});
+                            updateErrorIndicators({providerMandatoryError: _.isEmpty(updatedProviders)})
+                        }}
                         selectedProviders={appointmentDetails.providers}
                         isDisabled={componentsDisableStatus.providers}/>
-                    <ErrorMessage message={errors.providerError && getMaxAppointmentProvidersErrorMessage(intl,
-                        appConfig && appConfig.maxAppointmentProviders || DEFAULT_MAX_APPOINTMENT_PROVIDERS).providerErrorMessage}/>
+                        <ErrorMessage message = {getProviderErrorMessages()}/>
                 </div>
             </div>
         </Fragment>
