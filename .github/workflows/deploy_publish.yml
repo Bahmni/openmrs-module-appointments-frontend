@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies ui
         run: node --version && npm --version && cd ui && npm install
       - name: Install dependencies root
-        run: cd .. && npm install && npm audit fix
+        run: cd .. && npm install
       - name: Build 
         run: npm run build
       - name: Login to DockerHub
