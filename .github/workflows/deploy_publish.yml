@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 10.19.0
       - name: Install dependencies ui
-        run: node --version && npm --version && cd ui && npm install && npm audit fix
+        run: node --version && npm --version && cd ui && npm install
       - name: Install dependencies root
         run: cd .. && npm install && npm audit fix
       - name: Build 
