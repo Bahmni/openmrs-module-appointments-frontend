@@ -24,6 +24,8 @@ jobs:
         run: node --version && npm --version && cd ui && npm install
       - name: Install dependencies root
         run: cd .. && npm install
+      - name: copy-webpack-plugin
+        run: npm install copy-webpack-plugin --save-dev
       - name: Build 
         run: npm run build
       - name: Login to DockerHub
