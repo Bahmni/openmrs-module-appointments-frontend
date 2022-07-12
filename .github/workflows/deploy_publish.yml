@@ -39,5 +39,5 @@ jobs:
           context: .
           file: package/docker/Dockerfile
           push: true
-          tags: stavtnameh/appointments:${{env.APPOINTMENTS_VERSION}}-${{github.run_number}},stavtnameh/appointments-v2:latest
+          tags: bahmni/appointments-v2:${{env.APPOINTMENTS_VERSION}}-${{github.run_number}},bahmni/appointments-v2:latest
 
