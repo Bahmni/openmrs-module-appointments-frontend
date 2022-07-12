@@ -19,7 +19,7 @@ jobs:
       - name: Use Node.js 10.16.3
         uses: actions/setup-node@v1
         with:
-          node-version: 10.19.0
+          node-version: 14.x
       - name: Install dependencies ui
         run: node --version && npm --version && cd ui && npm install
       - name: Install dependencies root
