@@ -1,2 +1,2 @@
 FROM httpd:2.4-alpine
-COPY dist/. /usr/local/apache2/htdocs/appointments-v2/
+COPY dist/. /usr/local/apache2/htdocs/appointments/

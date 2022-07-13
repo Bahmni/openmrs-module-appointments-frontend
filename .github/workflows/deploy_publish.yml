@@ -4,11 +4,9 @@ on:
     branches: [master]
     paths-ignore:
       - "**.md"
-  repository_dispatch:
-    types: ["default-config-trigger"]
 
 env:
-  APPOINTMENTS_VERSION: v2
+  BAHMNI_VERSION: 0.94
 
 jobs:
   docker-build-publish:
@@ -16,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14.x
+      - name: Use Node.js 16.x
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 16.x
       - name: Install dependencies ui
         run: node --version && npm --version && cd ui && npm install
       - name: Install dependencies root
@@ -39,5 +37,5 @@ jobs:
           context: .
           file: package/docker/Dockerfile
           push: true
-          tags: bahmni/appointments-v2:${{env.APPOINTMENTS_VERSION}}-${{github.run_number}},bahmni/appointments-v2:latest
+          tags: bahmni/appointments:${{env.BAHMNI_VERSION}}-${{github.run_number}},bahmni/appointments:latest
 
