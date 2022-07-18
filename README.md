@@ -81,7 +81,7 @@ npm run test-react-watch
 * Create a folder called 'appointments' under '/var/www'.
 * Add an alias in httpd ssl.conf, like below:
   ```
-  Alias /appointments-v2 /var/www/appointments
+  Alias /appointments /var/www/appointments
   ```
 
 # Project Structure
