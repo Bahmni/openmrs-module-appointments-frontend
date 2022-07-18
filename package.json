@@ -3,6 +3,9 @@
     "version": "0.0.4",
     "description": "An appointment app for bahmni/openmrs.",
     "license": "AGPLv3",
+    "engines": {
+        "node": ">=12 <15"
+    },
     "scripts": {
         "build-react": "cd ui && npm run build-react",
         "build": "npm run build-react && webpack --mode=development",
