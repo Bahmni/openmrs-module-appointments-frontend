@@ -4,13 +4,13 @@
     "description": "An appointment app for bahmni/openmrs.",
     "license": "AGPLv3",
     "scripts": {
-        "build-react": "cd ui && npm run build-react",
-        "build": "npm run build-react && webpack --mode=development",
-        "bundle": "npm run build-react && webpack --mode=production",
-        "test-react": "cd ui && npm run test-react",
-        "test-angular": "npm run build && karma start",
-        "test": "npm run test-react && npm run test-angular",
-        "preinstall": "cd ui && npm install"
+        "build-react": "cd ui && yarn run build-react",
+        "build": "yarn run build-react && webpack --mode=development",
+        "bundle": "yarn run build-react && webpack --mode=production",
+        "test-react": "cd ui && yarn run test-react",
+        "test-angular": "yarn run build && karma start",
+        "test": "yarn run test-react && yarn run test-angular",
+        "preinstall": "cd ui && yarn install"
     },
     "repository": {
         "type": "git",
@@ -42,7 +42,8 @@
         "url-loader": "^2.1.0",
         "webpack": "^4.35.2",
         "webpack-cli": "^3.3.5",
-        "webpack-dev-server": "^3.7.2"
+        "webpack-dev-server": "^3.7.2",
+        "audit-ci": "4.1.0"
     },
     "dependencies": {
         "@uirouter/angularjs": "0.2.18",
@@ -70,5 +71,9 @@
         "stacktrace-js": "0.6.4",
         "zeroclipboard": "2.1.6"
     },
-    "readmeFilename": "README.md"
+    "readmeFilename": "README.md",
+    "resolutions": { 
+        "**/**/lodash": "^4.17.12",
+        "**/**/xmlhttprequest-ssl": "^1.6.1"
+      }
 }
