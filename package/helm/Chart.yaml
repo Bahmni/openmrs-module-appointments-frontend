@@ -1,0 +1,5 @@
+apiVersion: v2
+name: appointments
+description: Helm chart for bahmni appointments module
+type: application
+version: 1.0.0
