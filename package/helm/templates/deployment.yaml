@@ -21,32 +21,32 @@ spec:
         app: {{ .Chart.Name }}
         environment: {{ .Values.metadata.labels.environment }}
     spec:
-      { { if or .Values.global.nodeSelector .Values.nodeSelector } }
+      {{ if or .Values.global.nodeSelector .Values.nodeSelector }}
       nodeSelector:
-      { { if .Values.nodeSelector } }
-      { { .Values.nodeSelector | toYaml | nindent 8 } }
-      { { else } }
+      {{ if .Values.nodeSelector }}
+      {{ .Values.nodeSelector | toYaml | nindent 8 }}
+      {{ else }}
       {{.Values.global.nodeSelector | toYaml | nindent 8}}
-      { { end } }
-      { { end } }
+      {{ end }}
+      {{ end }}
 
-      { { if or .Values.global.affinity .Values.affinity } }
+      {{ if or .Values.global.affinity .Values.affinity }}
       affinity:
-      { { if .Values.affinity } }
-      { { .Values.affinity | toYaml | nindent 8 } }
-      { { else } }
+      {{ if .Values.affinity }}
+      {{ .Values.affinity | toYaml | nindent 8 }}
+      {{ else }}
       {{.Values.global.affinity | toYaml | nindent 8}}
-      { { end } }
-      { { end } }
+      {{ end }}
+      {{ end }}
 
-      { { if or .Values.global.tolerations .Values.tolerations } }
+      {{ if or .Values.global.tolerations .Values.tolerations }}
       tolerations:
-      { { if .Values.tolerations } }
-      { { .Values.tolerations | toYaml | nindent 8 } }
-      { { else } }
+      {{ if .Values.tolerations }}
+      {{ .Values.tolerations | toYaml | nindent 8 }}
+      {{ else }}
       {{.Values.global.tolerations | toYaml | nindent 8}}
-      { { end } }
-      { { end } }
+      {{ end }}
+      {{ end }}
 
       containers:
         - name: {{ .Chart.Name }}
