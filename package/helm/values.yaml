@@ -1,0 +1,27 @@
+global:
+  nodeSelector: {}
+  affinity: {}
+  tolerations: {}
+
+replicaCount: 1
+
+metadata:
+  labels:
+    environment: dev
+
+image:
+  repository: bahmni
+  name: appointments
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 80
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+affinity: {}
+tolerations: {}
+
