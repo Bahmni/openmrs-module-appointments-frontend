@@ -30,7 +30,7 @@ describe("AppointmentsHeaderController", function () {
         createController();
         var backLinks = [{
             label: 'Home',
-            url: '../../home',
+            url: '../../bahmni/home',
             accessKey: 'h',
             icon: 'fa-home'
         }, {
@@ -54,7 +54,7 @@ describe("AppointmentsHeaderController", function () {
         createController();
         var backLinks = [{
             label: 'Home',
-            url: '../../home',
+            url: '../../bahmni/home',
             accessKey: 'h',
             icon: 'fa-home'
         }, {
