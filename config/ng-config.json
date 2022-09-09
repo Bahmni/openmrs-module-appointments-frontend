@@ -88,7 +88,7 @@
   },
   "Appointments": {
     "Constants": {
-      "homeUrl": "../../home",
+      "homeUrl": "../../bahmni/home",
       "createServiceUrl": "/openmrs/ws/rest/v1/appointmentService",
       "getServiceLoad": "/openmrs/ws/rest/v1/appointmentService/load",
       "getAllSpecialitiesUrl": "/openmrs/ws/rest/v1/speciality/all",

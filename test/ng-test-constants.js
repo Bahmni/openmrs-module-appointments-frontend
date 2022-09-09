@@ -81,12 +81,12 @@ window.Bahmni.Common.Constants = {
     "openMRSSystemSettingUrl": "/openmrs/ws/rest/v1/systemsetting/",
     "baseLocaleURL": "./i18n/",
     "customLocaleURL": "/bahmni_config/openmrs/i18n/",
-    "loginPageUrl": "../home/index.html#/login"
+    "loginPageUrl": "../../bahmni/home/index.html#/login"
 }
 
 window.Bahmni.Appointments = window.Bahmni.Appointments || {};
 window.Bahmni.Appointments.Constants = {
-  "homeUrl": "../../home",
+  "homeUrl": "../../bahmni/home",
   "createServiceUrl": "/openmrs/ws/rest/v1/appointmentService",
   "getServiceLoad": "/openmrs/ws/rest/v1/appointmentService/load",
   "getAllSpecialitiesUrl": "/openmrs/ws/rest/v1/speciality/all",
