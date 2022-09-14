@@ -12,7 +12,8 @@ task extractAppointments(type: Copy){
 
 ospackage {
     packageName = 'bahmni-appointments-frontend'
-    release = System.getenv('GO_PIPELINE_COUNTER') ?: project.buildNumber
+    version = project.version
+    release = project.hasProperty('release') ? project.release : ""
     arch = NOARCH
     os = LINUX
     user = 'root'
