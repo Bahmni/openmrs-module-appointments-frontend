@@ -117,6 +117,11 @@ jobs:
         with:
           name: appointments.zip
           path: package/rpm/resources
+      - name: Setup Java 8 for Gradle
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '8'
       - name: Build RPM
         run: |
           cd package/rpm
