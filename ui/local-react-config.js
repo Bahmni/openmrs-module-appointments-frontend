@@ -1,6 +1,6 @@
 export const localReactConfig = {
     "appointmentService": "/openmrs/ws/rest/v1/appointmentService",
-    "searchPatientUrl": "/openmrs/ws/rest/v1/bahmnicore/search/patient",
+    "searchPatientUrl": "/openmrs/ws/rest/v1/bahmnicore/search/patient/lucene",
     "patientUrl": "/openmrs/ws/rest/v1/patient",
     "servicesDefaultUrl": "/openmrs/ws/rest/v1/appointmentService/all/default",
     "providerUrl": "/openmrs/ws/rest/v1/provider",
