@@ -45,7 +45,7 @@ describe('Patient Api', () => {
 
         expect(mockAxios.get)
             .toHaveBeenCalledWith(
-                `${searchPatientUrl}?loginLocationUuid=${locationUuid}&q=${searchQuery}&startIndex=0`);
+                `${searchPatientUrl}?loginLocationUuid=${locationUuid}&filterOnAllIdentifiers=true&identifier=${searchQuery}&q=${searchQuery}&startIndex=0`);
         expect(patientsByLocation).toEqual(mockResponse.pageOfResults);
     });
 
@@ -86,7 +86,7 @@ describe('Patient Api', () => {
 
         expect(mockAxios.get)
             .toHaveBeenCalledWith(
-                `${searchPatientUrl}?loginLocationUuid=${locationUuid}&q=${searchQuery}&startIndex=${startIndex}`);
+                `${searchPatientUrl}?loginLocationUuid=${locationUuid}&filterOnAllIdentifiers=true&identifier=${searchQuery}&q=${searchQuery}&startIndex=${startIndex}`);
     });
 
     it('should fetch patient by given uuid', async () =>{
