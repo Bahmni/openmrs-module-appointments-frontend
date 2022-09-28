@@ -1,3 +1,7 @@
+# ICRC
+
+This is a fork from https://github.com/Bahmni/openmrs-module-appointments-frontend to be able to use appointment frontend on a OpenMRS distro and not only on a Bahmni installation.
+
 Openmrs Module Appointment Dashboard
 =
 This repository is extracted appointments module from [openmrs-module-bahmniapps](https://github.com/bahmni/openmrs-module-bahmniapps).
