@@ -11,6 +11,8 @@
         <input placeholder="{{ ::'PLACEHOLDER_SERVICE_TYPE_NAME' | translate }}" type="text"
                ng-model="serviceType.name" id="serviceTypeName" name="serviceTypeName" ng-change="updateServiceTypeDuration()">
 
+    </p>
+    <p>
         <label class="duration-label">{{'APPOINTMENT_SERVICE_DURATION_KEY' | translate}}</label>
         <input placeholder="{{ 'PLACEHOLDER_SERVICE_DURATION' | translate }}" class="duration-box"
                type="number" ng-model="serviceType.duration" min="0"/>
