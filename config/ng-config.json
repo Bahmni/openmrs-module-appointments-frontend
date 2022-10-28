@@ -6,7 +6,7 @@
       "dateDisplayFormat": "DD-MMM-YYYY",
       "timeDisplayFormat": "hh:mm",
       "locationUrl": "/openmrs/ws/rest/v1/location",
-      "bahmniSearchUrl": "/openmrs/ws/rest/v1/bahmnicore/search",
+      "bahmniSearchUrl": "/openmrs/ws/rest/v1/bahmni/search",
       "conceptUrl": "/openmrs/ws/rest/v1/concept",
       "openmrsUrl": "/openmrs",
       "loggingUrl": "/log/",
