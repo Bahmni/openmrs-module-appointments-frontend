@@ -149,6 +149,7 @@ category: Layout - Button
   min-width: 0;
   max-width: 300px;
   text-decoration: none;
+  margin-top: 5px;
 
   &:hover {
     background: lighten($bcolor, 2%);
@@ -315,7 +316,8 @@ button:hover { opacity: 0.8; }
 button:focus, a:focus, .btn:focus {
   outline: 2px solid $clinicalFormFocus;
 }
-button[disabled] { opacity: 0.4; cursor: not-allowed; }
+button[disabled] { opacity: 0.4; cursor: not-allowed;    
+  margin-top: 5px; }
 
 
 /*backButton:*/
