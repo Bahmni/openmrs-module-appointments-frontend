@@ -29,6 +29,10 @@
       "baseUrl": "/bahmni_config/openmrs/apps/",
       "customUrl": "/implementation_config/openmrs/apps/",
       "faviconUrl": "/bahmni/favicon.ico",
+      "enableAppointmentBookingSMSAlert": true,
+      "appointmentBookingMessage": "APPOINTMENT_BOOKING_MESSAGE",
+      "recurringAppointmentBookingMessage": "RECURRING_APPOINTMENT_BOOKING_MESSAGE",
+      "clinicName": "Bahmni",
       "platformType": {
         "other": "other"
       },

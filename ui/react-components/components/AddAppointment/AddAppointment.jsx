@@ -64,6 +64,7 @@ import Conflicts from "../Conflicts/Conflicts.jsx";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
 import * as patientApi from "../../api/patientApi";
 import {mapOpenMRSPatient} from "../../mapper/patientMapper";
+import {sendSMS} from "../../api/smsService";
 
 const AddAppointment = props => {
 
@@ -277,6 +278,10 @@ const AddAppointment = props => {
             setShowEmailWarning((isVirtual(response.data) && !checkPatientEmailAvailability(response.data)));
             setShowEmailNotSentWarning((isVirtual(response.data) && !checkNotificationStatus(response.data)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
+            if (appConfig.enableAppointmentBookingSMSAlert || Bahmni.Common.Constants.enableAppointmentBookingSMSAlert) {
+                var message = getAppointmentBookingMessage(response.data, "appointmentBookingMessage");
+                sendSMS(encodeURIComponent(response.data.patient.phoneNumber), encodeURIComponent(message));
+            }
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
@@ -284,6 +289,21 @@ const AddAppointment = props => {
         }
         setDisableSaveButton(false);
     };
+
+    const getAppointmentBookingMessage = (data, type, recurring = null) => {
+        var message = intl.formatMessage({
+            id: appConfig[type], defaultMessage: Bahmni.Common.Constants[type]
+        });
+        message = message.replace("#clinicName", appConfig.clinicName || Bahmni.Common.Constants.clinicName);
+        message = message.replace("#patientId", data.patient.identifier);
+        message = message.replace("#patientName", data.patient.name);
+        message = message.replace("#dateTime", new Date(data.startDateTime).toLocaleString());
+        message = message.replace("#service", data.service.name);
+        if (recurring != null) {
+            message = message.replace("#frequency", (recurring.period + " " + recurring.type.toLowerCase() + (recurring.daysOfWeek ? " on " + recurring.daysOfWeek.map(_.capitalize).join(", ") : "")));
+        }
+        return message;
+    }
 
     const isVirtual = (appt) => {
         return appt.appointmentKind === VIRTUAL_APPOINTMENT_TYPE;
@@ -342,6 +362,10 @@ const AddAppointment = props => {
             setServiceErrorMessage('');
             const immediateAppointment = response.data[0];
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
+            if (appConfig.enableAppointmentBookingSMSAlert || Bahmni.Common.Constants.enableAppointmentBookingSMSAlert) {
+                var message = getAppointmentBookingMessage(immediateAppointment.appointmentDefaultResponse, "recurringAppointmentBookingMessage", immediateAppointment.recurringPattern);
+                sendSMS(encodeURIComponent(immediateAppointment.appointmentDefaultResponse.patient.phoneNumber), encodeURIComponent(message));
+            }
         } else if (status === 204) {
             setServiceErrorMessage(errorTranslations.noContentErrorMessage);
             resetServiceErrorMessage();
