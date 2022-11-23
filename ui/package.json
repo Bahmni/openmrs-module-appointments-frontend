@@ -10,7 +10,7 @@
     "test": "test"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.20.0",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "js-cookie": "^2.2.1",
@@ -22,7 +22,7 @@
     "rc-checkbox": "^2.1.8",
     "rc-time-picker": "^3.7.2",
     "react": "^16.9.0",
-    "react-checkbox-tree": "^1.6.0",
+    "react-checkbox-tree": "^1.7.0",
     "react-datepicker": "^3.6.0",
     "react-dom": "^16.9.0",
     "react-focus-lock": "^2.2.1",
