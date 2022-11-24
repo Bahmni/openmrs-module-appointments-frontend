@@ -246,5 +246,6 @@
   "NO_SERVICE_CONFLICTS_DEFAULT_TEXT": "The {label} service you had selected for the appointment(s) is not available during below listed dates",
   "PROVIDER_ERROR_MESSAGE": "Please select only a maximum of {maxAppointmentProviders} provider(s)",
   "APPOINTMENT_BOOKING_MESSAGE": "Appointment for #patientName, #patientId on #dateTime for #service is booked at #clinicName. For any queries call us on +919876543210.",
-  "RECURRING_APPOINTMENT_BOOKING_MESSAGE": "A recurring appointment for #patientName, #patientId for #service is booked for every #frequency at #clinicName. Your next appointment is at #dateTime. For any queries call us on +919876543210."
+  "RECURRING_APPOINTMENT_BOOKING_MESSAGE": "A recurring appointment for #patientName, #patientId for #service is booked for every #frequency at #clinicName. Your next appointment is at #dateTime. For any queries call us on +919876543210.",
+  "TELECONSULTATION_APPOINTMENT_BOOKING_MESSAGE": "A teleconsultation appointment for #patientName, #patientId on #dateTime for #service is booked at #clinicName. Please click on the link #meetingLink on #dateTime to join the consultation. For any queries call us on +919876543210."
 }

@@ -32,6 +32,7 @@
       "enableAppointmentBookingSMSAlert": true,
       "appointmentBookingMessage": "APPOINTMENT_BOOKING_MESSAGE",
       "recurringAppointmentBookingMessage": "RECURRING_APPOINTMENT_BOOKING_MESSAGE",
+      "teleconsultationAppointmentBookingMessage": "TELECONSULTATION_APPOINTMENT_BOOKING_MESSAGE",
       "clinicName": "Bahmni",
       "platformType": {
         "other": "other"
