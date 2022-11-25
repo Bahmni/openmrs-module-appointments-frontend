@@ -18,5 +18,12 @@
     "BAHMNI_CONFIG_URL": "/bahmni_config/openmrs/apps",
     "IMPLEMENTATION_CONFIG_URL": "/implementation_config/openmrs/apps",
     "locationTagName": "Appointment Location",
-    "otpServiceUrl": "/otp-service"
+    "otpServiceUrl": "/otp-service",
+    "enableAppointmentBookingSMSAlert": true,
+    "messageType": {
+        "appointmentBookingMessage": "APPOINTMENT_BOOKING_MESSAGE",
+        "recurringAppointmentBookingMessage": "RECURRING_APPOINTMENT_BOOKING_MESSAGE",
+        "teleconsultationAppointmentBookingMessage": "TELECONSULTATION_APPOINTMENT_BOOKING_MESSAGE"
+    },
+    "clinicName": "Bahmni"
 }

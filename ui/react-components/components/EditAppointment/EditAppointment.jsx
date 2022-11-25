@@ -70,6 +70,7 @@ import {
     updateRecurring
 } from "../../services/AppointmentsService/AppointmentsService";
 import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
+import {isAppointmentSMSEnabled, getAppointmentBookingMessage, getRecurringAppointmentBookingMessage} from '../../utils/SMSUtil.js'
 import UpdateSuccessModal from "../SuccessModal/UpdateSuccessModal.jsx";
 import UpdateConfirmationModal from "../UpdateConfirmationModal/UpdateConfirmationModal.jsx";
 import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
@@ -77,6 +78,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {AppContext} from "../AppContext/AppContext";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
+import {sendSMS} from "../../api/smsService";
 
 const EditAppointment = props => {
 
@@ -294,6 +296,9 @@ const EditAppointment = props => {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
+            if (isAppointmentSMSEnabled(appConfig)) {
+                sendSMS(encodeURIComponent(response.data.patient.phoneNumber), getAppointmentBookingMessage(response.data, appConfig, intl));
+            }
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
@@ -313,6 +318,10 @@ const EditAppointment = props => {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
+            if (isAppointmentSMSEnabled(appConfig)) {
+                sendSMS(encodeURIComponent(response.data[0].appointmentDefaultResponse.patient.phoneNumber), 
+                    getRecurringAppointmentBookingMessage(response.data[0], appConfig, intl));
+            }
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);

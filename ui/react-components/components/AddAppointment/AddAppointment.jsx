@@ -26,6 +26,7 @@ import {
 } from "../../services/AppointmentsService/AppointmentsService";
 import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
+import {isAppointmentSMSEnabled, getAppointmentBookingMessage, getRecurringAppointmentBookingMessage} from '../../utils/SMSUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
@@ -278,10 +279,8 @@ const AddAppointment = props => {
             setShowEmailWarning((isVirtual(response.data) && !checkPatientEmailAvailability(response.data)));
             setShowEmailNotSentWarning((isVirtual(response.data) && !checkNotificationStatus(response.data)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
-            if (isAppointmentSMSEnabled()) {
-                var message = isVirtual(response.data) ? getAppointmentBookingMessage(response.data, "teleconsultationAppointmentBookingMessage") 
-                    : getAppointmentBookingMessage(response.data, "appointmentBookingMessage");
-                sendSMS(encodeURIComponent(response.data.patient.phoneNumber), message);
+            if (isAppointmentSMSEnabled(appConfig)) {
+                sendSMS(encodeURIComponent(response.data.patient.phoneNumber), getAppointmentBookingMessage(response.data, appConfig, intl));
             }
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
@@ -290,32 +289,6 @@ const AddAppointment = props => {
         }
         setDisableSaveButton(false);
     };
-
-    let isAppointmentSMSEnabled = () => {
-        return appConfig.enableAppointmentBookingSMSAlert || Bahmni.Common.Constants.enableAppointmentBookingSMSAlert;
-    };
-
-    const getAppointmentBookingMessage = (data, type, recurring = null) => {
-        var message = intl.formatMessage({
-            id: appConfig[type], defaultMessage: Bahmni.Common.Constants[type]
-        });
-        message = message.replace("#clinicName", appConfig.clinicName || Bahmni.Common.Constants.clinicName);
-        message = message.replace("#patientId", data.patient.identifier);
-        message = message.replace("#patientName", data.patient.name);
-        message = message.replaceAll("#dateTime", new Date(data.startDateTime).toLocaleString());
-        message = message.replace("#service", data.service.name);
-        if (recurring != null) {
-            message = message.replace("#frequency", (recurring.period + " " + recurring.type.toLowerCase() + (recurring.daysOfWeek ? " on " + recurring.daysOfWeek.map(_.capitalize).join(", ") : "")));
-        }
-        if (data.teleconsultationLink != null) {
-            message = message.replace("#meetingLink", data.teleconsultationLink);
-        }
-        return message;
-    }
-
-    const isVirtual = (appt) => {
-        return appt.appointmentKind === VIRTUAL_APPOINTMENT_TYPE;
-    }
 
     const checkPatientEmailAvailability = (appt) => {
         if (appt.extensions && appt.extensions.patientEmailDefined) {
@@ -370,11 +343,9 @@ const AddAppointment = props => {
             setServiceErrorMessage('');
             const immediateAppointment = response.data[0];
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
-            if (isAppointmentSMSEnabled()) {
-                var message = isVirtual(immediateAppointment.appointmentDefaultResponse) ? 
-                    getAppointmentBookingMessage(immediateAppointment.appointmentDefaultResponse, "teleconsultationAppointmentBookingMessage")
-                    : getAppointmentBookingMessage(immediateAppointment.appointmentDefaultResponse, "recurringAppointmentBookingMessage", immediateAppointment.recurringPattern);
-                sendSMS(encodeURIComponent(immediateAppointment.appointmentDefaultResponse.patient.phoneNumber), message);
+            if (isAppointmentSMSEnabled(appConfig)) {
+                sendSMS(encodeURIComponent(immediateAppointment.appointmentDefaultResponse.patient.phoneNumber), 
+                    getRecurringAppointmentBookingMessage(immediateAppointment, appConfig, intl));
             }
         } else if (status === 204) {
             setServiceErrorMessage(errorTranslations.noContentErrorMessage);
@@ -696,5 +667,9 @@ AddAppointment.propTypes = {
     currentProvider: PropTypes.object,
     urlParams: PropTypes.object
 };
+
+export const isVirtual = (appt) => {
+    return appt.appointmentKind === VIRTUAL_APPOINTMENT_TYPE;
+}
 
 export default injectIntl(AddAppointment);
