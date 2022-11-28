@@ -28,3 +28,13 @@ export const getAppConfigs = async ({appName}) => {
     }
     return bahmniConfig.data;
 };
+
+export const appointmentSMSToggle = async () => {
+    try {
+        const response = await axios.get(`/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=sms.enableAppointmentBookingSMSAlert`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};

@@ -1,15 +1,10 @@
 import _ from 'lodash'
 import {isVirtual} from "../components/AddAppointment/AddAppointment.jsx";
 import { 
-    enableAppointmentBookingSMSAlert,
     messageType,
     clinicName
 } from "../config";
 import {getPersonAttribute} from "../api/patientApi";
-
-export const isAppointmentSMSEnabled = (appConfig) => {
-    return appConfig.enableAppointmentBookingSMSAlert || enableAppointmentBookingSMSAlert;
-};
 
 const getMessage = (data, message, clinic, recurring = null) => {
     message = message.replace("#clinicName", clinic || clinicName);

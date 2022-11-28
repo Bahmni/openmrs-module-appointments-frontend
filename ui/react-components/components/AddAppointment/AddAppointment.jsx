@@ -26,7 +26,7 @@ import {
 } from "../../services/AppointmentsService/AppointmentsService";
 import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
-import {isAppointmentSMSEnabled, getAppointmentBookingMessage, getRecurringAppointmentBookingMessage, getPhoneNumber} from '../../utils/SMSUtil.js'
+import {getAppointmentBookingMessage, getRecurringAppointmentBookingMessage, getPhoneNumber} from '../../utils/SMSUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
@@ -64,6 +64,7 @@ import AppointmentEditorCommonFieldsWrapper
 import Conflicts from "../Conflicts/Conflicts.jsx";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
 import * as patientApi from "../../api/patientApi";
+import {appointmentSMSToggle} from "../../api/configApi";
 import {mapOpenMRSPatient} from "../../mapper/patientMapper";
 import {sendSMS} from "../../api/smsService";
 
@@ -279,7 +280,7 @@ const AddAppointment = props => {
             setShowEmailWarning((isVirtual(response.data) && !checkPatientEmailAvailability(response.data)));
             setShowEmailNotSentWarning((isVirtual(response.data) && !checkNotificationStatus(response.data)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
-            if (isAppointmentSMSEnabled(appConfig)) {
+            if (await appointmentSMSToggle()) {
                 sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
                     getAppointmentBookingMessage(response.data, appConfig, intl));
             }
@@ -344,7 +345,7 @@ const AddAppointment = props => {
             setServiceErrorMessage('');
             const immediateAppointment = response.data[0];
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
-            if (isAppointmentSMSEnabled(appConfig)) {
+            if (await appointmentSMSToggle()) {
                 sendSMS(await getPhoneNumber(immediateAppointment.appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
                     getRecurringAppointmentBookingMessage(immediateAppointment, appConfig, intl));
             }

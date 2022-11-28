@@ -70,7 +70,7 @@ import {
     updateRecurring
 } from "../../services/AppointmentsService/AppointmentsService";
 import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
-import {isAppointmentSMSEnabled, getAppointmentBookingMessage, getRecurringAppointmentBookingMessage, getPhoneNumber} from '../../utils/SMSUtil.js'
+import {getAppointmentBookingMessage, getRecurringAppointmentBookingMessage, getPhoneNumber} from '../../utils/SMSUtil.js'
 import UpdateSuccessModal from "../SuccessModal/UpdateSuccessModal.jsx";
 import UpdateConfirmationModal from "../UpdateConfirmationModal/UpdateConfirmationModal.jsx";
 import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
@@ -79,6 +79,7 @@ import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {AppContext} from "../AppContext/AppContext";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
 import {sendSMS} from "../../api/smsService";
+import {appointmentSMSToggle} from "../../api/configApi";
 
 const EditAppointment = props => {
 
@@ -296,7 +297,7 @@ const EditAppointment = props => {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
-            if (isAppointmentSMSEnabled(appConfig)) {
+            if (await appointmentSMSToggle()) {
                 sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
                     getAppointmentBookingMessage(response.data, appConfig, intl));
             }
@@ -319,7 +320,7 @@ const EditAppointment = props => {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
-            if (isAppointmentSMSEnabled(appConfig)) {
+            if (await appointmentSMSToggle()) {
                 sendSMS(await getPhoneNumber(response.data[0].appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
                     getRecurringAppointmentBookingMessage(response.data[0], appConfig, intl));
             }

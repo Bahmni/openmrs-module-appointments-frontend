@@ -20,7 +20,6 @@
     "locationTagName": "Appointment Location",
     "otpServiceUrl": "/otp-service",
     "personUrl": "/openmrs/ws/rest/v1/person/",
-    "enableAppointmentBookingSMSAlert": true,
     "messageType": {
         "appointmentBookingMessage": "APPOINTMENT_BOOKING_MESSAGE",
         "recurringAppointmentBookingMessage": "RECURRING_APPOINTMENT_BOOKING_MESSAGE",
