@@ -26,7 +26,7 @@ import {
 } from "../../services/AppointmentsService/AppointmentsService";
 import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
-import {isAppointmentSMSEnabled, getAppointmentBookingMessage, getRecurringAppointmentBookingMessage} from '../../utils/SMSUtil.js'
+import {isAppointmentSMSEnabled, getAppointmentBookingMessage, getRecurringAppointmentBookingMessage, getPhoneNumber} from '../../utils/SMSUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
@@ -280,7 +280,8 @@ const AddAppointment = props => {
             setShowEmailNotSentWarning((isVirtual(response.data) && !checkNotificationStatus(response.data)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
             if (isAppointmentSMSEnabled(appConfig)) {
-                sendSMS(encodeURIComponent(response.data.patient.phoneNumber), getAppointmentBookingMessage(response.data, appConfig, intl));
+                sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
+                    getAppointmentBookingMessage(response.data, appConfig, intl));
             }
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
@@ -344,7 +345,7 @@ const AddAppointment = props => {
             const immediateAppointment = response.data[0];
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
             if (isAppointmentSMSEnabled(appConfig)) {
-                sendSMS(encodeURIComponent(immediateAppointment.appointmentDefaultResponse.patient.phoneNumber), 
+                sendSMS(await getPhoneNumber(immediateAppointment.appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
                     getRecurringAppointmentBookingMessage(immediateAppointment, appConfig, intl));
             }
         } else if (status === 204) {

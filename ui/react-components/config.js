@@ -3,6 +3,7 @@ const reactConfig = JSON.parse(localStorage.getItem("reactConfig"));
 export const appointmentService = reactConfig["appointmentService"];
 export const searchPatientUrl = reactConfig["searchPatientUrl"];
 export const patientUrl = reactConfig["patientUrl"];
+export const personUrl = reactConfig["personUrl"];
 export const servicesDefaultUrl = reactConfig["servicesDefaultUrl"];
 export const providerUrl = reactConfig["providerUrl"];
 export const providerParams = reactConfig["providerParams"];

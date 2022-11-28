@@ -19,6 +19,7 @@
     "IMPLEMENTATION_CONFIG_URL": "/implementation_config/openmrs/apps",
     "locationTagName": "Appointment Location",
     "otpServiceUrl": "/otp-service",
+    "personUrl": "/openmrs/ws/rest/v1/person/",
     "enableAppointmentBookingSMSAlert": true,
     "messageType": {
         "appointmentBookingMessage": "APPOINTMENT_BOOKING_MESSAGE",

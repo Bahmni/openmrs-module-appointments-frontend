@@ -5,6 +5,7 @@ import {
     messageType,
     clinicName
 } from "../config";
+import {getPersonAttribute} from "../api/patientApi";
 
 export const isAppointmentSMSEnabled = (appConfig) => {
     return appConfig.enableAppointmentBookingSMSAlert || enableAppointmentBookingSMSAlert;
@@ -44,4 +45,9 @@ const getAppointmentMessageType = (apptData, isRecurring = null) => {
         return "teleconsultationAppointmentBookingMessage";
     } 
     return isRecurring ? "recurringAppointmentBookingMessage" : "appointmentBookingMessage";
+};
+
+export const getPhoneNumber = async (patientUuid, attribute) => {
+    var phoneNumber = await getPersonAttribute(patientUuid, attribute)
+    return phoneNumber ? encodeURIComponent(phoneNumber) : null;
 };
