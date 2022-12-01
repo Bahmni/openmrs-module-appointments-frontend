@@ -19,10 +19,5 @@
     "IMPLEMENTATION_CONFIG_URL": "/implementation_config/openmrs/apps",
     "locationTagName": "Appointment Location",
     "otpServiceUrl": "/otp-service",
-    "personUrl": "/openmrs/ws/rest/v1/person/",
-    "messageType": {
-        "appointmentBookingMessage": "APPOINTMENT_BOOKING_MESSAGE",
-        "recurringAppointmentBookingMessage": "RECURRING_APPOINTMENT_BOOKING_MESSAGE",
-        "teleconsultationAppointmentBookingMessage": "TELECONSULTATION_APPOINTMENT_BOOKING_MESSAGE"
-    }
+    "personUrl": "/openmrs/ws/rest/v1/person/"
 }

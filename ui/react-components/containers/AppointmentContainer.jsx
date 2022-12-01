@@ -9,7 +9,7 @@ import {getAppConfig, getMessages} from "../components/AppContext/AppService";
 import EditAppointment from "../components/EditAppointment/EditAppointment.jsx";
 import moment from "moment";
 import {getFromGlobalProperty} from "../api/configApi";
-import { appointmentSMSToggle, helpDeskNumber } from "../config";
+import { appointmentSMSToggle, helpDeskNumber } from "../constants";
 
 // TODO : need to add connection to redux
 

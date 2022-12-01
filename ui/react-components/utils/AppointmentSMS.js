@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import {isVirtual} from "../components/AddAppointment/AddAppointment.jsx";
-import {messageType} from "../config";
 import {getPersonAttribute} from "../api/patientApi";
 import {currentLocation} from "./CookieUtil";
 import {getHelpDeskNumber} from "./LocalStorageUtil";
@@ -21,18 +20,28 @@ const getMessage = (data, message, recurring = null) => {
 
 export const getAppointmentBookingMessage = (apptData, appConfig, intl) => {
     var type = getAppointmentMessageType(apptData);
-    var messageTemplate = getMessageTranslation(appConfig, intl, type);
+    var messageTemplate = getMessageTranslation(appConfig, intl)[type];
     return getMessage(apptData, messageTemplate);
 };
 
 export const getRecurringAppointmentBookingMessage = (apptData, appConfig, intl) => {
     var type = getAppointmentMessageType(apptData.appointmentDefaultResponse, apptData.recurringPattern);
-    var messageTemplate = getMessageTranslation(appConfig, intl, type);
+    var messageTemplate = getMessageTranslation(appConfig, intl)[type];
     return getMessage(apptData.appointmentDefaultResponse, messageTemplate, apptData.recurringPattern);
 };
 
-const getMessageTranslation = (appConfig, intl, type) => {
-    return intl.formatMessage({id: appConfig[type], defaultMessage: messageType[type]});
+const getMessageTranslation = (appConfig, intl) => {
+    return {
+        teleconsultationAppointmentBookingMessage: intl.formatMessage({
+            id: appConfig.teleconsultationAppointmentBookingMessage, defaultMessage: 'TELECONSULTATION_APPOINTMENT_BOOKING_MESSAGE'
+        }),
+        recurringAppointmentBookingMessage: intl.formatMessage({
+            id: appConfig.recurringAppointmentBookingMessage, defaultMessage: 'RECURRING_APPOINTMENT_BOOKING_MESSAGE'
+        }),
+        appointmentBookingMessage: intl.formatMessage({
+            id: appConfig.appointmentBookingMessage, defaultMessage: 'APPOINTMENT_BOOKING_MESSAGE'
+        })
+    }
 };
 
 const getAppointmentMessageType = (apptData, isRecurring = null) => {
