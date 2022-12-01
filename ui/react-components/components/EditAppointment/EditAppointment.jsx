@@ -79,11 +79,10 @@ import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {AppContext} from "../AppContext/AppContext";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
 import {sendSMS} from "../../api/smsService";
-import {appointmentSMSToggle} from "../../api/configApi";
 
 const EditAppointment = props => {
 
-    const {appConfig, appointmentUuid, isRecurring, intl, currentProvider} = props;
+    const {appConfig, appointmentUuid, isRecurring, intl, currentProvider, isAppointmentSMSEnabled} = props;
 
     const {setViewDate} = React.useContext(AppContext);
 
@@ -297,7 +296,7 @@ const EditAppointment = props => {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
-            if (await appointmentSMSToggle()) {
+            if (isAppointmentSMSEnabled) {
                 sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
                     getAppointmentBookingMessage(response.data, appConfig, intl));
             }
@@ -320,7 +319,7 @@ const EditAppointment = props => {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
-            if (await appointmentSMSToggle()) {
+            if (isAppointmentSMSEnabled) {
                 sendSMS(await getPhoneNumber(response.data[0].appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
                     getRecurringAppointmentBookingMessage(response.data[0], appConfig, intl));
             }
@@ -692,6 +691,7 @@ EditAppointment.propTypes = {
     appointmentUuid: PropTypes.string.isRequired,
     isRecurring: PropTypes.string.isRequired,
     currentProvider: PropTypes.object,
+    isAppointmentSMSEnabled: PropTypes.bool
 };
 
 export default injectIntl(EditAppointment);

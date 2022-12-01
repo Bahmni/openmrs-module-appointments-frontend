@@ -22,5 +22,6 @@ export const BAHMNI_CONFIG_URL = reactConfig["BAHMNI_CONFIG_URL"];
 export const IMPLEMENTATION_CONFIG_URL = reactConfig["IMPLEMENTATION_CONFIG_URL"];
 export const locationTagName = reactConfig["locationTagName"];
 export const otpServiceUrl = reactConfig["otpServiceUrl"];
-export const clinicName = reactConfig["clinicName"];
+export const helpDeskNumber = "clinic.helpDeskNumber"
 export const messageType = reactConfig["messageType"];
+export const appointmentSMSToggle = "sms.enableAppointmentBookingSMSAlert"

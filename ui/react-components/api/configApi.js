@@ -29,9 +29,9 @@ export const getAppConfigs = async ({appName}) => {
     return bahmniConfig.data;
 };
 
-export const appointmentSMSToggle = async () => {
+export const getFromGlobalProperty = async (propertyName) => {
     try {
-        const response = await axios.get(`/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=sms.enableAppointmentBookingSMSAlert`);
+        const response = await axios.get(`/openmrs/ws/rest/v1/bahmnicore/sql/globalproperty?property=${propertyName}`);
         return response.data;
     } catch (error) {
         console.error(error);
