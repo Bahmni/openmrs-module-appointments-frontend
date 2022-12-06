@@ -60,4 +60,5 @@ export const appointmentEndTimeProps = endTime => {
     return {...appointmentTimeProps, defaultValue: 'To', defaultTime: endTime, translationKey: 'APPOINTMENT_TIME_TO_LABEL'}
 };
 
-
+export const helpDeskNumber = "clinic.helpDeskNumber";
+export const appointmentSMSToggle = "sms.enableAppointmentBookingSMSAlert";

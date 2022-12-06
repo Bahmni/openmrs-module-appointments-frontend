@@ -17,5 +17,7 @@
     "i18nConfigPath": "/bahmni_config/openmrs/i18n/",
     "BAHMNI_CONFIG_URL": "/bahmni_config/openmrs/apps",
     "IMPLEMENTATION_CONFIG_URL": "/implementation_config/openmrs/apps",
-    "locationTagName": "Appointment Location"
+    "locationTagName": "Appointment Location",
+    "otpServiceUrl": "/otp-service",
+    "personUrl": "/openmrs/ws/rest/v1/person/"
 }

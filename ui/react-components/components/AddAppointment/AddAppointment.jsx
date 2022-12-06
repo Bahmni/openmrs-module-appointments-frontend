@@ -26,6 +26,7 @@ import {
 } from "../../services/AppointmentsService/AppointmentsService";
 import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
+import {getAppointmentBookingMessage, getRecurringAppointmentBookingMessage, getPhoneNumber} from '../../utils/AppointmentSMS.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
@@ -64,10 +65,11 @@ import Conflicts from "../Conflicts/Conflicts.jsx";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
 import * as patientApi from "../../api/patientApi";
 import {mapOpenMRSPatient} from "../../mapper/patientMapper";
+import {sendSMS} from "../../api/smsService";
 
 const AddAppointment = props => {
 
-    const {appConfig, intl, appointmentParams, currentProvider, urlParams } = props;
+    const {appConfig, intl, appointmentParams, currentProvider, urlParams, isAppointmentSMSEnabled } = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
 
@@ -277,6 +279,10 @@ const AddAppointment = props => {
             setShowEmailWarning((isVirtual(response.data) && !checkPatientEmailAvailability(response.data)));
             setShowEmailNotSentWarning((isVirtual(response.data) && !checkNotificationStatus(response.data)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
+            if (isAppointmentSMSEnabled) {
+                sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
+                    getAppointmentBookingMessage(response.data, appConfig, intl));
+            }
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
@@ -284,10 +290,6 @@ const AddAppointment = props => {
         }
         setDisableSaveButton(false);
     };
-
-    const isVirtual = (appt) => {
-        return appt.appointmentKind === VIRTUAL_APPOINTMENT_TYPE;
-    }
 
     const checkPatientEmailAvailability = (appt) => {
         if (appt.extensions && appt.extensions.patientEmailDefined) {
@@ -342,6 +344,10 @@ const AddAppointment = props => {
             setServiceErrorMessage('');
             const immediateAppointment = response.data[0];
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
+            if (isAppointmentSMSEnabled) {
+                sendSMS(await getPhoneNumber(immediateAppointment.appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
+                    getRecurringAppointmentBookingMessage(immediateAppointment, appConfig, intl));
+            }
         } else if (status === 204) {
             setServiceErrorMessage(errorTranslations.noContentErrorMessage);
             resetServiceErrorMessage();
@@ -660,7 +666,12 @@ AddAppointment.propTypes = {
     appConfig: PropTypes.object,
     appointmentParams: PropTypes.object,
     currentProvider: PropTypes.object,
-    urlParams: PropTypes.object
+    urlParams: PropTypes.object,
+    isAppointmentSMSEnabled: PropTypes.bool
 };
+
+export const isVirtual = (appt) => {
+    return appt.appointmentKind === VIRTUAL_APPOINTMENT_TYPE;
+}
 
 export default injectIntl(AddAppointment);

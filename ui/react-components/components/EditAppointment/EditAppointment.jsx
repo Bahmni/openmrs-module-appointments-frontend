@@ -70,6 +70,7 @@ import {
     updateRecurring
 } from "../../services/AppointmentsService/AppointmentsService";
 import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
+import {getAppointmentBookingMessage, getRecurringAppointmentBookingMessage, getPhoneNumber} from '../../utils/AppointmentSMS.js'
 import UpdateSuccessModal from "../SuccessModal/UpdateSuccessModal.jsx";
 import UpdateConfirmationModal from "../UpdateConfirmationModal/UpdateConfirmationModal.jsx";
 import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
@@ -77,10 +78,11 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {AppContext} from "../AppContext/AppContext";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
+import {sendSMS} from "../../api/smsService";
 
 const EditAppointment = props => {
 
-    const {appConfig, appointmentUuid, isRecurring, intl, currentProvider} = props;
+    const {appConfig, appointmentUuid, isRecurring, intl, currentProvider, isAppointmentSMSEnabled} = props;
 
     const {setViewDate} = React.useContext(AppContext);
 
@@ -294,6 +296,10 @@ const EditAppointment = props => {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
+            if (isAppointmentSMSEnabled) {
+                sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
+                    getAppointmentBookingMessage(response.data, appConfig, intl));
+            }
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
@@ -313,6 +319,10 @@ const EditAppointment = props => {
             setConflicts(undefined);
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
+            if (isAppointmentSMSEnabled) {
+                sendSMS(await getPhoneNumber(response.data[0].appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
+                    getRecurringAppointmentBookingMessage(response.data[0], appConfig, intl));
+            }
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
@@ -681,6 +691,7 @@ EditAppointment.propTypes = {
     appointmentUuid: PropTypes.string.isRequired,
     isRecurring: PropTypes.string.isRequired,
     currentProvider: PropTypes.object,
+    isAppointmentSMSEnabled: PropTypes.bool
 };
 
 export default injectIntl(EditAppointment);
