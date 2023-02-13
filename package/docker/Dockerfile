@@ -1,2 +1,2 @@
-FROM httpd:2.4-alpine
+FROM amazoncorretto:8
 COPY dist/. /usr/local/apache2/htdocs/appointments/
