@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {otpServiceUrl} from "../config";
+import {getFromGlobalProperty} from "../api/configApi";
 import {isEmpty} from 'lodash';
 
 export const sendSMS = async (phoneNumber, message) => {
@@ -9,11 +9,13 @@ export const sendSMS = async (phoneNumber, message) => {
                 "phoneNumber": phoneNumber,
                 "message": message
             };
-        const response = await axios.post(`${otpServiceUrl}/notification/sms`, data);
-        return response;
+            const smsEndpoint = await getFromGlobalProperty("sms.endpoint");
+            if (smsEndpoint != undefined && smsEndpoint != '') {
+                const response = await axios.post(smsEndpoint, data);
+                return response;
+            }
         }
     } catch (error) {
-        console.error(error);
         return error.response;
     }
 };
