@@ -21,4 +21,3 @@ export const i18nConfigPath = reactConfig["i18nConfigPath"];
 export const BAHMNI_CONFIG_URL = reactConfig["BAHMNI_CONFIG_URL"];
 export const IMPLEMENTATION_CONFIG_URL = reactConfig["IMPLEMENTATION_CONFIG_URL"];
 export const locationTagName = reactConfig["locationTagName"];
-export const otpServiceUrl = reactConfig["otpServiceUrl"];
