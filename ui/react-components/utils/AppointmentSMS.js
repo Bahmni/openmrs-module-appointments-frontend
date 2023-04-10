@@ -53,5 +53,5 @@ const getAppointmentMessageType = (apptData, isRecurring = null) => {
 
 export const getPhoneNumber = async (patientUuid, attribute) => {
     var phoneNumber = await getPersonAttribute(patientUuid, attribute)
-    return phoneNumber ? encodeURIComponent(phoneNumber) : null;
+    return phoneNumber ? phoneNumber : null;
 };
