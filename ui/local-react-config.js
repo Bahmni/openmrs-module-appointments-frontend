@@ -14,6 +14,7 @@ export const localReactConfig = {
     "recurringAppointmentsSaveUrl": "/openmrs/ws/rest/v1/recurring-appointments",
     "appointmentConflictsUrl": "/openmrs/ws/rest/v1/appointments/conflicts",
     "recurringAppointmentsConflictsUrl": "/openmrs/ws/rest/v1/recurring-appointments/conflicts",
+    "appointmentSummaryUrl": "/openmrs/ws/rest/v1/appointment/appointmentSummary",
     "i18nConfigPath": "/bahmni_config/openmrs/i18n/",
     "BAHMNI_CONFIG_URL": "/bahmni_config/openmrs/apps",
     "IMPLEMENTATION_CONFIG_URL": "/implementation_config/openmrs/apps",

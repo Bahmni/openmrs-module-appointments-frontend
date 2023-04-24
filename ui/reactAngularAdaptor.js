@@ -1,9 +1,14 @@
 import {react2angular} from 'react2angular';
 import AppointmentContainer from './react-components/containers/AppointmentContainer.jsx';
 import CancelConfirmationWrapper from "./react-components/components/CancelConfirmation/CancelConfirmationWrapper.jsx";
+import AppointmentSummaryContainer from "./react-components/containers/AppointmentSummaryContainer.jsx";
+import moment from "moment";
 
 angular.module('bahmni.appointments')
 .component('reactAddAppointment', react2angular(AppointmentContainer));
+
+angular.module('bahmni.appointments')
+.component('reactAppointmentSummary', react2angular(AppointmentSummaryContainer));
 
 angular.module('bahmni.appointments')
     .component('cancelConfirmationWrapper', react2angular(CancelConfirmationWrapper));
@@ -16,11 +21,17 @@ angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
     controller: reactAddAppointmentController
 });
 
+angular.module('bahmni.appointments').component('reactAppointmentSummaryWrapper',{
+    template: '<react-appointment-summary state="state" current-provider="currentProvider" go-to-list-view="goToListView">',
+    controller: reactAppointmentSummaryController
+});
+
 angular.module('bahmni.appointments').run(['$templateCache', function ($templateCache) {
     $templateCache.put('templateId', '<cancel-confirmation-wrapper appointment-uuid="appointmentUuid" close="onClose" on-back="onBack">');
 }]);
 
 reactAddAppointmentController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
+reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
 function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
     let onBack = false;
     let backUrl = "^";
@@ -54,4 +65,25 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
     $scope.currentProvider = $rootScope.currentProvider;
     $scope.appointmentParams = $stateParams.appointment;
     $scope.urlParams = $location.$$search;
+}
+
+function reactAppointmentSummaryController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
+
+    $scope.setViewDate = function (date) {
+        $state.params.viewDate = date;
+    };
+    $scope.goToListView = function (date, uuid) {
+        console.log(uuid)
+        var params = {
+            viewDate: moment(date).toDate(),
+            filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled")}
+        };
+        if (!_.isUndefined(uuid)) {
+            params.filterParams.serviceUuids = [uuid];
+        }
+        $state.go('home.manage.appointments.list', params);
+    }
+    $scope.state = $state;
+    $scope.currentProvider = $rootScope.currentProvider;
+
 }

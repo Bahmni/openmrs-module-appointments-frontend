@@ -3,10 +3,12 @@ import { injectIntl } from "react-intl";
 import "./GridSummary.module.scss";
 import moment from "moment";
 import { sortBy } from "lodash";
-import {tableGridWrapper,tableGridSummary,tableTotalCount,missedCount,currentDateColumn} from './GridSummary.module.scss'
+import {tableGridWrapper,tableGridSummary,tableTotalCount,missedCount,currentDateColumn, rowLabel} from './GridSummary.module.scss'
 import classNames from 'classnames'
 
-const transformGridData=(gridData)=>{
+const transformGridData=(gridData, filterBy)=>{
+  if(gridData.length === 0)
+    return []
   return gridData.map(dataElement => {
     let rowList = [];
     for (let element in dataElement.appointmentCountMap) {
@@ -14,7 +16,8 @@ const transformGridData=(gridData)=>{
         date: element,
         count: dataElement.appointmentCountMap[element].allAppointmentsCount,
         missedCount:
-        dataElement.appointmentCountMap[element].missedAppointmentsCount
+        dataElement.appointmentCountMap[element].missedAppointmentsCount,
+        uuid: dataElement.appointmentCountMap[element].appointmentServiceUuid
       });
     }
     return {
@@ -25,9 +28,9 @@ const transformGridData=(gridData)=>{
 }
 
 const GridSummary = props => {
-  const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick } = props;
+  const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick, filterBy = "name" } = props;
   let week = []
-  const gridSummaryData=transformGridData(gridData)
+  const gridSummaryData=transformGridData(gridData, filterBy)
 
   return (
       <div className={classNames(tableGridWrapper)}>
@@ -68,7 +71,7 @@ const GridSummary = props => {
                       weekDay.missedCount += a.missedCount;
                       return (
                           <td key={row.rowLabel+index+weekDay.date} className={classNames({[currentDateColumn]:currentDate})}>
-                            <a onClick={() => onClick(weekDay.date)}>{a.count}</a>
+                            <a onClick={() => onClick(weekDay.date, a.uuid)}>{a.count}</a>
                             <span className={missedCount}>
                           {a.missedCount > 0
                               ? " (" + a.missedCount + " missed)"

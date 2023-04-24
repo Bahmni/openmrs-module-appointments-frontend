@@ -4,6 +4,7 @@ import { fireEvent } from '@testing-library/react';
 import moment from "moment";
 import DateOrWeekNavigator from "./DateOrWeekNavigator";
 import {renderWithReactIntl} from "../../utils/TestUtil";
+import {AppContext} from "../AppContext/AppContext";
 
 describe('DateOrWeekNavigator', ()=>{
 
@@ -25,9 +26,14 @@ describe('DateOrWeekNavigator', ()=>{
         expect(labelOnDatePicker).toBeNull();
     });
 
+    //failed test
     it('should update the input value and corresponding week startDate and endDate when date is changed', ()=>{
         const today= moment().format('YYYY-MM-DD');
-        const {container} = renderWithReactIntl(<DateOrWeekNavigator isWeek={true} weekStart={7}/>);
+        const {container} = renderWithReactIntl(
+            <AppContext.Provider value={{ setStartDate: jest.fn(), setEndDate:jest.fn() }}>
+                <DateOrWeekNavigator isWeek={true} weekStart={7}/>
+            </AppContext.Provider>
+        );
         const inputField = container.querySelector('#weekDates');
         expect(inputField.value).toBe(today);
         const newDate= moment("15-07-2020", 'DD-MM-YYYY').format('YYYY-MM-DD');
@@ -37,9 +43,13 @@ describe('DateOrWeekNavigator', ()=>{
         expect(labelOnDatePicker).toHaveTextContent("12 Jul - 18 Jul");
     });
 
+    //failed test
     it('should update only input value when date is changed in day view', ()=>{
         const today= moment().format('YYYY-MM-DD');
-        const {container} = renderWithReactIntl(<DateOrWeekNavigator isWeek={false} weekStart={7}/>);
+        const {container} = renderWithReactIntl(
+            <AppContext.Provider value={{ setStartDate: jest.fn(), setEndDate:jest.fn() }}>
+                <DateOrWeekNavigator isWeek={false} weekStart={7}/>
+            </AppContext.Provider>);
         const inputField = container.querySelector('#weekDates');
         expect(inputField.value).toBe(today);
         const newDate= moment("15-07-2020", 'DD-MM-YYYY').format('YYYY-MM-DD');
@@ -49,8 +59,12 @@ describe('DateOrWeekNavigator', ()=>{
         expect(labelOnDatePicker).toBeNull();
     });
 
+    //failed test
     it('should display previous week values for selected date when clicked on left navigator', ()=>{
-        const {container, getByTestId} = renderWithReactIntl(<DateOrWeekNavigator isWeek={true} weekStart={7}/>);
+        const {container, getByTestId} = renderWithReactIntl(
+            <AppContext.Provider value={{ setStartDate: jest.fn(), setEndDate:jest.fn() }}>
+                <DateOrWeekNavigator isWeek={true} weekStart={7}/>
+            </AppContext.Provider>);
         const inputField = container.querySelector('#weekDates');
         const selectDate= moment("15-07-2020", 'DD-MM-YYYY').format('YYYY-MM-DD');
         fireEvent.change(inputField, {target:{value:selectDate}});
@@ -63,8 +77,12 @@ describe('DateOrWeekNavigator', ()=>{
 
     });
 
+    //failed test
     it('should display previous date for selected date when clicked on left navigator', ()=>{
-        const {container, getByTestId} = renderWithReactIntl(<DateOrWeekNavigator isWeek={false} weekStart={7}/>);
+        const {container, getByTestId} = renderWithReactIntl(
+            <AppContext.Provider value={{ setStartDate: jest.fn(), setEndDate:jest.fn() }}>
+                <DateOrWeekNavigator isWeek={false} weekStart={7}/>
+            </AppContext.Provider>);
         const inputField = container.querySelector('#weekDates');
         const selectDate= moment("15-07-2020", 'DD-MM-YYYY').format('YYYY-MM-DD');
         fireEvent.change(inputField, {target:{value:selectDate}});
@@ -77,8 +95,12 @@ describe('DateOrWeekNavigator', ()=>{
 
     });
 
+    //failed test
     it('should display next week values for selected date when clicked on right navigator', ()=>{
-        const {container, getByTestId} = renderWithReactIntl(<DateOrWeekNavigator isWeek={true} weekStart={7}/>);
+        const {container, getByTestId} = renderWithReactIntl(
+            <AppContext.Provider value={{ setStartDate: jest.fn(), setEndDate:jest.fn() }}>
+                <DateOrWeekNavigator isWeek={true} weekStart={7}/>
+            </AppContext.Provider>);
         const inputField = container.querySelector('#weekDates');
         const selectDate= moment("15-07-2020", 'DD-MM-YYYY').format('YYYY-MM-DD');
         fireEvent.change(inputField, {target:{value:selectDate}});
@@ -91,8 +113,12 @@ describe('DateOrWeekNavigator', ()=>{
 
     });
 
+    //failed test
     it('should display next date for selected date when clicked on right navigator', ()=>{
-        const {container, getByTestId} = renderWithReactIntl(<DateOrWeekNavigator isWeek={false} weekStart={7}/>);
+        const {container, getByTestId} = renderWithReactIntl(
+            <AppContext.Provider value={{ setStartDate: jest.fn(), setEndDate:jest.fn() }}>
+                <DateOrWeekNavigator isWeek={false} weekStart={7}/>
+            </AppContext.Provider>);
         const inputField = container.querySelector('#weekDates');
         const selectDate= moment("15-07-2020", 'DD-MM-YYYY').format('YYYY-MM-DD');
         fireEvent.change(inputField, {target:{value:selectDate}});

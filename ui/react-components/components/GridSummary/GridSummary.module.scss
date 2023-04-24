@@ -1,5 +1,6 @@
 .tableGridWrapper{
     overflow-x: auto;
+    margin: 10px;
 
     .tableGridSummary{
         border-collapse: collapse;
@@ -8,30 +9,35 @@
         margin-bottom:8px;
         border: none;
         text-align: center;
-
-        thead>tr>td{
-            font-weight: 600;
+        tr{
+            border-bottom: none;
         }
 
-        tbody > tr {
-            td {
+        thead>tr>td{
+            font-weight: 900;
+            font-family: opensansSemibold, serif;
+            font-size: 15px;
+            border: none;
+        }
+
+        tbody > tr > td {
                 min-width:110px;
                 padding: 5px;
                 border: 1px solid #ddd;
                 color: #363463;
                 &:first-child{
-                    border:none;
+                    border:none !important;
                     text-align: right;
                     background-color: white;
-                    min-width: 100px;
+                    min-width: 20px;
+                    font-family: opensansSemibold, serif;
+                    font-size: 15px;
                 }
                 a{
                     text-decoration: none;
                     color: #2b95ff;
                     cursor: pointer;
                 }
-
-            }
         }
 
         .tableTotalCount{
