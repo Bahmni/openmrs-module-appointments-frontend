@@ -710,6 +710,9 @@ describe('AppointmentsListViewController', function () {
         it("should have table info", function () {
             var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_PATIENT_AGE', sortInfo: 'patient.age', class: true, enable: true},
+                {heading: 'APPOINTMENT_PATIENT_GENDER', sortInfo: 'patient.gender', class: true, enable: true},
+                {heading: 'APPOINTMENT_PATIENT_AUXILIARY_IDENTIFIER', class: true, enable: true},
                 {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
                 {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
                 {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},

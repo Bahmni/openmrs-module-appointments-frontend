@@ -29,6 +29,13 @@
                     <span ng-hide="shouldShowAppointmentsListPatientLink">{{::appointment.patient.identifier}}</span>
                 </td>
                 <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
+                <td class="table-mid-width">{{::appointment.patient.age}}</td>
+                <td class="table-mid-width">{{::appointment.patient.gender}}</td>
+                <td class="table-mid-width">
+                    <p ng-repeat="auxiliary_identifiers in appointment.patient.auxiliary_identifiers">
+                        {{auxiliary_identifiers}}
+                    </p>
+                </td>
                 <td>{{::appointment.startDateTime | bahmniDate}}</td>
                 <td>{{::appointment.startDateTime | bahmniTime}}</td>
                 <td>{{::appointment.endDateTime | bahmniTime}}</td>
