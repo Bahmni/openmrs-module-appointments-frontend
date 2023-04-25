@@ -6,9 +6,7 @@ import { sortBy } from "lodash";
 import {tableGridWrapper,tableGridSummary,tableTotalCount,missedCount,currentDateColumn, rowLabel} from './GridSummary.module.scss'
 import classNames from 'classnames'
 
-const transformGridData=(gridData, filterBy)=>{
-  if(gridData.length === 0)
-    return []
+export const transformAppointmentSummaryToGridData=(gridData)=>{
   return gridData.map(dataElement => {
     let rowList = [];
     for (let element in dataElement.appointmentCountMap) {
@@ -28,9 +26,8 @@ const transformGridData=(gridData, filterBy)=>{
 }
 
 const GridSummary = props => {
-  const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick, filterBy = "name" } = props;
+  const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick } = props;
   let week = []
-  const gridSummaryData=transformGridData(gridData, filterBy)
 
   return (
       <div className={classNames(tableGridWrapper)}>
@@ -57,7 +54,7 @@ const GridSummary = props => {
           </tr>
           </thead>
           <tbody>
-          {gridSummaryData.map((row,index) => {
+          {gridData.map((row,index) => {
             return (
                 <tr data-testid='row' key={'row'+index}>
                   <td key={row.rowLabel+index}>{row.rowLabel}</td>

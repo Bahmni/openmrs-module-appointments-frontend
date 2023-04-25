@@ -31,10 +31,8 @@ export const getAppointment = async (appointmentUuid) => {
 };
 
 export const getAppointmentSummary = async (startDate, endDate) => {
-    console.log('came in');
     try {
         const response = await axios.get(`${appointmentSummaryUrl}?endDate=${endDate}&startDate=${startDate}`);
-        console.log(response);
         return response
     } catch (error) {
         console.error(error);
