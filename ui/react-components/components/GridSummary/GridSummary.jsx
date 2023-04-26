@@ -5,6 +5,7 @@ import moment from "moment";
 import { sortBy } from "lodash";
 import {tableGridWrapper,tableGridSummary,tableTotalCount,missedCount,currentDateColumn, noAppointments, gridHeading} from './GridSummary.module.scss'
 import classNames from 'classnames'
+import {AppContext} from "../AppContext/AppContext";
 
 export const transformAppointmentSummaryToGridData=(gridData)=>{
   return gridData.map(dataElement => {
@@ -85,7 +86,8 @@ export const transformAppointmentsData = (data) => {
 const GridSummary = props => {
   const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick, gridName } = props;
   let week = []
-  if(gridData.length === 0){
+  const { fullSummary } = React.useContext(AppContext)
+  if(gridData.length === 0 && fullSummary){
     return (
         <div className={classNames(tableGridWrapper)}>
           <h3 className={gridHeading}>{gridName}</h3>

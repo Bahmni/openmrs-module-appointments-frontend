@@ -22,7 +22,7 @@ angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
 });
 
 angular.module('bahmni.appointments').component('reactAppointmentSummaryWrapper',{
-    template: '<react-appointment-summary state="state" current-provider="currentProvider" go-to-list-view="goToListView">',
+    template: '<react-appointment-summary state="state" current-provider="currentProvider" go-to-list-view="goToListView" full-summary="fullSummary">',
     controller: reactAppointmentSummaryController
 });
 
@@ -31,7 +31,7 @@ angular.module('bahmni.appointments').run(['$templateCache', function ($template
 }]);
 
 reactAddAppointmentController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
-reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
+reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope', '$state', 'appService'];
 function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
     let onBack = false;
     let backUrl = "^";
@@ -67,13 +67,12 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
     $scope.urlParams = $location.$$search;
 }
 
-function reactAppointmentSummaryController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
+function reactAppointmentSummaryController($rootScope, $location, $scope, $state, appService) {
 
     $scope.setViewDate = function (date) {
         $state.params.viewDate = date;
     };
     $scope.goToListView = function (date, uuids) {
-        // console.log(uuid)
         var params = {
             viewDate: moment(date).toDate(),
             filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled")}
@@ -85,5 +84,6 @@ function reactAppointmentSummaryController($rootScope, $location, $scope, $state
     }
     $scope.state = $state;
     $scope.currentProvider = $rootScope.currentProvider;
+    $scope.fullSummary = appService.getAppDescriptor().getConfigValue('enableDetailedSummaryView')
 
 }
