@@ -22,14 +22,14 @@
 
         tbody > tr > td {
                 min-width:110px;
-                padding: 5px;
+                padding: 10px;
                 border: 1px solid #ddd;
                 color: #363463;
                 &:first-child{
-                    border:none !important;
+                    border:none;
                     text-align: right;
                     background-color: white;
-                    min-width: 20px;
+                    width: 20%;
                     font-family: opensansSemibold, serif;
                     font-size: 15px;
                 }
@@ -51,4 +51,15 @@
     .currentDateColumn{
         background-color: #f5f5f5;
     }
+    .noAppointments{
+        background-color: #f0faff;
+        font-size: 15px;
+    }
+    .gridHeading{
+        margin-left: 10px;
+    }
+}
+hr{
+    border: 0;
+    border-bottom: 1px solid #ddd;
 }
