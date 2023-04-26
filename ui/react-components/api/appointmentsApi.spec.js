@@ -1,6 +1,12 @@
 import mockAxios from "jest-mock-axios";
-import {appointmentConflictsUrl, appointmentByUuidUrl, appointmentSaveUrl} from "../config";
-import {getAppointment, conflictsFor, saveOrUpdateAppointment} from "./appointmentsApi";
+import {appointmentConflictsUrl, appointmentByUuidUrl, appointmentSaveUrl, appointmentSummaryUrl, searchAppointmentsUrl} from "../config";
+import {
+    getAppointment,
+    conflictsFor,
+    saveOrUpdateAppointment,
+    getAppointmentSummary,
+    searchAppointments
+} from "./appointmentsApi";
 
 describe('Appointments Api', () => {
 
@@ -195,5 +201,123 @@ describe('Appointments Api', () => {
         expect(mockAxios.post).toHaveBeenCalledWith(appointmentSaveUrl, payload);
 
         expect(appointment.data).toEqual(mockResponse);
+    });
+
+    it('should get appointment summary as response', async () => {
+        let mockResponse = [
+            {
+                "appointmentService": {
+                    "appointmentServiceId": 1,
+                    "name": "Cardiology",
+                    "description": null,
+                    "speciality": {
+                        "name": "Cardiology",
+                        "uuid": "10a45eb9-e0b1-11e7-aec6-02e6b64603ba"
+                    },
+                    "startTime": "",
+                    "endTime": "",
+                    "maxAppointmentsLimit": null,
+                    "durationMins": null,
+                    "location": {},
+                    "uuid": "7b200662-e21a-488c-8274-4eff81117608",
+                    "color": "#006400",
+                    "initialAppointmentStatus": null,
+                    "creatorName": null
+                },
+                "appointmentCountMap": {
+                    "2023-04-24": {
+                        "allAppointmentsCount": 1,
+                        "missedAppointmentsCount": 0,
+                        "appointmentDate": 1682274600000,
+                        "appointmentServiceUuid": "7b200662-e21a-488c-8274-4eff81117608"
+                    }
+                }
+            }
+            ]
+
+        mockAxios.get.mockImplementationOnce(() =>
+            Promise.resolve({
+                data: mockResponse
+            })
+        );
+        const startDate = '2023-04-23T18:30:00.000Z';
+        const endDate = '2023-04-30T18:29:59.999Z';
+
+        let appointmentSummary = await getAppointmentSummary(startDate, endDate);
+
+        expect(mockAxios.get).toHaveBeenCalledWith(`${appointmentSummaryUrl}?endDate=${endDate}&startDate=${startDate}`);
+
+        expect(appointmentSummary.data).toEqual(mockResponse);
+    });
+
+    it('should return all appointments as response', async () => {
+        let mockResponse = [{
+            "uuid": "695dfd06-8ffb-4c7a-a535-83202f5b0668",
+            "appointmentNumber": "0000",
+            "patient": {
+                "identifier": "ABC200000",
+                "gender": "M",
+                "name": "Abc A B",
+                "uuid": "22dbd669-d0ff-424c-b1fc-12013b5655f4",
+                "age": 23,
+                "PatientIdentifier": "ABC200000"
+            },
+            "service": {
+                "appointmentServiceId": 5,
+                "name": "ENT Follow-up Consultation",
+                "description": "Appointment for ENT Follow-up",
+                "speciality": {
+                    "name": "ENT",
+                    "uuid": "8c988914-8f98-4333-ae51-4da92f5cad27"
+                },
+                "startTime": "",
+                "endTime": "",
+                "maxAppointmentsLimit": null,
+                "durationMins": 15,
+                "location": {},
+                "uuid": "389012ba-8471-4f73-88a0-fbc742448f11",
+                "color": null,
+                "initialAppointmentStatus": null,
+                "creatorName": null
+            },
+            "serviceType": null,
+            "provider": null,
+            "location": null,
+            "startDateTime": 1682322300000,
+            "endDateTime": 1682323200000,
+            "appointmentKind": "Scheduled",
+            "status": "Scheduled",
+            "comments": null,
+            "additionalInfo": null,
+            "teleconsultation": null,
+            "providers": [
+                {
+                    "uuid": "9cd23277-cf8c-11ed-8f48-0242ac13000d",
+                    "comments": null,
+                    "response": "ACCEPTED",
+                    "name": "Super Man"
+                }
+            ],
+            "voided": false,
+            "extensions": {
+                "patientEmailDefined": false
+            },
+            "teleconsultationLink": null,
+            "recurring": false
+        }]
+
+        mockAxios.post.mockImplementationOnce(() =>
+            Promise.resolve({
+                data: mockResponse
+            })
+        );
+        const startDate = '2023-04-23T18:30:00.000Z';
+        const endDate = '2023-04-30T18:29:59.999Z';
+
+        let appointmentSummary = await searchAppointments({startDate, endDate});
+
+        expect(mockAxios.post).toHaveBeenCalledWith(searchAppointmentsUrl, { startDate, endDate });
+
+        expect(appointmentSummary.data).toEqual(mockResponse);
     });
 });
