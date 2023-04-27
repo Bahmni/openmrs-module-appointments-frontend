@@ -92,11 +92,8 @@ describe('Transform Appointments data', () => {
             "recurring": false
         },
     ]
-    const [ actualService, actualSpeciality, actualProviders, actualLocations]  = transformAppointmentsData(data);
-    const expectedService = [{
-        rowLabel: 'ENT Follow-up Consultation',
-        rowDataList: [{date: '2023-04-24', uuids: ["389012ba-8471-4f73-88a0-fbc742448f11"], count: 1}]
-    }];
+    const [ actualSpeciality, actualProviders, actualLocations]  = transformAppointmentsData(data);
+
     const expectedSpeciality = [{
         rowLabel: 'ENT',
         rowDataList: [{date: '2023-04-24', uuids: ["389012ba-8471-4f73-88a0-fbc742448f11"], count: 1}]
@@ -109,7 +106,6 @@ describe('Transform Appointments data', () => {
         rowLabel: 'OPD-1',
         rowDataList: [{date: '2023-04-24', uuids: ["389012ba-8471-4f73-88a0-fbc742448f11"], count: 1}]
     }];
-    expect(actualService).toEqual(expectedService)
     expect(actualSpeciality).toEqual(expectedSpeciality)
     expect(actualProviders).toEqual(expectedProviders)
     expect(actualLocations).toEqual(expectedLocations)

@@ -55,7 +55,6 @@ export const setMap = ( map, date, name, uuid) => {
 }
 
 export const transformAppointmentsData = (data) => {
-  const serviceMap = {}
   const specialityMap = {}
   const providerMap = {}
   const locationMap = {}
@@ -63,7 +62,6 @@ export const transformAppointmentsData = (data) => {
     const {service, startDateTime, provider, providers, location} = data[element]
     const {name, uuid, speciality } = service
     const date = moment(startDateTime).format("YYYY-MM-DD")
-    setMap(serviceMap, date, name, uuid)
     setMap(specialityMap, date, speciality.name, uuid)
     if(provider){
       setMap(providerMap, date, provider.name, uuid)
@@ -77,8 +75,7 @@ export const transformAppointmentsData = (data) => {
       setMap(locationMap, date, location.name, uuid)
     }
   }
-  return [transformData(serviceMap),
-  transformData(specialityMap),
+  return [transformData(specialityMap),
   transformData(providerMap),
   transformData(locationMap)]
 }

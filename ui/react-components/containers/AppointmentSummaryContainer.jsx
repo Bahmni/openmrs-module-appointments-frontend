@@ -11,6 +11,7 @@ import moment from "moment";
 import {getWeekEndDate, getWeekStartDate} from "../utils/DateOrWeekNavigator/weekDatesHelper";
 import {getAppointmentSummary, searchAppointments} from "../api/appointmentsApi";
 import '../components/GridSummary/GridSummary.module.scss'
+import {sortBy} from "lodash";
 class AppointmentSummaryContainer extends Component {
     constructor(props) {
         super(props);
@@ -21,7 +22,6 @@ class AppointmentSummaryContainer extends Component {
             endDate: getWeekEndDate(moment().toDate(), 1),
             data: [],
             specialityData: [],
-            serviceData: [],
             providersData: [],
             locationData:[]
         };
@@ -32,18 +32,13 @@ class AppointmentSummaryContainer extends Component {
             const { fullSummary } = this.props
             const weekStartDate = moment(startDate).startOf('day').format("YYYY-MM-DDTHH:mm:ss.SSSZZ")
             const weekEndDate = moment(endDate).endOf('day').format("YYYY-MM-DDTHH:mm:ss.SSSZZ")
-            if(!fullSummary){
-                const response = await getAppointmentSummary(weekStartDate, weekEndDate)
-                this.setState({data: transformAppointmentSummaryToGridData(response.data)})
-            }
-            else{
-                const appointments = await searchAppointments({startDate:weekStartDate, endDate:weekEndDate})
-                const [service, speciality, provider, location] = transformAppointmentsData(appointments.data);
-                this.setState({specialityData: speciality});
-                this.setState({serviceData: service});
-                this.setState({providersData: provider});
-                this.setState({locationData: location});
-            }
+            const response = await getAppointmentSummary(weekStartDate, weekEndDate)
+            this.setState({data: transformAppointmentSummaryToGridData(response.data)})
+            const appointments = await searchAppointments({startDate:weekStartDate, endDate:weekEndDate})
+            const [speciality, provider, location] = transformAppointmentsData(appointments.data);
+            this.setState({specialityData: speciality});
+            this.setState({providersData: provider});
+            this.setState({locationData: location});
         }
 
         moment.locale(getLocale() === 'pt_BR' ? 'pt-BR': getLocale());
@@ -61,7 +56,7 @@ class AppointmentSummaryContainer extends Component {
     }
 
     render() {
-        const {locale, messages, startDate, endDate, data, specialityData, serviceData, providersData, locationData} = this.state;
+        const {locale, messages, startDate, endDate, data, specialityData, providersData, locationData} = this.state;
         const { goToListView , state, fullSummary} = this.props;
         const setStartDate = date => {
             this.setState({ startDate: date })
@@ -75,13 +70,15 @@ class AppointmentSummaryContainer extends Component {
                     <DateOrWeekNavigator isWeek={true} weekStart={1} />
                     { fullSummary? (
                         <div>
-                            <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={'Specialties'}/>
-                            <hr/>
-                            <GridSummary gridData={serviceData} weekStartDate={startDate} onClick={goToListView} gridName={'Services'}/>
+                            <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={'Specialities'}/>
                             <hr/>
                             <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={'Providers'}/>
                             <hr/>
+                            <GridSummary gridData={sortBy(data, row => row.rowLabel)}
+                                         weekStartDate={startDate} onClick={goToListView} gridName={'Services'}/>
+                            <hr/>
                             <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={'Locations'}/>
+                            <br/>
                         </div>) : (
                         <GridSummary gridData={ data } weekStartDate={startDate} onClick={goToListView}/>
                     )
