@@ -60,7 +60,7 @@ export const transformAppointmentsData = (data) => {
   const locationMap = {}
   for(let element in data) {
     const {service, startDateTime, provider, providers, location} = data[element]
-    const {name, uuid, speciality } = service
+    const { uuid, speciality } = service
     const date = moment(startDateTime).format("YYYY-MM-DD")
     setMap(specialityMap, date, speciality.name, uuid)
     if(provider){
@@ -138,7 +138,6 @@ const GridSummary = props => {
                       weekDay.totalCount += a.count;
                       weekDay.missedCount += a.missedCount;
                       let uuids = a.uuid? [a.uuid] : a.uuids
-
                       return (
                           <td key={row.rowLabel+index+weekDay.date} className={classNames({[currentDateColumn]:currentDate})}>
                             <a onClick={() => onClick(weekDay.date, uuids)}>{a.count}</a>

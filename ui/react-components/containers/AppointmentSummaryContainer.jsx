@@ -29,7 +29,6 @@ class AppointmentSummaryContainer extends Component {
             this.setState({messages: await getMessages(getLocale())});
         })();
         this.getSummary = async (startDate, endDate) => {
-            const { fullSummary } = this.props
             const weekStartDate = moment(startDate).startOf('day').format("YYYY-MM-DDTHH:mm:ss.SSSZZ")
             const weekEndDate = moment(endDate).endOf('day').format("YYYY-MM-DDTHH:mm:ss.SSSZZ")
             const response = await getAppointmentSummary(weekStartDate, weekEndDate)
