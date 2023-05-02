@@ -33,46 +33,88 @@ export const transformData = (gridData)=>{
       rowList.push({
         date: rowData,
         uuids: gridData[data][rowData].uuids,
-        count: gridData[data][rowData].count
+        count: gridData[data][rowData].count,
+        missedCount: gridData[data][rowData].missedCount
       })
     }
     rowMap.push({rowLabel:data, rowDataList: rowList})
   }
-  return sortBy(rowMap, row => row.rowLabel)
+  return sortBy(rowMap, row => row.rowLabel.toLowerCase())
 }
-export const setMap = ( map, date, name, uuid) => {
+export const setMap = ( map, date, name, uuid, status) => {
   if(!map[name]){
     map[name]={}
   }
   if(!map[name][date]){
     map[name][date]= {
       uuids: [],
-      count: 0
+      count: 0,
+      missedCount:0
     }
   }
   map[name][date].uuids.push(uuid);
-  map[name][date].count += 1
+  map[name][date].count += 1;
+  if(status === "Missed"){
+    map[name][date].missedCount += 1;
+  }
+}
+// const setmapdata = {
+//   'name': {
+//     "2023-05-02":{
+//       uuids : ['uuid'],
+//       count : 1
+//     }
+//   }
+// }
+// const data = {
+//   "uuid1": {
+//     name: 'name',
+//     data: {
+//       "2023-05-02": {
+//         count : 1
+//       }
+//     }
+//   }
+// }
+export const setMap2 = ( map, date, name, uuid) => {
+  if(!map[uuid]){
+    map[uuid] = {
+      name: name,
+      data:{}
+    }
+  }
+  if(!map[uuid]["data"][date]){
+    map[uuid]["data"][date]= {
+      uuids: [uuid],
+      count: 0
+    }
+  }
+  map[uuid]["data"][date].count += 1
 }
 
 export const transformAppointmentsData = (data) => {
   const specialityMap = {}
   const providerMap = {}
   const locationMap = {}
+  const map2 = {}
   for(let element in data) {
-    const {service, startDateTime, provider, providers, location} = data[element]
+    const {service, startDateTime, provider, providers, location, status} = data[element]
+    if(status === 'Cancelled'){
+      continue;
+    }
     const { uuid, speciality } = service
     const date = moment(startDateTime).format("YYYY-MM-DD")
-    setMap(specialityMap, date, speciality.name, uuid)
+    setMap(specialityMap, date, speciality.name, uuid, status)
     if(provider){
-      setMap(providerMap, date, provider.name, uuid)
+      setMap(providerMap, date, provider.name, provider.uuid, status)
     }
     else{
       for(let i in providers){
-        setMap(providerMap, date, providers[i].name, uuid)
+        setMap(providerMap, date, providers[i].name, providers[i].uuid, status)
       }
     }
     if(location) {
-      setMap(locationMap, date, location.name, uuid)
+      setMap(locationMap, date, location.name, location.uuid, status)
     }
   }
   return [transformData(specialityMap),
@@ -140,7 +182,7 @@ const GridSummary = props => {
                       let uuids = a.uuid? [a.uuid] : a.uuids
                       return (
                           <td key={row.rowLabel+index+weekDay.date} className={classNames({[currentDateColumn]:currentDate})}>
-                            <a onClick={() => onClick(weekDay.date, uuids)}>{a.count}</a>
+                            <a onClick={() => onClick(weekDay.date, uuids, gridName)}>{a.count}</a>
                             <span className={missedCount}>
                           {a.missedCount > 0
                               ? " (" + a.missedCount + " missed)"

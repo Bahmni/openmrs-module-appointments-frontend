@@ -63,6 +63,7 @@ class AppointmentSummaryContainer extends Component {
         const setEndDate = date => {
             this.setState({ endDate: date })
         };
+        console.log(specialityData, providersData, locationData)
         return (
             <AppContext.Provider value={{ goToListView, setStartDate, setEndDate, state, startDate, endDate, fullSummary }}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
@@ -73,7 +74,7 @@ class AppointmentSummaryContainer extends Component {
                             <hr/>
                             <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={'Providers'}/>
                             <hr/>
-                            <GridSummary gridData={sortBy(data, row => row.rowLabel)}
+                            <GridSummary gridData={sortBy(data, row => row.rowLabel.toLowerCase())}
                                          weekStartDate={startDate} onClick={goToListView} gridName={'Services'}/>
                             <hr/>
                             <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={'Locations'}/>
