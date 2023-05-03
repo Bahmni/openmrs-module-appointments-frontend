@@ -12,10 +12,11 @@ jobs:
   Trivy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
       - name: Trivy Scan
-        run: ./.github/trivy_scan.sh
+        run: |
+          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/bahmni-ipd/trivy_scan.sh && chmod +x trivy_scan.sh
+          ./trivy_scan.sh
+          rm trivy_scan.sh.sh
   build-publish-docker:
     name: Build & Publish Docker Image
     runs-on: ubuntu-20.04
