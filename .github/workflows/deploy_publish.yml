@@ -50,4 +50,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: package/docker/Dockerfile
           push: true
-          tags: bahmni/appointments:ipd
+          tags: bahmni/appointments:ipd-${{ github.run_number }}, bahmni/appointments:ipd
