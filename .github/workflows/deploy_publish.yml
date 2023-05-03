@@ -3,17 +3,23 @@ on:
   push:
     branches:
       - Bahmni-IPD-master
-      - 'release-*'
+      - workflow-changes
     paths-ignore:
       - "**.md"
   workflow_dispatch:
 
 jobs:
-  build-publish-docker-helm:
+  Trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Trivy Scan
+        run: ./.github/trivy_scan.sh
+  build-publish-docker:
     name: Build & Publish Docker Image
     runs-on: ubuntu-20.04
-    env:
-      HELM_CHART_PATH: package/helm/
+    needs: Trivy
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x
