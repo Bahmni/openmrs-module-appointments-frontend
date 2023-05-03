@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - Bahmni-IPD-master
-      - workflow-changes
     paths-ignore:
       - "**.md"
   workflow_dispatch:
@@ -14,7 +13,7 @@ jobs:
     steps:
       - name: Trivy Scan
         run: |
-          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/bahmni-ipd/trivy_scan.sh && chmod +x trivy_scan.sh
+          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/trivy_scan.sh && chmod +x trivy_scan.sh
           ./trivy_scan.sh
           rm trivy_scan.sh
   build-publish-docker:
