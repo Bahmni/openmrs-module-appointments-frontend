@@ -63,7 +63,6 @@ class AppointmentSummaryContainer extends Component {
         const setEndDate = date => {
             this.setState({ endDate: date })
         };
-        console.log(specialityData, providersData, locationData)
         return (
             <AppContext.Provider value={{ goToListView, setStartDate, setEndDate, state, startDate, endDate, fullSummary }}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>

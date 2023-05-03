@@ -73,25 +73,21 @@ function reactAppointmentSummaryController($rootScope, $location, $scope, $state
         $state.params.viewDate = date;
     };
     $scope.goToListView = function (date, uuids, type) {
-        console.log(type,uuids)
         var params = {
             viewDate: moment(date).toDate(),
             filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled")}
         };
         if (uuids && uuids.length !== 0) {
             if(type === 'Locations'){
-                console.log('set location');
                 params.filterParams.locationUuids = uuids;
             }
             else if(type === 'Providers'){
-                console.log('set providers');
                 params.filterParams.providerUuids = uuids;
             }
             else{
-                params.filterParams.serviceUuids = uuids;
+                params.filterParams.serviceUuids = [uuids];
             }
         }
-        console.log('params', params);
         $state.go('home.manage.appointments.list', params);
     }
     $scope.state = $state;

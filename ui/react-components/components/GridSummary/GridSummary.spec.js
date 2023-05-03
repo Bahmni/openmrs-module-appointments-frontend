@@ -96,15 +96,15 @@ describe('Transform Appointments data', () => {
 
     const expectedSpeciality = [{
         rowLabel: 'ENT',
-        rowDataList: [{date: '2023-04-24', uuids: ["389012ba-8471-4f73-88a0-fbc742448f11"], count: 1}]
+        rowDataList: [{date: '2023-04-24', uuid: "8c988914-8f98-4333-ae51-4da92f5cad27", count: 1, missedCount: 0}]
     }];
     const expectedProviders = [{
         rowLabel: 'Super Man',
-        rowDataList: [{date: '2023-04-24', uuids: ["389012ba-8471-4f73-88a0-fbc742448f11"], count: 1}]
+        rowDataList: [{date: '2023-04-24', uuid: "9cd23277-cf8c-11ed-8f48-0242ac13000d", count: 1, missedCount: 0}]
     }];
     const expectedLocations = [{
         rowLabel: 'OPD-1',
-        rowDataList: [{date: '2023-04-24', uuids: ["389012ba-8471-4f73-88a0-fbc742448f11"], count: 1}]
+        rowDataList: [{date: '2023-04-24', uuid: "c58e12ed-3f12-11e4-adec-0800271c1b75", count: 1, missedCount: 0}]
     }];
     expect(actualSpeciality).toEqual(expectedSpeciality)
     expect(actualProviders).toEqual(expectedProviders)
