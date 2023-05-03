@@ -16,7 +16,7 @@ jobs:
         run: |
           wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/bahmni-ipd/trivy_scan.sh && chmod +x trivy_scan.sh
           ./trivy_scan.sh
-          rm trivy_scan.sh.sh
+          rm trivy_scan.sh
   build-publish-docker:
     name: Build & Publish Docker Image
     runs-on: ubuntu-20.04
