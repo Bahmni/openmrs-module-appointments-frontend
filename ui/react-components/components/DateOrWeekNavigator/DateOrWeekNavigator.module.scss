@@ -1,6 +1,4 @@
 .weekNavigator {
-  position: absolute;
-  width: calc(100% - 310px);
   text-align: center;
   box-sizing: border-box;
   top: 126px;
@@ -32,6 +30,7 @@
     background: #F8F8F8;
     padding: 9px;
     margin-left: 10px;
+    margin-top: 5px;
   }
 
   input {
