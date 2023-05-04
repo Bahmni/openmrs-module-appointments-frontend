@@ -2,27 +2,28 @@ name: Build and Publish
 on:
   push:
     branches:
-      - master
-      - 'release-*'
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - Bahmni-IPD-master
     paths-ignore:
       - "**.md"
   workflow_dispatch:
 
 jobs:
-  build-publish-docker-helm:
-    name: Build & Publish Docker Image & Helm Chart
+  Trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Trivy Scan
+        run: |
+          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/trivy_scan.sh && chmod +x trivy_scan.sh
+          ./trivy_scan.sh
+          rm trivy_scan.sh
+  build-publish-docker:
+    name: Build & Publish Docker Image
     runs-on: ubuntu-20.04
-    env:
-      HELM_CHART_PATH: package/helm/
+    needs: Trivy
     steps:
       - uses: actions/checkout@v2
-      - name: Set env.ARTIFACT_VERSION
-        run: |
-          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
-          ./setArtifactVersion.sh
-          rm setArtifactVersion.sh
       - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
@@ -51,38 +52,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: package/docker/Dockerfile
           push: true
-          tags: bahmni/appointments:${{env.ARTIFACT_VERSION}},bahmni/appointments:latest
-      - name: Helm - Update Version and Image Tag
-        run: |
-          yq --inplace '.image.tag = "${{ env.ARTIFACT_VERSION }}"' $HELM_CHART_PATH/values.yaml
-          yq --inplace '.version = "${{ env.ARTIFACT_VERSION }}"' $HELM_CHART_PATH/Chart.yaml
-
-      - name: Helm Lint
-        run: helm lint $HELM_CHART_PATH
-
-      - name: Helm Package
-        run: helm package $HELM_CHART_PATH
-
-      - name: Helm - Checkout Charts Repository
-        uses: actions/checkout@v2
-        with:
-          repository: Bahmni/helm-charts
-          ref: gh-pages
-          path: helm-charts
-          persist-credentials: false
-
-      - name: Helm - Copy chart
-        run: mkdir -p helm-charts/appointments/ && cp appointments-${{ env.ARTIFACT_VERSION }}.tgz helm-charts/appointments/
-
-      - name: Helm - reIndex
-        working-directory: helm-charts/
-        run: helm repo index --merge index.yaml --url https://bahmni.github.io/helm-charts/  .
-
-      - name: Helm - Publish Chart
-        working-directory: helm-charts/
-        run: |
-          git config user.name ${{ secrets.BAHMNI_USERNAME}}
-          git config user.email ${{ secrets.BAHMNI_EMAIL}}
-          git add .
-          git commit -m "Release of bahmni-web-${{ env.ARTIFACT_VERSION }}"
-          git push 'https://${{ secrets.BAHMNI_USERNAME}}:${{ secrets.BAHMNI_PAT}}@github.com/bahmni/helm-charts.git' gh-pages
+          tags: bahmni/appointments:ipd-${{ github.run_number }}, bahmni/appointments:ipd
