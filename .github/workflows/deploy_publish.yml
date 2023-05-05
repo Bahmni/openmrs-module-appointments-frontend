@@ -54,7 +54,7 @@ jobs:
           push: true
           tags: bahmni/appointments:ipd-${{ github.run_number }}, bahmni/appointments:ipd
   trigger-workflow:
-    name: Trigger workflow to deploy to qa env
+    name: Trigger workflow to deploy to Docker env
     needs: 
       - build-publish-docker
       - Trivy
