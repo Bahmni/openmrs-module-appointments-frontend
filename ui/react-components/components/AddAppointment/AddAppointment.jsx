@@ -94,7 +94,8 @@ const AddAppointment = props => {
         occurrences: undefined,
         period: undefined,
         weekDays: undefined,
-        selectedRecurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime))
+        selectedRecurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
+        priority: undefined,
     };
 
     const initialErrorsState = {
@@ -188,7 +189,8 @@ const AddAppointment = props => {
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
             appointmentKind: requestAppointmentType(),
-            comments: appointmentDetails.notes
+            comments: appointmentDetails.notes,
+            priority: appointmentDetails.priority || null,
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
@@ -205,6 +207,7 @@ const AddAppointment = props => {
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {return {...prevErrors, ...errorIndicators}});
 
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
+        console.log( 'AppointmentDetails',modifiedAppointmentDetails, prevAppointmentDetails)
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 

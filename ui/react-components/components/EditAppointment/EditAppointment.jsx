@@ -117,7 +117,8 @@ const EditAppointment = props => {
         period: undefined,
         weekDays: undefined,
         endDateType: undefined,
-        teleconsultation:undefined
+        teleconsultation:undefined,
+        appointmentCategory: undefined,
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
@@ -146,6 +147,7 @@ const EditAppointment = props => {
     });
 
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
+        console.log(modifiedAppointmentDetails, prevAppointmentDetails);
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 
@@ -200,7 +202,8 @@ const EditAppointment = props => {
             locationUuid: appointmentDetails.location && appointmentDetails.location.value && appointmentDetails.location.value.uuid,
             appointmentKind: requestAppointmentType(),
             status: appointmentDetails.status,
-            comments: appointmentDetails.notes
+            comments: appointmentDetails.notes,
+            appointmentCategory: appointmentDetails.appointmentCategory
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;

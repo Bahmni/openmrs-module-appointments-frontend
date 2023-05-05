@@ -14,6 +14,7 @@ const SpecialitySearch = (props) => {
 
     const createDropdownOptions = (specialities) => {
         const options = [];
+        console.log('specialities search', specialities)
         forEach(specialities, function (speciality) {
             options.push({
                 value: speciality,
