@@ -81,9 +81,9 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         <div data-testid="speciality-search">
                             <SpecialitySearch value={appointmentDetails.speciality}
                                               onChange={(optionSelected) => {
-                                                  console.log(optionSelected.selectedItem);
+                                                  console.log(optionSelected);
                                                   return updateAppointmentDetails({
-                                                  speciality: optionSelected.selectedItem,
+                                                  speciality: optionSelected,
                                                   service: null,
                                                   serviceType: null,
                                                   location: null
@@ -94,11 +94,10 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     }
                     <div data-testid="service-search">
                         <ServiceSearch value={appointmentDetails.service} onChange={(optionSelected) => {
-                            const {selectedItem} = optionSelected
-                            updateAppointmentDetails({service: selectedItem, serviceType: null});
-                            updateErrorIndicators({serviceError: !selectedItem});
-                            selectedItem && endTimeBasedOnService(appointmentDetails.startTime, selectedItem.value, undefined);
-                            selectedItem && updateLocationBasedOnService(selectedItem);
+                            updateAppointmentDetails({service: optionSelected, serviceType: null});
+                            updateErrorIndicators({serviceError: !optionSelected});
+                            optionSelected && endTimeBasedOnService(appointmentDetails.startTime, optionSelected.value, undefined);
+                            optionSelected && updateLocationBasedOnService(optionSelected);
                         }} specialityUuid={appointmentDetails.speciality && appointmentDetails.speciality.value
                         && appointmentDetails.speciality.value.uuid}
                                        isDisabled={componentsDisableStatus.service}
@@ -111,16 +110,15 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     {isServiceTypeEnabled(appConfig) ?
                         <div data-testid="service-type-search">
                             <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
-                                const {selectedItem} = optionSelected
-                                updateAppointmentDetails({serviceType: selectedItem});
-                                selectedItem && endTimeBasedOnService(appointmentDetails.startTime, undefined, selectedItem.value);
+                                updateAppointmentDetails({serviceType: optionSelected});
+                                optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
                             }}
                                                serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
                                                isDisabled={componentsDisableStatus.serviceType}/>
                         </div> : undefined}
                     <div data-testid="location-search">
                         <LocationSearch value={appointmentDetails.location}
-                                        onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected.selectedItem})}
+                                        onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
                                         isDisabled={componentsDisableStatus.location}
                                         autoFocus={componentsDisableStatus.patient && componentsDisableStatus.speciality && componentsDisableStatus.service}/>
                         <ErrorMessage message={undefined}/>
@@ -148,8 +146,10 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                 </div>
                 <AppointmentCategory
                     onChange={ selectedCategory => {
-                        updateAppointmentDetails({priority: selectedCategory.selectedItem.value})
+                        if(selectedCategory.selectedItem){
+                            updateAppointmentDetails({priority: selectedCategory.selectedItem.value})
                         }
+                      }
                     }
                 />
             </div>

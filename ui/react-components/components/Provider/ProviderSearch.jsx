@@ -71,17 +71,19 @@ const ProviderSearch = props => {
   };
 
   const onProviderSelect = selectedProviderOption => {
-    setSelectedProvider(null);
-    const selectedProviderObj = find(providerOptions, [
-      "value",
-      selectedProviderOption.selectedItem ? selectedProviderOption.selectedItem.value : selectedProviderOption.value
-    ]);
-    onChange(selectedProviderObj);
+    if(selectedProviderOption !== null){
+      setSelectedProvider(null);
+      const selectedProviderObj = find(providerOptions, [
+        "value",
+        selectedProviderOption.value
+      ]);
+      onChange(selectedProviderObj);
+    }
   };
 
   const onChangeHandler = eventChangedValue => {
-    setSelectedProvider([...selectedProvider, eventChangedValue.selectedItem]);
-    setProviderOptions(() => [...providerOptions].filter(providerOption => providerOption.value !== eventChangedValue.selectedItem.value));
+    setSelectedProvider([...selectedProvider, eventChangedValue]);
+    setProviderOptions(() => [...providerOptions].filter(providerOption => providerOption.value !== eventChangedValue.value));
   };
 
   const onRemoveHandler = eventChangedValue => {

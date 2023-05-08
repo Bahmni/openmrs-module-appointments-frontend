@@ -66,6 +66,7 @@ import updateAppointmentStatusAndProviderResponse from "../../appointment-reques
 import * as patientApi from "../../api/patientApi";
 import {mapOpenMRSPatient} from "../../mapper/patientMapper";
 import {sendSMS} from "../../api/smsService";
+import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
 
 const AddAppointment = props => {
 
@@ -598,13 +599,12 @@ const AddAppointment = props => {
                             <div className={classNames(dateHeading)}>
                                 <Label translationKey="APPOINTMENT_DATE_LABEL" defaultValue="Appointment date"/>
                             </div>
-                            <AppointmentDatePicker
+                            <DatePickerCarbon
                                 onChange={date => {
-                                    updateAppointmentDetails({appointmentDate: date});
-                                    updateErrorIndicators({appointmentDateError: !date});
-                                }}
-                                value={appointmentDetails.appointmentDate}
-                                minDate={moment()}/>
+                                    const selectedDate = moment(date[0]).toDate();
+                                    updateAppointmentDetails({appointmentDate: selectedDate});
+                                    updateErrorIndicators({appointmentDateError: !date[0]});
+                                }}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div>

@@ -1,9 +1,5 @@
-import Select from "react-select";
 import {
   disable,
-  dropdownIndicator,
-  resetSelectContainer,
-  searchIcon,
 } from "./Dropdown.module.scss";
 import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
@@ -48,8 +44,12 @@ const Dropdown = (props) => {
     autoFocus && dropdownRef && !isDisabled && dropdownRef.current.focus();
   }, [autoFocus, isDisabled]);
 
+  const handleOnChange = (selected) => {
+    onChange(selected.selectedItem)
+  }
   const isComponentDisabled = () =>
     isUndefined(isDisabled) ? false : isDisabled;
+  console.log('selectedValue', selectedValue);
   return (
     <div
       data-testid="select"
@@ -73,15 +73,14 @@ const Dropdown = (props) => {
       {/*/>*/}
       <ComboBox
           id={id}
+          ref={dropdownRef}
           items={options}
-          onChange={onChange}
-          // onInputChange={handleInputChange}
-          // value={selectedValue.label}
+          onChange={handleOnChange}
           itemToString={(item) => (item ? item.label : '')}
           placeholder={placeholder}
           disabled={isDisabled}
-          readOnly={isDisabled}
           shouldFilterItem={filterItems}
+          value={selectedValue? selectedValue.label: undefined}
       />
     </div>
   );
