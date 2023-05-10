@@ -18,12 +18,12 @@ const AppointmentCategory = (props) => {
     const filterItems = data => {
         return data.item.label.includes(data.inputValue);
     }
-    console.log('combo box',options);
 
     return (
         <ComboBox id="service-search"
                   items={options}
-                  placeholder={placeHolder}
+                  titleText={placeHolder}
+                  placeholder={"Choose an option"}
                   onChange={onChange}
                   selectedValue={value}
                   isDisabled={isDisabled}

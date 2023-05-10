@@ -2,7 +2,7 @@
 @import "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.module";
 
 .appointmentEditor {
-  min-width: 1200px;
+  padding: 0 10px;
   width: 100%;
   z-index: 31;
   position: absolute;
@@ -13,13 +13,9 @@
   &.isRecurring {
     min-height: 870px;
   }
-  border-radius: 12px;
   background-color: $secondary-color-1;
 
   .recurringContainer {
-    top: 60px;
-    bottom: 50px;
-    position: relative;
     padding: 0 2% 3% 2%;
     display: flex;
     justify-content: space-between;
@@ -76,10 +72,45 @@
   &:nth-child(2) {
     padding-top: 0;
   }
-
-  .appointmentPlanContainer {
-    width: 70%;
-    margin-bottom: 25px;
-  }
 }
 
+.overlay {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  top: 107px;
+  min-width: 540px;
+  height: 100%;
+  z-index: 499;
+  display: flex;
+  align-items: center;
+  overflow: scroll;
+  box-shadow: -1px 0px 3px 0px #aaa;
+}
+
+.close {
+  display: inline-block;
+  border: none;
+  padding: 2px;
+  margin-top: 10px;
+  cursor: pointer;
+  margin-left: 500px;
+}
+
+.teleconsultation{
+  padding: 10px;
+}
+
+.appointmentPlanContainer {
+  --cds-layer-selected-inverse: blue;
+}
+
+.tableWrapper{
+  tr{
+    border-bottom: none;
+  }
+  tr > td{
+    border: none;
+    padding: 2px;
+  }
+}

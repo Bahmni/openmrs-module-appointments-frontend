@@ -1,9 +1,8 @@
 import {Fragment} from "react";
 import classNames from "classnames";
 import {
-    searchFieldsContainer,
-    searchFieldsContainerLeft,
-    searchFieldsContainerRight
+    commonFields,
+    tableWrapper
 } from "./AppointmentEditorCommonFieldsWrapper.module.scss";
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
@@ -37,7 +36,6 @@ const AppointmentEditorCommonFieldsWrapper = props => {
     const errorTranslations = getErrorTranslations(intl);
 
     const updateLocationBasedOnService = (selectedService) => {
-        console.log('selectedService', selectedService);
         selectedService && isEmpty(selectedService.value.location) ? updateAppointmentDetails({location: null})
             : updateAppointmentDetails({
                 location: {
@@ -62,51 +60,106 @@ const AppointmentEditorCommonFieldsWrapper = props => {
 
     return (
         <Fragment>
-            <div className={classNames(searchFieldsContainer)}>
-                <div className={classNames(searchFieldsContainerLeft)}>
-                    <div data-testid="patient-search">
-                        <PatientSearch
-                            value={appointmentDetails.patient}
-                            minCharLengthToTriggerPatientSearch={appConfig && appConfig.minCharLengthToTriggerPatientSearch}
-                            onChange={(optionSelected) => {
-                                const newValue = optionSelected ? optionSelected : null;
-                                updateAppointmentDetails({patient: newValue});
-                                errors.patientError && optionSelected && updateErrorIndicators({patientError: !newValue});
-                            }} isDisabled={componentsDisableStatus.patient}
-                            autoFocus={autoFocus}/>
-                        <ErrorMessage
-                            message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
-                    </div>
-                    {isSpecialitiesEnabled(appConfig) ?
-                        <div data-testid="speciality-search">
-                            <SpecialitySearch value={appointmentDetails.speciality}
-                                              onChange={(optionSelected) => {
-                                                  console.log(optionSelected);
-                                                  return updateAppointmentDetails({
-                                                  speciality: optionSelected,
-                                                  service: null,
-                                                  serviceType: null,
-                                                  location: null
-                                              })}}
-                                              isDisabled={componentsDisableStatus.speciality}
-                                              autoFocus={componentsDisableStatus.patient}/>
-                        </div> : null
-                    }
-                    <div data-testid="service-search">
-                        <ServiceSearch value={appointmentDetails.service} onChange={(optionSelected) => {
-                            updateAppointmentDetails({service: optionSelected, serviceType: null});
-                            updateErrorIndicators({serviceError: !optionSelected});
-                            optionSelected && endTimeBasedOnService(appointmentDetails.startTime, optionSelected.value, undefined);
-                            optionSelected && updateLocationBasedOnService(optionSelected);
-                        }} specialityUuid={appointmentDetails.speciality && appointmentDetails.speciality.value
-                        && appointmentDetails.speciality.value.uuid}
-                                       isDisabled={componentsDisableStatus.service}
-                                       specialityEnabled = {isSpecialitiesEnabled(appConfig)}
-                                       autoFocus={componentsDisableStatus.patient}
-                    />
-                        <ErrorMessage
-                            message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
-                    </div>
+            <div className={classNames(commonFields)}>
+                <div data-testid="patient-search">
+                    <PatientSearch
+                        value={appointmentDetails.patient}
+                        minCharLengthToTriggerPatientSearch={appConfig && appConfig.minCharLengthToTriggerPatientSearch}
+                        onChange={(optionSelected) => {
+                            const newValue = optionSelected ? optionSelected : null;
+                            updateAppointmentDetails({patient: newValue});
+                            errors.patientError && optionSelected && updateErrorIndicators({patientError: !newValue});
+                        }} isDisabled={componentsDisableStatus.patient}
+                        autoFocus={autoFocus}/>
+                    <ErrorMessage
+                        message={errors.patientError ? errorTranslations.patientErrorMessage : undefined}/>
+                </div>
+                <table className={classNames(tableWrapper)}>
+                    <tr>
+                        <td>
+                            <div>
+                                <AppointmentCategory
+                                    onChange={ selectedCategory => {
+                                        if(selectedCategory.selectedItem){
+                                            updateAppointmentDetails({priority: selectedCategory.selectedItem.value})
+                                        }
+                                    }
+                                    }
+                                />
+                            </div>
+                        </td>
+                        <td/>
+                    </tr>
+                    <tr>
+                        <td>
+                            {isSpecialitiesEnabled(appConfig) ?
+                                <div data-testid="speciality-search">
+                                    <SpecialitySearch value={appointmentDetails.speciality}
+                                                      onChange={(optionSelected) => {
+                                                          return updateAppointmentDetails({
+                                                              speciality: optionSelected,
+                                                              service: null,
+                                                              serviceType: null,
+                                                              location: null
+                                                          })}}
+                                                      isDisabled={componentsDisableStatus.speciality}
+                                                      autoFocus={componentsDisableStatus.patient}/>
+                                </div> : null
+                            }
+                        </td>
+                        <td>
+                            <div data-testid="service-search">
+                                <ServiceSearch value={appointmentDetails.service} onChange={(optionSelected) => {
+                                    updateAppointmentDetails({service: optionSelected, serviceType: null});
+                                    updateErrorIndicators({serviceError: !optionSelected});
+                                    optionSelected && endTimeBasedOnService(appointmentDetails.startTime, optionSelected.value, undefined);
+                                    optionSelected && updateLocationBasedOnService(optionSelected);
+                                }} specialityUuid={appointmentDetails.speciality && appointmentDetails.speciality.value
+                                    && appointmentDetails.speciality.value.uuid}
+                                               isDisabled={componentsDisableStatus.service}
+                                               specialityEnabled = {isSpecialitiesEnabled(appConfig)}
+                                               autoFocus={componentsDisableStatus.patient}
+                                />
+                                <ErrorMessage
+                                    message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div data-testid="provider-search">
+                                <ProviderSearch
+                                    onChange={selectedProvider => {
+                                        if (getValidProviders(appointmentDetails.providers).length < maxAppointmentProvidersAllowed(appConfig)) {
+                                            addOrUpdateProvider(selectedProvider);
+                                        } else {
+                                            if (!appointmentDetails.providerError) {
+                                                updateErrorIndicators({providerError: true});
+                                                setTimeout(function () {
+                                                    updateErrorIndicators({providerError: false});
+                                                }, PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL);
+                                            }
+                                        }
+                                    }}
+                                    onProviderRemove={providerIdentifier => updateAppointmentDetails({providers: filter(appointmentDetails.providers, provider => provider.value !== providerIdentifier)})}
+                                    selectedProviders={appointmentDetails.providers}
+                                    isDisabled={componentsDisableStatus.providers}/>
+                                <ErrorMessage message={errors.providerError && getMaxAppointmentProvidersErrorMessage(intl,
+                                    appConfig && appConfig.maxAppointmentProviders || DEFAULT_MAX_APPOINTMENT_PROVIDERS).providerErrorMessage}/>
+                            </div>
+                        </td>
+                        <td>
+                            <div data-testid="location-search">
+                                <LocationSearch value={appointmentDetails.location}
+                                                onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
+                                                isDisabled={componentsDisableStatus.location}
+                                                autoFocus={componentsDisableStatus.patient && componentsDisableStatus.speciality && componentsDisableStatus.service}/>
+                                <ErrorMessage message={undefined}/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div>
                     {isServiceTypeEnabled(appConfig) ?
                         <div data-testid="service-type-search">
                             <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
@@ -116,42 +169,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                                serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
                                                isDisabled={componentsDisableStatus.serviceType}/>
                         </div> : undefined}
-                    <div data-testid="location-search">
-                        <LocationSearch value={appointmentDetails.location}
-                                        onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
-                                        isDisabled={componentsDisableStatus.location}
-                                        autoFocus={componentsDisableStatus.patient && componentsDisableStatus.speciality && componentsDisableStatus.service}/>
-                        <ErrorMessage message={undefined}/>
-                    </div>
                 </div>
-                <div className={classNames(searchFieldsContainerRight)} data-testid="provider-search">
-                    <ProviderSearch
-                        onChange={selectedProvider => {
-                            if (getValidProviders(appointmentDetails.providers).length < maxAppointmentProvidersAllowed(appConfig)) {
-                                addOrUpdateProvider(selectedProvider);
-                            } else {
-                                if (!appointmentDetails.providerError) {
-                                    updateErrorIndicators({providerError: true});
-                                    setTimeout(function () {
-                                        updateErrorIndicators({providerError: false});
-                                    }, PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL);
-                                }
-                            }
-                        }}
-                        onProviderRemove={providerIdentifier => updateAppointmentDetails({providers: filter(appointmentDetails.providers, provider => provider.value !== providerIdentifier)})}
-                        selectedProviders={appointmentDetails.providers}
-                        isDisabled={componentsDisableStatus.providers}/>
-                    <ErrorMessage message={errors.providerError && getMaxAppointmentProvidersErrorMessage(intl,
-                        appConfig && appConfig.maxAppointmentProviders || DEFAULT_MAX_APPOINTMENT_PROVIDERS).providerErrorMessage}/>
-                </div>
-                <AppointmentCategory
-                    onChange={ selectedCategory => {
-                        if(selectedCategory.selectedItem){
-                            updateAppointmentDetails({priority: selectedCategory.selectedItem.value})
-                        }
-                      }
-                    }
-                />
             </div>
         </Fragment>
     );

@@ -1,7 +1,5 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import {notes} from './AppointmentNotes.module.scss';
 import {injectIntl} from "react-intl";
 import { TextArea } from 'carbon-components-react'
 import 'carbon-components/css/carbon-components.min.css';
@@ -12,7 +10,7 @@ const AppointmentNotes = (props) => {
         id: 'PLACEHOLDER_APPOINTMENT_NOTES_MAX_LENGTH', defaultMessage: 'Maximum of 250 characters'
     });
     return (<Fragment>
-            <TextArea value={value || ''} className={classNames(notes)} onChange={onChange}
+            <TextArea value={value || ''} onBlur={onChange}
                       data-testid="notes" maxLength="250" labelText={"Notes"} enableCounter={true}
                       placeholder={placeHolder}/>
         </Fragment>

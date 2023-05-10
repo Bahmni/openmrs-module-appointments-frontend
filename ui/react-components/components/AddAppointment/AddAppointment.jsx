@@ -7,11 +7,12 @@ import {
     isRecurring,
     recurringContainer,
     recurringContainerLeft,
-    recurringContainerRight,
-    searchFieldsContainer,
-    appointmentTypeContainer,
+    tableWrapper,
+    teleconsultation,
     timeSelector,
-    weekDaysContainer
+    weekDaysContainer,
+    overlay,
+    close,
 } from './AddAppointment.module.scss';
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
@@ -29,7 +30,6 @@ import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
 import {getAppointmentBookingMessage, getRecurringAppointmentBookingMessage, getPhoneNumber} from '../../utils/AppointmentSMS.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
-import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import AppointmentType from "../AppointmentType/AppointmentType.jsx";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
@@ -67,6 +67,10 @@ import * as patientApi from "../../api/patientApi";
 import {mapOpenMRSPatient} from "../../mapper/patientMapper";
 import {sendSMS} from "../../api/smsService";
 import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
+import { Close20 } from '@carbon/icons-react';
+import { Button, ContentSwitcher, Switch } from 'carbon-components-react';
+import 'carbon-components/css/carbon-components.min.css';
+import './AddAppointment.module.scss';
 
 const AddAppointment = props => {
 
@@ -208,7 +212,6 @@ const AddAppointment = props => {
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {return {...prevErrors, ...errorIndicators}});
 
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
-        console.log( 'AppointmentDetails',modifiedAppointmentDetails, prevAppointmentDetails)
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 
@@ -440,8 +443,8 @@ const AddAppointment = props => {
             return <AppointmentType appointmentType={appointmentDetails.appointmentType}
                     isTeleconsultation={appointmentDetails.teleconsultation}     
                     onChange={(e) => {
-                        if (e.target.name === TELECONSULTATION_APPOINTMENT) {
-                            updateAppointmentDetails({ teleconsultation: e.target.checked });
+                        if (e.name === TELECONSULTATION_APPOINTMENT) {
+                            updateAppointmentDetails({ teleconsultation: e.checked });
                             if (e.target.checked && appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE) {
                                 updateAppointmentDetails({ appointmentType: VIRTUAL_APPOINTMENT_TYPE });
                             }
@@ -458,36 +461,39 @@ const AddAppointment = props => {
 
 
     const on = "On";
-    return (<Fragment>
-        <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
+    return (<div className={classNames(overlay)}>
+            <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
+                <div className={classNames(close)}>
+                    <Close20/>
+                </div>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
                 updateAppointmentDetails={updateAppointmentDetails}
                 updateErrorIndicators={updateErrorIndicators}
                 endTimeBasedOnService={endTimeBasedOnService}
                 appConfig={appConfig} errors={errors} autoFocus={true} />
-            <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
+            <div data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
-                    <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
-                        onChange={(e) => {
-                            if (appointmentDetails.appointmentType === e.target.name) {
-                                updateAppointmentDetails({ appointmentType: undefined });    
-                            } else {
-                                updateAppointmentDetails({ appointmentType: e.target.name });
-                            }
-                            if (e.target.name === WALK_IN_APPOINTMENT_TYPE) {
-                                updateAppointmentDetails({ teleconsultation: false});
-                            }
-                        }} />
+                    <ContentSwitcher selectedIndex={0} onChange={(e) => {
+                        if (appointmentDetails.appointmentType === e.name) {
+                            updateAppointmentDetails({ appointmentType: undefined });
+                        } else {
+                            updateAppointmentDetails({ appointmentType: e.name });
+                        }
+                        if (e.index === 1) {
+                            updateAppointmentDetails({ teleconsultation: false});
+                        }
+                    }}>
+                        <Switch name="Regular" >Regular Appointment</Switch>
+                        <Switch name="Recurring">Recurring Appointment</Switch>
+                    </ContentSwitcher>
                 </div>
             </div>
-            <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
-                <div className={classNames(appointmentPlanContainer)}>
+            <div data-testid="appointment-type-checkbox" className={classNames(teleconsultation)}>
                     {showAppointmentTypeControl()}
-                </div>
             </div>
-            <div className={classNames(recurringContainer)}>
+            <div>
                 {isRecurringAppointment() ?
-                    <div className={classNames(recurringContainerLeft)}>
+                    <div className={classNames(recurringContainerLeft, recurringContainer)}>
                         <div data-testid="start-date-group">
                             <div className={classNames(dateHeading)}>
                                 <Label translationKey="STARTS_LABEL" defaultValue="Starts"/>
@@ -594,51 +600,71 @@ const AddAppointment = props => {
                             </div>
                         </div>
                     </div> :
-                    <div className={classNames(recurringContainerLeft)}>
-                        <div data-testid="date-selector">
-                            <div className={classNames(dateHeading)}>
-                                <Label translationKey="APPOINTMENT_DATE_LABEL" defaultValue="Appointment date"/>
-                            </div>
-                            <DatePickerCarbon
-                                onChange={date => {
-                                    const selectedDate = moment(date[0]).toDate();
-                                    updateAppointmentDetails({appointmentDate: selectedDate});
-                                    updateErrorIndicators({appointmentDateError: !date[0]});
-                                }}/>
-                            <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
-                        </div>
-                        <div>
-                            <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/></div>
-                            <div data-testid="start-time-selector">
-                                <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
-                                              onChange={time => {
-                                                  updateAppointmentDetails({startTime: time});
-                                                  endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
-                                                      appointmentDetails.serviceType && appointmentDetails.serviceType.value);
-                                                  updateErrorIndicators({startTimeError: !time});
-                                              }}/>
-                                <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
-                            </div>
-                            <div data-testid="end-time-selector">
-                                <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
-                                              onChange={time => {
-                                                  updateAppointmentDetails({endTime: time});
-                                                  updateErrorIndicators({
-                                                      startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
-                                                      endTimeError: !time
-                                                  });
-                                              }}/>
-                                <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
-                            </div>
-                            <ErrorMessage
-                                message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
-                        </div>
-                    </div>}
-                <div className={classNames(recurringContainerRight)}>
-                    <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/></div>
+                    <div className={classNames(tableWrapper)}>
+                    <table>
+                        <tr>
+                            <td>
+                                <div data-testid="date-selector">
+                                    <DatePickerCarbon
+                                        onChange={date => {
+                                            const selectedDate = moment(date[0]).toDate();
+                                            updateAppointmentDetails({appointmentDate: selectedDate});
+                                            updateErrorIndicators({appointmentDateError: !date[0]});
+                                        }}/>
+                                    <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
+                                </div>
+                            </td>
+                            <td/>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div data-testid="start-time-selector">
+                                    <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
+                                                  onChange={time => {
+                                                      if(time && !time.isValid()) {
+                                                          updateErrorIndicators({startTimeError: true});
+                                                      }
+                                                      else {
+                                                          updateAppointmentDetails({startTime: time});
+                                                          endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
+                                                              appointmentDetails.serviceType && appointmentDetails.serviceType.value);
+                                                          updateErrorIndicators({startTimeError: !time});
+                                                      }
+                                                  }}/>
+                                    {
+                                        errors.startTimeError ?
+                                            <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/> :<ErrorMessage
+                                                message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div data-testid="end-time-selector">
+                                    <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
+                                                  onChange={time => {
+                                                      if(time && !time.isValid()) {
+                                                          updateErrorIndicators({endTimeError: true});
+                                                      }
+                                                      else {
+                                                          updateAppointmentDetails({endTime: time});
+                                                          updateErrorIndicators({
+                                                              startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
+                                                              endTimeError: !time
+                                                          });
+                                                      }
+                                                  }}/>
+                                    <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </table>
+                    </div>
+                }
+            </div>
+                <div>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
-            </div>
             <AppointmentEditorFooter
                 errorMessage={serviceErrorMessage}
                 checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
@@ -661,7 +687,7 @@ const AddAppointment = props => {
                 closeOnEscape: false
             }) : undefined}
         </div>
-    </Fragment>);
+    </div>);
 };
 
 AddAppointment.propTypes = {

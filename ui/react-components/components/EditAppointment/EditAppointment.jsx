@@ -147,7 +147,6 @@ const EditAppointment = props => {
     });
 
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
-        console.log(modifiedAppointmentDetails, prevAppointmentDetails);
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 
