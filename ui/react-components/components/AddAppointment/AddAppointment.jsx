@@ -71,6 +71,7 @@ import { Close20 } from '@carbon/icons-react';
 import { Button, ContentSwitcher, Switch } from 'carbon-components-react';
 import 'carbon-components/css/carbon-components.min.css';
 import './AddAppointment.module.scss';
+import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
 import {isAppointmentPriorityOptionEnabled} from "../../helper";
 
 const AddAppointment = props => {
@@ -230,7 +231,7 @@ const AddAppointment = props => {
     });
 
     const isDatelessAppointment = () => {
-        return appointmentDetails && appConfig && appConfig.prioritiesForDateless.includes(appointmentDetails.priority) 
+        return appointmentDetails && appConfig && appConfig.prioritiesForDateless.includes(appointmentDetails.priority)
             && !appointmentDetails.appointmentDate && !appointmentDetails.startTime && !appointmentDetails.endTime;
     }
 
@@ -495,13 +496,16 @@ const AddAppointment = props => {
         }
     };
 
+    const popupContent = <CancelConfirmation {...CANCEL_CONFIRMATION_MESSAGE_ADD} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
+
+    const closeButton = <div className={classNames(close)}>
+        <Close20/>
+    </div>
 
     const on = "On";
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
-                <div className={classNames(close)}>
-                    <Close20/>
-                </div>
+                <CustomPopup triggerComponent={closeButton} popupContent={popupContent} style={customPopup}/>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
                 updateAppointmentDetails={updateAppointmentDetails}
                 updateErrorIndicators={updateErrorIndicators}
@@ -688,11 +692,11 @@ const AddAppointment = props => {
                                                         updateErrorIndicators({endTimeError: true});
                                                       }
                                                       else {
-                                                        updateAppointmentDetails({endTime: time});
-                                                        updateErrorIndicators({
-                                                            startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
-                                                            endTimeError: !time
-                                                        });
+                                                          updateAppointmentDetails({endTime: time});
+                                                          updateErrorIndicators({
+                                                              startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
+                                                              endTimeError: !time
+                                                          });
                                                       }
                                                   }}/>
                                     <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
@@ -707,12 +711,6 @@ const AddAppointment = props => {
                 <div>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
-            <AppointmentEditorFooter
-                errorMessage={serviceErrorMessage}
-                checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
-                cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
-                disableSaveAndUpdateButton={disableSaveButton}
-            />
             {conflicts &&
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
@@ -729,6 +727,12 @@ const AddAppointment = props => {
                 closeOnEscape: false
             }) : undefined}
         </div>
+        <AppointmentEditorFooter
+            errorMessage={serviceErrorMessage}
+            checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
+            cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
+            disableSaveAndUpdateButton={disableSaveButton}
+        />
     </div>);
 };
 

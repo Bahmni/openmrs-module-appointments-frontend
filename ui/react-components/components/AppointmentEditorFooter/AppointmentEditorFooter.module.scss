@@ -1,15 +1,14 @@
 @import '../../variables.scss';
-
+@import "~carbon-components/src/globals/scss/vars";
 .errorMessageContainer {
   margin-left: 25px;
 }
 
 .footer {
   background: #f2f2f2;
-  height: 50px;
-  padding: 0 32px;
   position: fixed;
   width: calc(100% - 64px);
+  z-index: 55;
   bottom: 0;
 
   .footerElements {
