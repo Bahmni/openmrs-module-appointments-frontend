@@ -5,6 +5,7 @@
   "APPOINTMENT_LOCATION": "Location",
   "SUMMARY": "Summary",
   "APPOINTMENT_LIST": "Appointments List",
+  "AWAITING_APPOINTMENT_LIST": "Awaiting Appointments List",
   "CALENDAR_VIEW": "Calendar",
   "LIST_VIEW": "List view",
   "NO_PROVIDER_COLUMN_KEY": "[No Provider]",
