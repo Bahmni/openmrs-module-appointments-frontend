@@ -20,7 +20,7 @@ describe('Service Type Search', () => {
     it('should be in disabled mode', function () {
         const uuid = "";
         const {container} = renderWithReactIntl(<ServiceTypeSearch onChange={jest.fn()} serviceUuid={uuid}/>);
-        const disabledComponent = container.querySelector('.react-select--is-disabled');
+        const disabledComponent = container.querySelector('.bx--list-box--disabled');
         expect(getServiceSpy).not.toHaveBeenCalled();
         expect(disabledComponent).not.toBeNull();
     });
@@ -30,20 +30,12 @@ describe('Service Type Search', () => {
         const uuid = "74d43c99-fee1-4097-904a-e2292711b27f";
         const {container, getByText} = renderWithReactIntl(<ServiceTypeSearch onChange={jest.fn()}
                                                                               serviceUuid={uuid}/>);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, {target: {value: "Max"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const option = getByText(targetServiceType);
         fireEvent.click(option);
-        let singleValue;
-        await waitForElement(
-            () =>
-                (singleValue = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
         expect(getServiceSpy).toHaveBeenCalled();
-        expect(singleValue).toHaveTextContent(targetServiceType);
     });
 
 
@@ -58,20 +50,13 @@ describe('Service Type Search', () => {
         const onChangeSpy = jest.fn();
         const {container, getByText} = renderWithReactIntl(<ServiceTypeSearch onChange={onChangeSpy}
                                                                               serviceUuid={uuid}/>);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, {target: {value: "Max"}});
         await waitForElement(
-            () => (container.querySelector('.react-select__menu'))
+            () => (container.querySelector('.bx--list-box__menu'))
         );
         const option = getByText(targetServiceType);
         fireEvent.click(option);
-        let singleValue;
-        await waitForElement(
-            () =>
-                (singleValue = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
 });

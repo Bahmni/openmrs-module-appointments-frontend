@@ -18,7 +18,7 @@ const AppointmentNotes = (props) => {
     }
     return (<div data-testid="notes">
             <TextArea value={notes || ""} onChange={handleChange} onBlur={onChange}
-                      data-testid="notes" maxLength="250" labelText={"Notes"} enableCounter={true}
+                      data-testid="notes" maxCount={250} labelText={"Notes"} enableCounter={true}
                       placeholder={placeHolder}/>
         </div>
     )

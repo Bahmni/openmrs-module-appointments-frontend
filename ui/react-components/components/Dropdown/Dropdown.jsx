@@ -29,9 +29,8 @@ const Dropdown = (props) => {
     defaultMessage: "No Options",
   });
   const [value, setValue] = useState(selectedValue);
-
   const filterItems = data => {
-    return data.item.label.includes(data.inputValue);
+    return data.item.label.toLowerCase().includes(data.inputValue.toLowerCase());
   }
   const {
     openMenuOnClick = true,
@@ -59,7 +58,7 @@ const Dropdown = (props) => {
       className={classNames(isComponentDisabled() ? disable : "")}
     >
       <ComboBox
-          id={id}
+          id={"combo-box"}
           ref={dropdownRef}
           items={options}
           onChange={handleOnChange}

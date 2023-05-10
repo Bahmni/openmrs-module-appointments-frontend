@@ -31,7 +31,6 @@ TimeSelector.propTypes = {
     defaultValue: PropTypes.string.isRequired,
     placeHolderTranslationKey: PropTypes.string,
     defaultTime: PropTypes.object,
-    placeHolderDefaultMessage: PropTypes.string.isRequired,
     isDisabled: PropTypes.bool
 };
 

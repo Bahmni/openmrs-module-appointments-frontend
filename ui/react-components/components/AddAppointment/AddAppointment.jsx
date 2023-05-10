@@ -227,6 +227,7 @@ const AddAppointment = props => {
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {return {...prevErrors, ...errorIndicators}});
 
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
+        console.log(modifiedAppointmentDetails);
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 

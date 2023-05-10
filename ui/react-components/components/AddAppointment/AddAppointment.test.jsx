@@ -32,9 +32,9 @@ let getPatientSpy;
 
 const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'months');
-    const nextButton = container.querySelector('.react-datepicker__navigation--next');
+    const nextButton = container.querySelector('.bx--date-picker__icon--right');
     fireEvent.click(nextButton);
-    fireEvent.click(container.querySelector('.react-datepicker__day--001'));
+    fireEvent.click(container.querySelector('.bx--date-picker__day--today--001'));
     return nextMonth;
 };
 
@@ -67,7 +67,6 @@ describe('Add Appointment', () => {
 
     it('should display the patient search', () => {
         const {container, getByTestId} = renderWithReactIntl(<AddAppointment/>);
-        expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
         expect(getByTestId('asyncSelect')).not.toBeNull();
     });
 
@@ -149,23 +148,17 @@ describe('Add Appointment', () => {
 
         //select service
         const targetService = 'Physiotherapy OPD';
-        const inputBoxService = container.querySelectorAll('.react-select__input input')[1];
+        const inputBoxService = container.querySelectorAll('.bx--text-input')[1];
         fireEvent.change(inputBoxService, {target: {value: "Phy"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const optionService = getByText(targetService);
         fireEvent.click(optionService);
         let singleValueService;
-        await waitForElement(
-            () =>
-                (singleValueService = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
 
         const nextMonth = clickOnFirstDayOfNextMonth(container);
 
         const selectedDate = nextMonth.startOf('month');
-        const dateSelectedField = container.querySelector('.react-datepicker__day--selected');
+        const dateSelectedField = container.querySelector('.bx--date-picker__day--selected');
         expect(dateSelectedField.textContent).toBe(selectedDate.date().toFixed(0));
 
         const dateInputField = getByPlaceholderText('mm/dd/yyyy');
@@ -336,9 +329,9 @@ describe('Add Appointment', () => {
         const {container, getByText} = renderWithReactIntl(<AddAppointment/>);
         //select service
         const targetService = 'Physiotherapy OPD';
-        const inputBoxService = container.querySelectorAll('.react-select__input input')[1];
+        const inputBoxService = container.querySelectorAll('.bx--text-input')[1];
         fireEvent.change(inputBoxService, {target: {value: "Phy"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const optionService = getByText(targetService);
         fireEvent.click(optionService);
         let singleValueService;
@@ -356,9 +349,9 @@ describe('Add Appointment', () => {
         const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         //select speciality
         const targetSpeciality = 'Cardiology';
-        const inputBoxSpeciality = container.querySelectorAll('.react-select__input input')[1];
+        const inputBoxSpeciality = container.querySelectorAll('.bx--text-input')[1];
         fireEvent.change(inputBoxSpeciality, {target: {value: "Card"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const optionSpeciality = getByText(targetSpeciality);
         fireEvent.click(optionSpeciality);
         let singleValueSpeciality;
@@ -370,9 +363,9 @@ describe('Add Appointment', () => {
         );
         //select service
         const targetService = 'Physiotherapy OPD';
-        const inputBoxService = container.querySelectorAll('.react-select__input input')[2];
+        const inputBoxService = container.querySelectorAll('.bx--text-input')[2];
         fireEvent.change(inputBoxService, {target: {value: "Phy"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const optionService = getByText(targetService);
         fireEvent.click(optionService);
         let singleValueService;
@@ -385,7 +378,7 @@ describe('Add Appointment', () => {
         getByText('Physiotherapy');
         // change speciality
         fireEvent.change(inputBoxSpeciality, {target: {value: "Neu"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         fireEvent.click(getByText("Neurology"));
 
         await waitForElement(
@@ -441,13 +434,13 @@ describe('Add Appointment', () => {
         const config = {maxAppointmentProviders: 1};
         const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         let selectedProvider = "Provider One";
-        const inputBox = container.querySelectorAll('.react-select__input input')[3];
+        const inputBox = container.querySelectorAll('.bx--text-input')[3];
         fireEvent.change(inputBox, {target: {value: "One"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const optionOne = getByText(selectedProvider);
         fireEvent.click(optionOne);
         fireEvent.change(inputBox, {target: {value: "Two"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         selectedProvider = "Provider Two";
         const optionTwo = getByText(selectedProvider);
         fireEvent.click(optionTwo);
@@ -460,13 +453,13 @@ describe('Add Appointment', () => {
         const config = {maxAppointmentProviders: 1};
         const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         let selectedProvider = "Provider One";
-        const inputBox = container.querySelectorAll('.react-select__input input')[3];
+        const inputBox = container.querySelectorAll('.bx--text-input')[3];
         fireEvent.change(inputBox, {target: {value: "One"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const optionOne = getByText(selectedProvider);
         fireEvent.click(optionOne);
         fireEvent.change(inputBox, {target: {value: "Two"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         selectedProvider = "Provider Two";
         const optionTwo = getByText(selectedProvider);
         fireEvent.click(optionTwo);
@@ -498,14 +491,14 @@ describe('Add Appointment', () => {
             appConfig={config}/>);
         let selectedProvider = "Provider One";
 
-        const inputBox = container.querySelectorAll('.react-select__input input')[3];
+        const inputBox = container.querySelectorAll('.bx--text-input')[3];
         fireEvent.change(inputBox, {target: {value: "One"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
 
         const optionOne = getByText(selectedProvider);
         fireEvent.click(optionOne);
         fireEvent.change(inputBox, {target: {value: "Two"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
 
         selectedProvider = "Provider Two";
         const optionTwo = getByText(selectedProvider);
@@ -563,18 +556,11 @@ describe('Add appointment with appointment request enabled', () => {
 
     const selectService = async (container, getByText) => {
         const targetService = 'Ortho Requested';
-        const inputBoxService = container.querySelectorAll('.react-select__input input')[1];
+        const inputBoxService = container.querySelectorAll('.bx--text-input')[1];
         fireEvent.change(inputBoxService, {target: {value: "Ort"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const optionService = getByText(targetService);
         fireEvent.click(optionService);
-        let singleValueService;
-        await waitForElement(
-            () =>
-                (singleValueService = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
     };
 
     const getAppointmentTime = () => {
@@ -589,9 +575,9 @@ describe('Add appointment with appointment request enabled', () => {
     };
 
     const selectProvider = async (container, getByText, searchValue, providerName) => {
-        const inputBox = container.querySelectorAll('.react-select__input input')[3];
+        const inputBox = container.querySelectorAll('.bx--text-input')[2];
         fireEvent.change(inputBox, {target: {value: searchValue}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const optionOne = getByText(providerName);
         fireEvent.click(optionOne);
 

@@ -39,9 +39,9 @@ describe('Provider Search', () => {
         const onChangeSpy = jest.fn();
         const {container, getByText} = renderWithReactIntl(
           <ProviderSearch onChange={onChangeSpy} />);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, {target: {value: "One"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const selectedProvider = getByText(provider);
         fireEvent.click(selectedProvider);
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
