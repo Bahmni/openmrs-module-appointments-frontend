@@ -15,7 +15,6 @@ import {AppContext} from "../AppContext/AppContext";
 import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import {Button} from "carbon-components-react";
-import 'carbon-components/css/carbon-components.min.css';
 
 const AppointmentEditorFooter = props => {
 
@@ -28,7 +27,7 @@ const AppointmentEditorFooter = props => {
 
     const popupContent = <CancelConfirmation {...cancelConfirmationMessage} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
 
-    const cancelButton = <Button kind="secondary" style={{width: "270px", background: "#393939"}} data-testid="cancel">
+    const cancelButton = <Button kind="secondary" style={{width: "270px"}} data-testid="cancel">
                             <span><FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/></span>
                         </Button>;
 
@@ -41,7 +40,7 @@ const AppointmentEditorFooter = props => {
             <div>
                 <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
                 {isEdit
-                    ? <Button kind="secondary" style={{width: "270px", background: "#007d79"}}  className={classNames(button, save)}
+                    ? <Button kind="secondary" style={{width: "270px"}}  className={classNames(button, save)}
                               onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}
                               disabled={disableSaveAndUpdateButton}
                               data-testid="check-and-save">
@@ -50,7 +49,7 @@ const AppointmentEditorFooter = props => {
                         <FormattedMessage id={'APPOINTMENT_UPDATE_LABEL'} defaultMessage={'Update'}/>
                     </span>
                     </Button>
-                    : <Button kind="primary" style={{width: "270px", background: "#007d79"}} onClick={checkAndSave} data-testid="check-and-save" disabled={disableSaveAndUpdateButton}>
+                    : <Button kind="primary" style={{width: "270px"}} onClick={checkAndSave} data-testid="check-and-save" disabled={disableSaveAndUpdateButton}>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
                     </span>

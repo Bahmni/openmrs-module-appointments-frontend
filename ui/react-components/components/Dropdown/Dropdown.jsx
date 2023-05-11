@@ -10,7 +10,6 @@ import { IndicatorSeparator } from "./IndicatorSeparator.jsx";
 import { injectIntl } from "react-intl";
 import { isUndefined } from "lodash";
 import {ComboBox} from "carbon-components-react";
-import 'carbon-components/css/carbon-components.min.css';
 
 const Dropdown = (props) => {
   const {

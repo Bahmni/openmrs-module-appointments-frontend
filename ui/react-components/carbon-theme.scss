@@ -1,0 +1,14 @@
+$interactive-01: #007d79;
+$interactive-02: #393939;
+$ui-05: #cce2ff;
+$inverse-01: #0a74ff;
+$hover-primary: #cde3ff;
+$hover-ui: #b1d3fc;
+$border-inverse: #0a74ff;
+@import "~carbon-components/scss/globals/scss/styles.scss";
+.bx--content-switcher-btn.bx--content-switcher--selected{
+  border: solid;
+}
+.bx--content-switcher-btn{
+  color: #0a74ff;
+}

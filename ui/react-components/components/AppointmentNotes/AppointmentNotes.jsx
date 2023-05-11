@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {injectIntl} from "react-intl";
 import { TextArea } from 'carbon-components-react'
-import 'carbon-components/css/carbon-components.min.css';
 
 const AppointmentNotes = (props) => {
     const {intl, onChange, value} = props;

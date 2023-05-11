@@ -90,7 +90,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                         }
                                         updateErrorIndicators({priorityError: !appointmentDetails.priority});
                                     }} isDisabled={componentsDisableStatus.priority}
-                                    autoFocus={autoFocus}/>
+                                    autoFocus={componentsDisableStatus.patient}/>
                                 <ErrorMessage message={errors.priorityError ? errorTranslations.priorityErrorMessage : undefined}/>
                             </div>
                         </td>

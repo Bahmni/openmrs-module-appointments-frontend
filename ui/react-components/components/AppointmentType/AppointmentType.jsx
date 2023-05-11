@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import {TELECONSULTATION_APPOINTMENT} from "../../constants";
 import { Checkbox } from 'carbon-components-react';
-import 'carbon-components/css/carbon-components.min.css';
 
 
 
