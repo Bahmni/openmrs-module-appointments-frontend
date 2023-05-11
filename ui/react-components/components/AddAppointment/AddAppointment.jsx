@@ -227,7 +227,6 @@ const AddAppointment = props => {
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {return {...prevErrors, ...errorIndicators}});
 
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
-        console.log(modifiedAppointmentDetails);
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 
@@ -292,7 +291,7 @@ const AddAppointment = props => {
         (appointmentDetails.endDateType === "After" && appointmentDetails.occurrences && appointmentDetails.occurrences > 0);
 
     const setViewDateAndShowSuccessPopup = startDate => {
-        setViewDate(moment(startDate).startOf('day').toDate());
+        startDate ? setViewDate(moment(startDate).startOf('day').toDate()) : setViewDate(moment().startOf('day').toDate());
         setShowSuccessPopup(true);
     };
 
@@ -481,7 +480,6 @@ const AddAppointment = props => {
             return <AppointmentType appointmentType={appointmentDetails.appointmentType}
                     isTeleconsultation={appointmentDetails.teleconsultation}     
                     onChange={(e) => {
-                        console.log(e, e.name)
                         if (e) {
                             updateAppointmentDetails({ teleconsultation: e });
                         }

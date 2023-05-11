@@ -58,7 +58,12 @@ const PatientSearch = (props) => {
     }, value)
 
     const showPatients = () => {
-        if(patients.length !== 0 ) {
+        if(userInput.length>= MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH && isCalled){
+            return (
+                <Tile style={styles.patientSearchDropdown}>{intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'})}</Tile>
+            )
+        }
+        else if(patients.length !== 0 ) {
             return patients.map((patient) => (
                 <ClickableTile style={styles.patientSearchDropdown}
                   key={patient.value}
@@ -71,11 +76,7 @@ const PatientSearch = (props) => {
                 </ClickableTile>
               ));
         }
-        else if(userInput.length>= MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH && isCalled && patients.length!==0){
-            return (
-                <Tile style={styles.patientSearchDropdown}>{intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'})}</Tile>
-            )
-        } else{
+        else{
             return (
                 <Tile style={styles.patientSearchDropdown}>{intl.formatMessage({id: 'DROPDOWN_TYPE_TO_SEARCH_MESSAGE', defaultMessage: 'Type to search'})}</Tile>
             );
