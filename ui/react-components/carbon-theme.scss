@@ -16,3 +16,6 @@ $border-inverse: #0a74ff;
 .bx--btn--primary:hover{
   background-color: #669999;
 }
+.bx--content-switcher-btn:disabled{
+  color: blue;
+}

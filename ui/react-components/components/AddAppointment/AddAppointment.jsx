@@ -521,7 +521,7 @@ const AddAppointment = props => {
                         }
                     }}>
                         <Switch name="Regular" >Regular Appointment</Switch>
-                        <Switch name="Recurring">Recurring Appointment</Switch>
+                        <Switch name="Recurring" disabled={true}>Recurring Appointment</Switch>
                     </ContentSwitcher>
                 </div>
             </div>
