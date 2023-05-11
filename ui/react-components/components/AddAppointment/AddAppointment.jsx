@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import classNames from 'classnames';
 import {
     appointmentEditor,
@@ -48,7 +48,6 @@ import {
     RECURRING_APPOINTMENT_TYPE,
     SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     TODAY,
-    TELECONSULTATION_APPOINTMENT,
     WALK_IN_APPOINTMENT_TYPE,
     VIRTUAL_APPOINTMENT_TYPE,
     SCHEDULED_APPOINTMENT_TYPE
@@ -68,7 +67,7 @@ import {mapOpenMRSPatient} from "../../mapper/patientMapper";
 import {sendSMS} from "../../api/smsService";
 import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
 import { Close20 } from '@carbon/icons-react';
-import { Button, ContentSwitcher, Switch } from 'carbon-components-react';
+import { ContentSwitcher, Switch } from 'carbon-components-react';
 import 'carbon-components/css/carbon-components.min.css';
 import './AddAppointment.module.scss';
 import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
@@ -481,14 +480,12 @@ const AddAppointment = props => {
             return <AppointmentType appointmentType={appointmentDetails.appointmentType}
                     isTeleconsultation={appointmentDetails.teleconsultation}     
                     onChange={(e) => {
-                        if (e.name === TELECONSULTATION_APPOINTMENT) {
-                            updateAppointmentDetails({ teleconsultation: e.checked });
-                            if (e.target.checked && appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE) {
-                                updateAppointmentDetails({ appointmentType: VIRTUAL_APPOINTMENT_TYPE });
-                            }
-                            if (!e.target.checked && appointmentDetails.appointmentType === VIRTUAL_APPOINTMENT_TYPE) {
-                                updateAppointmentDetails({ appointmentType: undefined });
-                            }
+                        console.log(e, e.name)
+                        if (e) {
+                            updateAppointmentDetails({ teleconsultation: e });
+                        }
+                        if (!e && appointmentDetails.appointmentType === VIRTUAL_APPOINTMENT_TYPE) {
+                            updateAppointmentDetails({ appointmentType: undefined });
                         }
                     }} />;
 

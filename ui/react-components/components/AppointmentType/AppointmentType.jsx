@@ -16,12 +16,11 @@ const AppointmentType = props => {
     }
 
     return (
-        <div data-test-id="add-tele-consultation">
+        <div data-testid="add-tele-consultation">
             <Checkbox
-                defaultChecked={false}
                 id="teleconsultation-checkbox"
                 onChange={onChange}
-                // checked={isVirtual()}
+                defaultChecked={isVirtual()}
                 labelText={TELECONSULTATION_APPOINTMENT}
                 disabled={isTeleconsultationDisabled}
             />
