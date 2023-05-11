@@ -91,7 +91,6 @@ const PatientSearch = (props) => {
             <Search
                 id="search"
                 data-testid="Search Patient"
-                labelText="SearchPatients"
                 placeholder={placeholder}
                 onChange={(e) =>{
                         setUserInput(e.target.value)
