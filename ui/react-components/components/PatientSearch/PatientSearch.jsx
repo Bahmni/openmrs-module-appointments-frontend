@@ -90,7 +90,7 @@ const PatientSearch = (props) => {
         <div>
             <Search
                 id="search"
-                data-testid="Search Patient"
+                data-testid="search-patient"
                 placeholder={placeholder}
                 onChange={(e) =>{
                         setUserInput(e.target.value)

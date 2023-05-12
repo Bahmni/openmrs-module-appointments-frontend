@@ -1,11 +1,12 @@
 import React from "react";
 import AddAppointment from "./AddAppointment.jsx";
 import {renderWithReactIntl} from "../../utils/TestUtil";
-import {fireEvent, waitForElement} from "@testing-library/react";
+import {fireEvent, getAllByTestId, waitForElement} from "@testing-library/react";
 import * as addAppointmentService from "./AddAppointmentService.js";
 import moment from "moment";
 import {AppContext} from "../AppContext/AppContext";
 import {getPatient} from "../../api/patientApi";
+import {getByTestId} from "@testing-library/dom";
 
 jest.mock('../../api/patientApi');
 jest.mock('../../api/serviceApi');
@@ -67,7 +68,7 @@ describe('Add Appointment', () => {
 
     it('should display the patient search', () => {
         const {container, getByTestId} = renderWithReactIntl(<AddAppointment/>);
-        expect(getByTestId('patient-search')).not.toBeNull();
+        expect(getByTestId('search-patient')).not.toBeNull();
     });
 
     it('should display the all components search except speciality', function () {
@@ -76,9 +77,9 @@ describe('Add Appointment', () => {
         };
         const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         expect(container.querySelector('.bx--search-input')).not.toBeNull();
-        expect(container.querySelector('.bx--list-box__menu')).not.toBeNull();
-        expect(container.querySelectorAll('.bx--list-box__menu').length).toEqual(4);
-        expect(getByTestId('patient-search')).not.toBeNull();
+        expect(container.querySelector('.bx--list-box')).not.toBeNull();
+        expect(container.querySelectorAll('.bx--list-box').length).toEqual(4);
+        expect(getByTestId('search-patient')).not.toBeNull();
         expect(getByTestId('service-search')).not.toBeNull();
         expect(() => getByTestId('speciality-search')).toThrow();
         expect(getByTestId('provider-search')).not.toBeNull();
@@ -92,8 +93,8 @@ describe('Add Appointment', () => {
         };
         const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         expect(container.querySelector('.bx--search-input')).not.toBeNull();
-        expect(container.querySelector('.bx--list-box__menu')).not.toBeNull();
-        expect(container.querySelectorAll('.bx--list-box__menu').length).toEqual(5);
+        expect(container.querySelector('.bx--list-box')).not.toBeNull();
+        expect(container.querySelectorAll('.bx--list-box').length).toEqual(5);
         expect(getByTestId('patient-search')).not.toBeNull();
         expect(getByTestId('service-search')).not.toBeNull();
         expect(getByTestId('speciality-search')).not.toBeNull();
@@ -113,8 +114,8 @@ describe('Add Appointment', () => {
     });
 
     it('should display error messages when checkAndSave is clicked and required fields are not selected', () => {
-        const {getByText, getAllByText} = renderWithReactIntl(<AddAppointment/>);
-        const button = getByText('Check and Save');
+        const {getByText, getAllByText, getByTestId} = renderWithReactIntl(<AddAppointment/>);
+        const button = getByTestId('check-and-save');
         const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveAppointment');
         fireEvent.click(button);
         getByText('Please select patient');
@@ -180,8 +181,8 @@ describe('Add Appointment', () => {
         getByTestId('date-selector');
         getByTestId('start-time-selector');
         getByTestId('end-time-selector');
-        getByTestId('notes');
-        expect(getAllByTestId('error-message').length).toBe(9);
+        getByTestId('notes-text-box');
+        expect(getAllByTestId('error-message').length).toBe(8);
     });
 
     //TODO: Fix these tests after recurring appointments plan is enabled with new UI
@@ -320,71 +321,54 @@ describe('Add Appointment', () => {
     // });
 
     it('should display location based on service', async () => {
-        const {container, getByText} = renderWithReactIntl(<AddAppointment/>);
-        //select service
+        getAllServicesSpy.mockResolvedValue([{"name" : "Physiotherapy OPD", "uuid" : "serviceUuid", "location" : {"name": "Hospital", uuid: "locationUuid"}}]);
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AddAppointment/>);
+
+        //select speciality
         const targetService = 'Physiotherapy OPD';
-        const inputBoxService = container.querySelectorAll('.bx--text-input')[1];
+        const inputBoxService = getByTestId('service-search').querySelector('.bx--text-input');
         fireEvent.change(inputBoxService, {target: {value: "Phy"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
-        const optionService = getByText(targetService);
-        fireEvent.click(optionService);
-        let singleValueService;
-        await waitForElement(
-            () =>
-                (singleValueService = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
-        getByText('Physiotherapy');
+        let serviceDropDownOption;
+        await waitForElement(() => (serviceDropDownOption = container.querySelector('.bx--list-box__menu-item__option')));
+        fireEvent.click(serviceDropDownOption);
+        const inputBoxLocation = getByTestId('location-search').querySelector('.bx--text-input');
+
+        expect(inputBoxService.value).toEqual(targetService);
+        expect(inputBoxLocation.value).toEqual("Hospital");
     });
 
     it('should clear service service type and location when speciality is changed', async () => {
+        getAllSpecialitiesSpy.mockResolvedValue([{"name" : "Cardiology", "uuid" : "specialityUuidOne"}, {"name" : "Neurology", "uuid" : "specialityUuidTwo"}]);
+        getAllServicesSpy.mockResolvedValue([{"name" : "Physiotherapy OPD", "uuid" : "serviceUuid", "speciality":
+                {"name": "Cardiology", "uuid": "specialityUuidOne"}, "location" : {"name": "Hospital", "uuid": "locationUuid"}}]);
         const config = {enableSpecialities: true};
-        const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        const {getByText, getByTestId, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+
         //select speciality
         const targetSpeciality = 'Cardiology';
-        const inputBoxSpeciality = container.querySelectorAll('.bx--text-input')[1];
+        const inputBoxSpeciality = getByTestId('speciality-search').querySelector('.bx--text-input');
         fireEvent.change(inputBoxSpeciality, {target: {value: "Card"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
+        await waitForElement(() => (getByTestId('speciality-search').querySelector('.bx--list-box__menu-item__option')));
         const optionSpeciality = getByText(targetSpeciality);
         fireEvent.click(optionSpeciality);
-        let singleValueSpeciality;
-        await waitForElement(
-            () =>
-                (singleValueSpeciality = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
+
         //select service
         const targetService = 'Physiotherapy OPD';
-        const inputBoxService = container.querySelectorAll('.bx--text-input')[2];
+        const inputBoxService = getByTestId('service-search').querySelector('.bx--text-input');
         fireEvent.change(inputBoxService, {target: {value: "Phy"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
+        await waitForElement(() => (getByTestId('service-search').querySelector('.bx--list-box__menu-item__option')));
         const optionService = getByText(targetService);
         fireEvent.click(optionService);
-        let singleValueService;
-        await waitForElement(
-            () =>
-                (singleValueService = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
-        getByText('Physiotherapy');
+
         // change speciality
         fireEvent.change(inputBoxSpeciality, {target: {value: "Neu"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
+        await waitForElement(() => (getByTestId('speciality-search').querySelector('.bx--list-box__menu-item__option')));
         fireEvent.click(getByText("Neurology"));
-
-        await waitForElement(
-            () =>
-                (singleValueSpeciality = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
 
         expect(queryByText('Cardiology')).toBeNull();
         expect(queryByText('Physiotherapy OPD')).toBeNull();
         expect(queryByText('Physiotherapy')).toBeNull();
+        expect(queryByText('Hospital')).toBeNull();
     });
 
     it('should populate the start date, start time and end time coming as props for normal appointment', function () {
@@ -426,18 +410,22 @@ describe('Add Appointment', () => {
 
     it('should not add second provider when maxAppointmentProvidersAllowed is 1', async () => {
         const config = {maxAppointmentProviders: 1};
-        const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        const {container, getByTestId, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+
         let selectedProvider = "Provider One";
-        const inputBox = container.querySelectorAll('.bx--text-input')[4];
+        const inputBox = getByTestId('provider-search').querySelector('.bx--text-input');
         fireEvent.change(inputBox, {target: {value: "One"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
-        const optionOne = getByText(selectedProvider);
-        fireEvent.click(optionOne);
+        let providerDropDownOption;
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
+        expect(getByText(selectedProvider)).toBeTruthy();
+        fireEvent.click(providerDropDownOption);
+
         fireEvent.change(inputBox, {target: {value: "Two"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
-        selectedProvider = "Provider Two";
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
+        expect(getByText(selectedProvider)).toBeTruthy();
         const optionTwo = getByText(selectedProvider);
-        fireEvent.click(optionTwo);
+        fireEvent.click(providerDropDownOption);
+
         expect(queryByText("Provider One")).not.toBeNull();
         expect(queryByText("Provider Two")).toBeNull();
     });
@@ -445,21 +433,25 @@ describe('Add Appointment', () => {
     it('should display error message and disappear after 3 seconds when second provider is selected and ' +
         'maxAppointmentProvidersAllowed is 1', async () => {
         const config = {maxAppointmentProviders: 1};
-        const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        const {getByTestId, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+
         let selectedProvider = "Provider One";
-        const inputBox = container.querySelectorAll('.bx--text-input')[3];
+        const inputBox = getByTestId('provider-search').querySelector('.bx--text-input');
         fireEvent.change(inputBox, {target: {value: "One"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
-        const optionOne = getByText(selectedProvider);
-        fireEvent.click(optionOne);
+        let providerDropDownOption;
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
+        expect(getByText(selectedProvider)).toBeTruthy();
+        fireEvent.click(providerDropDownOption);
+
         fireEvent.change(inputBox, {target: {value: "Two"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
         selectedProvider = "Provider Two";
-        const optionTwo = getByText(selectedProvider);
-        fireEvent.click(optionTwo);
+        expect(getByText(selectedProvider)).toBeTruthy();
+        fireEvent.click(providerDropDownOption);
+
         expect(queryByText("Provider One")).not.toBeNull();
         getByText("Please select only a maximum of 1 provider(s)");
-        expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);
+        expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 200);
         jest.runAllTimers();
         expect(queryByText("Please select only a maximum of 1 provider(s)")).toBeNull();
     });
@@ -481,25 +473,26 @@ describe('Add Appointment', () => {
 
     it('should not add provider if selected twice', async () => {
         const config = {maxAppointmentProviders: 2};
-        const {container, getByText, queryByText, queryAllByText} = renderWithReactIntl(<AddAppointment
+        const {getByTestId, getByText, queryByText, queryAllByText} = renderWithReactIntl(<AddAppointment
             appConfig={config}/>);
+
         let selectedProvider = "Provider One";
-
-        const inputBox = container.querySelectorAll('.bx--text-input')[3];
+        const inputBox = getByTestId('provider-search').querySelector('.bx--text-input');
         fireEvent.change(inputBox, {target: {value: "One"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
-
-        const optionOne = getByText(selectedProvider);
-        fireEvent.click(optionOne);
-        fireEvent.change(inputBox, {target: {value: "Two"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
+        let providerDropDownOption;
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
+        expect(getByText(selectedProvider)).toBeTruthy();
+        fireEvent.click(providerDropDownOption);
 
         selectedProvider = "Provider Two";
-        const optionTwo = getByText(selectedProvider);
-        fireEvent.click(optionTwo);
+        fireEvent.change(inputBox, {target: {value: "Two"}});
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
+        expect(getByText(selectedProvider)).toBeTruthy();
+        fireEvent.click(providerDropDownOption);
 
-        const optionThree = getByText(selectedProvider);
-        fireEvent.click(optionThree);
+        fireEvent.change(inputBox, {target: {value: "Two"}});
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
+        fireEvent.click(providerDropDownOption);
 
         expect(queryByText("Provider One")).not.toBeNull();
         expect(queryByText("Provider Two")).not.toBeNull();
@@ -533,17 +526,20 @@ describe('Add appointment with appointment request enabled', () => {
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const inputBox = container.querySelector('.bx--search-input');
         fireEvent.blur(inputBox);
-        fireEvent.change(inputBox, { target: { value: "9DE" } });
+        fireEvent.change(inputBox, { target: { value: "abc" } });
+        let searchedPatient;
         await waitForElement(
-            () => (container.querySelector('.bx--tile--clickable'))
+            () => (searchedPatient = container.querySelector('.bx--tile--clickable'))
         );
+        expect(getByText(targetPatient)).toBeTruthy();
+        fireEvent.click(searchedPatient);
     };
 
-    const selectService = async (container, getByText) => {
+    const selectService = async (getByTestId, getByText) => {
         const targetService = 'Ortho Requested';
-        const inputBoxService = container.querySelectorAll('.bx--text-input')[1];
+        const inputBoxService = getByTestId("service-search").querySelector('.bx--text-input');
         fireEvent.change(inputBoxService, {target: {value: "Ort"}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
+        await waitForElement(() => (getByTestId("service-search").querySelector('.bx--list-box__menu-item__option')));
         const optionService = getByText(targetService);
         fireEvent.click(optionService);
     };
@@ -559,12 +555,13 @@ describe('Add appointment with appointment request enabled', () => {
         };
     };
 
-    const selectProvider = async (container, getByText, searchValue, providerName) => {
-        const inputBox = container.querySelectorAll('.bx--text-input')[2];
+    const selectProvider = async (getByTestId, getByText, searchValue, providerName) => {
+        const inputBox = getByTestId('provider-search').querySelector('.bx--text-input');
         fireEvent.change(inputBox, {target: {value: searchValue}});
-        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
-        const optionOne = getByText(providerName);
-        fireEvent.click(optionOne);
+        let providerDropDownOption;
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
+        expect(getByText(providerName)).toBeTruthy();
+        fireEvent.click(providerDropDownOption);
 
     };
 
@@ -588,18 +585,18 @@ describe('Add appointment with appointment request enabled', () => {
     });
 
     it('should update the appointment status and provider responses if the AppointmentRequest is Enabled', async () => {
-        const {container, getByText, queryByText} = renderWithReactIntl(
+        const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
             <AppContext.Provider value={{setViewDate: jest.fn()}}>
                 <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider}/>
             </AppContext.Provider>
 
         );
         await selectPatient(container, getByText);
-        await selectService(container, getByText);
-        await selectProvider(container, getByText, "Two", "Provider Two");
-        await selectProvider(container, getByText, "Three", "Provider Three");
+        await selectService(getByTestId, getByText);
+        await selectProvider(getByTestId, getByText, "Two", "Provider Two");
+        await selectProvider(getByTestId, getByText, "Three", "Provider Three");
 
-        const button = getByText('Check and Save');
+        const button = getByTestId('check-and-save');
         fireEvent.click(button);
         await waitForElement(() => (container.querySelector('.popup-overlay')));
 
@@ -614,18 +611,18 @@ describe('Add appointment with appointment request enabled', () => {
     });
 
     it('should update the appointment status as Scheduled when current provider is part of appointment', async () => {
-        const {container, getByText, queryByText} = renderWithReactIntl(
+        const {container, getByTestId, getByText, queryByText} = renderWithReactIntl(
             <AppContext.Provider value={{setViewDate: jest.fn()}}>
                 <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider}/>
             </AppContext.Provider>
 
         );
         await selectPatient(container, getByText);
-        await selectService(container, getByText);
-        await selectProvider(container, getByText, "One", "Provider One");
-        await selectProvider(container, getByText, "Two", "Provider Two");
+        await selectService(getByTestId, getByText);
+        await selectProvider(getByTestId, getByText, "One", "Provider One");
+        await selectProvider(getByTestId, getByText, "Two", "Provider Two");
 
-        const button = getByText('Check and Save');
+        const button = getByTestId('check-and-save');
         fireEvent.click(button);
         await waitForElement(() => (container.querySelector('.popup-overlay')));
 

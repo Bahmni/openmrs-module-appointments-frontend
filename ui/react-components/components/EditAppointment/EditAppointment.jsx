@@ -263,7 +263,8 @@ const EditAppointment = props => {
     };
 
     const setViewDateAndShowSuccessPopup = startDate => {
-        startDate ? setViewDate(moment(startDate).startOf('day').toDate()) : setViewDate(moment().startOf('day').toDate());
+        const date = startDate ? moment(startDate) : moment();
+        setViewDate(date.startOf('day').toDate())
         setShowUpdateSuccessPopup(true);
     };
 

@@ -231,13 +231,13 @@ const AddAppointment = props => {
     });
 
     const isDatelessAppointment = () => {
-        return appointmentDetails && appConfig && appConfig.prioritiesForDateless && appConfig.prioritiesForDateless.includes(appointmentDetails.priority)
+        return appointmentDetails && appConfig && appConfig.enablePriorityOption && appConfig.prioritiesForDateless && appConfig.prioritiesForDateless.includes(appointmentDetails.priority)
             && !appointmentDetails.appointmentDate && !appointmentDetails.startTime && !appointmentDetails.endTime;
     }
 
     const isValidAppointment = () => {
         const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.value.uuid;
-        const isValidPriority = !isAppointmentPriorityOptionEnabled(appConfig) ? true : ((isAppointmentPriorityOptionEnabled(appConfig) && !appointmentDetails.priority) ? false : true)
+        const isValidPriority = !isAppointmentPriorityOptionEnabled(appConfig) || appointmentDetails.priority
         updateErrorIndicators({priorityError: !isValidPriority});
         if (isDatelessAppointment()) {
             updateErrorIndicators({
@@ -291,7 +291,8 @@ const AddAppointment = props => {
         (appointmentDetails.endDateType === "After" && appointmentDetails.occurrences && appointmentDetails.occurrences > 0);
 
     const setViewDateAndShowSuccessPopup = startDate => {
-        startDate ? setViewDate(moment(startDate).startOf('day').toDate()) : setViewDate(moment().startOf('day').toDate());
+        const date = startDate ? moment(startDate) : moment();
+        setViewDate(date.startOf('day').toDate())
         setShowSuccessPopup(true);
     };
 
