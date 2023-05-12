@@ -231,7 +231,7 @@ const AddAppointment = props => {
     });
 
     const isDatelessAppointment = () => {
-        return appointmentDetails && appConfig && appConfig.prioritiesForDateless.includes(appointmentDetails.priority)
+        return appointmentDetails && appConfig && appConfig.prioritiesForDateless && appConfig.prioritiesForDateless.includes(appointmentDetails.priority)
             && !appointmentDetails.appointmentDate && !appointmentDetails.startTime && !appointmentDetails.endTime;
     }
 
@@ -724,12 +724,14 @@ const AddAppointment = props => {
                 closeOnEscape: false
             }) : undefined}
         </div>
+        <div  data-testid="Appointment-editer-footer">
         <AppointmentEditorFooter
             errorMessage={serviceErrorMessage}
             checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
             cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
             disableSaveAndUpdateButton={disableSaveButton}
         />
+        </div>
     </div>);
 };
 

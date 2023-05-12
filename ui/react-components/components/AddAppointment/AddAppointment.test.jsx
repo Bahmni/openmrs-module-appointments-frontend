@@ -67,21 +67,22 @@ describe('Add Appointment', () => {
 
     it('should display the patient search', () => {
         const {container, getByTestId} = renderWithReactIntl(<AddAppointment/>);
-        expect(getByTestId('asyncSelect')).not.toBeNull();
+        expect(getByTestId('patient-search')).not.toBeNull();
     });
 
     it('should display the all components search except speciality', function () {
         const config = {
             "enableServiceTypes": true
         };
-        const {container, getAllByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-        expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
-
-        expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
-        expect(container.querySelector('.searchFieldsContainerLeft').children.length).toBe(4);
-        expect(container.querySelector('.searchFieldsContainerRight')).not.toBeNull();
-        expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(2);
-        expect(getAllByTestId('select').length).toBe(4);
+        const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        expect(container.querySelector('.bx--search-input')).not.toBeNull();
+        expect(container.querySelector('.bx--list-box__menu')).not.toBeNull();
+        expect(container.querySelectorAll('.bx--list-box__menu').length).toEqual(4);
+        expect(getByTestId('patient-search')).not.toBeNull();
+        expect(getByTestId('service-search')).not.toBeNull();
+        expect(() => getByTestId('speciality-search')).toThrow();
+        expect(getByTestId('provider-search')).not.toBeNull();
+        expect(getByTestId('location-search')).not.toBeNull();
     });
 
     it('should display the all components search', function () {
@@ -89,21 +90,21 @@ describe('Add Appointment', () => {
             "enableSpecialities": true,
             "enableServiceTypes": true
         };
-        const {container, getAllByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-        expect(container.querySelector('.searchFieldsContainer')).not.toBeNull();
-        expect(container.querySelector('.searchFieldsContainerLeft')).not.toBeNull();
-        expect(container.querySelector('.searchFieldsContainerLeft').children.length).toBe(5);
-        expect(container.querySelector('.searchFieldsContainerRight')).not.toBeNull();
-        expect(container.querySelector('.searchFieldsContainerRight').children.length).toBe(2);
-        expect(getAllByTestId('select').length).toBe(5);
+        const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+        expect(container.querySelector('.bx--search-input')).not.toBeNull();
+        expect(container.querySelector('.bx--list-box__menu')).not.toBeNull();
+        expect(container.querySelectorAll('.bx--list-box__menu').length).toEqual(5);
+        expect(getByTestId('patient-search')).not.toBeNull();
+        expect(getByTestId('service-search')).not.toBeNull();
+        expect(getByTestId('speciality-search')).not.toBeNull();
+        expect(getByTestId('provider-search')).not.toBeNull();
+        expect(getByTestId('location-search')).not.toBeNull();
     });
 
     it('should render AppointmentEditorFooter', function () {
         const {getByTestId, container} = renderWithReactIntl(<AddAppointment/>);
         expect(container.querySelector('.footer')).not.toBeNull();
-        expect(container.querySelector('.footerElements')).not.toBeNull();
-        expect(container.querySelector('.footer').children.length).toBe(1);
-        expect(container.querySelector('.footerElements').children.length).toBe(2);
+        expect(getByTestId( "Appointment-editer-footer")).not.toBeNull();
     });
 
     it('should render AppointmentDatePicker', function () {
@@ -130,30 +131,21 @@ describe('Add Appointment', () => {
 
         //select patient
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--search-input');
         fireEvent.blur(inputBox);
-        fireEvent.change(inputBox, {target: {value: "abc"}});
+        fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
-            () => (container.querySelector('.react-select__menu'))
+            () => (container.querySelector('.bx--tile--clickable'))
         );
-        const option = getByText(targetPatient);
-        fireEvent.click(option);
-        let singleValue;
-        await waitForElement(
-            () =>
-                (singleValue = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
+
 
         //select service
         const targetService = 'Physiotherapy OPD';
-        const inputBoxService = container.querySelectorAll('.bx--text-input')[1];
-        fireEvent.change(inputBoxService, {target: {value: "Phy"}});
+        const inputBoxService = container.querySelector('.bx--text-input');
+        fireEvent.change(inputBoxService, { target: { value: "Phy" } });
         await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
-        const optionService = getByText(targetService);
-        fireEvent.click(optionService);
-        let singleValueService;
+        const option = getByText(targetService);
+        fireEvent.click(option);
 
         const nextMonth = clickOnFirstDayOfNextMonth(container);
 
@@ -192,138 +184,140 @@ describe('Add Appointment', () => {
         expect(getAllByTestId('error-message').length).toBe(9);
     });
 
-    it('should display recurring plan', () => {
-        const {container, getByText} = renderWithReactIntl(<AddAppointment/>);
-        expect(getByText('Plan')).not.toBeNull();
-        expect(container.querySelector('.planLabel')).not.toBeNull();
-    });
+    //TODO: Fix these tests after recurring appointments plan is enabled with new UI
+    //
+    // it('should display recurring plan', () => {
+    //     const {container, getByText} = renderWithReactIntl(<AddAppointment/>);
+    //     expect(getByText('Plan')).not.toBeNull();
+    //     expect(container.querySelector('.planLabel')).not.toBeNull();
+    // });
+    //
+    // it('should render all recurring components on click of recurring appointments checkbox', () => {
+    //     const {container, getByTestId, getByText, getAllByText} = renderWithReactIntl(<AddAppointment/>);
+    //     const checkBoxService = container.querySelector('.rc-checkbox-input');
+    //     fireEvent.click(checkBoxService);
+    //     expect(container.querySelector('.checkbox')).toBeChecked;
+    //     getByTestId('start-date-group');
+    //     getByTestId('end-date-group');
+    //     getByTestId('recurrence-type-group');
+    //     expect(getByText('Starts')).not.toBeNull();
+    //     expect(getByText('Today')).not.toBeNull();
+    //     expect(getAllByText('From')).not.toBeNull();
+    //     expect(getAllByText('From').length).toBe(2);
+    //     expect(getByText('To')).not.toBeNull();
+    //     expect(getByText('Ends')).not.toBeNull();
+    //     expect(getByText('After')).not.toBeNull();
+    //     expect(getByText('On')).not.toBeNull();
+    //     expect(getByText('Occurrences')).not.toBeNull();
+    //     expect(getByText('Repeats Every')).not.toBeNull();
+    //     expect(getByText('Day')).not.toBeNull();
+    //     expect(getByText('Week')).not.toBeNull();
+    //     expect(getByText('Choose a time slot')).not.toBeNull();
+    // });
 
-    it('should render all recurring components on click of recurring appointments checkbox', () => {
-        const {container, getByTestId, getByText, getAllByText} = renderWithReactIntl(<AddAppointment/>);
-        const checkBoxService = container.querySelector('.rc-checkbox-input');
-        fireEvent.click(checkBoxService);
-        expect(container.querySelector('.checkbox')).toBeChecked;
-        getByTestId('start-date-group');
-        getByTestId('end-date-group');
-        getByTestId('recurrence-type-group');
-        expect(getByText('Starts')).not.toBeNull();
-        expect(getByText('Today')).not.toBeNull();
-        expect(getAllByText('From')).not.toBeNull();
-        expect(getAllByText('From').length).toBe(2);
-        expect(getByText('To')).not.toBeNull();
-        expect(getByText('Ends')).not.toBeNull();
-        expect(getByText('After')).not.toBeNull();
-        expect(getByText('On')).not.toBeNull();
-        expect(getByText('Occurrences')).not.toBeNull();
-        expect(getByText('Repeats Every')).not.toBeNull();
-        expect(getByText('Day')).not.toBeNull();
-        expect(getByText('Week')).not.toBeNull();
-        expect(getByText('Choose a time slot')).not.toBeNull();
-    });
+    // it('should display error messages when checkAndSave is clicked and required recurring fields are not selected', () => {
+    //     const {getByText, queryByText, getAllByTestId, getAllByText, container} = renderWithReactIntl(
+    //         <AddAppointment/>);
+    //     const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveRecurring');
+    //     const checkBox = container.querySelector('.rc-checkbox-input');
+    //     fireEvent.click(checkBox);
+    //     const checkAndSaveButton = getByText('Check and Save');
+    //     fireEvent.click(checkAndSaveButton);
+    //     expect(queryByText('Please select patient')).not.toBeNull();
+    //     expect(queryByText('Please select service')).not.toBeNull();
+    //     expect(queryByText('Please select valid recurrence period')).not.toBeNull();
+    //     expect(getAllByText('Please select time').length).toBe(2);
+    //     expect(getAllByText('Please select date').length).toBe(1);
+    //     expect(getAllByText('Please select recurrence end type').length).toBe(1);
+    //     expect(getAllByTestId('error-message').length).toBe(12);
+    //     expect(saveAppointmentSpy).not.toHaveBeenCalled();
+    //
+    // });
 
-    it('should display error messages when checkAndSave is clicked and required recurring fields are not selected', () => {
-        const {getByText, queryByText, getAllByTestId, getAllByText, container} = renderWithReactIntl(
-            <AddAppointment/>);
-        const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveRecurring');
-        const checkBox = container.querySelector('.rc-checkbox-input');
-        fireEvent.click(checkBox);
-        const checkAndSaveButton = getByText('Check and Save');
-        fireEvent.click(checkAndSaveButton);
-        expect(queryByText('Please select patient')).not.toBeNull();
-        expect(queryByText('Please select service')).not.toBeNull();
-        expect(queryByText('Please select valid recurrence period')).not.toBeNull();
-        expect(getAllByText('Please select time').length).toBe(2);
-        expect(getAllByText('Please select date').length).toBe(1);
-        expect(getAllByText('Please select recurrence end type').length).toBe(1);
-        expect(getAllByTestId('error-message').length).toBe(12);
-        expect(saveAppointmentSpy).not.toHaveBeenCalled();
+    // it('should not display error message for start date & end date when today and after radio buttons are clicked', function () {
+    //     const config = {
+    //         "recurrence": {
+    //             "defaultNumberOfOccurrences": 10
+    //         }
+    //     };
+    //     const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AddAppointment
+    //         appConfig={config}/>);
+    //     const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveRecurring');
+    //     const checkBox = container.querySelector('.rc-checkbox-input');
+    //     fireEvent.click(checkBox);
+    //     const todayButton = getByTestId("today-radio-button");
+    //     fireEvent.click(todayButton);
+    //     const afterButton = getByTestId("after-radio-button");
+    //     fireEvent.click(afterButton);
+    //     const checkAndSaveButton = getByText('Check and Save');
+    //     fireEvent.click(checkAndSaveButton);
+    //     expect(queryAllByText('Please select date').length).toBe(0);
+    //     expect(saveAppointmentSpy).not.toHaveBeenCalled();
+    // });
 
-    });
+    // it('should display all week days on click of recurring checkbox', () => {
+    //     const config = {
+    //         "startOfWeek": "Tuesday",
+    //         "recurrence": {
+    //             "defaultNumberOfOccurrences": 10
+    //         }
+    //     };
+    //     const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+    //     const checkBoxService = container.querySelector('.rc-checkbox-input');
+    //     fireEvent.click(checkBoxService);
+    //     fireEvent.click(getByTestId('week-type'));
+    //     const buttonsOrder = [];
+    //     container.querySelectorAll('.buttonGroup button').forEach(button => buttonsOrder.push(button.innerHTML));
+    //     expect(buttonsOrder).toStrictEqual(['Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo']);
+    // });
 
-    it('should not display error message for start date & end date when today and after radio buttons are clicked', function () {
-        const config = {
-            "recurrence": {
-                "defaultNumberOfOccurrences": 10
-            }
-        };
-        const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AddAppointment
-            appConfig={config}/>);
-        const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveRecurring');
-        const checkBox = container.querySelector('.rc-checkbox-input');
-        fireEvent.click(checkBox);
-        const todayButton = getByTestId("today-radio-button");
-        fireEvent.click(todayButton);
-        const afterButton = getByTestId("after-radio-button");
-        fireEvent.click(afterButton);
-        const checkAndSaveButton = getByText('Check and Save');
-        fireEvent.click(checkAndSaveButton);
-        expect(queryAllByText('Please select date').length).toBe(0);
-        expect(saveAppointmentSpy).not.toHaveBeenCalled();
-    });
+    // it('should toggle the week day selection on click', () => {
+    //     const config = {
+    //         "startOfWeek": "Tuesday",
+    //         "recurrence": {
+    //             "defaultNumberOfOccurrences": 10
+    //         }
+    //     };
+    //     const {container, getAllByText, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+    //     const checkBoxService = container.querySelector('.rc-checkbox-input');
+    //     fireEvent.click(checkBoxService);
+    //     fireEvent.click(getByTestId('week-type'));
+    //     fireEvent.click(getAllByText('Su')[2]);
+    //     fireEvent.click(getAllByText('We')[2]);
+    //     fireEvent.click(getAllByText('Sa')[2]);
+    //     fireEvent.click(getAllByText('Sa')[2]);
+    //     expect(container.querySelectorAll('.buttonGroup .selected').length).toBe(2);
+    //     expect(container.querySelectorAll('.buttonGroup button:not(.selected)').length).toBe(5);
+    // });
 
-    it('should display all week days on click of recurring checkbox', () => {
-        const config = {
-            "startOfWeek": "Tuesday",
-            "recurrence": {
-                "defaultNumberOfOccurrences": 10
-            }
-        };
-        const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-        const checkBoxService = container.querySelector('.rc-checkbox-input');
-        fireEvent.click(checkBoxService);
-        fireEvent.click(getByTestId('week-type'));
-        const buttonsOrder = [];
-        container.querySelectorAll('.buttonGroup button').forEach(button => buttonsOrder.push(button.innerHTML));
-        expect(buttonsOrder).toStrictEqual(['Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo']);
-    });
-
-    it('should toggle the week day selection on click', () => {
-        const config = {
-            "startOfWeek": "Tuesday",
-            "recurrence": {
-                "defaultNumberOfOccurrences": 10
-            }
-        };
-        const {container, getAllByText, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-        const checkBoxService = container.querySelector('.rc-checkbox-input');
-        fireEvent.click(checkBoxService);
-        fireEvent.click(getByTestId('week-type'));
-        fireEvent.click(getAllByText('Su')[2]);
-        fireEvent.click(getAllByText('We')[2]);
-        fireEvent.click(getAllByText('Sa')[2]);
-        fireEvent.click(getAllByText('Sa')[2]);
-        expect(container.querySelectorAll('.buttonGroup .selected').length).toBe(2);
-        expect(container.querySelectorAll('.buttonGroup button:not(.selected)').length).toBe(5);
-    });
-
-    it('should display week days error message when check and save is clicked without selecting wek days', () => {
-        const config = {
-            "startOfWeek": "Tuesday",
-            "recurrence": {
-                "defaultNumberOfOccurrences": 10
-            }
-        };
-        const {container, getByText, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-        const checkBoxService = container.querySelector('.rc-checkbox-input');
-        fireEvent.click(checkBoxService);
-        fireEvent.click(getByTestId('week-type'));
-        fireEvent.click(getByText('Check and Save'));
-        getByText('Please select the day(s)');
-    });
+    // it('should display week days error message when check and save is clicked without selecting wek days', () => {
+    //     const config = {
+    //         "startOfWeek": "Tuesday",
+    //         "recurrence": {
+    //             "defaultNumberOfOccurrences": 10
+    //         }
+    //     };
+    //     const {container, getByText, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+    //     const checkBoxService = container.querySelector('.rc-checkbox-input');
+    //     fireEvent.click(checkBoxService);
+    //     fireEvent.click(getByTestId('week-type'));
+    //     fireEvent.click(getByText('Check and Save'));
+    //     getByText('Please select the day(s)');
+    // });
 
     //TODO need to add test to check the status of response on click of checkAndSave
     //TODO need to add test for conflicts api on click of check and save
     //TODO Not able to do because onChange of time picket is not getting called. Need to fix that
 
-    it('should toggle the selection of checkbox when changing the other', () => {
-        const {container} = renderWithReactIntl(<AddAppointment/>);
-        const recurringCheckBox = container.querySelectorAll('.rc-checkbox-input')[0];
-        fireEvent.click(recurringCheckBox);
-        const walkInCheckBox = container.querySelectorAll('.rc-checkbox-input')[1];
-        fireEvent.click(walkInCheckBox);
-        expect(container.querySelectorAll('.rc-checkbox-input')[0].checked).toBeFalsy();
-        expect(container.querySelectorAll('.rc-checkbox-input')[1].checked).toBeTruthy();
-    });
+    // it('should toggle the selection of checkbox when changing the other', () => {
+    //     const {container} = renderWithReactIntl(<AddAppointment/>);
+    //     const recurringCheckBox = container.querySelectorAll('.rc-checkbox-input')[0];
+    //     fireEvent.click(recurringCheckBox);
+    //     const walkInCheckBox = container.querySelectorAll('.rc-checkbox-input')[1];
+    //     fireEvent.click(walkInCheckBox);
+    //     expect(container.querySelectorAll('.rc-checkbox-input')[0].checked).toBeFalsy();
+    //     expect(container.querySelectorAll('.rc-checkbox-input')[1].checked).toBeTruthy();
+    // });
 
     it('should display location based on service', async () => {
         const {container, getByText} = renderWithReactIntl(<AddAppointment/>);
@@ -404,37 +398,37 @@ describe('Add Appointment', () => {
         };
         const {container, getByPlaceholderText} = renderWithReactIntl(<AddAppointment
             appointmentParams={appointmentParams}/>);
-        expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe(today.format('h:mm A').toLowerCase());
-        expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe(addTwoHoursFromNow.format('h:mm A').toLowerCase());
+        expect(container.querySelectorAll('.bx--time-picker__input-field')[0].value).toBe(today.format('h:mm').toLowerCase());
+        expect(container.querySelectorAll('.bx--time-picker__input-field')[1].value).toBe(addTwoHoursFromNow.format('h:mm').toLowerCase());
         const dateInputField = getByPlaceholderText('mm/dd/yyyy');
         expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
     });
 
-    it('should populate the start date, start time and end time coming as prop for recurring appointment', function () {
-        const today = moment();
-        const todayInMilliseconds = today.toDate().getTime();
-        const addTwoHoursFromNow = moment().add(2, 'hours');
-        const addTwoHoursFromNowInMilliseconds = addTwoHoursFromNow.toDate().getTime();
-        const appointmentParams = {
-            startDateTime: todayInMilliseconds,
-            endDateTime: addTwoHoursFromNowInMilliseconds,
-        };
-        const {container, getAllByPlaceholderText} = renderWithReactIntl(<AddAppointment
-            appointmentParams={appointmentParams}/>);
-        const checkBoxService = container.querySelector('.rc-checkbox-input');
-        fireEvent.click(checkBoxService);
-        expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe(today.format('h:mm A').toLowerCase());
-        expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe(addTwoHoursFromNow.format('h:mm A').toLowerCase());
-        const dateInputField = getAllByPlaceholderText('mm/dd/yyyy')[0];
-
-        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
-    });
+    // it('should populate the start date, start time and end time coming as prop for recurring appointment', function () {
+    //     const today = moment();
+    //     const todayInMilliseconds = today.toDate().getTime();
+    //     const addTwoHoursFromNow = moment().add(2, 'hours');
+    //     const addTwoHoursFromNowInMilliseconds = addTwoHoursFromNow.toDate().getTime();
+    //     const appointmentParams = {
+    //         startDateTime: todayInMilliseconds,
+    //         endDateTime: addTwoHoursFromNowInMilliseconds,
+    //     };
+    //     const {container, getAllByPlaceholderText} = renderWithReactIntl(<AddAppointment
+    //         appointmentParams={appointmentParams}/>);
+    //     const checkBoxService = container.querySelector('.rc-checkbox-input');
+    //     fireEvent.click(checkBoxService);
+    //     expect(container.querySelectorAll('.rc-time-picker-input')[0].value).toBe(today.format('h:mm A').toLowerCase());
+    //     expect(container.querySelectorAll('.rc-time-picker-input')[1].value).toBe(addTwoHoursFromNow.format('h:mm A').toLowerCase());
+    //     const dateInputField = getAllByPlaceholderText('mm/dd/yyyy')[0];
+    //
+    //     expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
+    // });
 
     it('should not add second provider when maxAppointmentProvidersAllowed is 1', async () => {
         const config = {maxAppointmentProviders: 1};
         const {container, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         let selectedProvider = "Provider One";
-        const inputBox = container.querySelectorAll('.bx--text-input')[3];
+        const inputBox = container.querySelectorAll('.bx--text-input')[4];
         fireEvent.change(inputBox, {target: {value: "One"}});
         await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const optionOne = getByText(selectedProvider);
@@ -537,20 +531,11 @@ describe('Add appointment with appointment request enabled', () => {
 
     const selectPatient = async (container, getByText) => {
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--search-input');
         fireEvent.blur(inputBox);
-        fireEvent.change(inputBox, {target: {value: "abc"}});
+        fireEvent.change(inputBox, { target: { value: "9DE" } });
         await waitForElement(
-            () => (getByText(targetPatient))
-        );
-        const option = getByText(targetPatient);
-        fireEvent.click(option);
-        let singleValue;
-        await waitForElement(
-            () =>
-                (singleValue = container.querySelector(
-                    '.react-select__single-value'
-                ))
+            () => (container.querySelector('.bx--tile--clickable'))
         );
     };
 

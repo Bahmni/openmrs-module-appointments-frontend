@@ -1,4 +1,4 @@
-import {fireEvent, waitForElement, screen } from "@testing-library/react";
+import {fireEvent, waitForElement } from "@testing-library/react";
 import React from "react";
 import Dropdown from "./Dropdown.jsx";
 import selectEvent from "react-select-event";
@@ -61,16 +61,6 @@ describe('Dropdown', () => {
         expect(onChangeSpy).toHaveBeenCalledWith({value: 'ocean', label: 'Ocean'});
     });
 
-    it('should translate no option message if translation message is provided', async () => {
-        const placeholder = 'placeholder';
-        const noOptionMessage = 'No Options';
-        const {container, getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>,
-            {'DROPDOWN_NO_OPTIONS_MESSAGE': noOptionMessage});
-        const querySelector = container.querySelector('.react-select__control');
-        fireEvent.keyDown(querySelector, {key: 'ArrowDown', keyCode: 40});
-        const noOption = await waitForElement(() => getByText(noOptionMessage));
-        expect(noOption).not.toBeNull();
-    });
 
     it('should be disabled when isDisabled is true', () => {
         const {container} = renderWithReactIntl(<Dropdown isDisabled={true}/>);

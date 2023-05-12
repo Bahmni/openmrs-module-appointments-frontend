@@ -78,7 +78,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                 <table className={classNames(tableWrapper)}>
                     {isAppointmentPriorityOptionEnabled(appConfig) && <tr>
                         <td>
-                            <div>
+                            <div data-testid="appointment-category-search">
                                 <AppointmentCategory value={appointmentDetails.priority}
                                     priorityOptionsList={appConfig.priorityOptionsList}
                                     onChange={ selectedCategory => {
