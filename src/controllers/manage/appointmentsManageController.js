@@ -23,7 +23,7 @@ angular.module('bahmni.appointments')
                 if(viewName === "appointments")
                     return 'appointments.' + ($scope.enableCalendarView ? 'calendar' : 'list');
                 else if(viewName === "awaitingappointments")
-                    return 'awaitingappointments.' + ($scope.enableCalendarView ? 'calendar' : 'list');
+                    return 'awaitingappointments.' +  'list';
                 else    
                     return viewName;
             };
@@ -32,8 +32,8 @@ angular.module('bahmni.appointments')
                 return $state.current && $state.current.tabName;
             };
 
-            $scope.getCurrentButtonName = function () {
-                return $state.current && $state.current.button;
+            $scope.getCurrentView = function () {
+                return $state.current && $state.current.view;
             };
 
         }]);
