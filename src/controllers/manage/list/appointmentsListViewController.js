@@ -20,6 +20,11 @@ angular.module('bahmni.appointments')
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
             $scope.shouldShowAppointmentsListPatientLink = !!Bahmni.Common.Constants.appointmentsListPatientLink;
             $scope.searchedPatient = false;
+            $scope.enableColumnForTab = function(tabName){
+                if($scope.getCurrentTabName() === tabName)
+                    return true
+                return false
+            }
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
@@ -30,37 +35,52 @@ angular.module('bahmni.appointments')
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
             });
+
+            var updateTableHeader = function (){
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
+                {heading: 'APPOINTMENT_PATIENT_REGISTRATION_DATE', sortInfo: 'patient.registrationDate', class: true, enable: !$scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
-                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
-                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
+                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: $scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: $scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: $scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'comments', class: true, enable: !$scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
-                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
+                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: $scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
-
+            }
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
+                $scope.enableColumnsForAppointments = $scope.enableColumnForTab("appointments")
+                updateTableHeader();
                 appointmentCommonService.addProviderToFilterFromQueryString();
             };
 
             var setAppointments = function (params) {
                 autoRefreshStatus = false;
-                return appointmentsService.getAllAppointments(params).then(function (response) {
+                if($scope.getCurrentTabName() === "appointments")
+                    return appointmentsService.getAllAppointments(params).then(function (response) {
+                        $scope.appointments = response.data;
+                        $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                        $rootScope.appointmentsData = $scope.filteredAppointments;
+                        updateSelectedAppointment();
+                        autoRefreshStatus = true;
+                    }); 
+                else 
+                    return appointmentsService.getAllAppointments().then(function (response) {
                     $scope.appointments = response.data;
                     $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                     $rootScope.appointmentsData = $scope.filteredAppointments;
                     updateSelectedAppointment();
                     autoRefreshStatus = true;
-                });
+                }); 
             };
 
             var updateSelectedAppointment = function () {
@@ -84,13 +104,17 @@ angular.module('bahmni.appointments')
                     return;
                 }
                 if ($stateParams.isSearchEnabled) {
-                    setAppointmentsInPatientSearch($stateParams.patient.uuid);
+                        setAppointmentsInPatientSearch($stateParams.patient.uuid);
                 }
                 else {
                     var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
                     setAppointments({forDate: viewDate});
                 }
             };
+
+            $scope.getCurrentTabName = function(){
+                return $state.current.tabName;
+            }
 
             var autoRefresh = (function () {
                 if (!enableAutoRefresh) {
