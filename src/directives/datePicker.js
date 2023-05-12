@@ -2,7 +2,7 @@
 
 angular.module('bahmni.appointments')
     .directive('datePicker', function () {
-        var controller = ['$scope', function ($scope) {
+        var controller = ['$scope','$state', function ($scope, $state) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var init = function () {
                 if (!$scope.viewDate) {
@@ -10,6 +10,10 @@ angular.module('bahmni.appointments')
                 }
                 viewDateChange();
             };
+
+            $scope.showDatePicker = function () {
+                return $state.current.tabName === "appointments" ? true : false;
+            }
 
             var viewDateChange = function () {
                 if (!$scope.lastValidDate || ($scope.lastValidDate && $scope.viewDate && $scope.lastValidDate.getTime() !== $scope.viewDate.getTime())) {
@@ -57,7 +61,7 @@ angular.module('bahmni.appointments')
                 viewDate: "=",
                 onChange: "=",
                 lastValidDate: "=",
-                showButtons: "="
+                showButtons: "=",
             },
             template: require("../views/manage/datePicker.html"),
             controller: controller
