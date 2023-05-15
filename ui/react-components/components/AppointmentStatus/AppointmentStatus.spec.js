@@ -28,7 +28,7 @@ describe('AppointmentStatus', () => {
     //options are loaded or not
     it('On typing in Appoitment Status Search, Options get Loaded',()=>{
         const {container,getByText} = renderWithReactIntl(<AppointmentStatus/>);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox,{target:{ value: "sc" } });
         expect(getByText("Scheduled")).toBeInTheDocument();
     });
@@ -37,9 +37,9 @@ describe('AppointmentStatus', () => {
     it('should call onChange when any Status is selected from dropdown',async()=>{
         const onChangeFn=jest.fn()
         const {container,getByText} = renderWithReactIntl(<AppointmentStatus onChange={onChangeFn}/>);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, {target: {value: "sc"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const option = getByText('Scheduled');
         fireEvent.click(option);
         expect(onChangeFn).toHaveBeenCalled();
@@ -48,9 +48,9 @@ describe('AppointmentStatus', () => {
 
     it('should display Tag, when option selected from Dropdown',async()=>{
         const {container,getByText,getByTestId} = renderWithReactIntl(<AppointmentStatus/>);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, {target: {value: "sc"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const option = getByText('Scheduled');
         fireEvent.click(option);
 

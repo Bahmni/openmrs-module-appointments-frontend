@@ -36,6 +36,7 @@ class AppointmentContainer extends Component {
 
     render() {
         const {locale, messages, appConfig, isAppointmentSMSEnabled} = this.state;
+
         const {appointmentUuid,isRecurring, setViewDate, onBack, appointmentParams, currentProvider, urlParams} = this.props;
         return (
             <AppContext.Provider value={{onBack: onBack, setViewDate: setViewDate}}>

@@ -71,12 +71,14 @@ const ProviderSearch = props => {
   };
 
   const onProviderSelect = selectedProviderOption => {
-    setSelectedProvider(null);
-    const selectedProviderObj = find(providerOptions, [
-      "value",
-      selectedProviderOption.value
-    ]);
-    onChange(selectedProviderObj);
+    if(selectedProviderOption !== null){
+      setSelectedProvider(null);
+      const selectedProviderObj = find(providerOptions, [
+        "value",
+        selectedProviderOption.value
+      ]);
+      onChange(selectedProviderObj);
+    }
   };
 
   const onChangeHandler = eventChangedValue => {
