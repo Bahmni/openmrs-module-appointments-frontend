@@ -710,16 +710,6 @@ const AddAppointment = props => {
                 <div data-testid={"appointment-notes"}>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
-            {conflicts &&
-                <CustomPopup style={conflictsPopup} open={true}
-                             closeOnDocumentClick={false}
-                             closeOnEscape={true}
-                             onClose={() => setConflicts(undefined)}
-                             popupContent={<Conflicts saveAnyway={saveAppointments}
-                                                      modifyInformation={() => setConflicts(undefined)}
-                                                      conflicts={conflicts} service={appointmentDetails.service}
-                                                      disableSaveAnywayButton={disableSaveButton}
-                                                      isRecurring={appointmentDetails.isRecurring}/>}/>}
             {showSuccessPopup ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
@@ -733,6 +723,16 @@ const AddAppointment = props => {
             cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
             disableSaveAndUpdateButton={disableSaveButton}
         />
+            {conflicts &&
+                <CustomPopup style={conflictsPopup} open={true}
+                             closeOnDocumentClick={false}
+                             closeOnEscape={true}
+                             onClose={() => setConflicts(undefined)}
+                             popupContent={<Conflicts saveAnyway={saveAppointments}
+                                                      modifyInformation={() => setConflicts(undefined)}
+                                                      conflicts={conflicts} service={appointmentDetails.service}
+                                                      disableSaveAnywayButton={disableSaveButton}
+                                                      isRecurring={appointmentDetails.isRecurring}/>}/>}
         </div>
     </div>);
 };
