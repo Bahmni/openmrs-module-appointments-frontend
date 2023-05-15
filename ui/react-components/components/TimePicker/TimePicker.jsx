@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import 'rc-time-picker/assets/index.css';
 import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {SelectItem, TimePicker, TimePickerSelect} from "carbon-components-react";
@@ -10,7 +9,7 @@ const AppointmentTimePicker = (props) => {
     const key = intl.formatMessage({
         id: translationKey, defaultMessage: defaultTranslationKey
     });
-    let timeStamp = ["12:00", "AM"];
+    let timeStamp = []; // = ["12:00", "AM"];
     if(defaultTime){
         timeStamp = moment(defaultTime).format("h:mm A").split(" ");
     }

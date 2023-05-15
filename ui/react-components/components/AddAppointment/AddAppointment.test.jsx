@@ -32,11 +32,12 @@ let getAllProvidersSpy;
 let getPatientSpy;
 
 const clickOnFirstDayOfNextMonth = (container) => {
-    const nextMonth = moment().add(1, 'months');
-    const nextButton = container.querySelector('.bx--date-picker__icon--right');
-    fireEvent.click(nextButton);
-    fireEvent.click(container.querySelector('.bx--date-picker__day--today--001'));
-    return nextMonth;
+    const nextMonth = moment().add(1, 'month'); // Get the moment object for the next month
+    const firstDayNextMonth = nextMonth.startOf('month');
+    const datePickerInput = container.querySelector('.bx--date-picker__input');
+    fireEvent.change(datePickerInput, {target: {value: firstDayNextMonth.format("MM/DD/YYYY") }});
+    fireEvent.blur(datePickerInput)
+    return firstDayNextMonth;
 };
 
 describe('Add Appointment', () => {
@@ -127,7 +128,7 @@ describe('Add Appointment', () => {
     });
 
     it('should display time error message when time is not selected and remaining fields are selected ', async () => {
-        const {container, getByText, queryByText, getByPlaceholderText, getAllByText} = renderWithReactIntl(
+        const {container, getByTestId, getByText, queryByText, getByPlaceholderText, getAllByText} = renderWithReactIntl(
             <AddAppointment/>);
 
         //select patient
@@ -138,6 +139,7 @@ describe('Add Appointment', () => {
         await waitForElement(
             () => (container.querySelector('.bx--tile--clickable'))
         );
+        fireEvent.click(container.querySelector('.bx--tile--clickable'))
 
 
         //select service
@@ -148,13 +150,10 @@ describe('Add Appointment', () => {
         const option = getByText(targetService);
         fireEvent.click(option);
 
-        const nextMonth = clickOnFirstDayOfNextMonth(container);
+        //select date
+        const selectedDate = clickOnFirstDayOfNextMonth(container)
 
-        const selectedDate = nextMonth.startOf('month');
-        const dateSelectedField = container.querySelector('.bx--date-picker__day--selected');
-        expect(dateSelectedField.textContent).toBe(selectedDate.date().toFixed(0));
-
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        const dateInputField = container.querySelector('.bx--date-picker__input');
         expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
 
         fireEvent.click(getByText('Check and Save'));
@@ -181,7 +180,7 @@ describe('Add Appointment', () => {
         getByTestId('date-selector');
         getByTestId('start-time-selector');
         getByTestId('end-time-selector');
-        getByTestId('notes-text-box');
+        getByTestId('appointment-notes');
         expect(getAllByTestId('error-message').length).toBe(8);
     });
 
@@ -502,11 +501,7 @@ describe('Add Appointment', () => {
     it('should change appointment date when a new date is selected', async () => {
         const today = moment();
         const {container, getByPlaceholderText, queryByText} = renderWithReactIntl(<AddAppointment/>);
-        const nextMonth = clickOnFirstDayOfNextMonth(container);
-
-        const selectedDate = nextMonth.startOf('month');
-        const dateSelectedField = container.querySelector('.react-datepicker__day--selected');
-        expect(dateSelectedField.textContent).toBe(selectedDate.date().toFixed(0));
+        const selectedDate = clickOnFirstDayOfNextMonth(container);
 
         const dateInputField = getByPlaceholderText('mm/dd/yyyy');
         expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));

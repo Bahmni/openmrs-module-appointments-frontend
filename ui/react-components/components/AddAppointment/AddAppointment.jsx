@@ -644,6 +644,7 @@ const AddAppointment = props => {
                             <td>
                                 <div data-testid="date-selector">
                                     <DatePickerCarbon
+                                        value={appointmentDetails.appointmentDate}
                                         onChange={date => {
                                             if(date.length > 0) {
                                                 const selectedDate = moment(date[0]).toDate();
@@ -706,7 +707,7 @@ const AddAppointment = props => {
                     </div>
                 }
             </div>
-                <div>
+                <div data-testid={"appointment-notes"}>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
             {conflicts &&
