@@ -28,6 +28,7 @@ angular.module('bahmni.appointments')
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
+            const APPOINTMENT_STATUS_WAITLIST = {"status" : "Waitlist"}
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var oldPatientData = [];
             var currentUserPrivileges = $rootScope.currentUser.privileges;
@@ -38,7 +39,7 @@ angular.module('bahmni.appointments')
 
             var updateTableHeader = function (){
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
-                {heading: 'APPOINTMENT_PATIENT_REGISTRATION_DATE', sortInfo: 'patient.registrationDate', class: true, enable: !$scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_CREATION_DATE', sortInfo: 'dateCreated', class: true, enable: !$scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: $scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: $scope.enableColumnsForAppointments},
@@ -66,22 +67,19 @@ angular.module('bahmni.appointments')
             var setAppointments = function (params) {
                 autoRefreshStatus = false;
                 if($scope.getCurrentTabName() === "appointments")
-                    return appointmentsService.getAllAppointments(params).then(function (response) {
-                        $scope.appointments = response.data;
-                        $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
-                        $rootScope.appointmentsData = $scope.filteredAppointments;
-                        updateSelectedAppointment();
-                        autoRefreshStatus = true;
-                    }); 
+                    return appointmentsService.getAllAppointments(params).then((response) => updateAppointments(response)); 
                 else 
-                    return appointmentsService.getAllAppointments().then(function (response) {
-                    $scope.appointments = response.data;
-                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
-                    $rootScope.appointmentsData = $scope.filteredAppointments;
-                    updateSelectedAppointment();
-                    autoRefreshStatus = true;
-                }); 
+                    return appointmentsService.search(APPOINTMENT_STATUS_WAITLIST).then((response) => {
+                        console.log(response); updateAppointments(response)}); 
             };
+
+            var updateAppointments = function (response){
+                $scope.appointments = response.data;
+                $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                $rootScope.appointmentsData = $scope.filteredAppointments;
+                updateSelectedAppointment();
+                autoRefreshStatus = true;
+            }
 
             var updateSelectedAppointment = function () {
                 if ($scope.selectedAppointment === undefined) {
@@ -157,9 +155,9 @@ angular.module('bahmni.appointments')
             };
 
             var setFilteredAppointmentsInPatientSearch = function (appointments) {
-                $scope.filteredAppointments = appointments.map(function (appointmet) {
-                    appointmet.date = appointmet.startDateTime;
-                    return appointmet;
+                $scope.filteredAppointments = appointments.map(function (appointment) {
+                    appointment.date = appointment.startDateTime;
+                    return appointment;
                 });
             };
 
