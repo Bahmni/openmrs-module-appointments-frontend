@@ -59,6 +59,7 @@ const Dropdown = (props) => {
           itemToString={(item) => (item ? item.label : '')}
           titleText={placeholder}
           disabled={isDisabled}
+          style={{ width: '250px' }}
           shouldFilterItem={filterItems}
           placeholder={"Choose an option"}
           selectedItem={selectedValue}
