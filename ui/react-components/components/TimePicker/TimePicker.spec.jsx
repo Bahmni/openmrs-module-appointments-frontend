@@ -10,15 +10,17 @@ const Wrapper = (props) => {
 }
 
 describe('TimePicker', () => {
-
+    const translationKey = 'APPOINTMENT_TIME_FROM_LABEL'
     it('should render Time picker component', function () {
         const placeHolderKey = "CHOOSE_TIME_PLACE_HOLDER";
         const defaultValue = "Click to select time";
+
         let onChangeSpy = jest.fn();
-        const {container} = renderWithReactIntl(<AppointmentTimePicker onChange={onChangeSpy}
+        const {container, getByLabelText} = renderWithReactIntl(<AppointmentTimePicker onChange={onChangeSpy}
                                                                        placeHolderTranslationKey={placeHolderKey}
-                                                                       placeHolderDefaultMessage={defaultValue}/>);
-        expect(container.querySelector('.appointmentTimePicker')).not.toBeNull();
+                                                                       placeHolderDefaultMessage={defaultValue}
+                                                                       translationKey={translationKey}/>);
+        expect(getByLabelText(translationKey)).not.toBeNull();
     });
 
     it('should display default value for placeholder', async () => {
@@ -27,9 +29,10 @@ describe('TimePicker', () => {
         const onChangeSpy = jest.fn();
         const {container} = renderWithReactIntl(<AppointmentTimePicker onChange={onChangeSpy}
                                                                        placeHolderTranslationKey={placeHolderKey}
-                                                                       placeHolderDefaultMessage={defaultValue}/>);
-        const inputBox = container.querySelector('.rc-time-picker-input');
-        expect(inputBox.placeholder).toBe("Click to select time");
+                                                                       placeHolderDefaultMessage={defaultValue}
+                                                                       translationKey={translationKey}/>);
+        const inputBox = container.querySelector('.bx--time-picker__input-field');
+        expect(inputBox.placeholder).toBe("hh:mm");
     });
 
     it('should contains the typed value', async () => {
@@ -38,8 +41,9 @@ describe('TimePicker', () => {
         let onChangeSpy = jest.fn();
         const {container} = renderWithReactIntl(<AppointmentTimePicker onChange={onChangeSpy}
                                                                        placeHolderTranslationKey={placeHolderKey}
-                                                                       placeHolderDefaultMessage={defaultValue}/>);
-        const inputBox = container.querySelector('.rc-time-picker-input');
+                                                                       placeHolderDefaultMessage={defaultValue}
+                                                                       translationKey={translationKey}/>);
+        const inputBox = container.querySelector('.bx--time-picker__input-field');
         fireEvent.focusIn(inputBox, {target: {value: "7:10 am"}});
 
         expect(inputBox.value).toBe("7:10 am");
@@ -51,12 +55,12 @@ describe('TimePicker', () => {
         let onChangeSpy = jest.fn();
         const {container, baseElement} = renderWithReactIntl(<Wrapper><AppointmentTimePicker onChange={onChangeSpy}
                                                                                                       placeHolderTranslationKey={placeHolderKey}
-
+                                                                                                      translationKey={translationKey}
                                                                                                       placeHolderDefaultMessage={defaultValue}/></Wrapper>);
-        const inputBox = container.querySelector('.rc-time-picker-input');
+        const inputBox = container.querySelector('.bx--time-picker__input-field');
         fireEvent.click(inputBox)
-        const entryBox = baseElement.querySelector('.rc-time-picker-panel-input');
-        fireEvent.change(entryBox, { target: { value: "7:10 am" } })
+        const entryBox = baseElement.querySelector('.bx--time-picker__input-field');
+        fireEvent.blur(entryBox, { target: { value: "7:10 am" } })
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
         expect(entryBox.value).toBe("7:10 am");
     });

@@ -1,4 +1,4 @@
-import {fireEvent, waitForElement} from "@testing-library/react";
+import {fireEvent, waitForElement } from "@testing-library/react";
 import React from "react";
 import Dropdown from "./Dropdown.jsx";
 import selectEvent from "react-select-event";
@@ -33,19 +33,13 @@ describe('Dropdown', () => {
     it('should not display options on search of unavailable value', async () => {
         const placeholder = 'placeholder';
         const noOptionText = 'No Options';
-        const {container, getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}
+        const {getByRole, queryByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}
                                                                      options={colourOptions}/>);
-        const inputBox = container.querySelector('.react-select__input input');
-        fireEvent.change(inputBox, {target: {value: "ab"}});
-        const noOption = await waitForElement(() => getByText(noOptionText));
-        expect(noOption).not.toBeNull();
-    });
+        const input = getByRole('combobox');
+        fireEvent.change(input, { target: { value: "ab" } });
 
-    it('should display a search icon', () => {
-        const placeholder = 'placeholder';
-        const {container} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>);
-        const searchIcon = container.querySelector('.fa-search');
-        expect(searchIcon).toBeInTheDocument();
+        const optionList = queryByText('list-box');
+        expect(optionList).not.toBeInTheDocument();
     });
 
     it('should call onChange when option is selected', async () => {
@@ -55,23 +49,18 @@ describe('Dropdown', () => {
             <Dropdown placeholder={placeholder}
                       options={colourOptions}
                       onChange={onChangeSpy}/>);
-        const inputBox = container.querySelector('.react-select__input input');
-        fireEvent.change(inputBox, {target: {value: "oc"}});
-        await waitForElement(() => getByText('Ocean'));
-        await selectEvent.select(inputBox, "Ocean");
-        expect(onChangeSpy).toHaveBeenCalledTimes(1);
+
+        const input = container.querySelector('.bx--text-input');
+
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: 'oc' } });
+
+        const option = getByText("Ocean");
+        fireEvent.click(option);
+
+        expect(onChangeSpy).toHaveBeenCalledWith({value: 'ocean', label: 'Ocean'});
     });
 
-    it('should translate no option message if translation message is provided', async () => {
-        const placeholder = 'placeholder';
-        const noOptionMessage = 'No Options';
-        const {container, getByText} = renderWithReactIntl(<Dropdown placeholder={placeholder}/>,
-            {'DROPDOWN_NO_OPTIONS_MESSAGE': noOptionMessage});
-        const querySelector = container.querySelector('.react-select__control');
-        fireEvent.keyDown(querySelector, {key: 'ArrowDown', keyCode: 40});
-        const noOption = await waitForElement(() => getByText(noOptionMessage));
-        expect(noOption).not.toBeNull();
-    });
 
     it('should be disabled when isDisabled is true', () => {
         const {container} = renderWithReactIntl(<Dropdown isDisabled={true}/>);

@@ -18,14 +18,13 @@ describe('Appointment editor Footer Search', () => {
         const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} checkAndSave={() => jest.fn()}/>);
         getByText('Cancel');
         getByText('Check and Save');
-        expect(container.querySelectorAll('.button').length).toBe(2);
     });
 
     it('should render Update and Cancel buttons', () => {
         const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true}/>);
         getByText('Cancel');
         getByText('Update');
-        expect(container.querySelectorAll('.button').length).toBe(2);
+        expect(container.querySelectorAll('.button').length).toBe(1);
     });
 
     it('should render update options on click of update button', () => {

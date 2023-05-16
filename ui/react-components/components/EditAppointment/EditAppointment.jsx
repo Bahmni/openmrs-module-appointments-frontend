@@ -117,7 +117,8 @@ const EditAppointment = props => {
         period: undefined,
         weekDays: undefined,
         endDateType: undefined,
-        teleconsultation:undefined
+        teleconsultation:undefined,
+        appointmentCategory: undefined,
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
@@ -200,7 +201,8 @@ const EditAppointment = props => {
             locationUuid: appointmentDetails.location && appointmentDetails.location.value && appointmentDetails.location.value.uuid,
             appointmentKind: requestAppointmentType(),
             status: appointmentDetails.status,
-            comments: appointmentDetails.notes
+            comments: appointmentDetails.notes,
+            appointmentCategory: appointmentDetails.appointmentCategory
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
@@ -261,7 +263,8 @@ const EditAppointment = props => {
     };
 
     const setViewDateAndShowSuccessPopup = startDate => {
-        setViewDate(startDate.startOf('day').toDate());
+        const date = startDate ? moment(startDate) : moment();
+        setViewDate(date.startOf('day').toDate())
         setShowUpdateSuccessPopup(true);
     };
 

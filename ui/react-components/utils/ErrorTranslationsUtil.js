@@ -32,6 +32,9 @@ export const getErrorTranslations = intl => {
         }),
         unexpectedServiceErrorMessage: intl.formatMessage({
             id: 'UNEXPECTED_SERVICE_ERROR', defaultMessage: 'There was an unexpected issue on the server. Please try again'
+        }),
+        priorityErrorMessage: intl.formatMessage({
+            id: 'PRIORITY_ERROR_MESSAGE', defaultMessage: 'Please select appointment category'
         })
     };
 };

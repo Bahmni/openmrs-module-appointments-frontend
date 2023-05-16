@@ -38,7 +38,6 @@ const ServiceSearch = (props) => {
         });
         return options;
     };
-
     return (
         <Dropdown data-testid="service-search"
                   options={Object.values(dropdownOptions)}

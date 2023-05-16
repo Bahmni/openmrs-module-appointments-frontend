@@ -1,4 +1,4 @@
-import {DEFAULT_MAX_APPOINTMENT_PROVIDERS, minDurationForAppointment, PROVIDER_RESPONSES} from "./constants";
+import {DEFAULT_MAX_APPOINTMENT_PROVIDERS, minDurationForAppointment, PROVIDER_RESPONSES, enableAppointmentPriorityOption} from "./constants";
 import moment from "moment";
 
 export const isSpecialitiesEnabled = appConfig => {
@@ -57,3 +57,9 @@ export const searchFieldOnRemoveHandler=(state, setState, selectedState, setSele
       { value: eventChangedValue, label: eventChangedValue }
     ]);
 }
+
+export const isAppointmentPriorityOptionEnabled = appConfig => {
+    if (appConfig && appConfig.enablePriorityOption)
+        return appConfig.enablePriorityOption;
+    return false;
+};
