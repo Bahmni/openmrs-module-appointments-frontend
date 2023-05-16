@@ -1,4 +1,3 @@
-$interactive-01: #007d79;
 $interactive-02: #393939;
 $ui-05: #A6C8FF;
 $inverse-01: #0a74ff;
@@ -11,8 +10,17 @@ $border-inverse: #0a74ff;
   color: #0a74ff;
   border-color: #A6C8FF;
 }
+.bx--content-switcher-btn:after{
+  background-color: #edf5ff;
+}
 .bx--btn--primary:hover{
-  background-color: #669999;
+  background-color: #004144;
+}
+.bx--btn--primary{
+  background-color: #007d79;;
+}
+.bx--btn--secondary:hover{
+  background-color: #6f6f6f;
 }
 .bx--btn--primary:hover{
   background-color: #004144;
