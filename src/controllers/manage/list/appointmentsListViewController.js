@@ -67,10 +67,11 @@ angular.module('bahmni.appointments')
             var setAppointments = function (params) {
                 autoRefreshStatus = false;
                 if($scope.getCurrentTabName() === "appointments")
-                    return appointmentsService.getAllAppointments(params).then((response) => updateAppointments(response)); 
+                    return appointmentsService.getAllAppointments(params)
+                    .then((response) => updateAppointments(response)); 
                 else 
-                    return appointmentsService.search(APPOINTMENT_STATUS_WAITLIST).then((response) => {
-                        console.log(response); updateAppointments(response)}); 
+                    return appointmentsService.search(APPOINTMENT_STATUS_WAITLIST)
+                    .then((response) => updateAppointments(response)); 
             };
 
             var updateAppointments = function (response){
