@@ -655,7 +655,8 @@ const AddAppointment = props => {
                                                 updateAppointmentDetails({appointmentDate: null});
                                             }
                                             updateErrorIndicators({appointmentDateError: !date[0]});
-                                        }}/>
+                                        }}
+                                        labelText={"Appointment date"}/>
                                     <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                                 </div>
                             </td>

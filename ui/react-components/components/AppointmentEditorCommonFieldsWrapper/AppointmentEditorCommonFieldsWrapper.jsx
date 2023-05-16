@@ -82,7 +82,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                 <AppointmentCategory value={appointmentDetails.priority}
                                     priorityOptionsList={appConfig.priorityOptionsList}
                                     onChange={ selectedCategory => {
-                                        if(selectedCategory.selectedItem){
+                                        if(selectedCategory && selectedCategory.selectedItem){
                                             setSelectedPriority(selectedCategory.selectedItem)
                                             updateAppointmentDetails({priority: selectedCategory.selectedItem.value})
                                         } else {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import {ComboBox} from "carbon-components-react";
@@ -13,6 +13,7 @@ const AppointmentCategory = (props) => {
         return data.item.label.includes(data.inputValue);
     }
 
+    console.log(value)
     return (
         <ComboBox id="service-search"
                   items={priorityOptionsList}
@@ -22,6 +23,7 @@ const AppointmentCategory = (props) => {
                   isDisabled={isDisabled}
                   autoFocus={!specialityEnabled && autoFocus}
                   shouldFilterItem={filterItems}
+                  selectedValue={value || ''}
         />
     );
 };

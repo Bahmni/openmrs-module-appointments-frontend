@@ -10,8 +10,9 @@ import {
     recurringContainer,
     recurringContainerLeft,
     recurringContainerRight,
-    searchFieldsContainer,
-    appointmentTypeContainer
+    teleconsultation,
+    overlay,
+    close
 } from "../AddAppointment/AddAppointment.module.scss";
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import AppointmentEditorCommonFieldsWrapper
@@ -36,7 +37,7 @@ import {
     WALK_IN_APPOINTMENT_TYPE,
     weekRecurrenceType,
     TELECONSULTATION_APPOINTMENT,
-    VIRTUAL_APPOINTMENT_TYPE
+    VIRTUAL_APPOINTMENT_TYPE, CANCEL_CONFIRMATION_MESSAGE_ADD
 } from "../../constants";
 import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import AppointmentType from "../AppointmentType/AppointmentType.jsx";
@@ -79,6 +80,9 @@ import {getErrorTranslations} from "../../utils/ErrorTranslationsUtil";
 import {AppContext} from "../AppContext/AppContext";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
 import {sendSMS} from "../../api/smsService";
+import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
+import {Close20} from "@carbon/icons-react";
+import {ContentSwitcher, Switch} from "carbon-components-react";
 
 const EditAppointment = props => {
 
@@ -118,7 +122,7 @@ const EditAppointment = props => {
         weekDays: undefined,
         endDateType: undefined,
         teleconsultation:undefined,
-        appointmentCategory: undefined,
+        priority: undefined,
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
@@ -135,6 +139,7 @@ const EditAppointment = props => {
     const [existingProvidersUuids, setExistingProvidersUuids] = useState([]);
     const [appointmentTimeBeforeEdit, setAppointmentTimeBeforeEdit] = useState({});
     const [disableUpdateButton, setDisableUpdateButton] = useState(false);
+    const [selectedPriority, setSelectedPriority] = useState({})
 
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
@@ -145,7 +150,21 @@ const EditAppointment = props => {
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {
         return {...prevErrors, ...errorIndicators}
     });
+    const isDatelessAppointment = () => {
+        return appointmentDetails && appConfig && appConfig.enablePriorityOption && appConfig.prioritiesForDateless && appConfig.prioritiesForDateless.includes(appointmentDetails.priority)
+            && !appointmentDetails.appointmentDate && !appointmentDetails.startTime && !appointmentDetails.endTime;
+    }
 
+    useEffect(() => {
+        updateErrorIndicators({priorityError: undefined});
+        if (isDatelessAppointment())
+            updateErrorIndicators({
+                appointmentDateError: undefined,
+                startTimeError: undefined,
+                startTimeBeforeEndTimeError: undefined,
+                endTimeError: undefined
+            });
+    }, [selectedPriority]);
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
@@ -202,7 +221,7 @@ const EditAppointment = props => {
             appointmentKind: requestAppointmentType(),
             status: appointmentDetails.status,
             comments: appointmentDetails.notes,
-            appointmentCategory: appointmentDetails.appointmentCategory
+            priority: appointmentDetails.priority
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
@@ -409,6 +428,7 @@ const EditAppointment = props => {
             : (appointment && appointment.data) || undefined;
         const recurringPattern = isRecurringAppointment()
             ? (appointment && appointment.data && appointment.data.recurringPattern) || undefined : undefined;
+        console.log(appointmentResponse)
         if (appointmentResponse) {
             setOriginalAppointmentDate(moment(new Date(appointmentResponse.startDateTime)));
             const appointmentDetailsFromResponse = {
@@ -426,7 +446,8 @@ const EditAppointment = props => {
                 status: appointmentResponse.status,
                 appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE :
                     appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined,
-                teleconsultation:appointmentResponse.appointmentKind === VIRTUAL_APPOINTMENT_TYPE
+                teleconsultation:appointmentResponse.appointmentKind === VIRTUAL_APPOINTMENT_TYPE,
+                priority: appointmentResponse.priority
             };
             updateAppointmentDetails(appointmentDetailsFromResponse);
             storePreviousAppointmentDatetime(appointmentDetailsFromResponse.appointmentDate, appointmentDetailsFromResponse.startTime, appointmentDetailsFromResponse.endTime);
@@ -500,40 +521,38 @@ const EditAppointment = props => {
         generateAppointmentDetails(setDisableStatus).then();
     }, [appConfig]);
 
-    return (<Fragment>
+    const popupContent = <CancelConfirmation {...CANCEL_CONFIRMATION_MESSAGE_ADD} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
+
+    const closeButton = <div className={classNames(close)}>
+        <Close20/>
+    </div>
+
+    return (<div className={classNames(overlay)}>
         <div data-testid="appointment-editor"
              className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
+            <CustomPopup triggerComponent={closeButton} popupContent={popupContent} style={customPopup}/>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails} errors={errors}
                                                   updateErrorIndicators={updateErrorIndicators}
                                                   endTimeBasedOnService={endTimeBasedOnService}
                                                   updateAppointmentDetails={updateAppointmentDetails}
                                                   appConfig={appConfig}
+                                                  setSelectedPriority={setSelectedPriority}
                                                   componentsDisableStatus={componentsDisableStatus}/>
-            <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
+            <div data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
-                    <AppointmentPlan isEdit={true} appointmentType={appointmentDetails.appointmentType}
-                                     onChange={(e) => {
-                                         if (e.target.name === WALK_IN_APPOINTMENT_TYPE) {
-                                            updateAppointmentDetails({
-                                                appointmentType: isWalkInAppointment() ? undefined : WALK_IN_APPOINTMENT_TYPE,
-                                                appointmentKind: isWalkInAppointment() ? SCHEDULED_APPOINTMENT_TYPE : WALK_IN_APPOINTMENT_TYPE
-                                            });
-                                            if (e.target.name === WALK_IN_APPOINTMENT_TYPE) {
-                                                updateAppointmentDetails({ teleconsultation: false});
-                                            }
-                                         }
-                                     }}
-                                    isRecurringDisabled={componentsDisableStatus.recurring}
-                                    isWalkInDisabled={componentsDisableStatus.walkIn}/>
+                    <div className={classNames(appointmentPlanContainer)}>
+                        <ContentSwitcher selectedIndex={isRecurringAppointment()? 1 : 0} >
+                            <Switch name="Regular" disabled={isRecurringAppointment()}>Regular Appointment</Switch>
+                            <Switch name="Recurring" disabled={!isRecurringAppointment()}>Recurring Appointment</Switch>
+                        </ContentSwitcher>
+                    </div>
                 </div>
             </div>
-            <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
-                <div className={classNames(appointmentPlanContainer)}>
-                    {showAppointmentTypeControl()}
-                </div>
+            <div data-testid="appointment-type-checkbox" className={classNames(teleconsultation)}>
+                {showAppointmentTypeControl()}
             </div>
-            <div className={classNames(recurringContainer)}>
-                <div className={classNames(recurringContainerLeft)}>
+            <div>
+                <div>
                     <div data-testid="date-selector">
                         <div className={classNames(dateHeading)}><Label translationKey='CHANGE_DATE_TO_LABEL'
                                                                         defaultValue={`Change ${moment(originalAppointmentDate).format('Do MMM')} to`}/></div>
@@ -649,29 +668,10 @@ const EditAppointment = props => {
                                 </div>)}
                         </div> : undefined}
                 </div>
-                <div className={classNames(recurringContainerRight)}>
-                    <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_NOTES"
-                                                                    defaultValue="Notes"/></div>
-                    <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
-                </div>
             </div>
-            <AppointmentEditorFooter
-                errorMessage={serviceErrorMessage}
-                checkAndSave={applyForAllInd => updateAppointments(applyForAllInd)}
-                isEdit={true}
-                isOptionsRequired={isRecurringAppointment() && isApplicableForAll()}
-                disableSaveAndUpdateButton={disableUpdateButton || (isStartDateModified() && (isEndDateModified() || isOccurrencesModified()))}
-                cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_EDIT}
-            />
-            {conflicts &&
-            <CustomPopup style={conflictsPopup} open={true}
-                         closeOnDocumentClick={false}
-                         closeOnEscape={true}
-                         onClose={() => setConflicts(undefined)}
-                         popupContent={<Conflicts saveAnyway={saveAppointments}
-                                                  modifyInformation={() => setConflicts(undefined)}
-                                                  disableSaveAnywayButton={disableUpdateButton}
-                                                  conflicts={conflicts} service={appointmentDetails.service}/>}/>}
+            <div data-testid={"appointment-notes"}>
+                <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
+            </div>
             {showUpdateSuccessPopup ? React.cloneElement(updateSuccessPopup, {
                 open: true,
                 closeOnDocumentClick: false,
@@ -685,7 +685,26 @@ const EditAppointment = props => {
             }) : undefined}
 
         </div>
-    </Fragment>);
+        <div  data-testid="Appointment-editer-footer">
+            <AppointmentEditorFooter
+                errorMessage={serviceErrorMessage}
+                checkAndSave={applyForAllInd => updateAppointments(applyForAllInd)}
+                isEdit={true}
+                isOptionsRequired={isRecurringAppointment() && isApplicableForAll()}
+                disableSaveAndUpdateButton={disableUpdateButton || (isStartDateModified() && (isEndDateModified() || isOccurrencesModified()))}
+                cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_EDIT}
+            />
+            {conflicts &&
+                <CustomPopup style={conflictsPopup} open={true}
+                             closeOnDocumentClick={false}
+                             closeOnEscape={true}
+                             onClose={() => setConflicts(undefined)}
+                             popupContent={<Conflicts saveAnyway={saveAppointments}
+                                                      modifyInformation={() => setConflicts(undefined)}
+                                                      disableSaveAnywayButton={disableUpdateButton}
+                                                      conflicts={conflicts} service={appointmentDetails.service}/>}/>}
+        </div>
+    </div>);
 };
 
 EditAppointment.propTypes = {
