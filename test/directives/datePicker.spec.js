@@ -11,6 +11,8 @@ describe('DatePicker', function () {
         httpBackend = $httpBackend;
         httpBackend.expectGET('./i18n/appointments/locale_en.json').respond({});
         httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
+        httpBackend.expectGET('/openmrs/ws/rest/v1/systemsetting/?q=bahmni.appointments.runningOnOpenmrs&v=custom:(property,value)').respond({});
+        httpBackend.expectGET('/openmrs/ws/rest/v1/session?v=custom:(uuid)').respond({});
         // httpBackend.expectGET('../appointments/views/manage/datePicker.html').respond('<div></div>');
     }));
 
