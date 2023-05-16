@@ -27,7 +27,6 @@ const Dropdown = (props) => {
     id: "DROPDOWN_NO_OPTIONS_MESSAGE",
     defaultMessage: "No Options",
   });
-  const [value, setValue] = useState(selectedValue);
   const filterItems = data => {
     return data.item.label.toLowerCase().includes(data.inputValue.toLowerCase());
   }
@@ -43,12 +42,8 @@ const Dropdown = (props) => {
   }, [autoFocus, isDisabled]);
 
   const handleOnChange = (selected) => {
-    setValue(selected.selectedItem || {label: ""} )
     onChange(selected.selectedItem)
   }
-  useEffect(()=>{
-    setValue(selectedValue)
-  }, [selectedValue])
   const isComponentDisabled = () =>
     isUndefined(isDisabled) ? false : isDisabled;
   return (
@@ -66,9 +61,7 @@ const Dropdown = (props) => {
           disabled={isDisabled}
           shouldFilterItem={filterItems}
           placeholder={"Choose an option"}
-          value={value? value.label: undefined}
-          style={{ width: '240px' }}
-          selectedItem={value}
+          selectedItem={selectedValue}
       />
     </div>
   );
