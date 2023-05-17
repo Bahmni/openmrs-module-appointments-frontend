@@ -27,7 +27,7 @@ const AppointmentEditorFooter = props => {
 
     const popupContent = <CancelConfirmation {...cancelConfirmationMessage} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
 
-    const cancelButton = <Button kind="secondary" style={{width: "270px"}} data-testid="cancel">
+    const cancelButton = <Button kind="secondary" style={{width: "270px", height: "64px" }} data-testid="cancel">
                             <span><FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/></span>
                         </Button>;
 
@@ -49,7 +49,7 @@ const AppointmentEditorFooter = props => {
                         <FormattedMessage id={'APPOINTMENT_UPDATE_LABEL'} defaultMessage={'Update'}/>
                     </span>
                     </Button>
-                    : <Button kind="primary" style={{width: "270px"}} onClick={checkAndSave} data-testid="check-and-save" disabled={disableSaveAndUpdateButton}>
+                    : <Button kind="primary" style={{width: "270px", height: "64px" }} onClick={checkAndSave} data-testid="check-and-save" disabled={disableSaveAndUpdateButton}>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
                     </span>

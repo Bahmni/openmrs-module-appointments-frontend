@@ -11,15 +11,13 @@ const styles = {
     patientSearch : {
         "z-index": "100",
         "position": "absolute",
-        "width": "520px",
+        "width": "508px",
+        "box-shadow": "0 2px 6px rgba(0,0,0,0.3)",
         "max-height": "250px",
         "overflow": "auto"
       },
       patientSearchDropdown : {
-        "border-bottom": "solid #8D8D8D",
-        "border-left": "solid #8D8D8D",
-        "border-right": "solid #8D8D8D",
-        "min-height": "unset"
+          "height": "48px",
       }
 }
 const PatientSearch = (props) => {
