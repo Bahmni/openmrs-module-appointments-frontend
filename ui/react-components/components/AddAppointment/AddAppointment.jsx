@@ -652,6 +652,8 @@ const AddAppointment = props => {
                                             } else {
                                                 updateAppointmentDetails({appointmentDate: null});
                                             }
+                                            !appConfig.prioritiesForDateless.
+                                            find(appointmentDetails.priority.value) && 
                                             updateErrorIndicators({appointmentDateError: !date[0]});
                                         }}/>
                                     <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
