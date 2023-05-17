@@ -29,8 +29,7 @@ angular.module('bahmni.appointments')
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
             const APPOINTMENT_STATUS_WAITLIST = {
-                "startDateTime": null,
-                "endDateTime": null
+                "status" : "WaitList"
             }
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var oldPatientData = [];
@@ -84,8 +83,7 @@ angular.module('bahmni.appointments')
                 $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                 if($scope.getCurrentTabName() !== "appointments"){
                     modifyAppointmentPriorities();
-                    $scope.filteredAppointments.sort(sortAppointmentsByAppointmentCreationDate);
-                    $scope.filteredAppointments.reverse();
+                    $scope.filteredAppointments = _.sortBy($scope.filteredAppointments, "dateCreated").reverse();
                 }
                 $rootScope.appointmentsData = $scope.filteredAppointments;
                 updateSelectedAppointment();

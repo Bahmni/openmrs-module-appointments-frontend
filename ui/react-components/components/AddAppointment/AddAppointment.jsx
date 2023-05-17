@@ -50,7 +50,8 @@ import {
     TODAY,
     WALK_IN_APPOINTMENT_TYPE,
     VIRTUAL_APPOINTMENT_TYPE,
-    SCHEDULED_APPOINTMENT_TYPE
+    SCHEDULED_APPOINTMENT_TYPE,
+    APPOINTMENT_STATUSES
 } from "../../constants";
 import moment from "moment";
 import {getDefaultOccurrences, getDuration} from "../../helper.js";
@@ -66,7 +67,7 @@ import * as patientApi from "../../api/patientApi";
 import {mapOpenMRSPatient} from "../../mapper/patientMapper";
 import {sendSMS} from "../../api/smsService";
 import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
-import { Close20 } from '@carbon/icons-react';
+import { Close24 } from '@carbon/icons-react';
 import { ContentSwitcher, Switch } from 'carbon-components-react';
 import '../../carbon-conflict-fixes.scss';
 import '../../carbon-theme.scss';
@@ -354,6 +355,7 @@ const AddAppointment = props => {
         if (isValidAppointment()) {
             const appointment = getAppointmentRequest();
             if (isDatelessAppointment()) {
+                appointment.status = APPOINTMENT_STATUSES.WaitList
                 await save(appointment);
             } else {
                 const response = await getAppointmentConflicts(appointment);
@@ -497,7 +499,7 @@ const AddAppointment = props => {
     const popupContent = <CancelConfirmation {...CANCEL_CONFIRMATION_MESSAGE_ADD} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
 
     const closeButton = <div className={classNames(close)}>
-        <Close20/>
+        <Close24/>
     </div>
 
     const on = "On";
