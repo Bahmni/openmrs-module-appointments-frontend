@@ -24,7 +24,8 @@ export const APPOINTMENT_STATUSES = {
     "CheckedIn": "CheckedIn",
     "Completed": "Completed",
     "Missed": "Missed",
-    "Cancelled": "Cancelled"
+    "Cancelled": "Cancelled",
+    "WaitList": "WaitList"
 };
 
 export const RECURRENCE_TERMINATION_AFTER = "After";
