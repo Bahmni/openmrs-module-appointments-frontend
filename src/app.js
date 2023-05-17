@@ -180,7 +180,7 @@ angular
                 }
             }).state('home.manage.awaitingappointments.list', {
                 url: '/list',
-                tabName: 'awaiting appointments',
+                tabName: 'awaitingappointments',
                 view: 'list',
                 params: {
                     viewDate: null,
