@@ -19,9 +19,7 @@ const AppointmentCategory = (props) => {
                   titleText={placeHolder}
                   placeholder={"Choose an option"}
                   onChange={onChange}
-                  selectedValue={value}
                   isDisabled={isDisabled}
-                  isClearable={false}
                   autoFocus={!specialityEnabled && autoFocus}
                   shouldFilterItem={filterItems}
         />

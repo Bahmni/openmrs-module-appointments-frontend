@@ -66,7 +66,7 @@ import * as patientApi from "../../api/patientApi";
 import {mapOpenMRSPatient} from "../../mapper/patientMapper";
 import {sendSMS} from "../../api/smsService";
 import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
-import { Close20 } from '@carbon/icons-react';
+import { Close24 } from '@carbon/icons-react';
 import { ContentSwitcher, Switch } from 'carbon-components-react';
 import '../../carbon-conflict-fixes.scss';
 import '../../carbon-theme.scss';
@@ -497,7 +497,7 @@ const AddAppointment = props => {
     const popupContent = <CancelConfirmation {...CANCEL_CONFIRMATION_MESSAGE_ADD} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
 
     const closeButton = <div className={classNames(close)}>
-        <Close20/>
+        <Close24/>
     </div>
 
     const on = "On";
