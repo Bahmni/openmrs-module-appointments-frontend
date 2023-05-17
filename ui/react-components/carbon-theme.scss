@@ -1,6 +1,6 @@
 $interactive-01: #007d79;
 $interactive-02: #393939;
-$ui-05: #A6C8FF;;
+$ui-05: #A6C8FF;
 $inverse-01: #0a74ff;
 $border-inverse: #0a74ff;
 @import "~carbon-components/scss/globals/scss/styles.scss";
@@ -18,7 +18,7 @@ $border-inverse: #0a74ff;
   background-color: #004144;
 }
 .bx--btn--primary{
-  background-color: #007d79;;
+  background-color: #007d79;
 }
 .bx--btn--secondary:hover{
   background-color: #6f6f6f;
@@ -36,4 +36,7 @@ $border-inverse: #0a74ff;
 .bx--checkbox-label:after{
   border-bottom: 2px solid #fff;
   border-left: 2px solid #fff;
+}
+.bx--select__arrow{
+  fill: #161616;
 }
