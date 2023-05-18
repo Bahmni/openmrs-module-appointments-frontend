@@ -61,7 +61,7 @@ angular.module('bahmni.appointments')
                 viewDate: "=",
                 onChange: "=",
                 lastValidDate: "=",
-                showButtons: "=",
+                showButtons: "="
             },
             template: require("../views/manage/datePicker.html"),
             controller: controller

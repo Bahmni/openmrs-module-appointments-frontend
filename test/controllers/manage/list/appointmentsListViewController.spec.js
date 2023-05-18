@@ -14,8 +14,9 @@ describe('AppointmentsListViewController', function () {
             controller = $controller;
             stateparams = $stateParams;
             _appointmentsFilter = jasmine.createSpy('appointmentsFilter');
-            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus', 'undoCheckIn', 'changeProviderResponse']);
+            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus', 'undoCheckIn', 'changeProviderResponse', 'getAppConfig']);
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
+            appointmentsService.getAppConfig.and.returnValue(specUtil.simplePromise({}));
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             printer = jasmine.createSpyObj('printer', ['print']);
@@ -709,7 +710,7 @@ describe('AppointmentsListViewController', function () {
         });
 
         it("should have table info", function () {
-            var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
+            var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', class: true,enable: true},
             {heading: 'APPOINTMENT_CREATION_DATE', sortInfo: 'dateCreated', class: true, enable: false},
             {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
             {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
