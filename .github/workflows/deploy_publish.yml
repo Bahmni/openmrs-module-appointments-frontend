@@ -1,27 +1,16 @@
-name: Build and Publish
+name: Build and Upload
 on:
   push:
     branches:
-      - Bahmni-IPD-master
+      - temporary_build_branch
     paths-ignore:
       - "**.md"
   workflow_dispatch:
 
 jobs:
-  Trivy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Trivy Scan
-        run: |
-          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/trivy_scan.sh && chmod +x trivy_scan.sh
-          ./trivy_scan.sh
-          rm trivy_scan.sh
   build-publish-docker:
     name: Build & Publish Docker Image
     runs-on: ubuntu-20.04
-    needs: Trivy
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x
@@ -36,39 +25,7 @@ jobs:
         run: npm run test
       - name: Build
         run: npm run build
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
+      - uses: actions/upload-artifact@v3
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-      - name: Docker Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          file: package/docker/Dockerfile
-          push: true
-          tags: bahmni/appointments:ipd-${{ github.run_number }}, bahmni/appointments:ipd
-  trigger-workflow:
-    name: Trigger workflow to deploy to Docker env
-    needs: 
-      - build-publish-docker
-      - Trivy
-    runs-on: ubuntu-latest
-    env:
-      EVENT_TYPE: bahmni-ipd-appointments-event
-    steps:
-      - name: Create repository_dispatch
-        run: |
-          trigger_result=$(curl -s -o trigger_response.txt -w "%{http_code}" -X POST -H "Accept: application/vnd.github.v3+json" -H 'authorization: Bearer ${{ secrets.IPD_PAT }}' https://api.github.com/repos/${{ secrets.IPD_ORG_NAME }}/${{ secrets.IPD_REPOSITORY_NAME }}/dispatches -d '{"event_type":"'"${EVENT_TYPE}"'"}')
-          if [ $trigger_result == 204 ];then
-            echo "Trigger to $ORG_NAME/$REPOSITORY_NAME Success"
-          else
-            echo "Trigger to $ORG_NAME/$REPOSITORY_NAME Failed"
-            cat trigger_response.txt
-            exit 1
-          fi
+          name: my-artifact
+          path: dist/ # or path/to/artifact
