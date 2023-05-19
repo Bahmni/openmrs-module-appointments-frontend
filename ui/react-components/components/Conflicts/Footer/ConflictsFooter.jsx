@@ -11,7 +11,7 @@ const ConflictsFooter = props => {
             <div>
                 <Button kind="secondary" style={{width: "270px", height: "64px" }} data-testid="conflictsModify" onClick={props.modifyInformation}>
                     <span>
-                        <FormattedMessage id={'APPOINTMENT_MODIFY_INFORMATION'} defaultMessage={'Modify information'}/>
+                        <FormattedMessage id={'APPOINTMENT_MODIFY_INFORMATION'} defaultMessage={'Modify Information'}/>
                     </span>
                 </Button>
                 <Button kind="primary" style={{width: "270px", height: "64px" }} data-testid="conflictsSaveAnyway" onClick={props.saveAnyway} disabled={props.disableSaveAnywayButton}>
