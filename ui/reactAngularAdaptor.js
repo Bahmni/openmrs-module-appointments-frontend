@@ -17,7 +17,7 @@ angular.module('bahmni.appointments')
 angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
     template: '<react-add-appointment on-back="onBack" set-view-date="setViewDate" appointment-uuid="appointmentUuid"' +
         ' is-recurring="isRecurring" state="state" current-provider="currentProvider" appointment-params="appointmentParams"' +
-        'url-params="urlParams" >',
+        'url-params="urlParams" enable-priority-option="enablePriorityOption">',
     controller: reactAddAppointmentController
 });
 
@@ -30,9 +30,9 @@ angular.module('bahmni.appointments').run(['$templateCache', function ($template
     $templateCache.put('templateId', '<cancel-confirmation-wrapper appointment-uuid="appointmentUuid" close="onClose" on-back="onBack">');
 }]);
 
-reactAddAppointmentController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
+reactAddAppointmentController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams', 'appService'];
 reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope', '$state', 'appService'];
-function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
+function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams, appService) {
     let onBack = false;
     let backUrl = "^";
     $scope.onBack = function () {
@@ -65,6 +65,7 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
     $scope.currentProvider = $rootScope.currentProvider;
     $scope.appointmentParams = $stateParams.appointment;
     $scope.urlParams = $location.$$search;
+    $scope.enablePriorityOption = appService.getAppDescriptor().getConfigValue('enablePriorityOption')
 }
 
 function reactAppointmentSummaryController($rootScope, $location, $scope, $state, appService) {

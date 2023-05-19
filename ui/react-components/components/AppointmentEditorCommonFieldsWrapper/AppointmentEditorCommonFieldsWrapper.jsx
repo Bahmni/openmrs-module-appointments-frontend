@@ -33,6 +33,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
 
     const {updateAppointmentDetails, updateErrorIndicators, setSelectedPriority} = props;
     const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl, autoFocus} = props;
+    console.log(appConfig);
     const componentsDisableStatus = props.componentsDisableStatus || {};
     const errorTranslations = getErrorTranslations(intl);
 
