@@ -5,6 +5,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {getAppointmentConflictDetails} from "./ConflictsUtil";
 import {sortBy} from "lodash";
+import { ListItem, UnorderedList } from "carbon-components-react";
 
 const ServiceUnavailableConflicts = props => {
 
@@ -12,9 +13,12 @@ const ServiceUnavailableConflicts = props => {
         let conflictList = [];
         const conflicts = sortBy(props.conflicts, conflict => conflict.startDateTime);
         conflicts.forEach((conflict, index) => {
-            conflictList.push(<div className={classNames(appointmentConflict)} key={index}>
-                <div className={classNames(conflictDetails)}>{getAppointmentConflictDetails(conflict)}</div>
-            </div>);
+            conflictList.push(
+            <ListItem>
+                <div className={classNames(appointmentConflict)} key={index}>
+                    <div className={classNames(conflictDetails)}>{getAppointmentConflictDetails(conflict)}</div>
+                </div>
+            </ListItem>);
         });
         return conflictList;
     };
@@ -26,7 +30,9 @@ const ServiceUnavailableConflicts = props => {
                 <FormattedMessage id="NO_SERVICE_CONFLICTS_DEFAULT_TEXT" defaultMessage={defaultMessage} values={{label: props.service.label}}/>
             </div>
             <div className={classNames(conflictsList)}>
-                <ul>{getConflictsList()}</ul>
+                <UnorderedList nested>
+                    {getConflictsList()}
+                </UnorderedList>
             </div>
         </div>
     );

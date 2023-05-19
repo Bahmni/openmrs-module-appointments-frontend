@@ -11,10 +11,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import {getAppointmentConflictDetails} from "./ConflictsUtil";
 import {sortBy} from "lodash";
+import { ListItem, UnorderedList } from "carbon-components-react";
 
 const PatientDoubleBookingConflicts = props => {
 
-    const doubleBookingConflictMessage = 'Current {currentAppointmentService} request conflicts with {existingAppointmentService} appointment on and';
+    const doubleBookingConflictMessage = 'Current {currentAppointmentService} request conflicts with {existingAppointmentService} appointment on';
 
     const getDoubleBookingAppointmentConflictMessage = conflict => {
         const currentAppointmentService = props.service.label;
@@ -33,10 +34,12 @@ const PatientDoubleBookingConflicts = props => {
         const conflicts = sortBy(props.conflicts, conflict => conflict.startDateTime);
         conflicts.forEach((conflict, index) => {
             conflictsList.push(
-                <div className={classNames(appointmentConflict)} key={index}>
-                    {getDoubleBookingAppointmentConflictMessage(conflict)}
-                    <div className={classNames(conflictDetails)}>{getAppointmentConflictDetails(conflict)}</div>
-                </div>);
+                <ListItem>
+                    <div className={classNames(appointmentConflict)} key={index}>
+                        {getDoubleBookingAppointmentConflictMessage(conflict)}
+                        <div className={classNames(conflictDetails)}>{getAppointmentConflictDetails(conflict)}</div>
+                    </div>
+                </ListItem>);
         });
         return conflictsList;
     };
@@ -52,7 +55,9 @@ const PatientDoubleBookingConflicts = props => {
             }
             </div>
             <div className={classNames(conflictsList)}>
-                <ul>{getConflictsList()}</ul>
+                <UnorderedList nested>
+                    {getConflictsList()}
+                </UnorderedList>
             </div>
         </div>
     );

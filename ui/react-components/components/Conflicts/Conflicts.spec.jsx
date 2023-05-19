@@ -8,6 +8,6 @@ describe('Conflicts', () => {
         expect(getByTestId('conflicts')).not.toBeNull();
         expect(getByTestId('conflicts-footer')).not.toBeNull();
         expect(getByTestId('conflicts-body')).not.toBeNull();
-        expect(container.querySelector('.button')).not.toBeNull();
+        expect(container.querySelector('.bx--btn')).not.toBeNull();
     });
 });

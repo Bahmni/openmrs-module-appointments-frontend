@@ -13,7 +13,7 @@ describe('ConflictsFooter', () => {
     it('should have Save-Anyway button', () => {
         const {container, getByText} = renderWithReactIntl(<ConflictsFooter/>, messages);
 
-        expect(container.querySelector('.save')).not.toBeNull();
+        expect(container.querySelector('.bx--btn--secondary')).not.toBeNull();
         expect(getByText('Yes save anyway')).not.toBeNull();
     });
 

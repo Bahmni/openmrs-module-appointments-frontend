@@ -14,7 +14,7 @@ import {
     overlay,
     close,
 } from './AddAppointment.module.scss';
-import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
+import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
 import {injectIntl} from "react-intl";
@@ -719,23 +719,21 @@ const AddAppointment = props => {
             }) : undefined}
         </div>
         <div  data-testid="Appointment-editer-footer">
-        <AppointmentEditorFooter
-            errorMessage={serviceErrorMessage}
-            checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
-            cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
-            disableSaveAndUpdateButton={disableSaveButton}
-        />
-            {conflicts &&
-                <CustomPopup style={conflictsPopup} open={true}
-                             closeOnDocumentClick={false}
-                             closeOnEscape={true}
-                             onClose={() => setConflicts(undefined)}
-                             popupContent={<Conflicts saveAnyway={saveAppointments}
-                                                      modifyInformation={() => setConflicts(undefined)}
-                                                      conflicts={conflicts} service={appointmentDetails.service}
-                                                      disableSaveAnywayButton={disableSaveButton}
-                                                      isRecurring={appointmentDetails.isRecurring}/>}/>}
+            <AppointmentEditorFooter
+                errorMessage={serviceErrorMessage}
+                checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
+                cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
+                disableSaveAndUpdateButton={disableSaveButton}
+            />
         </div>
+        {conflicts &&
+                <div>
+                    <Conflicts saveAnyway={saveAppointments}
+                            modifyInformation={() => setConflicts(undefined)}
+                            conflicts={conflicts} service={appointmentDetails.service}
+                            disableSaveAnywayButton={disableSaveButton}
+                            isRecurring={appointmentDetails.isRecurring}/>
+                </div>}
     </div>);
 };
 
