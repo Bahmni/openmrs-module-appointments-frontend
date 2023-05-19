@@ -1,7 +1,7 @@
 import React from "react";
 import { NumberInput } from 'carbon-components-react';
 const NumberInputCarbon = props => {
-    const {onChange, value, id} = props;
+    const {onChange, value, id, testId} = props;
     const handleChange = (event, carbonEvent, value) => {
         if(typeof carbonEvent === "object"){
             onChange(+carbonEvent.value);
@@ -12,7 +12,7 @@ const NumberInputCarbon = props => {
     }
 
     return <NumberInput
-        data-testid="recurrence-period"
+        data-testid={testId}
         id={id}
         onChange={handleChange}
         min={0}

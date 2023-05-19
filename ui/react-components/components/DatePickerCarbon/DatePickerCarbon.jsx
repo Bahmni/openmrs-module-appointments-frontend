@@ -4,7 +4,7 @@ import {DatePicker, DatePickerInput} from "carbon-components-react";
 import moment from "moment";
 const DatePickerCarbon = props => {
 
-    const {onChange, value, title, minDate} = props;
+    const {onChange, value, title, minDate, testId} = props;
     let defaultTime = value;
     if( value && value instanceof moment){
         defaultTime = value.format("MM/DD/YYYY");
@@ -13,7 +13,7 @@ const DatePickerCarbon = props => {
         console.log("min Date");
     }
     return (
-        <div data-testid="datePicker">
+        <div data-testid={testId || "datePicker"}>
             <DatePicker datePickerType={"single"} onChange={onChange} minDate={minDate || moment().format("MM-DD-YYYY")} value={defaultTime}>
                 <DatePickerInput
                     id={"Appointment Date"}

@@ -512,7 +512,7 @@ const AddAppointment = props => {
                 enablePriorityOption={enablePriorityOption}/>
             <div data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
-                    <ContentSwitcher selectedIndex={0} onChange={(e) => {
+                    <ContentSwitcher selectedIndex={isRecurringAppointment() ? 1: 0} onChange={(e) => {
                         if (appointmentDetails.appointmentType === e.name) {
                             updateAppointmentDetails({ appointmentType: undefined });
                         } else {
@@ -619,7 +619,7 @@ const AddAppointment = props => {
                             <tbody>
                             <tr>
                                 <td>
-                                    <div data-testid="start-date-selector">
+                                    <div data-testid="recurring-start-date-selector">
                                         <DatePickerCarbon
                                             value={appointmentDetails.appointmentDate}
                                             onChange={date => {
@@ -644,7 +644,7 @@ const AddAppointment = props => {
                             </tr>
                             <tr>
                                 <td>
-                                    <div data-testid="start-time-selector">
+                                    <div data-testid="recurring-start-time-selector">
                                         <TimeSelector
                                             {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                             onChange={time => {
@@ -667,7 +667,7 @@ const AddAppointment = props => {
                                     </div>
                                 </td>
                                 <td>
-                                    <div data-testid="end-time-selector">
+                                    <div data-testid="recurring-end-time-selector">
                                         <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
                                                       onChange={time => {
                                                           if(time && !time.isValid()) {
@@ -699,6 +699,7 @@ const AddAppointment = props => {
                                         </td>
                                         <td>
                                             <NumberInput
+                                                testId={"appointment-period"}
                                                 onChange={value => {
                                                     updateAppointmentDetails({period: value});
                                                     updateErrorIndicators({recurrencePeriodError: !value});
@@ -766,7 +767,6 @@ const AddAppointment = props => {
                                                     onChange={ date => {
                                                         if(date.length > 0) {
                                                             const selectedDate = moment(date[0]).toDate();
-                                                            console.log("selected end Date", selectedDate);
                                                             updateAppointmentDetails({recurringEndDate: selectedDate !==' ' && !isNil(date)
                                                                     ? moment(date[0]).endOf('day') : undefined})
                                                             updateErrorIndicators({endDateError: !selectedDate});
@@ -774,10 +774,12 @@ const AddAppointment = props => {
                                                             updateAppointmentDetails({recurringStartDate: null, selectedRecurringStartDate: null});
                                                         }
                                                     }}
-                                                    minDate = {appointmentDetails.recurringStartDate}/>:
+                                                    minDate = {appointmentDetails.recurringStartDate}
+                                                    testId={"recurring-end-date-selector"}/>:
                                                 <div>
                                                     <div style={{width: "150px", display: "inline-block"}}>
                                                         <NumberInput id={'occurrences'}
+                                                                     testId={"recurring-occurrences"}
                                                                      value={appointmentDetails.occurrences}
                                                                      onChange = {value => {
                                                                          updateAppointmentDetails({occurrences: value});
