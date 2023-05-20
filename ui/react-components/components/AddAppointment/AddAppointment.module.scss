@@ -99,10 +99,12 @@
   padding: 10px;
 }
 
-.appointmentPlanContainer {
-  --cds-layer-selected-inverse: blue;
+.inlineBlock{
+  display: inline-block;
 }
-
+.firstBlock{
+  width: 100px;
+}
 .tableWrapper{
   tr{
     border-bottom: none;

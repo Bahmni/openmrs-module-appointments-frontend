@@ -15,6 +15,7 @@ const DropdownCarbon = (props) => {
     return (
         <div
             data-testid="select dropdown"
+            style={{marginRight: "5px"}}
         >
             <Dropdown
                 id={id}
