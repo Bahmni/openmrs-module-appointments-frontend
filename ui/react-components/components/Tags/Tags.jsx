@@ -1,24 +1,23 @@
 import React from "react";
 import classNames from "classnames";
-import {tag, tagHolder, tagLabel, tagRemove, disable,customTagHolder,customTag,customTagLabel,customTagRemove} from './Tags.module.scss'
+import { newTag, tagHolder, disable,customTagHolder} from './Tags.module.scss'
 import './Tags.module.scss'
 import {map} from 'lodash';
 import PropTypes from "prop-types";
+import { Tag } from 'carbon-components-react';
 
 const Tags = (props) => {
 
     const {selectedTags, onChange, isDisabled, style=''} = props;
 
-    const removeTag = tagElement => {
-        return onChange(tagElement.currentTarget.parentNode.attributes['data-attr'].value)};
+    const removeTag = (tag) => onChange(tag.value);
 
     return (
-        selectedTags && selectedTags.length > 0 ? (<div className={classNames(style===''?tag:customTag)}>
+        selectedTags && selectedTags.length > 0 ? (<div>
             {
-                map(selectedTags, (tag, index) => (
-                    <div className={classNames(style===''?tagHolder:customTagHolder, isDisabled ? disable : '')} data-attr={tag.value} key={index}>
-                        <div className={classNames(style===''?tagLabel:customTagLabel)}>{tag.label}</div>
-                        <span onClick={removeTag} className={classNames(style===''?tagRemove:customTagRemove)}><i className={classNames("fa", "fa-times")}/></span>
+                map(selectedTags, (tagItem, index) => (
+                    <div className={classNames(style===''?tagHolder:customTagHolder, isDisabled ? disable : '', newTag)} data-attr={tagItem.value} key={index}>
+                        <Tag className={classNames(newTag)} filter={true} onClose={removeTag.bind(this, tagItem)}>{tagItem.label}</Tag>
                     </div>))
             }
         </div>) : null)
