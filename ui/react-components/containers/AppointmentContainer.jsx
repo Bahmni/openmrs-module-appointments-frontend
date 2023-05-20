@@ -38,7 +38,7 @@ class AppointmentContainer extends Component {
         const {locale, messages, appConfig, isAppointmentSMSEnabled} = this.state;
 
         const {appointmentUuid,isRecurring, setViewDate, onBack, appointmentParams, currentProvider, urlParams, enablePriorityOption} = this.props;
-        console.log("enablePriorityOption", enablePriorityOption);
+
         return (
             <AppContext.Provider value={{onBack: onBack, setViewDate: setViewDate}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>

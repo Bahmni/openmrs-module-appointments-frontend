@@ -225,6 +225,7 @@
   "WEEK_LABEL": "Week",
   "DAY_LABEL": "Day",
   "REPEATS_EVERY_LABEL": "Repeats every",
+  "REPEATS_ON_LABEL": "Repeats on",
   "STARTS_LABEL": "Starts",
   "ENDS_LABEL": "Ends",
   "FROM_LABEL": "From",

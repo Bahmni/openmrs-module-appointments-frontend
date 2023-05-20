@@ -318,7 +318,6 @@ describe('Add Appointment', () => {
         fireEvent.click(weekButton)
         const buttonsOrder = [];
         container.querySelectorAll('.buttonGroup button').forEach(button => buttonsOrder.push(button.innerHTML));
-        console.log(buttonsOrder);
         fireEvent.click(getByText('Su'));
         fireEvent.click(getByText('We'));
         fireEvent.click(getByText('Sa'));
