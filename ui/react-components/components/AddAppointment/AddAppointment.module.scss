@@ -99,9 +99,6 @@
   padding: 10px;
 }
 
-.inlineBlock{
-  display: inline-block;
-}
 .firstBlock{
   width: 100px;
 }
@@ -113,4 +110,7 @@
     border: none;
     padding: 2px;
   }
+}
+.recurringContainerBlock > *{
+  display: inline-block;
 }
