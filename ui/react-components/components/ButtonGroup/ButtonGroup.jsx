@@ -6,14 +6,14 @@ import {buttonGroup, selected} from './ButtonGroup.module.scss'
 
 const ButtonGroup = props => {
 
-    const {buttonsList, onClick, enable} = props;
+    const {buttonsList, onClick } = props;
 
     return (
         <div className={classNames(buttonGroup)}>
             {[...buttonsList.keys()].map(key => {
                 const value = buttonsList.get(key);
                 return (<button key={key} onClick={() => onClick(key)} data-testid={key}
-                                className={classNames(value.isSelected && selected)} disabled={!enable}>
+                                className={classNames(value.isSelected && selected)}>
                     <FormattedMessage id={value.translationKey} defaultMessage={value.defaultValue}/>
                 </button>);
             })}

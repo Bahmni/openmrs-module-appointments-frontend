@@ -54,11 +54,11 @@ const appointmentTimeProps = {
 };
 
 export const appointmentStartTimeProps = startTime => {
-    return {...appointmentTimeProps, defaultValue: 'From', defaultTime: startTime, translationKey: 'APPOINTMENT_TIME_FROM_LABEL'}
+    return {...appointmentTimeProps, defaultValue: 'Start time', defaultTime: startTime, translationKey: 'APPOINTMENT_TIME_FROM_LABEL'}
 };
 
 export const appointmentEndTimeProps = endTime => {
-    return {...appointmentTimeProps, defaultValue: 'To', defaultTime: endTime, translationKey: 'APPOINTMENT_TIME_TO_LABEL'}
+    return {...appointmentTimeProps, defaultValue: 'End time', defaultTime: endTime, translationKey: 'APPOINTMENT_TIME_TO_LABEL'}
 };
 
 export const helpDeskNumber = "clinic.helpDeskNumber";
