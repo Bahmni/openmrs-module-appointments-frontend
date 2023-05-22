@@ -4,7 +4,6 @@ import {
     appointmentEditor,
     appointmentPlanContainer,
     isRecurring,
-    tableWrapper,
     teleconsultation,
     overlay,
     close,
@@ -44,7 +43,7 @@ import {
     WALK_IN_APPOINTMENT_TYPE,
     VIRTUAL_APPOINTMENT_TYPE,
     SCHEDULED_APPOINTMENT_TYPE,
-    RECURRENCE_TERMINATION_ON
+    RECURRENCE_TERMINATION_AFTER
 } from "../../constants";
 import moment from "moment";
 import {getDefaultOccurrences, getDuration} from "../../helper.js";
@@ -93,7 +92,7 @@ const AddAppointment = props => {
         teleconsultation: false,
         notes: undefined,
         startDateType: appointmentParams && moment(new Date(appointmentParams.startDateTime)) ? FROM : undefined,
-        endDateType: RECURRENCE_TERMINATION_ON,
+        endDateType: RECURRENCE_TERMINATION_AFTER,
         recurrenceType: dayRecurrenceType,
         occurrences: undefined,
         period: undefined,
@@ -702,74 +701,60 @@ const AddAppointment = props => {
                         </div>
                     </div>:
                     //Regular Appointments
-                    <div className={classNames(tableWrapper)}>
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <div data-testid="date-selector">
-                                    <DatePickerCarbon
-                                        value={appointmentDetails.appointmentDate}
-                                        onChange={date => {
-                                            if(date.length > 0) {
-                                                const selectedDate = moment(date[0]).toDate();
-                                                updateAppointmentDetails({appointmentDate: selectedDate});
-                                            } else {
-                                                updateAppointmentDetails({appointmentDate: null});
-                                            }
-                                            updateErrorIndicators({appointmentDateError: !date[0]});
-                                        }} title={"Appointment date"}/>
-                                    <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
-                                </div>
-                            </td>
-                            <td/>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div data-testid="start-time-selector">
-                                    <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
-                                                  onChange={time => {
-                                                      if(time && !time.isValid()) {
-                                                          updateAppointmentDetails({startTime: null});
-                                                          updateErrorIndicators({startTimeError: true});
-                                                      }
-                                                      else {
-                                                          updateAppointmentDetails({startTime: time});
-                                                          endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
-                                                              appointmentDetails.serviceType && appointmentDetails.serviceType.value);
-                                                          updateErrorIndicators({startTimeError: !time});
-                                                      }
-                                                  }}/>
-                                    {
-                                        errors.startTimeError ?
-                                            <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/> :<ErrorMessage
-                                                message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
+                    <div >
+                        <div data-testid="date-selector">
+                            <DatePickerCarbon
+                                value={appointmentDetails.appointmentDate}
+                                onChange={date => {
+                                    if(date.length > 0) {
+                                        const selectedDate = moment(date[0]).toDate();
+                                        updateAppointmentDetails({appointmentDate: selectedDate});
+                                    } else {
+                                        updateAppointmentDetails({appointmentDate: null});
                                     }
-                                </div>
-                            </td>
-                            <td>
-                                <div data-testid="end-time-selector">
-                                    <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
-                                                  onChange={time => {
-                                                      if(time && !time.isValid()) {
-                                                          updateAppointmentDetails({endTime: null});
-                                                          updateErrorIndicators({endTimeError: true});
-                                                      }
-                                                      else {
-                                                          updateAppointmentDetails({endTime: time});
-                                                          updateErrorIndicators({
-                                                              startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
-                                                              endTimeError: !time
-                                                          });
-                                                      }
-                                                  }}/>
-                                    <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
-                                </div>
-                            </td>
+                                    updateErrorIndicators({appointmentDateError: !date[0]});
+                                }} title={"Appointment date"}/>
+                            <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
+                        </div>
+                        <div style={{display: "flex"}}>
+                            <div style={{marginRight: "5px"}} data-testid="start-time-selector">
+                            <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
+                                          onChange={time => {
+                                              if(time && !time.isValid()) {
+                                                  updateAppointmentDetails({startTime: null});
+                                                  updateErrorIndicators({startTimeError: true});
+                                              }
+                                              else {
+                                                  updateAppointmentDetails({startTime: time});
+                                                  endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
+                                                      appointmentDetails.serviceType && appointmentDetails.serviceType.value);
+                                                  updateErrorIndicators({startTimeError: !time});
+                                              }
+                                          }}/>
+                            <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
+                            </div>
+                            <div data-testid="end-time-selector">
+                                <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
+                                              onChange={time => {
+                                                  if(time && !time.isValid()) {
+                                                      updateAppointmentDetails({endTime: null});
+                                                      updateErrorIndicators({endTimeError: true});
+                                                  }
+                                                  else {
+                                                      updateAppointmentDetails({endTime: time});
+                                                      updateErrorIndicators({
+                                                          startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
+                                                          endTimeError: !time
+                                                      });
+                                                  }
+                                              }}/>
+                                {
+                                    errors.endTimeError ? <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/> : <ErrorMessage
+                                        message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
+                                }
+                            </div>
+                        </div>
 
-                        </tr>
-                        </tbody>
-                    </table>
                     </div>
                 }
             </div>
