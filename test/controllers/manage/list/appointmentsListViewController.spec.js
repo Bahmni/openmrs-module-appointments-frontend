@@ -14,9 +14,8 @@ describe('AppointmentsListViewController', function () {
             controller = $controller;
             stateparams = $stateParams;
             _appointmentsFilter = jasmine.createSpy('appointmentsFilter');
-            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus', 'undoCheckIn', 'changeProviderResponse', 'getAppConfig']);
+            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus', 'undoCheckIn', 'changeProviderResponse']);
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
-            appointmentsService.getAppConfig.and.returnValue(specUtil.simplePromise({}));
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             printer = jasmine.createSpyObj('printer', ['print']);

@@ -7,6 +7,7 @@ angular.module('bahmni.appointments')
                   appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, appointmentCommonService, $interval) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+            $scope.priorityOptionsList = appService.getAppDescriptor().getConfigValue('priorityOptionsList') || [];
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
@@ -31,6 +32,8 @@ angular.module('bahmni.appointments')
             const APPOINTMENT_STATUS_WAITLIST = {
                 "status" : "WaitList"
             }
+            const APPOINTMENTS_TAB_NAME = "appointments";
+            const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var oldPatientData = [];
             var currentUserPrivileges = $rootScope.currentUser.privileges;
@@ -38,8 +41,6 @@ angular.module('bahmni.appointments')
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
             });
-            var appConfig;
-            appointmentsService.getAppConfig().then((response) => appConfig = response.data);
 
             var updateTableHeader = function (){
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', class: true, enable: true},
@@ -63,14 +64,14 @@ angular.module('bahmni.appointments')
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
-                $scope.enableColumnsForAppointments = $scope.enableColumnForTab("appointments")
+                $scope.enableColumnsForAppointments = $scope.enableColumnForTab(APPOINTMENTS_TAB_NAME)
                 updateTableHeader();
                 appointmentCommonService.addProviderToFilterFromQueryString();
             };
 
             var setAppointments = function (params) {
                 autoRefreshStatus = false;
-                if($scope.getCurrentTabName() === "appointments")
+                if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME)
                     return appointmentsService.getAllAppointments(params)
                     .then((response) => updateAppointments(response)); 
                 else 
@@ -81,7 +82,7 @@ angular.module('bahmni.appointments')
             var updateAppointments = function (response){
                 $scope.appointments = response.data;
                 $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
-                if($scope.getCurrentTabName() !== "appointments"){
+                if($scope.getCurrentTabName() === AWAITING_APPOINTMENTS_TAB_NAME){
                     modifyAppointmentPriorities();
                     $scope.filteredAppointments = _.sortBy($scope.filteredAppointments, "dateCreated").reverse();
                 }
@@ -102,7 +103,7 @@ angular.module('bahmni.appointments')
             var modifyAppointmentPriorities = function(){
                 $scope.filteredAppointments.map((appointment) => {
                     var priorityModified = false;
-                    appConfig.config.priorityOptionsList.map((priority) => {
+                    $scope.priorityOptionsList.map((priority) => {
                         if(priority.value === appointment.priority){
                             appointment.priority = priority.label;
                             priorityModified = true;
