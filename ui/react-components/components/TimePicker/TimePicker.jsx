@@ -5,7 +5,7 @@ import {SelectItem, TimePicker, TimePickerSelect} from "carbon-components-react"
 import moment from "moment";
 
 const AppointmentTimePicker = (props) => {
-    const { intl, onChange, defaultTime, translationKey, defaultTranslationKey, isDisabled, isEditMode = false } = props;
+    const { intl, onChange, defaultTime, translationKey, defaultTranslationKey, width } = props;
     const key = intl.formatMessage({
         id: translationKey, defaultMessage: defaultTranslationKey
     });
@@ -31,7 +31,7 @@ const AppointmentTimePicker = (props) => {
     }
 
     return (
-    <TimePicker id="time-selector" labelText={key} onBlur={handleChange} value={time} style={{ width: '165px'}}>
+    <TimePicker id="time-selector" labelText={key} onBlur={handleChange} value={time} style={{ width: "72px", padding: "0 0 0 1rem"}}>
              <TimePickerSelect id="time-picker-select-1" labelText={"Choose a time"} onChange={handlePeriod} value={period}>
                <SelectItem value="AM" text="AM" />
                <SelectItem value="PM" text="PM" />
@@ -46,7 +46,8 @@ AppointmentTimePicker.propTypes = {
     defaultTranslationKey: PropTypes.string,
     translationKey: PropTypes.string,
     defaultTime: PropTypes.object,
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    width: PropTypes.string
 };
 
 export default injectIntl(AppointmentTimePicker);

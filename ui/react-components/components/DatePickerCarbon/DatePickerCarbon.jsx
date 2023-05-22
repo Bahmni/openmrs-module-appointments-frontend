@@ -4,7 +4,7 @@ import {DatePicker, DatePickerInput} from "carbon-components-react";
 import moment from "moment";
 const DatePickerCarbon = props => {
 
-    const {onChange, value, title, minDate, testId} = props;
+    const {onChange, value, title, minDate, testId, width} = props;
     let defaultTime = value;
     if( value && value instanceof moment){
         defaultTime = value.format("MM/DD/YYYY");
@@ -17,7 +17,7 @@ const DatePickerCarbon = props => {
                     placeholder={"mm/dd/yyyy"}
                     labelText={title}
                     size={"md"}
-                    style={{width:"250px"}}
+                    style={{width: width || "250px"}}
                 />
             </DatePicker>
         </div>
@@ -26,7 +26,10 @@ const DatePickerCarbon = props => {
 };
 
 DatePickerCarbon.propTypes = {
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    width: PropTypes.string,
+    title: PropTypes.string,
+    testId: PropTypes.string
 };
 
 export default DatePickerCarbon;

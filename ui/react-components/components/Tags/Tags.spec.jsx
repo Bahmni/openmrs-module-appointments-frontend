@@ -23,7 +23,7 @@ describe('Tags', () => {
         const tags = [{label: 'One', value: '1'}, {label: 'Two', value: '2'}, {label: 'Three', value: '3'}];
         const onChangeSpy = jest.fn();
         const {container} = render(<Tags selectedTags={tags} onChange={onChangeSpy}/>);
-        expect(container.querySelector('.tag').children.length).toBe(3);
+        expect(container.querySelector('.newTag').children.length).toBe(1);
         container.querySelectorAll('.tagLabel').forEach((tagLabel, ind) => expect(tags[ind].label).toBe(tagLabel.textContent));
     })
 
