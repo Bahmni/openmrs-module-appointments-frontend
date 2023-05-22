@@ -32,7 +32,7 @@ angular.module('bahmni.appointments').run(['$templateCache', function ($template
 
 reactAddAppointmentController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
 reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope', '$state', 'appService'];
-function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams, appService) {
+function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
     let onBack = false;
     let backUrl = "^";
     $scope.onBack = function () {
