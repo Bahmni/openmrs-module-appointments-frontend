@@ -53,4 +53,13 @@ $border-inverse: #0a74ff;
 .bx--tag--filter{
   color: #0043CE;
   background-color: $ui-05;
+.bx--tabs--scrollable__nav-link {
+  width: 100% !important;
 }
+.bx--tab-content:focus {
+  outline: none;
+}
+.bx--list--nested {
+  margin-left: 0.75rem;
+}
+  
