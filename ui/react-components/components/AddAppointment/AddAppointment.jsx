@@ -141,6 +141,10 @@ const AddAppointment = props => {
         id: 'AFTER_LABEL', defaultMessage: 'After'
     });
 
+    const recurringTypeOptions = [
+        {label: "Day(s)", value: "DAY"},
+        {label: "Week(s)", value: "WEEK"}
+    ];
 
     useEffect(() => {
         if (appointmentDetails.occurrences === undefined)
@@ -611,13 +615,13 @@ const AddAppointment = props => {
                                         id={"period"}
                                     />
                                 </div>
-                                <div style={{minWidth: "100px"}}>
-                                    <Dropdown id={"recurrence-type"} options={[day, week]}
+                                <div style={{minWidth: "120px"}}>
+                                    <Dropdown id={"recurrence-type"} options={recurringTypeOptions}
                                               label={"Choose an option"}
-                                              selectedValue={ appointmentDetails.recurrenceType || day}
+                                              selectedValue={recurringTypeOptions[0]}
                                               onChange={event => {
-                                                  updateAppointmentDetails({recurrenceType: event.selectedItem.toUpperCase()});
-                                                  updateErrorIndicators({weekDaysError: errors.weekDaysError && event.selectedItem.toUpperCase() === 'WEEK'});
+                                                  updateAppointmentDetails({recurrenceType: event.selectedItem.value});
+                                                  updateErrorIndicators({weekDaysError: errors.weekDaysError && event.selectedItem.value.toUpperCase() === 'WEEK'});
                                               }}
                                     />
                                 </div>

@@ -295,11 +295,11 @@ describe('Add Appointment', () => {
         const checkBoxService = getByText('Recurring Appointment');
         fireEvent.click(checkBoxService);
 
-        const recurrenceTypeDropdown = getByText("DAY");
+        const recurrenceTypeDropdown = getByText("Day(s)");
         fireEvent.click(recurrenceTypeDropdown);
         await waitForElement(() => (container.querySelector('.bx--list-box__menu-item')));
 
-        const weekButton = getByText("Week");
+        const weekButton = getByText("Week(s)");
         fireEvent.click(weekButton)
         const buttonsOrder = [];
         container.querySelectorAll('.buttonGroup button').forEach(button => buttonsOrder.push(button.innerHTML));
@@ -318,11 +318,11 @@ describe('Add Appointment', () => {
         const checkBoxService = getByText('Recurring Appointment');
         fireEvent.click(checkBoxService);
 
-        const recurrenceTypeDropdown = getByText("DAY");
+        const recurrenceTypeDropdown = getByText("Day(s)");
         fireEvent.click(recurrenceTypeDropdown);
         await waitForElement(() => (container.querySelector('.bx--list-box__menu-item')));
 
-        const weekButton = getByText("Week");
+        const weekButton = getByText("Week(s)");
         fireEvent.click(weekButton)
         const buttonsOrder = [];
         container.querySelectorAll('.buttonGroup button').forEach(button => buttonsOrder.push(button.innerHTML));
@@ -345,11 +345,11 @@ describe('Add Appointment', () => {
         const checkBoxService = getByText('Recurring Appointment');
         fireEvent.click(checkBoxService);
 
-        const recurrenceTypeDropdown = getByText("DAY");
+        const recurrenceTypeDropdown = getByText("Day(s)");
         fireEvent.click(recurrenceTypeDropdown);
         await waitForElement(() => (container.querySelector('.bx--list-box__menu-item')));
 
-        const weekButton = getByText("Week");
+        const weekButton = getByText("Week(s)");
         fireEvent.click(weekButton);
         fireEvent.click(getByText('Check and Save'));
         getByText('Please select the day(s)');
