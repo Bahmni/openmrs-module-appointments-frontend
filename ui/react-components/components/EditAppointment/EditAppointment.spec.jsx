@@ -103,7 +103,6 @@ describe('Edit Appointment', () => {
     });
 
     //TODO: Fix these tests after recurring appointments plan is enabled with new UI
-
     // it('should render daily recurring appointment details coming from response', async () => {
     //     let getByTextInDom = undefined;
     //     let containerInDom = undefined;
@@ -236,7 +235,6 @@ describe('Edit Appointment', () => {
     // });
 
     //TODO: Fix these tests after recurring appointments plan is enabled with new UI
-
     // it('should not check for conflicts and render update options on click of update of recurring appointments', async () => {
     //     let getByTextInDom = undefined;
     //     let containerInDom = undefined;

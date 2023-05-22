@@ -3,10 +3,6 @@ $interactive-02: #393939;
 $ui-05: #D0E2FF;
 $inverse-01: #0a74ff;
 $border-inverse: #0a74ff;
-//$css--default-type: false;
-//$css--reset: true !default;
-//
-//$css--body: true !default;
 @import "~carbon-components/scss/globals/scss/styles.scss";
 .bx--content-switcher-btn.bx--content-switcher--selected{
   border: solid;

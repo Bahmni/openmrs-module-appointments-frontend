@@ -37,15 +37,13 @@ class AppointmentContainer extends Component {
     render() {
         const {locale, messages, appConfig, isAppointmentSMSEnabled} = this.state;
 
-        const {appointmentUuid,isRecurring, setViewDate, onBack, appointmentParams, currentProvider, urlParams, enablePriorityOption} = this.props;
-
+        const {appointmentUuid,isRecurring, setViewDate, onBack, appointmentParams, currentProvider, urlParams} = this.props;
         return (
             <AppContext.Provider value={{onBack: onBack, setViewDate: setViewDate}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
                     {appointmentUuid
                         ? <EditAppointment appConfig={appConfig} appointmentUuid={appointmentUuid} isRecurring={isRecurring}  currentProvider={currentProvider} isAppointmentSMSEnabled={isAppointmentSMSEnabled}/>
-                        : <AddAppointment appConfig={appConfig} appointmentParams={appointmentParams} currentProvider={currentProvider} urlParams={urlParams} isAppointmentSMSEnabled={isAppointmentSMSEnabled}
-                            enablePriorityOption={enablePriorityOption}/>}
+                        : <AddAppointment appConfig={appConfig} appointmentParams={appointmentParams} currentProvider={currentProvider} urlParams={urlParams} isAppointmentSMSEnabled={isAppointmentSMSEnabled}/>}
                 </IntlProvider>
             </AppContext.Provider>);
     }
@@ -60,8 +58,7 @@ AppointmentContainer .propTypes = {
     isCancel: PropTypes.bool,
     appointmentParams: PropTypes.object,
     currentProvider: PropTypes.object,
-    urlParams: PropTypes.object,
-    enablePriorityOption: PropTypes.bool
+    urlParams: PropTypes.object
 };
 
 export default AppointmentContainer;

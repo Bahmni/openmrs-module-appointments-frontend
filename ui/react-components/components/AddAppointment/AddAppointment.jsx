@@ -72,7 +72,7 @@ import NumberInput from "../NumberInput/NumberInputCarbon.jsx";
 
 const AddAppointment = props => {
 
-    const {appConfig, intl, appointmentParams, currentProvider, urlParams, isAppointmentSMSEnabled, enablePriorityOption } = props;
+    const {appConfig, intl, appointmentParams, currentProvider, urlParams, isAppointmentSMSEnabled } = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
     const [selectedPriority, setSelectedPriority] = useState({})
@@ -517,8 +517,7 @@ const AddAppointment = props => {
                 updateAppointmentDetails={updateAppointmentDetails}
                 updateErrorIndicators={updateErrorIndicators}
                 endTimeBasedOnService={endTimeBasedOnService}
-                appConfig={appConfig} errors={errors} autoFocus={true} setSelectedPriority={setSelectedPriority}
-                enablePriorityOption={enablePriorityOption}/>
+                appConfig={appConfig} errors={errors} autoFocus={true} setSelectedPriority={setSelectedPriority}/>
             <div data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <ContentSwitcher selectedIndex={isRecurringAppointment() ? 1: 0} onChange={(e) => {
@@ -800,8 +799,7 @@ AddAppointment.propTypes = {
     appointmentParams: PropTypes.object,
     currentProvider: PropTypes.object,
     urlParams: PropTypes.object,
-    isAppointmentSMSEnabled: PropTypes.bool,
-    enablePriorityOption: PropTypes.bool,
+    isAppointmentSMSEnabled: PropTypes.bool
 };
 
 export const isVirtual = (appt) => {
