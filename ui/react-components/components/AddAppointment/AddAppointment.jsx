@@ -43,7 +43,8 @@ import {
     WALK_IN_APPOINTMENT_TYPE,
     VIRTUAL_APPOINTMENT_TYPE,
     SCHEDULED_APPOINTMENT_TYPE,
-    RECURRENCE_TERMINATION_AFTER
+    RECURRENCE_TERMINATION_AFTER,
+    APPOINTMENT_STATUSES
 } from "../../constants";
 import moment from "moment";
 import {getDefaultOccurrences, getDuration} from "../../helper.js";
@@ -363,6 +364,7 @@ const AddAppointment = props => {
         if (isValidAppointment()) {
             const appointment = getAppointmentRequest();
             if (isDatelessAppointment()) {
+                appointment.status = APPOINTMENT_STATUSES.WaitList
                 await save(appointment);
             } else {
                 const response = await getAppointmentConflicts(appointment);
