@@ -75,11 +75,4 @@ angular.module('bahmni.appointments')
                     headers: {"Content-Type": "application/json"}
                 });
             };
-
-            this.getAppConfig = function(){
-                return $http.get(Bahmni.Appointments.Constants.getAppConfig, {
-                    withCredentials: true,
-                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
-                });
-            }
         }]);
