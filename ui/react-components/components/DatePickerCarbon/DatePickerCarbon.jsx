@@ -18,6 +18,7 @@ const DatePickerCarbon = props => {
                     labelText={title}
                     size={"md"}
                     style={{width: width || "250px"}}
+                    autoComplete={"off"}
                 />
             </DatePicker>
         </div>
