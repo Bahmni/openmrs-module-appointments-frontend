@@ -195,7 +195,7 @@ describe('Add Appointment', () => {
         const checkBoxService = getByText('Recurring Appointment');
         fireEvent.click(checkBoxService);
         expect(getByTestId('recurring-start-date-selector')).not.toBeNull();
-        expect(getByTestId('recurring-end-date-selector')).not.toBeNull();
+        expect(getByTestId('recurring-occurrences')).not.toBeNull();
         expect(getByTestId('recurring-start-time-selector')).not.toBeNull();
         expect(getByTestId('recurring-end-time-selector')).not.toBeNull();
         expect(getByTestId('appointment-period')).not.toBeNull();
@@ -214,14 +214,15 @@ describe('Add Appointment', () => {
         expect(queryByText('Please select patient')).not.toBeNull();
         expect(queryByText('Please select service')).not.toBeNull();
         expect(queryByText('Please select valid recurrence period')).not.toBeNull();
+        expect(queryByText('Please select valid occurrences')).not.toBeNull();
         expect(getAllByText('Please select time').length).toBe(2);
-        expect(getAllByText('Please select date').length).toBe(2);
+        expect(getAllByText('Please select date').length).toBe(1);
         expect(getAllByTestId('error-message').length).toBe(10);
         expect(saveAppointmentSpy).not.toHaveBeenCalled();
 
     });
 
-    it('should not display error message for start date, end date when filled', function () {
+    it('should not display error message for start date, end date when filled', async function () {
         const config = {
             "recurrence": {
                 "defaultNumberOfOccurrences": 10
@@ -239,6 +240,13 @@ describe('Add Appointment', () => {
         fireEvent.change(startDatePicker, {target: {value: today}});
         fireEvent.blur(startDatePicker);
         expect(startDatePicker.value).toEqual(today);
+
+        const ends = getByText("After");
+        fireEvent.click(ends);
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu-item')));
+
+        const weekButton = getByText("On");
+        fireEvent.click(weekButton)
 
         const endDatePicker = container.querySelectorAll('.bx--date-picker__input')[1];
         fireEvent.change(endDatePicker, {target: {value: fiveDaysFromToday}});
