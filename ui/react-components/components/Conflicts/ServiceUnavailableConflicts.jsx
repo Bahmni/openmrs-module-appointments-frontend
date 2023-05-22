@@ -10,16 +10,14 @@ import { ListItem, UnorderedList } from "carbon-components-react";
 const ServiceUnavailableConflicts = props => {
 
     const getConflictsList = () => {
-        let conflictList = [];
         const conflicts = sortBy(props.conflicts, conflict => conflict.startDateTime);
-        conflicts.forEach((conflict, index) => {
-            conflictList.push(
+        let conflictList = conflicts.map(conflict => 
             <ListItem>
-                <div className={classNames(appointmentConflict)} key={index}>
+                <div className={classNames(appointmentConflict)}>
                     <div className={classNames(conflictDetails)}>{getAppointmentConflictDetails(conflict)}</div>
                 </div>
-            </ListItem>);
-        });
+            </ListItem>
+            );
         return conflictList;
     };
     const defaultMessage = 'The {label} service you had selected for the appointment(s) is not available during below listed dates';

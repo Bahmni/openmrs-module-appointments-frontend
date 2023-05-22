@@ -30,17 +30,15 @@ const PatientDoubleBookingConflicts = props => {
     };
 
     const getConflictsList = () => {
-        let conflictsList = [];
         const conflicts = sortBy(props.conflicts, conflict => conflict.startDateTime);
-        conflicts.forEach((conflict, index) => {
-            conflictsList.push(
-                <ListItem>
-                    <div className={classNames(appointmentConflict)} key={index}>
+        let conflictsList = conflicts.map(conflict => 
+            <ListItem>
+                    <div className={classNames(appointmentConflict)}>
                         {getDoubleBookingAppointmentConflictMessage(conflict)}
                         <div className={classNames(conflictDetails)}>{getAppointmentConflictDetails(conflict)}</div>
                     </div>
-                </ListItem>);
-        });
+                </ListItem>
+            );
         return conflictsList;
     };
 
