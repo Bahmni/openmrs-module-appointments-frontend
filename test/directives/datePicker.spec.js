@@ -3,16 +3,20 @@
 describe('DatePicker', function () {
     var compile, scope, httpBackend;
 
-    beforeEach(module('bahmni.appointments'));
-
-    beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
-        compile = $compile;
-        scope = $rootScope.$new();
-        httpBackend = $httpBackend;
-        httpBackend.expectGET('./i18n/appointments/locale_en.json').respond({});
-        httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
-        // httpBackend.expectGET('../appointments/views/manage/datePicker.html').respond('<div></div>');
-    }));
+    beforeEach( function() {
+        module('bahmni.appointments')
+        inject(function ($compile, $httpBackend, $rootScope) {
+            compile = $compile;
+            scope = $rootScope.$new();
+            httpBackend = $httpBackend;
+            httpBackend.expectGET('./i18n/appointments/locale_en.json').respond({});
+            httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
+            httpBackend.expectGET('/openmrs/ws/rest/v1/systemsetting/?q=bahmni.appointments.runningOnOpenmrs&v=custom:(property,value)').respond({});
+            httpBackend.expectGET('/openmrs/ws/rest/v1/session?v=custom:(uuid)').respond({});
+            
+            // httpBackend.expectGET('../appointments/views/manage/datePicker.html').respond('<div></div>');
+        });
+    });
 
     var createElement = function () {
         var html = '<date-picker view-date="viewDate" last-valid-date="lastValidDate"' +

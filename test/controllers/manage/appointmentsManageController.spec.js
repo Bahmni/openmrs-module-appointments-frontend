@@ -52,6 +52,12 @@ describe('AppointmentsManageController', function () {
         expect(state.go).toHaveBeenCalledWith('home.manage.appointments.list', state.params, {reload: false});
     });
 
+    it("should navigate to awaiting appointments tab", function () {
+        state.params = {};
+        scope.navigateTo('awaitingappointments');
+        expect(state.go).toHaveBeenCalledWith('home.manage.awaitingappointments.list', state.params, {reload: false});
+    });
+
     it('should get tabName from state.current', function () {
         state = {
             name: "home.manage.summary",
@@ -68,8 +74,10 @@ describe('AppointmentsManageController', function () {
     it('should not call state.go when current view name and navigate to view name are same', function () {
         state.params = {};
         var appointmentListTabName = 'appointments';
+        var appointmentListViewName = 'list';
         state.current = {
-            tabName: appointmentListTabName
+            tabName: appointmentListTabName,
+            view: appointmentListViewName
         };
         scope.navigateTo(appointmentListTabName);
         expect(state.go).not.toHaveBeenCalled();
