@@ -1,4 +1,4 @@
-<p class="app-date-nav">
+<p class="app-date-nav" ng-show="showDatePicker()">
     <button class="app-today-btn" ng-click="goToCurrent()">{{::'CURRENT_DATE' |translate}}</button>
     <button class="app-today-btn" ng-click="$parent.toggleWeekView()" ng-show="showButtons">{{::'WEEK' |translate}}</button>
     <button class="app-today-btn" disabled ng-show="showButtons">{{::'DAY' |translate}}</button>

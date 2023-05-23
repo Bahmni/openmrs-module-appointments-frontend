@@ -128,8 +128,11 @@ describe('Add Appointment', () => {
     });
 
     it('should display time error message when time is not selected and remaining fields are selected ', async () => {
+        const config = {
+            "prioritiesForDateless": ["Routine", "Priority"]
+        }
         const {container, getByTestId, getByText, queryByText, getByPlaceholderText, getAllByText} = renderWithReactIntl(
-            <AddAppointment/>);
+            <AddAppointment appConfig={config}/>);
 
         //select patient
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
@@ -500,7 +503,10 @@ describe('Add Appointment', () => {
 
     it('should change appointment date when a new date is selected', async () => {
         const today = moment();
-        const {container, getByPlaceholderText, queryByText} = renderWithReactIntl(<AddAppointment/>);
+        const config = {
+            "prioritiesForDateless": ["Routine", "Priority"]
+        };
+        const {container, getByPlaceholderText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         const selectedDate = clickOnFirstDayOfNextMonth(container);
 
         const dateInputField = getByPlaceholderText('mm/dd/yyyy');
