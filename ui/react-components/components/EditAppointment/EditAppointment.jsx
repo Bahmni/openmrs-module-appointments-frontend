@@ -83,6 +83,7 @@ import {sendSMS} from "../../api/smsService";
 import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
 import {Close20} from "@carbon/icons-react";
 import {ContentSwitcher, Switch} from "carbon-components-react";
+import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
 
 const EditAppointment = props => {
 
@@ -166,6 +167,7 @@ const EditAppointment = props => {
             });
     }, [selectedPriority]);
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
+        console.log(modifiedAppointmentDetails);
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 
@@ -554,31 +556,17 @@ const EditAppointment = props => {
             <div>
                 <div>
                     <div data-testid="date-selector">
-                        <div className={classNames(dateHeading)}><Label translationKey='CHANGE_DATE_TO_LABEL'
-                                                                        defaultValue={`Change ${moment(originalAppointmentDate).format('Do MMM')} to`}/></div>
-                        <AppointmentDatePicker
+                        <DatePickerCarbon
                             onChange={date => {
                                 updateAppointmentDetails({appointmentDate: date});
                                 updateErrorIndicators({appointmentDateError: !date});
                             }}
                             value={appointmentDetails.appointmentDate}
-                            minDate={moment()}
-                            isDisabled={componentsDisableStatus.startDate}/>
+                            title={"Appointment date"}/>
                         <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                     </div>
-                    <div>
-                        <div className={classNames(dateHeading)}>
-                            <Label translationKey="CURRENT_TIME_SLOT_LABEL" defaultValue="Current time slot"/>
-                        </div>
-                        <div className={classNames(currentTimeSlot)}>
-                            <span>{currentStartTime}</span>
-                            <span> to </span>
-                            <span>{currentEndTime}</span>
-                        </div>
-                        <div className={classNames(dateHeading)}>
-                            <Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/>
-                        </div>
-                        <div data-testid="start-time-selector">
+                    <div style={{display: "flex"}}>
+                        <div style={{marginRight: "5px"}} data-testid="start-time-selector">
                             <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                           onChange={time => {
                                               updateAppointmentDetails({startTime: time});
@@ -599,10 +587,11 @@ const EditAppointment = props => {
                                               });
                                           }}
                                           isDisabled={componentsDisableStatus.time} />
-                            <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
+                            {
+                                errors.endTimeError ? <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/> : <ErrorMessage
+                                    message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
+                            }
                         </div>
-                        <ErrorMessage
-                            message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
                     </div>
                     {isRecurringAppointment() ?
                         <div className={classNames(recurringDetailsEdit)}>
