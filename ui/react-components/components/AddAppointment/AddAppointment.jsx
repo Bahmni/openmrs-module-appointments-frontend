@@ -140,6 +140,8 @@ const AddAppointment = props => {
     const after = intl.formatMessage({
         id: 'AFTER_LABEL', defaultMessage: 'After'
     });
+    const repeatsEvery = intl.formatMessage({id: 'REPEATS_EVERY_LABEL', defaultMessage: "Repeats Every"});
+    const ends = intl.formatMessage({id: "ENDS_LABEL", defaultMessage: "Ends"});
 
     const recurringTypeOptions = [
         {label: "Day(s)", value: "DAY"},
@@ -600,9 +602,6 @@ const AddAppointment = props => {
                         </div>
                         <div>
                             <div className={classNames(recurringContainerBlock)}>
-                                <div className={classNames(firstBlock)}>
-                                    <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats Every"/>
-                                </div>
                                 <div style={{width: "120px", marginRight: "5px"}}>
                                     <NumberInput
                                         testId={"appointment-period"}
@@ -612,9 +611,10 @@ const AddAppointment = props => {
                                         }}
                                         value={appointmentDetails.period || 0}
                                         id={"period"}
+                                        label={repeatsEvery}
                                     />
                                 </div>
-                                <div style={{minWidth: "120px"}}>
+                                <div style={{minWidth: "120px", verticalAlign: "bottom"}}>
                                     <Dropdown id={"recurrence-type"} options={recurringTypeOptions}
                                               label={"Choose an option"}
                                               selectedValue={recurringTypeOptions[0]}
@@ -625,14 +625,10 @@ const AddAppointment = props => {
                                     />
                                 </div>
                                 <br/>
-                                <div className={classNames(firstBlock)}>&nbsp;</div>
                                 <ErrorMessage message={errors.recurrencePeriodError && errorTranslations.recurrencePeriodErrorMessage}/>
                             </div>
                             { appointmentDetails.recurrenceType === "WEEK" ?
                                 <div className={classNames(recurringContainerBlock)}>
-                                    <div className={classNames(firstBlock)}>
-                                        <Label translationKey={"REPEATS_ON_LABEL"} defaultValue={"Repeats On"}/>
-                                    </div>
                                     <div>
                                         <ButtonGroup buttonsList={appointmentDetails.weekDays} onClick={buttonKey => {
                                             const prevWeekDaysMap = new Map(appointmentDetails.weekDays);
@@ -646,14 +642,10 @@ const AddAppointment = props => {
                                         }}/>
                                     </div>
                                     <br/>
-                                    <div className={classNames(firstBlock)}>&nbsp;</div>
                                     <ErrorMessage message={errors.weekDaysError && errorTranslations.weekDaysErrorMessage }/>
                                 </div>
                                 :<Fragment/>}
                             <div className={classNames(recurringContainerBlock)}>
-                                <div className={classNames(firstBlock)}>
-                                    <Label translationKey="ENDS_LABEL" defaultValue="Ends"/>
-                                </div>
                                 <div style={{minWidth: "100px"}}>
                                     <Dropdown id={"recurring-end"} options={[after, on]}
                                               onChange={event => {
@@ -661,6 +653,7 @@ const AddAppointment = props => {
                                                   updateErrorIndicators({endDateTypeError: errors.endDateTypeError});
                                               }}
                                               selectedValue={appointmentDetails.endDateType || after}
+                                              titleText={ends}
                                     />
                                 </div>
                                 <div style={{verticalAlign:"middle"}}>
@@ -680,7 +673,7 @@ const AddAppointment = props => {
                                             minDate = {appointmentDetails.recurringStartDate}
                                             testId={"recurring-end-date-selector"}/>:
                                         <div className={classNames(recurringContainerBlock)}>
-                                            <div style={{width: "120px", marginRight: "5px"}}>
+                                            <div style={{width: "140px", marginRight: "5px"}}>
                                                 <NumberInput id={'occurrences'}
                                                              testId={"recurring-occurrences"}
                                                              value={appointmentDetails.occurrences}
@@ -694,14 +687,14 @@ const AddAppointment = props => {
                                         </div>
                                     }
                                 </div>
-                                <div className={classNames(recurringContainerBlock)}>
-                                    <div className={classNames(firstBlock)}>&nbsp;</div>
-                                    {
-                                        appointmentDetails.endDateType === on ?
-                                            <ErrorMessage message={ getEndDateTypeErrorMessage() } /> :
-                                            <ErrorMessage message={ errors.occurrencesError && errorTranslations.occurrencesErrorMessage}/>
-                                    }
-                                </div>
+                            </div>
+                            <div className={classNames(recurringContainerBlock)}>
+                                <div className={classNames(firstBlock)}>&nbsp;</div>
+                                {
+                                    appointmentDetails.endDateType === on ?
+                                        <ErrorMessage message={ getEndDateTypeErrorMessage() } /> :
+                                        <ErrorMessage message={ errors.occurrencesError && errorTranslations.occurrencesErrorMessage}/>
+                                }
                             </div>
                         </div>
                     </div>:
