@@ -7,6 +7,7 @@ angular.module('bahmni.appointments')
                   appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, appointmentCommonService, $interval) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+            $scope.priorityOptionsList = appService.getAppDescriptor().getConfigValue('priorityOptionsList') || [];
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
@@ -20,9 +21,19 @@ angular.module('bahmni.appointments')
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
             $scope.shouldShowAppointmentsListPatientLink = !!Bahmni.Common.Constants.appointmentsListPatientLink;
             $scope.searchedPatient = false;
+            $scope.enableColumnForTab = function(tabName){
+                if($scope.getCurrentTabName() === tabName)
+                    return true
+                return false
+            }
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
+            const APPOINTMENT_STATUS_WAITLIST = {
+                "status" : "WaitList"
+            }
+            const APPOINTMENTS_TAB_NAME = "appointments";
+            const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var oldPatientData = [];
             var currentUserPrivileges = $rootScope.currentUser.privileges;
@@ -30,38 +41,55 @@ angular.module('bahmni.appointments')
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
             });
-            $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
+
+            var updateTableHeader = function (){
+            $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', class: true, enable: true},
+                {heading: 'APPOINTMENT_CREATION_DATE', sortInfo: 'dateCreated', class: true, enable: !$scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
-                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
-                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
+                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: $scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: $scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: $scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'comments', class: true, enable: !$scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
-                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
+                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: $scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
-
+            }
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
+                $scope.enableColumnsForAppointments = $scope.enableColumnForTab(APPOINTMENTS_TAB_NAME)
+                updateTableHeader();
                 appointmentCommonService.addProviderToFilterFromQueryString();
             };
 
             var setAppointments = function (params) {
                 autoRefreshStatus = false;
-                return appointmentsService.getAllAppointments(params).then(function (response) {
-                    $scope.appointments = response.data;
-                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
-                    $rootScope.appointmentsData = $scope.filteredAppointments;
-                    updateSelectedAppointment();
-                    autoRefreshStatus = true;
-                });
+                if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME)
+                    return appointmentsService.getAllAppointments(params)
+                    .then((response) => updateAppointments(response)); 
+                else 
+                    return appointmentsService.search(APPOINTMENT_STATUS_WAITLIST)
+                    .then((response) => updateAppointments(response)); 
             };
+
+            var updateAppointments = function (response){
+                $scope.appointments = response.data;
+                $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                if($scope.getCurrentTabName() === AWAITING_APPOINTMENTS_TAB_NAME){
+                    modifyAppointmentPriorities();
+                    $scope.filteredAppointments = _.sortBy($scope.filteredAppointments, "dateCreated").reverse();
+                }
+                $rootScope.appointmentsData = $scope.filteredAppointments;
+                updateSelectedAppointment();
+                autoRefreshStatus = true;
+            }
 
             var updateSelectedAppointment = function () {
                 if ($scope.selectedAppointment === undefined) {
@@ -71,6 +99,23 @@ angular.module('bahmni.appointments')
                     return appointment.uuid === $scope.selectedAppointment.uuid;
                 });
             };
+
+            var modifyAppointmentPriorities = function(){
+                $scope.filteredAppointments.map((appointment) => {
+                    var priorityModified = false;
+                    $scope.priorityOptionsList.map((priority) => {
+                        if(priority.value === appointment.priority){
+                            appointment.priority = priority.label;
+                            priorityModified = true;
+                        }
+                    });
+                    if(priorityModified) return ;
+                });
+            }
+
+            var sortAppointmentsByAppointmentCreationDate = function(a,b){
+                return new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime();
+            }
 
             var setAppointmentsInPatientSearch = function (patientUuid) {
                 appointmentsService.search({patientUuid: patientUuid}).then(function (response) {
@@ -84,13 +129,17 @@ angular.module('bahmni.appointments')
                     return;
                 }
                 if ($stateParams.isSearchEnabled) {
-                    setAppointmentsInPatientSearch($stateParams.patient.uuid);
+                        setAppointmentsInPatientSearch($stateParams.patient.uuid);
                 }
                 else {
                     var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
                     setAppointments({forDate: viewDate});
                 }
             };
+
+            $scope.getCurrentTabName = function(){
+                return $state.current.tabName;
+            }
 
             var autoRefresh = (function () {
                 if (!enableAutoRefresh) {
@@ -133,9 +182,9 @@ angular.module('bahmni.appointments')
             };
 
             var setFilteredAppointmentsInPatientSearch = function (appointments) {
-                $scope.filteredAppointments = appointments.map(function (appointmet) {
-                    appointmet.date = appointmet.startDateTime;
-                    return appointmet;
+                $scope.filteredAppointments = appointments.map(function (appointment) {
+                    appointment.date = appointment.startDateTime;
+                    return appointment;
                 });
             };
 
