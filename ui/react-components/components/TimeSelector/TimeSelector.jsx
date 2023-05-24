@@ -8,17 +8,14 @@ import {injectIntl} from "react-intl";
 
 const TimeSelector = props => {
 
-    const {
-        translationKey, defaultValue, onChange,
-        placeHolderTranslationKey, placeHolderDefaultMessage, defaultTime, isDisabled
-    } = props;
+    const { translationKey, defaultValue, onChange, defaultTime, isDisabled, width } = props;
     return (
         <div>
             <AppointmentTimePicker onChange={onChange}
                                    defaultTime={defaultTime}
                                    translationKey={translationKey}
                                    defaultTranslationKey={defaultValue}
-                                   isDisabled={isDisabled} />
+                                   isDisabled={isDisabled} width={width}/>
         </div>
     )
 };
@@ -31,7 +28,8 @@ TimeSelector.propTypes = {
     defaultValue: PropTypes.string.isRequired,
     placeHolderTranslationKey: PropTypes.string,
     defaultTime: PropTypes.object,
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    width: PropTypes.string,
 };
 
 export default injectIntl(TimeSelector);

@@ -2,24 +2,21 @@
 
 .buttonGroup {
   display: flex;
+  width: 408px;
+  justify-content: space-between;
+  padding-top: 10px;
   button {
-    flex-grow: 1;
-    padding: 10px 0;
-    border-radius: 0;
-    border-width: 1px 0 1px 1px;
-    border-color: $border-color;
-    background: $secondary-color-1;
-
-    &:first-child {
-      border-radius: 4px 0 0 4px;
-    }
-    &:last-child {
-      border-radius: 0 4px 4px 0;
-      border-right: 1px solid $border-color;
-    }
+    padding: 10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border-color: #A6C8FF;
+    background: #ffffff;
+    background: var(--color-secondary-1);
+    color: #0F62FE;
     &.selected {
-      background: $primary-color-1;
-      color: $secondary-color-1;
+      background: #D0E2FF;
+      border: 1px solid;
     }
   }
 }
