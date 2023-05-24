@@ -42,14 +42,9 @@ import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import AppointmentType from "../AppointmentType/AppointmentType.jsx";
 import Label from "../Label/Label.jsx";
 import {
-    currentTimeSlot,
-    dateText,
     editAppointment,
-    recurringDetailsEdit,
-    recurringEndDateContainer,
-    recurringEndDateLabel,
-    recurringTerminationDetails,
-    weekDaySelector
+    weekDaySelector,
+    recurring,
 } from './EditAppointment.module.scss'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import InputNumber from "../InputNumber/InputNumber.jsx";
@@ -58,9 +53,6 @@ import {getSelectedWeekDays, getWeekDays, selectWeekDays} from "../../services/W
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
 import {getProviderDropDownOptions} from "../../mapper/providerMapper";
-import CalendarPicker from "../CalendarPicker/CalendarPicker.jsx";
-import AppointmentDatePicker from "../DatePicker/DatePicker.jsx";
-import {capitalize} from "lodash/string";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import Conflicts from "../Conflicts/Conflicts.jsx";
 import {
@@ -151,6 +143,8 @@ const EditAppointment = props => {
         id: 'ON_LABEL', defaultMessage: 'On'
     });
 
+    const ends = intl.formatMessage({id: "ENDS_LABEL", defaultMessage: "Ends"});
+
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
     const [componentsDisableStatus, setComponentsDisableStatus] = useState({});
@@ -176,7 +170,6 @@ const EditAppointment = props => {
             });
     }, [selectedPriority]);
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
-        console.log(modifiedAppointmentDetails);
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 
@@ -439,7 +432,7 @@ const EditAppointment = props => {
             : (appointment && appointment.data) || undefined;
         const recurringPattern = isRecurringAppointment()
             ? (appointment && appointment.data && appointment.data.recurringPattern) || undefined : undefined;
-        console.log(appointmentResponse)
+
         if (appointmentResponse) {
             setOriginalAppointmentDate(moment(new Date(appointmentResponse.startDateTime)));
             const appointmentDetailsFromResponse = {
@@ -508,18 +501,9 @@ const EditAppointment = props => {
     const showAppointmentTypeControl = () => {
         var allowVirtualConsultation = appConfig && appConfig.allowVirtualConsultation;
         if (allowVirtualConsultation) {
-            return <AppointmentType appointmentType={appointmentDetails.appointmentType}
-                        isTeleconsultation={appointmentDetails.teleconsultation}
-                        onChange={(e) => {
-                            if (e.target.name === TELECONSULTATION_APPOINTMENT) {
-                                updateAppointmentDetails({ teleconsultation: e.target.checked });
-                                if (e.target.checked && appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE) {
-                                    updateAppointmentDetails({ appointmentType: VIRTUAL_APPOINTMENT_TYPE });
-                                }
-                                if (!e.target.checked && appointmentDetails.appointmentType === VIRTUAL_APPOINTMENT_TYPE) {
-                                    updateAppointmentDetails({ appointmentType: undefined });
-                                }
-                            }
+            return <AppointmentType appointmentType={appointmentDetails.appointmentType} isTeleconsultation={appointmentDetails.teleconsultation}
+                            onChange={(e) => {
+                            updateAppointmentDetails({ teleconsultation: e });
                         }} />;
         } else {
             return <div></div>
@@ -546,11 +530,10 @@ const EditAppointment = props => {
             updateErrorIndicators({endDateError: appointmentDetails.recurringStartDate && !appointmentDetails.recurringEndDate, occurrencesError: false});
         }
     };
-    console.log("appointmentDetails", appointmentDetails);
 
     return (<div className={classNames(overlay)}>
         <div data-testid="appointment-editor"
-             className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
+             className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? recurring : '')}>
             <CustomPopup triggerComponent={closeButton} popupContent={popupContent} style={customPopup}/>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails} errors={errors}
                                                   updateErrorIndicators={updateErrorIndicators}
@@ -560,14 +543,12 @@ const EditAppointment = props => {
                                                   setSelectedPriority={setSelectedPriority}
                                                   componentsDisableStatus={componentsDisableStatus}/>
             <div data-testid="recurring-plan-checkbox">
-                <div className={classNames(appointmentPlanContainer)}>
                     <div className={classNames(appointmentPlanContainer)}>
                         <ContentSwitcher selectedIndex={isRecurringAppointment()? 1 : 0} >
                             <Switch name="Regular" disabled={isRecurringAppointment()}>Regular Appointment</Switch>
                             <Switch name="Recurring" disabled={!isRecurringAppointment()}>Recurring Appointment</Switch>
                         </ContentSwitcher>
                     </div>
-                </div>
             </div>
             <div data-testid="appointment-type-checkbox" className={classNames(teleconsultation)}>
                 {showAppointmentTypeControl()}
@@ -578,12 +559,12 @@ const EditAppointment = props => {
                         <DatePickerCarbon
                             onChange={date => {
                                 if(date.length > 0) {
-                                    updateAppointmentDetails({appointmentDate: date});
+                                    const selectedDate = moment(date[0]).toDate();
+                                    updateAppointmentDetails({appointmentDate: selectedDate});
                                 }
                                 else {
                                     updateAppointmentDetails({appointmentDate: null});
                                 }
-                                console.log(date);
                                 updateErrorIndicators({appointmentDateError: !date[0]});
                             }}
                             value={appointmentDetails.appointmentDate}
@@ -594,10 +575,16 @@ const EditAppointment = props => {
                         <div style={{marginRight: "5px"}} data-testid="start-time-selector">
                             <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                           onChange={time => {
-                                              updateAppointmentDetails({startTime: time});
-                                              endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
-                                                  appointmentDetails.serviceType && appointmentDetails.serviceType.value);
-                                              updateErrorIndicators({startTimeError: !time});
+                                              if(time && !time.isValid()){
+                                                  updateAppointmentDetails({startTime: null});
+                                                  updateErrorIndicators({startTimeError: true});
+                                              }
+                                              else{
+                                                  updateAppointmentDetails({startTime: time});
+                                                  endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
+                                                      appointmentDetails.serviceType && appointmentDetails.serviceType.value);
+                                                  updateErrorIndicators({startTimeError: !time});
+                                              }
                                           }}
                                           isDisabled={componentsDisableStatus.time}/>
                             <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
@@ -605,11 +592,17 @@ const EditAppointment = props => {
                         <div data-testid="end-time-selector">
                             <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
                                           onChange={time => {
-                                              updateAppointmentDetails({endTime: time});
-                                              updateErrorIndicators({
-                                                  startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
-                                                  endTimeError: !time
-                                              });
+                                              if(time && !time.isValid()){
+                                                  updateAppointmentDetails({endTime: null});
+                                                  updateErrorIndicators({endTimeError: true});
+                                              }
+                                              else{
+                                                  updateAppointmentDetails({endTime: time});updateErrorIndicators({
+                                                      startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
+                                                      endTimeError: !time
+                                                  });
+                                              }
+
                                           }}
                                           isDisabled={componentsDisableStatus.time} />
                             {
@@ -619,13 +612,12 @@ const EditAppointment = props => {
                         </div>
                     </div>
                     {isRecurringAppointment() ?
-                        <div className={classNames(recurringDetailsEdit)}>
+                        <div>
                             <div>
-                                <div className={classNames(dateHeading)}>
+                                <div style={{marginBottom: "15px"}}>
                                     <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats every"/>
-                                </div>
-                                <div>
-                                    <span>{appointmentDetails.period} {isWeeklyRecurringAppointment()
+                                    &nbsp;
+                                    <span data-testid={"repeats-every"}>{appointmentDetails.period} {isWeeklyRecurringAppointment()
                                         ? <Label translationKey="WEEK_LABEL" defaultValue="Week(s)"/>
                                         : <Label translationKey="DAY_LABEL" defaultValue="Day(s)"/>}</span>
                                 </div>
@@ -643,8 +635,11 @@ const EditAppointment = props => {
                                                   updateErrorIndicators({endDateTypeError: errors.endDateTypeError});
                                               }}
                                               selectedValue={appointmentDetails.endDateType || after}
+                                              titleText={ends}
+                                              initialSelectedItem={appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER ? after : on}
                                     />
                                 </div>
+                                <div>
                                 {appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER
                                     ? (<div className={classNames(recurringContainerBlock)}>
                                         <div style={{width: "120px", marginRight: "5px"}} >
@@ -654,7 +649,8 @@ const EditAppointment = props => {
                                                     updateErrorIndicators({occurrencesError: !value || value < 1});
                                                 }}
                                                 value={appointmentDetails.occurrences}
-                                                isDisabled={componentsDisableStatus.occurrences} />
+                                                isDisabled={componentsDisableStatus.occurrences}
+                                                testId={"recurring-occurrences"}/>
                                         </div>
                                         <Label translationKey="OCCURRENCES_LABEL" defaultValue="Occurrences"/>
                                     </div>)
@@ -679,14 +675,15 @@ const EditAppointment = props => {
                                                 minDate={moment(appointmentDetails.appointmentDate).format("MM-DD-YYYY")}
                                                 testId={"recurring-end-date-selector"}/>
                                     </div>)}
-                                <div className={classNames(recurringContainerBlock)}>
-                                    <div className={classNames(firstBlock)}>&nbsp;</div>
-                                    {
-                                        appointmentDetails.endDateType === on ?
-                                            <ErrorMessage message={errors.endDateError ? errorTranslations.dateErrorMessage : undefined}/> :
-                                            <ErrorMessage message={errors.occurrencesError ? errorTranslations.occurrencesErrorMessage : undefined}/>
-                                    }
                                 </div>
+                            </div>
+                            <div className={classNames(recurringContainerBlock)}>
+                                <div className={classNames(firstBlock)}>&nbsp;</div>
+                                {
+                                    appointmentDetails.endDateType === on ?
+                                        <ErrorMessage message={errors.endDateError ? errorTranslations.dateErrorMessage : undefined}/> :
+                                        <ErrorMessage message={errors.occurrencesError ? errorTranslations.occurrencesErrorMessage : undefined}/>
+                                }
                             </div>
                         </div> : undefined}
                 </div>
@@ -717,14 +714,10 @@ const EditAppointment = props => {
                 cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_EDIT}
             />
             {conflicts &&
-                <CustomPopup style={conflictsPopup} open={true}
-                             closeOnDocumentClick={false}
-                             closeOnEscape={true}
-                             onClose={() => setConflicts(undefined)}
-                             popupContent={<Conflicts saveAnyway={saveAppointments}
-                                                      modifyInformation={() => setConflicts(undefined)}
-                                                      disableSaveAnywayButton={disableUpdateButton}
-                                                      conflicts={conflicts} service={appointmentDetails.service}/>}/>}
+               <Conflicts saveAnyway={saveAppointments}
+                          modifyInformation={() => setConflicts(undefined)}
+                          disableSaveAnywayButton={disableUpdateButton}
+                          conflicts={conflicts} service={appointmentDetails.service}/>}
         </div>
     </div>);
 };

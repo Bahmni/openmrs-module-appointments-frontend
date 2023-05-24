@@ -188,7 +188,7 @@
   "ENDDATE_TYPE_ERROR_MESSAGE": "Please select recurrence end type",
   "TIME_ERROR_MESSAGE": "Please select time",
   "RECURRENCE_PERIOD_ERROR_MESSAGE": "Please select valid recurrence period",
-  "START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE": "From time should be before to time",
+  "START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE": "End time should not be before start time",
   "RECURRENCE_WEEKDAYS_ERROR_MESSAGE": "Please select the day(s)",
   "NO_CONTENT_ERROR_MESSAGE": "Selected days do not fall under the end date selected",
   "UNEXPECTED_SERVICE_ERROR": "There was an unexpected issue on the server. Please try again",

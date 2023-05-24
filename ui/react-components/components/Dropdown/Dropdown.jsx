@@ -46,7 +46,6 @@ const Dropdown = (props) => {
   }
   const isComponentDisabled = () =>
     isUndefined(isDisabled) ? false : isDisabled;
-  console.log(selectedValue);
   return (
     <div
       data-testid="select"

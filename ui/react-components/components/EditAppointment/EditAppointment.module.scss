@@ -13,7 +13,7 @@
         }
       }
       .weekDaySelector {
-        margin-top: 10px;
+        margin: 10px 0;
       }
     }
     .recurringEndDateContainer {
@@ -38,3 +38,6 @@
     margin-bottom: 25px;
   }
 }
+.recurring{
+   min-height: 140%;
+ }
