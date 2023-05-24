@@ -11,7 +11,7 @@
   height: 100%;
   min-height: 115%;
   &.isRecurring {
-    min-height: 870px;
+    min-height: 140%;
   }
   background-color: $secondary-color-1;
 
@@ -78,7 +78,7 @@
   position: fixed;
   bottom: 0;
   right: 0;
-  top: 107px;
+  top: 108px;
   min-width: 540px;
   z-index: 499;
   display: flex;
@@ -95,14 +95,17 @@
   margin-left: 490px;
 }
 
+.inlineBlock{
+  display: inline-block;
+}
+
 .teleconsultation{
   padding: 10px;
 }
 
-.appointmentPlanContainer {
-  --cds-layer-selected-inverse: blue;
+.firstBlock{
+  width: 100px;
 }
-
 .tableWrapper{
   tr{
     border-bottom: none;
@@ -111,4 +114,7 @@
     border: none;
     padding: 2px;
   }
+}
+.recurringContainerBlock > *{
+  display: inline-block;
 }

@@ -69,12 +69,11 @@ describe('Edit Appointment', () => {
         expect(appointmentsApiSpy).toHaveBeenCalledTimes(1);
     });
 
-    //TODO: Fix these tests after recurring appointments plan is enabled with new UI
-    // it('should call getRecurringAppointment when isRecurring is true', () => {
-    //     renderWithReactIntl(<EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'}
-    //                                          isRecurring="true"/>);
-    //     expect(recurringAppointmentsApiSpy).toHaveBeenCalledTimes(1);
-    // });
+    it('should call getRecurringAppointment when isRecurring is true', () => {
+        renderWithReactIntl(<EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'}
+                                             isRecurring="true"/>);
+        expect(recurringAppointmentsApiSpy).toHaveBeenCalledTimes(1);
+    });
 
     //TODO Warnings while running tests
     it('should render appointment details coming from response', async () => {

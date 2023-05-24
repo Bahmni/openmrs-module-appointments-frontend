@@ -18,6 +18,8 @@ const styles = {
       },
       patientSearchDropdown : {
           "height": "48px",
+          "display": "flex",
+          "align-items": "center",
       }
 }
 const PatientSearch = (props) => {

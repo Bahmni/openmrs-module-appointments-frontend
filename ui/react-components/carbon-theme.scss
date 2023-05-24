@@ -1,6 +1,6 @@
 $interactive-01: #007d79;
 $interactive-02: #393939;
-$ui-05: #A6C8FF;
+$ui-05: #D0E2FF;
 $inverse-01: #0a74ff;
 $border-inverse: #0a74ff;
 @import "~carbon-components/scss/globals/scss/styles.scss";
@@ -40,6 +40,20 @@ $border-inverse: #0a74ff;
 .bx--select__arrow{
   fill: #161616;
 }
+.bx--list-box__field{
+  vertical-align: middle;
+}
+.bx--number input[type='number']{
+  padding-right: 5rem;
+  min-width: 6rem;
+}
+.bx--label{
+  color: black;
+}
+.bx--tag--filter {
+  color: #0043CE;
+  background-color: $ui-05;
+}
 .bx--tabs--scrollable__nav-link {
   width: 100% !important;
 }
@@ -49,3 +63,4 @@ $border-inverse: #0a74ff;
 .bx--list--nested {
   margin-left: 0.75rem;
 }
+  

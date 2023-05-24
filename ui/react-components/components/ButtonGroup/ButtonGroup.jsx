@@ -3,20 +3,24 @@ import React from "react";
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {buttonGroup, selected} from './ButtonGroup.module.scss'
+import Label from "../Label/Label.jsx";
 
 const ButtonGroup = props => {
 
-    const {buttonsList, onClick, enable} = props;
+    const {buttonsList, onClick } = props;
 
     return (
-        <div className={classNames(buttonGroup)}>
-            {[...buttonsList.keys()].map(key => {
-                const value = buttonsList.get(key);
-                return (<button key={key} onClick={() => onClick(key)} data-testid={key}
-                                className={classNames(value.isSelected && selected)} disabled={!enable}>
-                    <FormattedMessage id={value.translationKey} defaultMessage={value.defaultValue}/>
-                </button>);
-            })}
+        <div>
+            <Label translationKey={"REPEATS_ON_LABEL"} defaultValue={"Repeats On"}/>
+            <div className={classNames(buttonGroup)}>
+                {[...buttonsList.keys()].map(key => {
+                    const value = buttonsList.get(key);
+                    return (<button key={key} onClick={() => onClick(key)} data-testid={key}
+                                    className={classNames(value.isSelected && selected)}>
+                        <FormattedMessage id={value.translationKey} defaultMessage={value.defaultValue}/>
+                    </button>);
+                })}
+            </div>
         </div>
     )
 };

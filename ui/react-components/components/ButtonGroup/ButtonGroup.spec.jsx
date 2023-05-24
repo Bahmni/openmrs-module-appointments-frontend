@@ -72,23 +72,4 @@ describe('Button Group', () => {
         expect(onClickSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('should disable all the buttons when enable is false', () => {
-        const buttonsList = new Map([
-            ['ONE', {
-                translationKey: 'ONE',
-                defaultValue: 'One',
-                isSelected: true
-            }],
-            ['TWO', {
-                translationKey: 'TWO',
-                defaultValue: 'Two',
-                isSelected: true
-            }]
-        ]);
-
-        const {getByText} = renderWithReactIntl(<ButtonGroup buttonsList={buttonsList} onClick={jest.fn()}
-                                                             enable={false}/>);
-        expect(getByText('One').hasAttribute('disabled')).toBeTruthy();
-        expect(getByText('Two').hasAttribute('disabled')).toBeTruthy();
-    });
 });
