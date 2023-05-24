@@ -131,12 +131,7 @@ const AddAppointment = props => {
     const on = intl.formatMessage({
         id: 'ON_LABEL', defaultMessage: 'On'
     });
-    const week = intl.formatMessage({
-        id: 'WEEK_LABEL', defaultMessage: 'Week'
-    });
-    const day = intl.formatMessage({
-        id: 'DAY_LABEL', defaultMessage: 'Day'
-    });
+
     const after = intl.formatMessage({
         id: 'AFTER_LABEL', defaultMessage: 'After'
     });
