@@ -1,7 +1,7 @@
 import React from "react";
 import { NumberInput } from 'carbon-components-react';
 const NumberInputCarbon = props => {
-    const {onChange, value, id, testId, isDisabled = false} = props;
+    const {onChange, value, id, testId, label} = props;
     const handleChange = (event, carbonEvent, value) => {
         if(typeof carbonEvent === "object"){
             onChange(+carbonEvent.value);
@@ -18,7 +18,7 @@ const NumberInputCarbon = props => {
         min={0}
         value = { value || 0}
         invalidText={null}
-        disabled={isDisabled}
+        label={label}
     />
 }
 

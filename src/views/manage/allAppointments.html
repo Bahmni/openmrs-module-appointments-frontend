@@ -1,14 +1,21 @@
 
 <div class="appointment-container">
-    <div class="appointment-btn-container" ng-class="{'list-view': getCurrentTabName() === 'list'}">
+    <div class="appointment-btn-container" ng-class="{'list-view': (getCurrentView() === 'list')}">
         <p class="view-toggle-wrapper">
-            <a ng-class="{'active': getCurrentTabName() === 'list'}" ng-click="navigateTo('list')" ng-if="!isSearchEnabled">
+            <a ng-class="{'active': (getCurrentView() === 'list')}"
+            ng-show="(getCurrentTabName() === 'appointments')" 
+            ng-click="navigateTo('appointments.list')" 
+            ng-if="!isSearchEnabled">
                 {{::'LIST_VIEW' | translate}}
             </a>
-            <a ng-class="{'active': getCurrentTabName() === 'calendar'}" ng-if="enableCalendarView && !isSearchEnabled" ng-click="navigateTo('calendar')">
+            <a ng-class="{'active': (getCurrentView() === 'calendar')}"
+            ng-show="(getCurrentTabName() === 'appointments')" 
+            ng-if="enableCalendarView && !isSearchEnabled" 
+            ng-click="navigateTo('appointments.calendar')">
                 {{::'CALENDAR_VIEW' | translate}}
             </a>
-            <a show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" class="add-app-btn" ng-click="navigateTo(getCurrentTabName() + '.new')">
+            <a show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" 
+            class="add-app-btn" ng-click="navigateTo(getCurrentTabName() + '.' + getCurrentView() + '.new')">
                 {{::'ADD_NEW_APPOINTMENT' | translate }}
             </a>
         </p>

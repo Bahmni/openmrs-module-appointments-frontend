@@ -10,7 +10,8 @@ const DropdownCarbon = (props) => {
         onChange,
         isDisabled,
         selectedValue,
-        id
+        id,
+        titleText
     } = props;
     return (
         <div
@@ -21,7 +22,7 @@ const DropdownCarbon = (props) => {
                 id={id}
                 items={options}
                 onChange={onChange}
-                titleText={placeholder}
+                titleText={titleText}
                 disabled={isDisabled}
                 label={"Choose an option"}
                 initialSelectedItem={selectedValue}
