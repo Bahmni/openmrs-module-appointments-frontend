@@ -11,7 +11,10 @@ const ButtonGroup = props => {
 
     return (
         <div>
-            <Label translationKey={"REPEATS_ON_LABEL"} defaultValue={"Repeats On"}/>
+            <div style={{fontSize: "12px", color: "black"}}>
+                <Label translationKey={"REPEATS_ON_LABEL"} defaultValue={"Repeats On"}/>
+            </div>
+
             <div className={classNames(buttonGroup)}>
                 {[...buttonsList.keys()].map(key => {
                     const value = buttonsList.get(key);

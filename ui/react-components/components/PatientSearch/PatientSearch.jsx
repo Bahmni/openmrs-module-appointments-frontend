@@ -20,6 +20,7 @@ const styles = {
           "height": "48px",
           "display": "flex",
           "align-items": "center",
+          "padding": "0 1rem"
       }
 }
 const PatientSearch = (props) => {

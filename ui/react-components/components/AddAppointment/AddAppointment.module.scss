@@ -10,6 +10,7 @@
   top: 0;
   height: 100%;
   min-height: 115%;
+  -webkit-box-sizing: border-box;
   &.isRecurring {
     min-height: 140%;
   }
@@ -78,7 +79,7 @@
   position: fixed;
   bottom: 0;
   right: 0;
-  top: 108px;
+  top: 112px;
   min-width: 540px;
   z-index: 499;
   display: flex;
