@@ -14,7 +14,9 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
         occurrences: true,
         endDate: true,
         walkIn: true,
-        recurring: true
+        recurring: true,
+        priority: true,
+        teleconsultation: true,
     };
 
     const isPastAppointment = appointment.startDateTime && moment(appointment.startDateTime).startOf('day')
@@ -27,6 +29,8 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
     if (scheduledOrCheckedInAppointment) {
         componentDisableStatus.service = !(scheduledOrCheckedInAppointment && isServiceOnAppointmentEditable);
         componentDisableStatus.speciality = componentDisableStatus.service;
+        componentDisableStatus.priority = false;
+        componentDisableStatus.teleconsultation = false;
         componentDisableStatus.serviceType = false;
         componentDisableStatus.providers = false;
         componentDisableStatus.location = false;

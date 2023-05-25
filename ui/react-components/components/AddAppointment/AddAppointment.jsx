@@ -550,7 +550,9 @@ const AddAppointment = props => {
                                     } else {
                                         updateAppointmentDetails({recurringStartDate: null, selectedRecurringStartDate: null});
                                     }
-                                }} title={"Appointment start date"}/>
+                                }}
+                                minDate={moment().format("MM-DD-YYYY")}
+                                title={"Appointment start date"}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div style={{display: "flex"}}>
@@ -664,7 +666,8 @@ const AddAppointment = props => {
                                                 }
                                             }}
                                             width={"160px"}
-                                            minDate = {appointmentDetails.recurringStartDate}
+                                            minDate = { (appointmentDetails.recurringStartDate && moment(appointmentDetails.recurringStartDate).format("MM-DD-YYYY"))
+                                                || moment().format("MM-DD-YYYY")}
                                             testId={"recurring-end-date-selector"}/>:
                                         <div className={classNames(recurringContainerBlock)}>
                                             <div style={{width: "140px", marginRight: "5px"}}>
@@ -707,7 +710,9 @@ const AddAppointment = props => {
                                     !appConfig.prioritiesForDateless.
                                     find((priority) => priority === appointmentDetails.priority) &&
                                     updateErrorIndicators({appointmentDateError: !date[0]});
-                                }} title={"Appointment date"}/>
+                                }}
+                                minDate={moment().format("MM-DD-YYYY")}
+                                title={"Appointment date"}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div style={{display: "flex"}}>

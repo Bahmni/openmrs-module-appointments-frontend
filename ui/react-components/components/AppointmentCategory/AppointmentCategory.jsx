@@ -13,7 +13,6 @@ const AppointmentCategory = (props) => {
         return data.item.label.includes(data.inputValue);
     }
 
-    console.log(value)
     return (
         <ComboBox id="service-search"
                   items={priorityOptionsList}
@@ -23,7 +22,8 @@ const AppointmentCategory = (props) => {
                   isDisabled={isDisabled}
                   autoFocus={!specialityEnabled && autoFocus}
                   shouldFilterItem={filterItems}
-                  selectedValue={value || ''}
+                  selectedItem={value}
+                  disabled={isDisabled}
         />
     );
 };
