@@ -9,7 +9,7 @@ $css--body: false;
 @import "~carbon-components/scss/globals/scss/styles.scss";
 [class*="bx--"]{
   &:disabled{
-    -webkit-text-fill-color: darkgrey;
+    -webkit-text-fill-color: #8d8d8d;
   }
   font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
 }
@@ -32,6 +32,10 @@ $css--body: false;
   &:after{
     background-color: #edf5ff;
   }
+  &:disabled{
+    -webkit-text-fill-color: $inverse-01;
+    background-color: #cde3ff;
+  }
 }
 .bx--btn--primary{
   &:hover{
@@ -41,9 +45,6 @@ $css--body: false;
 }
 .bx--btn--secondary:hover{
   background-color: #6f6f6f;
-}
-.bx--content-switcher-btn:disabled{
-  -webkit-text-fill-color: $inverse-01;
 }
 .bx--content-switcher-btn:hover{
   color: #0a74ff;

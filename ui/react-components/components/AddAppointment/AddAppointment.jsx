@@ -502,6 +502,9 @@ const AddAppointment = props => {
         updateAppointmentDetails({status: value});
         errors.statusError && value && updateErrorIndicators({statusError: !value});
         if(value === APPOINTMENT_STATUSES.WaitList) {
+            updateAppointmentDetails({appointmentDate: null});
+            updateAppointmentDetails({startTime: null});
+            updateAppointmentDetails({endTime: null});
             updateErrorIndicators({
                 appointmentDateError: undefined,
                 startTimeError: undefined,

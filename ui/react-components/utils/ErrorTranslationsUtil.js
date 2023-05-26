@@ -22,7 +22,7 @@ export const getErrorTranslations = intl => {
             id: 'RECURRENCE_PERIOD_ERROR_MESSAGE', defaultMessage: 'Please select valid recurrence period'
         }),
         startTimeLessThanEndTimeMessage: intl.formatMessage({
-            id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'End time should not be before start time'
+            id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'End time shouldn\'t be before start time'
         }),
         weekDaysErrorMessage: intl.formatMessage({
             id: 'RECURRENCE_WEEKDAYS_ERROR_MESSAGE', defaultMessage: 'Please select the day(s)'

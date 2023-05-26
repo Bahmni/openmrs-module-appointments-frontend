@@ -20,7 +20,7 @@ import {getAppointment} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
 import moment from "moment";
 import 'moment-timezone';
-import {getDuration, getValidProviders, isActiveProvider, isAppointmentStatusOptionEnabled} from "../../helper";
+import {getDuration, getValidProviders, isActiveProvider, isAppointmentStatusOptionEnabled, isAppointmentPriorityOptionEnabled} from "../../helper";
 import {
     appointmentEndTimeProps,
     appointmentStartTimeProps,
@@ -88,7 +88,9 @@ const EditAppointment = props => {
         startTimeError: false,
         endTimeError: false,
         recurrencePeriodError: false,
-        startTimeBeforeEndTimeError: false
+        startTimeBeforeEndTimeError: false,
+        priorityError: false,
+        statusError: false
     });
 
     const initialAppointmentState = {
@@ -129,7 +131,6 @@ const EditAppointment = props => {
     const [existingProvidersUuids, setExistingProvidersUuids] = useState([]);
     const [appointmentTimeBeforeEdit, setAppointmentTimeBeforeEdit] = useState({});
     const [disableUpdateButton, setDisableUpdateButton] = useState(false);
-    const [selectedPriority, setSelectedPriority] = useState({})
 
     const after = intl.formatMessage({
         id: 'AFTER_LABEL', defaultMessage: 'After'
@@ -161,21 +162,6 @@ const EditAppointment = props => {
     const updateErrorIndicators = errorIndicators => setErrors(prevErrors => {
         return {...prevErrors, ...errorIndicators}
     });
-    const isDatelessAppointment = () => {
-        return appointmentDetails && appConfig && appConfig.enablePriorityOption && appConfig.prioritiesForDateless && appConfig.prioritiesForDateless.includes(appointmentDetails.priority)
-            && !appointmentDetails.appointmentDate && !appointmentDetails.startTime && !appointmentDetails.endTime;
-    }
-
-    useEffect(() => {
-        updateErrorIndicators({priorityError: undefined});
-        if (isDatelessAppointment())
-            updateErrorIndicators({
-                appointmentDateError: undefined,
-                startTimeError: undefined,
-                startTimeBeforeEndTimeError: undefined,
-                endTimeError: undefined
-            });
-    }, [selectedPriority]);
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
@@ -277,16 +263,21 @@ const EditAppointment = props => {
         if (isValidAppointment()) {
             setDisableUpdateButton(true);
             const appointment = getAppointmentRequest();
-            const response = await getAppointmentConflicts(appointment);
-            const status = response.status;
-            if (status === 204) {
-                setShowUpdateConfirmPopup(true);
-            } else if (status === 200) {
-                setConflicts(response.data);
-            } else if (response.data && response.data.error) {
-                setConflicts(undefined);
-                setServiceErrorMessageFromResponse(response.data);
-                resetServiceErrorMessage();
+            if (appointment.status === APPOINTMENT_STATUSES.WaitList) {
+                await save(appointment);
+            }
+            else{
+                const response = await getAppointmentConflicts(appointment);
+                const status = response.status;
+                if (status === 204) {
+                    setShowUpdateConfirmPopup(true);
+                } else if (status === 200) {
+                    setConflicts(response.data);
+                } else if (response.data && response.data.error) {
+                    setConflicts(undefined);
+                    setServiceErrorMessageFromResponse(response.data);
+                    resetServiceErrorMessage();
+                }
             }
             setDisableUpdateButton(false);
         }
@@ -386,10 +377,24 @@ const EditAppointment = props => {
 
 
     const isValidAppointment = () => {
+        const isValidPriority = !isAppointmentPriorityOptionEnabled(appConfig) || appointmentDetails.priority;
+        updateErrorIndicators({priorityError: !isValidPriority});
+        const isValidStatus = !isAppointmentStatusOptionEnabled(appConfig) || appointmentDetails.status
+        updateErrorIndicators({statusError: !isValidStatus});
+        if (appointmentDetails.status === APPOINTMENT_STATUSES.WaitList) {
+            updateErrorIndicators({
+                serviceError: !appointmentDetails.service,
+                appointmentDateError: undefined,
+                startTimeError: undefined,
+                endTimeError: undefined,
+                startTimeBeforeEndTimeError: undefined
+            });
+            return appointmentDetails.service && isValidPriority && isValidStatus
+        }
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
         updateCommonErrorIndicators(startTimeBeforeEndTime);
         updateErrorIndicators({appointmentDateError: !appointmentDetails.appointmentDate});
-        return appointmentDetails.service && appointmentDetails.appointmentDate && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime;
+        return appointmentDetails.service && appointmentDetails.appointmentDate && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime && isValidPriority && isValidStatus;;
     };
 
     const updateCommonErrorIndicators = (startTimeBeforeEndTime) => updateErrorIndicators({
@@ -538,6 +543,9 @@ const EditAppointment = props => {
         }
     };
     const getMinDate = (date) => {
+        if(appointmentDetails.status === APPOINTMENT_STATUSES.WaitList){
+            return undefined;
+        }
         if( moment(date).isBefore(moment().startOf("day"))){
             return moment(date).format("MM-DD-YYYY");
         }
@@ -554,6 +562,19 @@ const EditAppointment = props => {
                 startTimeBeforeEndTimeError: undefined,
                 endTimeError: undefined
             });
+            componentsDisableStatus.startDate = true;
+            componentsDisableStatus.time = true;
+            appointmentDetails.startTime= null;
+            appointmentDetails.endTime= null;
+            appointmentDetails.appointmentDate= null;
+
+        }
+        else if(value === APPOINTMENT_STATUSES.Scheduled){
+            componentsDisableStatus.startDate = false;
+            componentsDisableStatus.time= false;
+            appointmentDetails.startTime= null;
+            appointmentDetails.endTime= null;
+            appointmentDetails.appointmentDate= null;
         }
     }
 
@@ -566,7 +587,6 @@ const EditAppointment = props => {
                                                   endTimeBasedOnService={endTimeBasedOnService}
                                                   updateAppointmentDetails={updateAppointmentDetails}
                                                   appConfig={appConfig}
-                                                  setSelectedPriority={setSelectedPriority}
                                                   componentsDisableStatus={componentsDisableStatus}/>
             <div data-testid="recurring-plan-checkbox">
                     <div className={classNames(appointmentPlanContainer)}>
@@ -584,7 +604,7 @@ const EditAppointment = props => {
                     <RadioButtonGroup
                         legendText={statusPlaceHolder}
                         name="appointment-status-option"
-                        defaultSelected={appointmentDetails.status}
+                        valueSelected={appointmentDetails.status}
                         onChange={handleStatusChange}
                     >
                         <RadioButton
@@ -616,7 +636,7 @@ const EditAppointment = props => {
                                 }
                                 updateErrorIndicators({appointmentDateError: !date[0]});
                             }}
-                            value={appointmentDetails.appointmentDate}
+                            value={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList ? "" : appointmentDetails.appointmentDate}
                             isDisabled={componentsDisableStatus.startDate}
                             minDate={getMinDate(appointmentDetails.appointmentDate)}
                             title={"Appointment date"}/>
@@ -653,7 +673,6 @@ const EditAppointment = props => {
                                                       endTimeError: !time
                                                   });
                                               }
-
                                           }}
                                           isDisabled={componentsDisableStatus.time} />
                             {
@@ -682,8 +701,8 @@ const EditAppointment = props => {
                                 {ends}&nbsp;{appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER ? after.toLowerCase(): on.toLowerCase()}
                             </div>
                             {appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER
-                                ? (<div className={classNames(recurringContainerBlock)}>
-                                    <div style={{width: "120px", marginRight: "5px", fontSize: "12px", color: "black"}} >
+                                ? (<div className={classNames(recurringContainerBlock)} style={{color: "black"}}>
+                                    <div style={{width: "120px", marginRight: "5px", fontSize: "12px"}} >
                                         <NumberInputCarbon
                                             onChange={value => {
                                                 updateAppointmentDetails({occurrences: value});

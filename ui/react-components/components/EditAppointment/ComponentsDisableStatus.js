@@ -1,5 +1,6 @@
 import {isAppointmentScheduledOrCheckedIn} from "../../utils/AppointmentUtil";
 import moment from "moment";
+import {APPOINTMENT_STATUSES} from "../../constants";
 
 export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEditable) => {
     const componentDisableStatus = {
@@ -23,6 +24,9 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
     const isPastAppointment = appointment.startDateTime && moment(appointment.startDateTime).startOf('day')
         .isBefore(moment().startOf('day'));
 
+    if(appointment.status === APPOINTMENT_STATUSES.WaitList){
+        componentDisableStatus.status=false;
+    }
     if (isPastAppointment)
         return componentDisableStatus;
 
