@@ -17,6 +17,7 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
         recurring: true,
         priority: true,
         teleconsultation: true,
+        status: true,
     };
 
     const isPastAppointment = appointment.startDateTime && moment(appointment.startDateTime).startOf('day')
@@ -31,6 +32,7 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
         componentDisableStatus.speciality = componentDisableStatus.service;
         componentDisableStatus.priority = false;
         componentDisableStatus.teleconsultation = false;
+        componentDisableStatus.status=false;
         componentDisableStatus.serviceType = false;
         componentDisableStatus.providers = false;
         componentDisableStatus.location = false;

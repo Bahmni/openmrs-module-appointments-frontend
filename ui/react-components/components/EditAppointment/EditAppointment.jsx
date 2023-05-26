@@ -20,7 +20,7 @@ import {getAppointment} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
 import moment from "moment";
 import 'moment-timezone';
-import {getDuration, getValidProviders, isActiveProvider} from "../../helper";
+import {getDuration, getValidProviders, isActiveProvider, isAppointmentStatusOptionEnabled} from "../../helper";
 import {
     appointmentEndTimeProps,
     appointmentStartTimeProps,
@@ -33,7 +33,9 @@ import {
     SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     WALK_IN_APPOINTMENT_TYPE,
     weekRecurrenceType,
-    VIRTUAL_APPOINTMENT_TYPE, CANCEL_CONFIRMATION_MESSAGE_ADD
+    VIRTUAL_APPOINTMENT_TYPE,
+    CANCEL_CONFIRMATION_MESSAGE_ADD,
+    APPOINTMENT_STATUSES
 } from "../../constants";
 import AppointmentType from "../AppointmentType/AppointmentType.jsx";
 import Label from "../Label/Label.jsx";
@@ -68,10 +70,9 @@ import updateAppointmentStatusAndProviderResponse from "../../appointment-reques
 import {sendSMS} from "../../api/smsService";
 import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
 import {Close20} from "@carbon/icons-react";
-import {ContentSwitcher, Switch} from "carbon-components-react";
+import {ContentSwitcher, RadioButton, RadioButtonGroup, Switch} from "carbon-components-react";
 import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
 import NumberInputCarbon from "../NumberInput/NumberInputCarbon.jsx";
-import Dropdown from "../DropdownCarbon/Dropdown.jsx";
 
 const EditAppointment = props => {
 
@@ -139,6 +140,17 @@ const EditAppointment = props => {
     });
 
     const ends = intl.formatMessage({id: "ENDS_LABEL", defaultMessage: "Ends"});
+
+    const statusPlaceHolder = intl.formatMessage({
+        id: 'PLACEHOLDER_APPOINTMENT_CREATE_APPOINTMENT_STATUS', defaultMessage: "Appointment status"
+    });
+    const scheduledPlaceHolder = intl.formatMessage({
+        id: 'PLACEHOLDER_APPOINTMENT_STATUS_SCHEDULED', defaultMessage: "Scheduled"
+    });
+    const waitListPlaceHolder = intl.formatMessage({
+        id: 'PLACEHOLDER_APPOINTMENT_STATUS_WAITLIST', defaultMessage: "Waitlist"
+    });
+
 
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
@@ -532,6 +544,19 @@ const EditAppointment = props => {
         return moment().format("MM-DD-YYYY")
     }
 
+    const handleStatusChange = value => {
+        updateAppointmentDetails({status: value});
+        errors.statusError && value && updateErrorIndicators({statusError: !value});
+        if(value === APPOINTMENT_STATUSES.WaitList) {
+            updateErrorIndicators({
+                appointmentDateError: undefined,
+                startTimeError: undefined,
+                startTimeBeforeEndTimeError: undefined,
+                endTimeError: undefined
+            });
+        }
+    }
+
     return (<div className={classNames(overlay)}>
         <div data-testid="appointment-editor"
              className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? recurring : '')}>
@@ -554,6 +579,29 @@ const EditAppointment = props => {
             <div data-testid="appointment-type-checkbox" className={classNames(teleconsultation)}>
                 {showAppointmentTypeControl()}
             </div>
+            {!isRecurringAppointment() && isAppointmentStatusOptionEnabled(appConfig) &&
+                <div data-testid="appointment-status">
+                    <RadioButtonGroup
+                        legendText={statusPlaceHolder}
+                        name="appointment-status-option"
+                        defaultSelected={appointmentDetails.status}
+                        onChange={handleStatusChange}
+                    >
+                        <RadioButton
+                            labelText={scheduledPlaceHolder}
+                            value={APPOINTMENT_STATUSES.Scheduled}
+                            id={APPOINTMENT_STATUSES.Scheduled}
+                            disabled={componentsDisableStatus.status}
+                        />
+                        <RadioButton
+                            labelText={waitListPlaceHolder}
+                            value={APPOINTMENT_STATUSES.WaitList}
+                            id={APPOINTMENT_STATUSES.WaitList}
+                            disabled={componentsDisableStatus.status}
+                        />
+                    </RadioButtonGroup>
+                    <ErrorMessage message={errors.statusError ? errorTranslations.statusErrorMessage : undefined}/>
+                </div> }
             <div>
                 <div>
                     <div data-testid="date-selector">
@@ -617,7 +665,7 @@ const EditAppointment = props => {
                     {isRecurringAppointment() ?
                         <div>
                             <div>
-                                <div style={{marginBottom: "15px", color: "black"}}>
+                                <div style={{marginBottom: "15px", color: "black", fontSize: "12px"}}>
                                     <Label translationKey="REPEATS_EVERY_LABEL" defaultValue="Repeats every"/>
                                     &nbsp;
                                     <span data-testid={"repeats-every"}>{appointmentDetails.period} {isWeeklyRecurringAppointment()
@@ -630,66 +678,53 @@ const EditAppointment = props => {
                                         : undefined}
                                 </div>
                             </div>
-                            <div className={classNames(recurringContainerBlock)}>
-                                <div style={{minWidth: "100px"}}>
-                                    <Dropdown id={"recurring-end"} options={[after, on]}
-                                              onChange={event => {
-                                                  endDateOnChange(event.selectedItem);
-                                                  updateErrorIndicators({endDateTypeError: errors.endDateTypeError});
-                                              }}
-                                              selectedValue={appointmentDetails.endDateType || after}
-                                              titleText={ends}
-                                              isDisabled={true}
-                                    />
-                                </div>
-                                <div>
-                                {appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER
-                                    ? (<div className={classNames(recurringContainerBlock)}>
-                                        <div style={{width: "120px", marginRight: "5px"}} >
-                                            <NumberInputCarbon
-                                                onChange={value => {
-                                                    updateAppointmentDetails({occurrences: value});
-                                                    updateErrorIndicators({occurrencesError: !value || value < 1});
-                                                }}
-                                                value={appointmentDetails.occurrences}
-                                                isDisabled={componentsDisableStatus.occurrences}
-                                                testId={"recurring-occurrences"}/>
-                                        </div>
-                                        <Label translationKey="OCCURRENCES_LABEL" defaultValue="Occurrences"/>
-                                    </div>)
-                                    : (<div className={classNames(recurringContainerBlock)}>
-                                            <DatePickerCarbon
-                                                onChange={date => {
-                                                    if(date.length > 0) {
-                                                        const selectedDate = moment(date[0]).toDate();
-                                                        updateAppointmentDetails({recurringEndDate: selectedDate !== ' ' && !isNil(date)
-                                                                ? moment(date[0]).endOf('day') : undefined})
-                                                    }
-                                                    else {
-                                                        updateAppointmentDetails({recurringEndDate: null})
-                                                        updateErrorIndicators({endDateError: true});
-                                                    }
-                                                    if (date)
-                                                        updateErrorIndicators({endDateError: !date[0]});
-                                                }}
-                                                width={"160px"}
-                                                value={appointmentDetails.recurringEndDate}
-                                                isDisabled={componentsDisableStatus.endDate}
-                                                minDate={(appointmentDetails.appointmentDate && moment(appointmentDetails.appointmentDate).format("MM-DD-YYYY"))
-                                                    || moment().format("MM-DD-YYYY")}
-                                                testId={"recurring-end-date-selector"}/>
-                                    </div>)}
-                                </div>
+                            <div style={{marginBottom: "8px", color: "black", fontSize: "12px"}}>
+                                {ends}&nbsp;{appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER ? after.toLowerCase(): on.toLowerCase()}
                             </div>
-                            <div className={classNames(recurringContainerBlock)}>
-                                <div className={classNames(firstBlock)}>&nbsp;</div>
-                                {
-                                    appointmentDetails.endDateType === on ?
-                                        <ErrorMessage message={errors.endDateError ? errorTranslations.dateErrorMessage : undefined}/> :
-                                        <ErrorMessage message={errors.occurrencesError ? errorTranslations.occurrencesErrorMessage : undefined}/>
-                                }
-                            </div>
-                        </div> : undefined}
+                            {appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER
+                                ? (<div className={classNames(recurringContainerBlock)}>
+                                    <div style={{width: "120px", marginRight: "5px", fontSize: "12px", color: "black"}} >
+                                        <NumberInputCarbon
+                                            onChange={value => {
+                                                updateAppointmentDetails({occurrences: value});
+                                                updateErrorIndicators({occurrencesError: !value || value < 1});
+                                            }}
+                                            value={appointmentDetails.occurrences}
+                                            isDisabled={componentsDisableStatus.occurrences}
+                                            testId={"recurring-occurrences"}/>
+                                    </div>
+                                    <Label translationKey="OCCURRENCES_LABEL" defaultValue="Occurrences"/>
+                                </div>)
+                                : (<div className={classNames(recurringContainerBlock)}>
+                                        <DatePickerCarbon
+                                            onChange={date => {
+                                                if(date.length > 0) {
+                                                    const selectedDate = moment(date[0]).toDate();
+                                                    updateAppointmentDetails({recurringEndDate: selectedDate !== ' ' && !isNil(date)
+                                                            ? moment(date[0]).endOf('day') : undefined})
+                                                }
+                                                else {
+                                                    updateAppointmentDetails({recurringEndDate: null})
+                                                    updateErrorIndicators({endDateError: true});
+                                                }
+                                                if (date)
+                                                    updateErrorIndicators({endDateError: !date[0]});
+                                            }}
+                                            width={"160px"}
+                                            value={appointmentDetails.recurringEndDate}
+                                            isDisabled={componentsDisableStatus.endDate}
+                                            minDate={(appointmentDetails.appointmentDate && moment(appointmentDetails.appointmentDate).format("MM-DD-YYYY"))
+                                                || moment().format("MM-DD-YYYY")}
+                                            testId={"recurring-end-date-selector"}/>
+                                </div>)}
+                        <div className={classNames(recurringContainerBlock)}>
+                        {
+                            appointmentDetails.endDateType === on ?
+                                <ErrorMessage message={errors.endDateError ? errorTranslations.dateErrorMessage : undefined}/> :
+                                <ErrorMessage message={errors.occurrencesError ? errorTranslations.occurrencesErrorMessage : undefined}/>
+                        }
+                        </div>
+                    </div> : undefined}
                 </div>
             </div>
             <div data-testid={"appointment-notes"}>
