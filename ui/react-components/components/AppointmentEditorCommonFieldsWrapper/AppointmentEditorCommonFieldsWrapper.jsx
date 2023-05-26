@@ -11,6 +11,7 @@ import {
     isServiceTypeEnabled,
     isSpecialitiesEnabled,
     maxAppointmentProvidersAllowed,
+    isAppointmentPriorityOptionEnabled,
     isAppointmentStatusOptionEnabled
 } from "../../helper";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
