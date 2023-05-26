@@ -12,7 +12,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.showDatePicker = function () {
-                return $state.current.tabName === "appointments" ? true : false;
+                return $state.current.tabName === "awaitingappointments" ? false : true;
             }
 
             var viewDateChange = function () {
