@@ -33,7 +33,7 @@ const AppointmentTimePicker = (props) => {
     return (
     <TimePicker id="time-selector" labelText={key} onBlur={handleChange} value={time}
                 style={{ width: "72px", padding: "0 0 0 1rem"}} autoComplete={"off"} disabled={isDisabled}>
-             <TimePickerSelect id="time-picker-select-1" labelText={"Choose a time"} onChange={handlePeriod} disabled={isDisabled} value={period}>
+             <TimePickerSelect id="time-picker-select-1" labelText={"Choose a time"} onChange={handlePeriod} value={period} disabled={isDisabled}>
                <SelectItem value="AM" text="AM" />
                <SelectItem value="PM" text="PM" />
              </TimePickerSelect>

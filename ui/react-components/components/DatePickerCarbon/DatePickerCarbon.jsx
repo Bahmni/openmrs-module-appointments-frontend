@@ -11,7 +11,7 @@ const DatePickerCarbon = props => {
     }
     return (
         <div data-testid={testId || "datePicker"}>
-            <DatePicker datePickerType={"single"} onChange={onChange} minDate={minDate} value={defaultTime}>
+            <DatePicker datePickerType={"single"} onChange={onChange} disabled={isDisabled} minDate={minDate} value={defaultTime}>
                 <DatePickerInput
                     id={"Appointment Date"}
                     placeholder={"mm/dd/yyyy"}
@@ -31,7 +31,8 @@ DatePickerCarbon.propTypes = {
     onChange: PropTypes.func,
     width: PropTypes.string,
     title: PropTypes.string,
-    testId: PropTypes.string
+    testId: PropTypes.string,
+    isDisabled: PropTypes.bool,
 };
 
 export default DatePickerCarbon;

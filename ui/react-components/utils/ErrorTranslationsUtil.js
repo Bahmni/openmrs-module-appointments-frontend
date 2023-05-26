@@ -35,6 +35,9 @@ export const getErrorTranslations = intl => {
         }),
         priorityErrorMessage: intl.formatMessage({
             id: 'PRIORITY_ERROR_MESSAGE', defaultMessage: 'Please select appointment category'
+        }),
+        statusErrorMessage: intl.formatMessage({
+            id: 'STATUS_ERROR_MESSAGE', defaultMessage: 'Please select appointment status'
         })
     };
 };
