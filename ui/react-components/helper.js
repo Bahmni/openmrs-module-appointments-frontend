@@ -63,3 +63,7 @@ export const isAppointmentPriorityOptionEnabled = appConfig => {
         return appConfig.enablePriorityOption;
     return false;
 };
+
+export const isAppointmentStatusOptionEnabled = appConfig => {
+    return appConfig && appConfig.enableAppointmentStatusOption;
+};
