@@ -92,6 +92,7 @@ angular
                 }
             }).state('home.manage.appointments.calendar.new', {
                 url: '/new',
+                tabName: 'appointments',
                 params: {
                     appointment: null
                 },
@@ -110,6 +111,7 @@ angular
                 }
             }).state('home.manage.appointments.calendar.edit', {
                 url: '/:uuid?isRecurring',
+                tabName: 'appointments',
                 params: {
                     isRecurring: null
                 },
@@ -136,6 +138,7 @@ angular
                 }
             }).state('home.manage.appointments.list.new', {
                 url: '/new',
+                tabName: 'appointments',
                 views: {
                     'content@appointment': {
                         template: '<react-add-appointment-wrapper />'
@@ -151,6 +154,7 @@ angular
                 }
             }).state('home.manage.appointments.list.edit', {
                 url: '/:uuid?isRecurring',
+                tabName: 'appointments',
                 params: {
                     isRecurring: null
                 },
@@ -195,6 +199,7 @@ angular
                 }
             }).state('home.manage.awaitingappointments.list.new', {
                 url: '/new',
+                tabName: 'awaitingappointments',
                 views: {
                     'content@appointment': {
                         template: '<react-add-appointment-wrapper />'
@@ -210,6 +215,7 @@ angular
                 }
             }).state('home.manage.awaitingappointments.list.edit', {
                 url: '/:uuid?isRecurring',
+                tabName: 'awaitingappointments',
                 params: {
                     isRecurring: null
                 },

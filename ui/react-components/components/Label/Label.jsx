@@ -2,13 +2,13 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
 import classNames from "classnames";
-import {disabledLabelContainer} from './Label.module.scss'
+import {carbonFont, disabledLabelContainer} from './Label.module.scss'
 
 const Label = props => {
     const {translationKey, defaultValue, forInput, disabled} = props;
     return (
-        <label htmlFor={forInput} className={disabled ? classNames(disabledLabelContainer) : classNames('')}><b>
-            <FormattedMessage id={translationKey} defaultMessage={defaultValue}/></b>
+        <label htmlFor={forInput} className={classNames(carbonFont, disabled ? disabledLabelContainer : '')}>
+            <FormattedMessage id={translationKey} defaultMessage={defaultValue}/>
         </label>
     )
 };
