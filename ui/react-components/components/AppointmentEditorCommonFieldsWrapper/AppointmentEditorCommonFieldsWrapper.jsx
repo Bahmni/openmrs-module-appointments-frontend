@@ -13,7 +13,8 @@ import {
     isServiceTypeEnabled,
     isSpecialitiesEnabled,
     maxAppointmentProvidersAllowed,
-    isAppointmentPriorityOptionEnabled
+    isAppointmentPriorityOptionEnabled,
+    isAppointmentStatusOptionEnabled
 } from "../../helper";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import LocationSearch from "../Location/LocationSearch.jsx";
@@ -31,7 +32,7 @@ import AppointmentCategory from "../AppointmentCategory/AppointmentCategory.jsx"
 
 const AppointmentEditorCommonFieldsWrapper = props => {
 
-    const {updateAppointmentDetails, updateErrorIndicators, setSelectedPriority} = props;
+    const {updateAppointmentDetails, updateErrorIndicators} = props;
     const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl, autoFocus} = props;
     const componentsDisableStatus = props.componentsDisableStatus || {};
     const errorTranslations = getErrorTranslations(intl);
@@ -83,12 +84,11 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                     priorityOptionsList={appConfig.priorityOptionsList}
                                     onChange={ selectedCategory => {
                                         if(selectedCategory.selectedItem){
-                                            setSelectedPriority(selectedCategory.selectedItem)
                                             updateAppointmentDetails({priority: selectedCategory.selectedItem.value})
                                         } else {
                                             updateAppointmentDetails({priority: null})
                                         }
-                                        updateErrorIndicators({priorityError: !appointmentDetails.priority});
+                                        updateErrorIndicators({priorityError: !selectedCategory.selectedItem});
                                     }} isDisabled={componentsDisableStatus.priority}
                                     autoFocus={componentsDisableStatus.patient}/>
                                 <ErrorMessage message={errors.priorityError ? errorTranslations.priorityErrorMessage : undefined}/>
