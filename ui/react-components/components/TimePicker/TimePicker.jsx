@@ -16,7 +16,7 @@ const AppointmentTimePicker = (props) => {
     const [time, setTime] = useState(timeStamp[0]);
     const [period, setPeriod] = useState(timeStamp[1]);
     useEffect(()=>{
-        setTime(timeStamp[0]);
+        setTime(timeStamp[0] || "");
         setPeriod(timeStamp[1])
     }, [defaultTime])
     const handleChange = e => {

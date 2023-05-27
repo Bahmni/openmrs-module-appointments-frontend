@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Label from "../Label/Label.jsx";
 import AppointmentTimePicker from "../TimePicker/TimePicker.jsx";
-import classNames from 'classnames';
-import {timeSelector} from './TimeSelector.module.scss';
 import {injectIntl} from "react-intl";
 
 const TimeSelector = props => {
