@@ -11,7 +11,7 @@ const DatePickerCarbon = props => {
     }
     return (
         <div data-testid={testId || "datePicker"}>
-            <DatePicker datePickerType={"single"} onChange={onChange} disabled={isDisabled} minDate={minDate || moment().format("MM-DD-YYYY")} value={defaultTime}>
+            <DatePicker datePickerType={"single"} onChange={onChange} disabled={isDisabled} minDate={minDate} value={defaultTime}>
                 <DatePickerInput
                     id={"Appointment Date"}
                     placeholder={"mm/dd/yyyy"}

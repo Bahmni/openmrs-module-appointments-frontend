@@ -130,17 +130,21 @@ const AddAppointment = props => {
     const on = intl.formatMessage({
         id: 'ON_LABEL', defaultMessage: 'On'
     });
-    const week = intl.formatMessage({
-        id: 'WEEK_LABEL', defaultMessage: 'Week'
-    });
-    const day = intl.formatMessage({
-        id: 'DAY_LABEL', defaultMessage: 'Day'
-    });
     const after = intl.formatMessage({
         id: 'AFTER_LABEL', defaultMessage: 'After'
     });
     const repeatsEvery = intl.formatMessage({id: 'REPEATS_EVERY_LABEL', defaultMessage: "Repeats Every"});
     const ends = intl.formatMessage({id: "ENDS_LABEL", defaultMessage: "Ends"});
+    const statusPlaceHolder = intl.formatMessage({
+        id: 'PLACEHOLDER_APPOINTMENT_CREATE_APPOINTMENT_STATUS', defaultMessage: "Appointment status"
+    });
+    const scheduledPlaceHolder = intl.formatMessage({
+        id: 'PLACEHOLDER_APPOINTMENT_STATUS_SCHEDULED', defaultMessage: "Scheduled"
+    });
+    const waitListPlaceHolder = intl.formatMessage({
+        id: 'PLACEHOLDER_APPOINTMENT_STATUS_WAITLIST', defaultMessage: "Waitlist"
+    });
+
 
     const recurringTypeOptions = [
         {label: "Day(s)", value: "DAY"},
@@ -484,20 +488,13 @@ const AddAppointment = props => {
         }
     };
 
-    const statusPlaceHolder = intl.formatMessage({
-        id: 'PLACEHOLDER_APPOINTMENT_CREATE_APPOINTMENT_STATUS', defaultMessage: "Appointment status"
-    });
-    const scheduledPlaceHolder = intl.formatMessage({
-        id: 'PLACEHOLDER_APPOINTMENT_STATUS_SCHEDULED', defaultMessage: "Scheduled"
-    });
-    const waitListPlaceHolder = intl.formatMessage({
-        id: 'PLACEHOLDER_APPOINTMENT_STATUS_WAITLIST', defaultMessage: "Waitlist"
-    });
-
     const handleStatusChange = value => {
         updateAppointmentDetails({status: value});
         errors.statusError && value && updateErrorIndicators({statusError: !value});
-        if(value == APPOINTMENT_STATUSES.WaitList) {
+        if(value === APPOINTMENT_STATUSES.WaitList) {
+            updateAppointmentDetails({appointmentDate: null});
+            updateAppointmentDetails({startTime: null});
+            updateAppointmentDetails({endTime: null});
             updateErrorIndicators({
                 appointmentDateError: undefined,
                 startTimeError: undefined,
@@ -557,7 +554,9 @@ const AddAppointment = props => {
                                     } else {
                                         updateAppointmentDetails({recurringStartDate: null, selectedRecurringStartDate: null});
                                     }
-                                }} title={"Appointment start date"}/>
+                                }}
+                                minDate={moment().format("MM-DD-YYYY")}
+                                title={"Appointment start date"}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div style={{display: "flex"}}>
@@ -671,7 +670,8 @@ const AddAppointment = props => {
                                                 }
                                             }}
                                             width={"160px"}
-                                            minDate = {appointmentDetails.recurringStartDate}
+                                            minDate = { (appointmentDetails.recurringStartDate && moment(appointmentDetails.recurringStartDate).format("MM-DD-YYYY"))
+                                                || moment().format("MM-DD-YYYY")}
                                             testId={"recurring-end-date-selector"}/>:
                                         <div className={classNames(recurringContainerBlock)}>
                                             <div style={{width: "140px", marginRight: "5px"}}>
@@ -725,7 +725,7 @@ const AddAppointment = props => {
                         <div data-testid="date-selector">
                             <DatePickerCarbon
                                 value={appointmentDetails.appointmentDate}
-                                isDisabled={appointmentDetails.status == APPOINTMENT_STATUSES.WaitList}
+                                isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList}
                                 onChange={date => {
                                     if(date.length > 0) {
                                         const selectedDate = moment(date[0]).toDate();
@@ -734,15 +734,17 @@ const AddAppointment = props => {
                                         updateAppointmentDetails({appointmentDate: null});
                                     }
                                     !appConfig.prioritiesForDateless.
-                                    find((priority) => priority === appointmentDetails.priority) && 
+                                    find((priority) => priority === appointmentDetails.priority) &&
                                     updateErrorIndicators({appointmentDateError: !date[0]});
-                                }} title={"Appointment date"}/>
+                                }}
+                                minDate={moment().format("MM-DD-YYYY")}
+                                title={"Appointment date"}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div style={{display: "flex"}}>
                             <div style={{marginRight: "5px"}} data-testid="start-time-selector">
                             <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
-                                        isDisabled={appointmentDetails.status == APPOINTMENT_STATUSES.WaitList}
+                                        isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList}
                                         onChange={time => {
                                             if(time && !time.isValid()) {
                                                 updateAppointmentDetails({startTime: null});
@@ -759,7 +761,7 @@ const AddAppointment = props => {
                             </div>
                             <div data-testid="end-time-selector">
                                 <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
-                                            isDisabled={appointmentDetails.status == APPOINTMENT_STATUSES.WaitList}
+                                            isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList}
                                             onChange={time => {
                                                 if(time && !time.isValid()) {
                                                     updateAppointmentDetails({endTime: null});
