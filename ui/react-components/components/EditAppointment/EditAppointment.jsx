@@ -533,15 +533,6 @@ const EditAppointment = props => {
     const closeButton = <div className={classNames(close)}>
         <Close20/>
     </div>
-
-    const endDateOnChange = value => {
-        updateAppointmentDetails({endDateType: value});
-        updateErrorIndicators({endDateTypeError: false});
-        value === "After" && updateErrorIndicators({endDateError: false});
-        if (value === "On") {
-            updateErrorIndicators({endDateError: appointmentDetails.recurringStartDate && !appointmentDetails.recurringEndDate, occurrencesError: false});
-        }
-    };
     const getMinDate = (date) => {
         if(appointmentDetails.status === APPOINTMENT_STATUSES.WaitList){
             return undefined;
@@ -590,9 +581,9 @@ const EditAppointment = props => {
                                                   componentsDisableStatus={componentsDisableStatus}/>
             <div data-testid="recurring-plan-checkbox">
                     <div className={classNames(appointmentPlanContainer)}>
-                        <ContentSwitcher selectedIndex={isRecurringAppointment()? 1 : 0} >
-                            <Switch name="Regular" disabled={isRecurringAppointment()}>Regular Appointment</Switch>
-                            <Switch name="Recurring" disabled={!isRecurringAppointment()}>Recurring Appointment</Switch>
+                        <ContentSwitcher selectedIndex={isRecurring? 1 : 0} >
+                            <Switch name="Regular" disabled={isRecurring}>Regular Appointment</Switch>
+                            <Switch name="Recurring" disabled={!isRecurring}>Recurring Appointment</Switch>
                         </ContentSwitcher>
                     </div>
             </div>

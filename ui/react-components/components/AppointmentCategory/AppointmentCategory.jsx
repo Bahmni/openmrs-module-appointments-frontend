@@ -22,7 +22,7 @@ const AppointmentCategory = (props) => {
                   isDisabled={isDisabled}
                   autoFocus={!specialityEnabled && autoFocus}
                   shouldFilterItem={filterItems}
-                  selectedItem={value}
+                  selectedItem={value || ""}
                   disabled={isDisabled}
         />
     );
