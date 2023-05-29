@@ -444,10 +444,10 @@ const EditAppointment = props => {
                 serviceType: appointmentResponse.serviceType ? {label: appointmentResponse.serviceType.name, value: appointmentResponse.serviceType} : undefined,
                 location: appointmentResponse.location ? {label: appointmentResponse.location.name, value: appointmentResponse.location} : undefined,
                 speciality: appointmentResponse.service.speciality.uuid ? {label: appointmentResponse.service.speciality.name, value: appointmentResponse.service.speciality} : undefined,
-                startTime: moment(new Date(appointmentResponse.startDateTime)),
-                endTime: moment(new Date(appointmentResponse.endDateTime)),
+                startTime: appointmentResponse.startDateTime && moment(new Date(appointmentResponse.startDateTime)),
+                endTime: appointmentResponse.endDateTime && moment(new Date(appointmentResponse.endDateTime)),
                 notes: appointmentResponse.comments,
-                appointmentDate: moment(new Date(appointmentResponse.startDateTime)),
+                appointmentDate: appointmentResponse.startDateTime && moment(new Date(appointmentResponse.startDateTime)),
                 appointmentKind: appointmentResponse.appointmentKind,
                 status: appointmentResponse.status,
                 appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE :
@@ -537,6 +537,9 @@ const EditAppointment = props => {
         updateAppointmentDetails({status: value});
         errors.statusError && value && updateErrorIndicators({statusError: !value});
         if(value === APPOINTMENT_STATUSES.WaitList) {
+            updateAppointmentDetails({appointmentDate: null});
+            updateAppointmentDetails({startTime: null});
+            updateAppointmentDetails({endTime: null});
             updateErrorIndicators({
                 appointmentDateError: undefined,
                 startTimeError: undefined,
@@ -545,20 +548,17 @@ const EditAppointment = props => {
             });
             componentsDisableStatus.startDate = true;
             componentsDisableStatus.time = true;
-            appointmentDetails.startTime= null;
-            appointmentDetails.endTime= null;
-            appointmentDetails.appointmentDate= null;
 
         }
         else if(value === APPOINTMENT_STATUSES.Scheduled){
             componentsDisableStatus.startDate = false;
             componentsDisableStatus.time= false;
-            appointmentDetails.startTime= null;
-            appointmentDetails.endTime= null;
-            appointmentDetails.appointmentDate= null;
+            updateAppointmentDetails({appointmentDate: null});
+            updateAppointmentDetails({startTime: null});
+            updateAppointmentDetails({endTime: null});
         }
     }
-
+    const recurring = isRecurringAppointment();
     return (<div className={classNames(overlay)}>
         <div data-testid="appointment-editor"
              className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? recurring : '')}>
@@ -571,9 +571,9 @@ const EditAppointment = props => {
                                                   componentsDisableStatus={componentsDisableStatus}/>
             <div data-testid="recurring-plan-checkbox">
                     <div className={classNames(appointmentPlanContainer)}>
-                        <ContentSwitcher selectedIndex={isRecurring? 1 : 0} >
-                            <Switch name="Regular" disabled={isRecurring}>Regular Appointment</Switch>
-                            <Switch name="Recurring" disabled={!isRecurring}>Recurring Appointment</Switch>
+                        <ContentSwitcher selectedIndex={recurring? 1 : 0} >
+                            <Switch name="Regular" disabled={recurring}>Regular Appointment</Switch>
+                            <Switch name="Recurring" disabled={!recurring}>Recurring Appointment</Switch>
                         </ContentSwitcher>
                     </div>
             </div>
