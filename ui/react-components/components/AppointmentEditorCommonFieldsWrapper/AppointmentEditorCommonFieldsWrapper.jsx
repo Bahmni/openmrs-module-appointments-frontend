@@ -1,32 +1,27 @@
-import {Fragment} from "react";
+import React, {Fragment} from "react";
 import classNames from "classnames";
-import {
-    commonFields,
-    tableWrapper
-} from "./AppointmentEditorCommonFieldsWrapper.module.scss";
+import {commonFields, tableWrapper} from "./AppointmentEditorCommonFieldsWrapper.module.scss";
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
 import ServiceTypeSearch from "../Service/ServiceTypeSearch.jsx";
 import {
     getValidProviders,
+    isAppointmentPriorityOptionEnabled,
     isServiceTypeEnabled,
     isSpecialitiesEnabled,
     maxAppointmentProvidersAllowed,
-    isAppointmentPriorityOptionEnabled,
-    isAppointmentStatusOptionEnabled
 } from "../../helper";
 import SpecialitySearch from "../Speciality/SpecialitySearch.jsx";
 import LocationSearch from "../Location/LocationSearch.jsx";
 import ProviderSearch from "../Provider/ProviderSearch.jsx";
-import React from "react";
 import {injectIntl} from "react-intl";
 import {getErrorTranslations, getMaxAppointmentProvidersErrorMessage} from "../../utils/ErrorTranslationsUtil";
 import {filter, isEmpty} from "lodash";
 import {
     DEFAULT_MAX_APPOINTMENT_PROVIDERS,
-    PROVIDER_RESPONSES,
-    PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL
+    PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL,
+    PROVIDER_RESPONSES
 } from "../../constants";
 import AppointmentCategory from "../AppointmentCategory/AppointmentCategory.jsx";
 
@@ -60,6 +55,14 @@ const AppointmentEditorCommonFieldsWrapper = props => {
         }
     };
 
+    const getInitialPriority = (priority) => {
+        if(priority){
+            const options = appConfig.priorityOptionsList;
+            return options.find(option => option.value === priority);
+        }
+        return undefined;
+    }
+
     return (
         <Fragment>
             <div className={classNames(commonFields)}>
@@ -80,10 +83,10 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     {isAppointmentPriorityOptionEnabled(appConfig) && <tr>
                         <td>
                             <div data-testid="appointment-category-search">
-                                <AppointmentCategory value={appointmentDetails.priority}
+                                <AppointmentCategory value={getInitialPriority(appointmentDetails.priority)}
                                     priorityOptionsList={appConfig.priorityOptionsList}
                                     onChange={ selectedCategory => {
-                                        if(selectedCategory.selectedItem){
+                                        if(selectedCategory && selectedCategory.selectedItem){
                                             updateAppointmentDetails({priority: selectedCategory.selectedItem.value})
                                         } else {
                                             updateAppointmentDetails({priority: null})
@@ -159,7 +162,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                 <LocationSearch value={appointmentDetails.location}
                                                 onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
                                                 isDisabled={componentsDisableStatus.location}
-                                                autoFocus={componentsDisableStatus.patient && componentsDisableStatus.speciality && componentsDisableStatus.service}/>
+                                                autoFocus={componentsDisableStatus.patient && componentsDisableStatus.priority && componentsDisableStatus.speciality && componentsDisableStatus.service}/>
                                 <ErrorMessage message={undefined}/>
                             </div>
                         </td>

@@ -40,11 +40,10 @@ const AppointmentEditorFooter = props => {
             <div>
                 <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
                 {isEdit
-                    ? <Button kind="secondary" style={{width: "270px"}}  className={classNames(button, save)}
+                    ? <Button kind="primary" style={{width: "270px", height: "64px" }}  className={classNames(button, save)}
                               onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}
                               disabled={disableSaveAndUpdateButton}
                               data-testid="check-and-save">
-                        <i className={classNames("fa", "fa-check")}/>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_UPDATE_LABEL'} defaultMessage={'Update'}/>
                     </span>
