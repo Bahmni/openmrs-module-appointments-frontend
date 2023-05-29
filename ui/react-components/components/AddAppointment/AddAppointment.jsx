@@ -686,7 +686,6 @@ const AddAppointment = props => {
                 closeOnDocumentClick: false,
                 closeOnEscape: false
             }) : undefined}
-        </div>
     </Fragment>);
 };
 
