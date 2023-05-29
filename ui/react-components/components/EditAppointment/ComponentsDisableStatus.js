@@ -25,8 +25,14 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
         .isBefore(moment().startOf('day'));
 
     if(appointment.status === APPOINTMENT_STATUSES.WaitList){
+        componentDisableStatus.service = !isServiceOnAppointmentEditable;
+        componentDisableStatus.speciality = componentDisableStatus.service;
         componentDisableStatus.status=false;
+        componentDisableStatus.providers = false;
+        componentDisableStatus.location = false;
+        componentDisableStatus.priority = false;
     }
+
     if (isPastAppointment)
         return componentDisableStatus;
 

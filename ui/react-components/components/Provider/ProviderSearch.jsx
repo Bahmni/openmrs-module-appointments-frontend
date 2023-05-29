@@ -19,7 +19,8 @@ const ProviderSearch = props => {
     openMenuOnFocus = true,
     style = "",
     components,
-    customSelectStyle
+    customSelectStyle,
+    autoFocus,
   } = props;
 
   const placeHolder = intl.formatMessage({
@@ -103,6 +104,7 @@ const ProviderSearch = props => {
         openMenuOnFocus={openMenuOnFocus}
         components={components}
         customSelectStyle={customSelectStyle}
+        autoFocus={autoFocus}
       />
       <Tags
         onChange={onProviderRemove}
@@ -123,7 +125,8 @@ ProviderSearch.propTypes = {
   onChange: PropTypes.func,
   onProviderRemove: PropTypes.func,
   selectedProviders: PropTypes.array,
-  isDisabled: PropTypes.bool
+  isDisabled: PropTypes.bool,
+  autoFocus: PropTypes.bool
 };
 
 export default injectIntl(ProviderSearch);

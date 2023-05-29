@@ -112,7 +112,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                                               location: null
                                                           })}}
                                                       isDisabled={componentsDisableStatus.speciality}
-                                                      autoFocus={componentsDisableStatus.patient}/>
+                                                      autoFocus={componentsDisableStatus.patient && componentsDisableStatus.priority}/>
                                 </div> : null
                             }
                         </td>
@@ -127,7 +127,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                     && appointmentDetails.speciality.value.uuid}
                                                isDisabled={componentsDisableStatus.service}
                                                specialityEnabled = {isSpecialitiesEnabled(appConfig)}
-                                               autoFocus={componentsDisableStatus.patient}
+                                               autoFocus={componentsDisableStatus.patient && componentsDisableStatus.priority}
                                 />
                                 <ErrorMessage
                                     message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
@@ -152,7 +152,9 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                     }}
                                     onProviderRemove={providerIdentifier => updateAppointmentDetails({providers: filter(appointmentDetails.providers, provider => provider.value !== providerIdentifier)})}
                                     selectedProviders={appointmentDetails.providers}
-                                    isDisabled={componentsDisableStatus.providers}/>
+                                    isDisabled={componentsDisableStatus.providers}
+                                    autoFocus={ componentsDisableStatus.patient && componentsDisableStatus.priority && componentsDisableStatus.speciality}
+                                />
                                 <ErrorMessage message={errors.providerError && getMaxAppointmentProvidersErrorMessage(intl,
                                     appConfig && appConfig.maxAppointmentProviders || DEFAULT_MAX_APPOINTMENT_PROVIDERS).providerErrorMessage}/>
                             </div>
