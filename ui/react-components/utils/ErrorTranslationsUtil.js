@@ -46,7 +46,7 @@ export const getMaxAppointmentProvidersErrorMessage = (intl, maxAppointmentProvi
     return {
         providerErrorMessage: intl.formatMessage({
             id: 'PROVIDER_ERROR_MESSAGE',
-            defaultMessage: 'Please select only a maximum of {maxAppointmentProviders} provider(s)',
+            defaultMessage: 'Please select maximum of {maxAppointmentProviders} provider(s)',
         }, {maxAppointmentProviders: maxAppointmentProviders})
     }
 };
