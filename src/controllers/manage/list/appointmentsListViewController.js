@@ -51,8 +51,8 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: $scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: $scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'comments', class: true, enable: !$scope.enableColumnsForAppointments},
-                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
+                {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'priority', class: true, enable: !$scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', class: true, enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
@@ -138,6 +138,12 @@ angular.module('bahmni.appointments')
                     setAppointments({forDate: viewDate});
                 }
             };
+
+            $scope.translateAppointmentStatus = function (appointmentStatus) {
+                if(appointmentStatus === APPOINTMENT_STATUS_WAITLIST.status)
+                    return $translate.instant("APPOINTMENT_WAITLIST");
+                return appointmentStatus;
+            }
 
             $scope.getCurrentTabName = function(){
                 return $state.current.tabName;
