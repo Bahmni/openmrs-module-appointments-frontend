@@ -235,5 +235,5 @@
   "CHANGE_DATE_TO_LABEL": "Change ${moment(originalAppointmentDate).format('Do MMM')} to",
   "PATIENT_DOUBLE_BOOKING_CONFLICT_MESSAGE": "Current {currentAppointmentService} request conflicts with {existingAppointmentService} appointment on",
   "NO_SERVICE_CONFLICTS_DEFAULT_TEXT": "The {label} service you had selected for the appointment(s) is not available during below listed dates",
-  "PROVIDER_ERROR_MESSAGE": "Please select only a maximum of {maxAppointmentProviders} provider(s)"
+  "PROVIDER_ERROR_MESSAGE": "Please select maximum of {maxAppointmentProviders} provider(s)"
 }
