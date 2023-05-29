@@ -1,5 +1,6 @@
 import {isAppointmentScheduledOrCheckedIn} from "../../utils/AppointmentUtil";
 import moment from "moment";
+import {APPOINTMENT_STATUSES} from "../../constants";
 
 export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEditable) => {
     const componentDisableStatus = {
@@ -14,12 +15,18 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
         occurrences: true,
         endDate: true,
         walkIn: true,
-        recurring: true
+        recurring: true,
+        priority: true,
+        teleconsultation: true,
+        status: true,
     };
 
     const isPastAppointment = appointment.startDateTime && moment(appointment.startDateTime).startOf('day')
         .isBefore(moment().startOf('day'));
 
+    if(appointment.status === APPOINTMENT_STATUSES.WaitList){
+        componentDisableStatus.status=false;
+    }
     if (isPastAppointment)
         return componentDisableStatus;
 
@@ -27,6 +34,9 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
     if (scheduledOrCheckedInAppointment) {
         componentDisableStatus.service = !(scheduledOrCheckedInAppointment && isServiceOnAppointmentEditable);
         componentDisableStatus.speciality = componentDisableStatus.service;
+        componentDisableStatus.priority = false;
+        componentDisableStatus.teleconsultation = false;
+        componentDisableStatus.status=false;
         componentDisableStatus.serviceType = false;
         componentDisableStatus.providers = false;
         componentDisableStatus.location = false;

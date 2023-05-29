@@ -7,16 +7,19 @@ import Label from "../Label/Label.jsx";
 
 const ButtonGroup = props => {
 
-    const {buttonsList, onClick } = props;
+    const {buttonsList, onClick, enable = true } = props;
 
     return (
         <div>
-            <Label translationKey={"REPEATS_ON_LABEL"} defaultValue={"Repeats On"}/>
+            <div style={{fontSize: "12px", color: "black"}}>
+                <Label translationKey={"REPEATS_ON_LABEL"} defaultValue={"Repeats On"}/>
+            </div>
+
             <div className={classNames(buttonGroup)}>
                 {[...buttonsList.keys()].map(key => {
                     const value = buttonsList.get(key);
                     return (<button key={key} onClick={() => onClick(key)} data-testid={key}
-                                    className={classNames(value.isSelected && selected)}>
+                                    className={classNames(value.isSelected && selected)} disabled={!enable}>
                         <FormattedMessage id={value.translationKey} defaultMessage={value.defaultValue}/>
                     </button>);
                 })}

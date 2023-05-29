@@ -1,61 +1,21 @@
 @import '../../variables.scss';
 
 .updateOptions{
-  text-align: right;
-  position: absolute;
+  position: relative;
   bottom: 100%;
   right: 0;
   z-index: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 
-
-  >div:nth-child(1){
-    border-top-right-radius: 10px;
-  }
-  .updateOneButton {
-    background: #f2f2f2;
-    height: 50px;
-    width:255px;
+  .updateButton {
+    height: 64px;
+    width:270px;
     border: 0;
-    padding: 0 21px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px ;
-    text-align: left;
 
     span {
       margin-left: 5px;
     }
 
-    &:hover {
-      background: darkgrey;
-    }
-
-  }
-  .updateAllButton {
-    background: #f2f2f2;
-    height: 50px;
-    width: 255px;
-    border: 0;
-    border-radius: 0;
-    padding: 0 21px;
-    text-align: left;
-
-    span {
-      margin-left: 5px;
-    }
-
-    &:hover {
-      background: darkgrey;
-    }
-
-  }
-  .save {
-    color: $secondary-color-1;
-    background: $primary-color-2;
-    &:hover {
-      background: #454b86;
-      opacity: 1;
-    }
   }
 }

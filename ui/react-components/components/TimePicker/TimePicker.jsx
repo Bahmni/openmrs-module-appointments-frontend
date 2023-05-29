@@ -5,7 +5,7 @@ import {SelectItem, TimePicker, TimePickerSelect} from "carbon-components-react"
 import moment from "moment";
 
 const AppointmentTimePicker = (props) => {
-    const { intl, onChange, defaultTime, translationKey, defaultTranslationKey, width } = props;
+    const { intl, onChange, defaultTime, translationKey, defaultTranslationKey, width, isDisabled } = props;
     const key = intl.formatMessage({
         id: translationKey, defaultMessage: defaultTranslationKey
     });
@@ -16,7 +16,7 @@ const AppointmentTimePicker = (props) => {
     const [time, setTime] = useState(timeStamp[0]);
     const [period, setPeriod] = useState(timeStamp[1]);
     useEffect(()=>{
-        setTime(timeStamp[0]);
+        setTime(timeStamp[0] || "");
         setPeriod(timeStamp[1])
     }, [defaultTime])
     const handleChange = e => {
@@ -32,8 +32,8 @@ const AppointmentTimePicker = (props) => {
 
     return (
     <TimePicker id="time-selector" labelText={key} onBlur={handleChange} value={time}
-                style={{ width: "72px", padding: "0 0 0 1rem"}} autoComplete={"off"}>
-             <TimePickerSelect id="time-picker-select-1" labelText={"Choose a time"} onChange={handlePeriod} value={period}>
+                style={{ width: "72px", padding: "0 0 0 1rem"}} autoComplete={"off"} disabled={isDisabled}>
+             <TimePickerSelect id="time-picker-select-1" labelText={"Choose a time"} onChange={handlePeriod} value={period} disabled={isDisabled}>
                <SelectItem value="AM" text="AM" />
                <SelectItem value="PM" text="PM" />
              </TimePickerSelect>

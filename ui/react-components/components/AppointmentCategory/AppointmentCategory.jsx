@@ -7,7 +7,7 @@ const AppointmentCategory = (props) => {
 
     const {intl, onChange, value, isDisabled, specialityEnabled, autoFocus, priorityOptionsList} = props;
     const placeHolder = intl.formatMessage({
-        id: 'PLACEHOLDER_APPOINTMENT_CREATE_APPOINTMENT_CATEGORY', defaultMessage: "Appointment Category"
+        id: 'PLACEHOLDER_APPOINTMENT_CREATE_APPOINTMENT_CATEGORY', defaultMessage: "Appointment category"
     });
     const filterItems = data => {
         return data.item.label.includes(data.inputValue);
@@ -22,6 +22,8 @@ const AppointmentCategory = (props) => {
                   isDisabled={isDisabled}
                   autoFocus={!specialityEnabled && autoFocus}
                   shouldFilterItem={filterItems}
+                  selectedItem={value || ""}
+                  disabled={isDisabled}
         />
     );
 };
