@@ -84,7 +84,7 @@ angular.module('bahmni.appointments')
                 $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                 if($scope.getCurrentTabName() === AWAITING_APPOINTMENTS_TAB_NAME){
                     modifyAppointmentPriorities();
-                    $scope.filteredAppointments = _.sortBy($scope.filteredAppointments, "dateCreated").reverse();
+                    $scope.filteredAppointments = _.sortBy($scope.filteredAppointments, "dateCreated");
                 }
                 $rootScope.appointmentsData = $scope.filteredAppointments;
                 updateSelectedAppointment();
