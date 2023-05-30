@@ -25,7 +25,7 @@ const DropdownCarbon = (props) => {
                 titleText={titleText}
                 disabled={isDisabled}
                 label={"Choose an option"}
-                selectedItem={selectedValue}
+                initialSelectedItem={selectedValue}
             />
         </div>
     );
