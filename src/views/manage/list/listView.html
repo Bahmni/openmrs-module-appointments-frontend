@@ -44,10 +44,10 @@
                     </ul>
                 </td>
                 <td class="table-mid-width" ng-show="::!enableColumnsForAppointments">{{::appointment.priority}}</td>
-                <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
+                <td class="table-mid-width" ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td class="table-mid-width">{{::appointment.service.name}}</td>
                 <td class="table-mid-width" ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
-                <td>{{appointment.status}}</td>
+                <td>{{::translateAppointmentStatus(appointment.status)}}</td>
                 <td ng-show="::enableColumnsForAppointments">{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td class="table-mid-width">{{::appointment.location.name}}</td>
                 <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
