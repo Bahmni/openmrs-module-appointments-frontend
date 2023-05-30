@@ -15,7 +15,7 @@ const DropdownCarbon = (props) => {
         titleText,
         isRequired
     } = props;
-    const title = <Title text={titleText} isRequired={isRequired}/>
+    const title = titleText && <Title text={titleText} isRequired={isRequired}/>
     return (
         <div
             data-testid="select dropdown"

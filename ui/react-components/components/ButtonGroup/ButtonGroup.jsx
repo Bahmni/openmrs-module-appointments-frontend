@@ -3,13 +3,11 @@ import React from "react";
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {buttonGroup, selected} from './ButtonGroup.module.scss'
-import Label from "../Label/Label.jsx";
 import Title from "../Title/Title.jsx";
 
 const ButtonGroup = props => {
 
-    const {buttonsList, onClick, enable = true, isRequired } = props;
-    const label = <Label translationKey={"REPEATS_ON_LABEL"} defaultValue={"Repeats On"}/>
+    const {buttonsList, onClick, enable = true, isRequired, label } = props;
     return (
         <div>
             <div style={{fontSize: "12px", color: "black"}}>
@@ -32,7 +30,8 @@ const ButtonGroup = props => {
 ButtonGroup.propTypes = {
     buttonsList: PropTypes.instanceOf(Map).isRequired,
     onClick: PropTypes.func,
-    enable: PropTypes.bool
+    enable: PropTypes.bool,
+    label: PropTypes.elementType,
 };
 
 export default ButtonGroup;

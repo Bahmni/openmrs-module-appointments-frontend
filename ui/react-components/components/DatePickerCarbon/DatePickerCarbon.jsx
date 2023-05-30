@@ -10,7 +10,7 @@ const DatePickerCarbon = props => {
     if( value && value instanceof moment){
         defaultTime = value.format("MM/DD/YYYY");
     }
-    let titleText=  <Title text={title} isRequired={isRequired}/>
+    let titleText=  title && <Title text={title} isRequired={isRequired}/>
     return (
         <div data-testid={testId || "datePicker"}>
             <DatePicker datePickerType={"single"} onChange={onChange} disabled={isDisabled} minDate={minDate} value={defaultTime}>

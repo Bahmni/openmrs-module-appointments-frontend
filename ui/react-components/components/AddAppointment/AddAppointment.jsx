@@ -164,6 +164,10 @@ const AddAppointment = props => {
     const waitListPlaceHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_STATUS_WAITLIST', defaultMessage: "Waitlist"
     });
+    const repeatsOn = intl.formatMessage({
+        id: 'REPEATS_ON_LABEL', defaultMessage: "Repeats on"
+    })
+
     const statusTitleText = <Title text={statusPlaceHolder} isRequired={requiredFields.status}/>
 
     const recurringTypeOptions = [
@@ -677,7 +681,9 @@ const AddAppointment = props => {
                                             prevWeekDaysMap.set(buttonKey, nextEntry);
                                             updateAppointmentDetails({weekDays: prevWeekDaysMap});
                                             updateErrorIndicators({weekDaysError: false});
-                                        }} isRequired={requiredFields.repeatsOn}/>
+                                        }}
+                                        label={repeatsOn}
+                                        isRequired={requiredFields.repeatsOn}/>
                                     </div>
                                     <br/>
                                     <ErrorMessage message={errors.weekDaysError && errorTranslations.weekDaysErrorMessage }/>

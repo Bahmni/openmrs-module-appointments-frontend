@@ -73,6 +73,7 @@ import {Close20} from "@carbon/icons-react";
 import {ContentSwitcher, RadioButton, RadioButtonGroup, Switch} from "carbon-components-react";
 import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
 import NumberInputCarbon from "../NumberInput/NumberInputCarbon.jsx";
+import Title from "../Title/Title.jsx";
 
 const EditAppointment = props => {
 
@@ -116,6 +117,18 @@ const EditAppointment = props => {
         teleconsultation:undefined,
         priority: undefined,
     };
+    const initialRequired = {
+        patient: true,
+        category: true,
+        service: true,
+        status: true,
+        appointmentStartDate: true,
+        appointmentStartTime: true,
+        appointmentEndTime: true,
+        repeatsEvery: true,
+        ends: true,
+        repeatsOn: true,
+    }
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
     const [conflicts, setConflicts] = useState();
@@ -131,6 +144,7 @@ const EditAppointment = props => {
     const [existingProvidersUuids, setExistingProvidersUuids] = useState([]);
     const [appointmentTimeBeforeEdit, setAppointmentTimeBeforeEdit] = useState({});
     const [disableUpdateButton, setDisableUpdateButton] = useState(false);
+    const [requiredFields, setRequiredFields] = useState(initialRequired);
 
     const after = intl.formatMessage({
         id: 'AFTER_LABEL', defaultMessage: 'After'
@@ -151,7 +165,13 @@ const EditAppointment = props => {
     const waitListPlaceHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_STATUS_WAITLIST', defaultMessage: "Waitlist"
     });
+    const repeatsOn = intl.formatMessage({
+        id: 'REPEATS_ON_LABEL', defaultMessage: "Repeats on"
+    })
 
+    const statusTitleText = <Title text={statusPlaceHolder} isRequired={requiredFields.status}/>
+    const onTitleText = <Title text={ends+" " + on.toLowerCase()} isRequired={requiredFields.ends}/>
+    const afterTitleText = <Title text={ends+ " " + after.toLowerCase()} isRequired={requiredFields.ends}/>
 
     const isRecurringAppointment = () => appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE;
     const isWalkInAppointment = () => appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE;
@@ -164,6 +184,10 @@ const EditAppointment = props => {
     });
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
+    });
+
+    const updateRequired = modifiedRequiredList => setRequiredFields(prevRequiredList => {
+        return {...prevRequiredList, ...modifiedRequiredList}
     });
 
     //TODO To be checked if can be moved to common place
@@ -482,6 +506,9 @@ const EditAppointment = props => {
                     endDateType: recurringPattern.endDate ? RECURRENCE_TERMINATION_ON : RECURRENCE_TERMINATION_AFTER
                 });
             }
+            if(appointmentResponse.status === APPOINTMENT_STATUSES.WaitList){
+                updateRequired({appointmentStartDate: false, appointmentStartTime: false, appointmentEndTime: false});
+            }
         }
         callback(appointmentResponse);
     };
@@ -547,9 +574,7 @@ const EditAppointment = props => {
         updateAppointmentDetails({status: value});
         errors.statusError && value && updateErrorIndicators({statusError: !value});
         if(value === APPOINTMENT_STATUSES.WaitList) {
-            updateAppointmentDetails({appointmentDate: null});
-            updateAppointmentDetails({startTime: null});
-            updateAppointmentDetails({endTime: null});
+            updateAppointmentDetails({startTime: null, endTime: null, appointmentDate: null})
             updateErrorIndicators({
                 appointmentDateError: undefined,
                 startTimeError: undefined,
@@ -558,14 +583,13 @@ const EditAppointment = props => {
             });
             componentsDisableStatus.startDate = true;
             componentsDisableStatus.time = true;
-
+            updateRequired({appointmentStartDate: false, appointmentStartTime: false, appointmentEndTime: false});
         }
         else if(value === APPOINTMENT_STATUSES.Scheduled){
             componentsDisableStatus.startDate = false;
             componentsDisableStatus.time= false;
-            updateAppointmentDetails({appointmentDate: null});
-            updateAppointmentDetails({startTime: null});
-            updateAppointmentDetails({endTime: null});
+            updateAppointmentDetails({startTime: null, endTime: null, appointmentDate: null})
+            updateRequired({appointmentStartDate: true, appointmentStartTime: true, appointmentEndTime: true});
         }
     }
     const recurring = isRecurringAppointment();
@@ -578,6 +602,7 @@ const EditAppointment = props => {
                                                   endTimeBasedOnService={endTimeBasedOnService}
                                                   updateAppointmentDetails={updateAppointmentDetails}
                                                   appConfig={appConfig}
+                                                  requiredFields={requiredFields}
                                                   componentsDisableStatus={componentsDisableStatus}/>
             <div data-testid="recurring-plan-checkbox">
                     <div className={classNames(appointmentPlanContainer)}>
@@ -593,7 +618,7 @@ const EditAppointment = props => {
             {!isRecurringAppointment() && isAppointmentStatusOptionEnabled(appConfig) &&
                 <div data-testid="appointment-status">
                     <RadioButtonGroup
-                        legendText={statusPlaceHolder}
+                        legendText={statusTitleText}
                         name="appointment-status-option"
                         valueSelected={appointmentDetails.status}
                         onChange={handleStatusChange}
@@ -630,6 +655,7 @@ const EditAppointment = props => {
                             value={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList ? "" : appointmentDetails.appointmentDate}
                             isDisabled={componentsDisableStatus.startDate}
                             minDate={getMinDate(appointmentDetails.appointmentDate)}
+                            isRequired={requiredFields.appointmentStartDate}
                             title={"Appointment date"}/>
                         <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                     </div>
@@ -648,6 +674,7 @@ const EditAppointment = props => {
                                                   updateErrorIndicators({startTimeError: !time});
                                               }
                                           }}
+                                          isRequired={requiredFields.appointmentStartTime}
                                           isDisabled={componentsDisableStatus.time}/>
                             <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                         </div>
@@ -665,6 +692,7 @@ const EditAppointment = props => {
                                                   });
                                               }
                                           }}
+                                          isRequired={requiredFields.appointmentEndTime}
                                           isDisabled={componentsDisableStatus.time} />
                             {
                                 errors.endTimeError ? <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/> : <ErrorMessage
@@ -684,12 +712,12 @@ const EditAppointment = props => {
                                 </div>
                                 <div className={classNames(weekDaySelector)}>
                                     {isWeeklyRecurringAppointment()
-                                        ? <ButtonGroup buttonsList={appointmentDetails.weekDays} enable={false}/>
+                                        ? <ButtonGroup buttonsList={appointmentDetails.weekDays} enable={false} isRequired={requiredFields.repeatsOn} label={repeatsOn}/>
                                         : undefined}
                                 </div>
                             </div>
                             <div style={{marginBottom: "8px", color: "black", fontSize: "12px"}}>
-                                {ends}&nbsp;{appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER ? after.toLowerCase(): on.toLowerCase()}
+                                {appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER ? afterTitleText: onTitleText}
                             </div>
                             {appointmentDetails.endDateType === RECURRENCE_TERMINATION_AFTER
                                 ? (<div className={classNames(recurringContainerBlock)} style={{color: "black"}}>
