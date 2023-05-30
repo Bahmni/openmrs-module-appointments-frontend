@@ -493,10 +493,10 @@ describe('Add Appointment', () => {
         fireEvent.click(providerDropDownOption);
 
         expect(queryByText("Provider One")).not.toBeNull();
-        getByText("Please select only a maximum of 1 provider(s)");
+        getByText("Please select maximum of 1 provider(s)");
         expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 200);
         jest.runAllTimers();
-        expect(queryByText("Please select only a maximum of 1 provider(s)")).toBeNull();
+        expect(queryByText("Please select maximum of 1 provider(s)")).toBeNull();
     });
 
     it('should hide service appointment type if enableServiceTypes is undefined', () => {
