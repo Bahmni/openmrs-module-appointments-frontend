@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import {ComboBox} from "carbon-components-react";
+import Title from "../Title/Title.jsx";
 
 const AppointmentCategory = (props) => {
 
-    const {intl, onChange, value, isDisabled, specialityEnabled, autoFocus, priorityOptionsList} = props;
+    const {intl, onChange, value, isDisabled, specialityEnabled, autoFocus, priorityOptionsList, isRequired} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_APPOINTMENT_CATEGORY', defaultMessage: "Appointment category"
     });
+    const title = <Title text={placeHolder} isRequired={isRequired}/>
     const filterItems = data => {
         return data.item.label.includes(data.inputValue);
     }
@@ -16,7 +18,7 @@ const AppointmentCategory = (props) => {
     return (
         <ComboBox id="service-search"
                   items={priorityOptionsList}
-                  titleText={placeHolder}
+                  titleText={title}
                   placeholder={"Choose an option"}
                   onChange={onChange}
                   isDisabled={isDisabled}
@@ -36,7 +38,8 @@ AppointmentCategory.propTypes = {
     isDisabled: PropTypes.bool,
     specialityEnabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
-    priorityOptionsList: PropTypes.array
+    priorityOptionsList: PropTypes.array,
+    isRequired: PropTypes.bool,
 };
 
 export default injectIntl(AppointmentCategory);

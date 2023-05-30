@@ -10,6 +10,7 @@ import { IndicatorSeparator } from "./IndicatorSeparator.jsx";
 import { injectIntl } from "react-intl";
 import { isUndefined } from "lodash";
 import {ComboBox} from "carbon-components-react";
+import Title from "../Title/Title.jsx";
 
 const Dropdown = (props) => {
   const {
@@ -22,6 +23,7 @@ const Dropdown = (props) => {
     isClearable,
     autoFocus,
     id,
+    isRequired
   } = props;
   const noOptionsMessage = intl.formatMessage({
     id: "DROPDOWN_NO_OPTIONS_MESSAGE",
@@ -46,6 +48,8 @@ const Dropdown = (props) => {
   }
   const isComponentDisabled = () =>
     isUndefined(isDisabled) ? false : isDisabled;
+  const title = <Title text={placeholder} isRequired={isRequired}/>;
+
   return (
     <div
       data-testid="select"
@@ -57,7 +61,7 @@ const Dropdown = (props) => {
           items={options}
           onChange={handleOnChange}
           itemToString={(item) => (item ? item.label : '')}
-          titleText={placeholder}
+          titleText={title}
           disabled={isDisabled}
           style={{ width: '250px' }}
           shouldFilterItem={filterItems}
@@ -77,5 +81,6 @@ Dropdown.propTypes = {
   selectedValue: PropTypes.string,
   isDisabled: PropTypes.bool,
   isClearable: PropTypes.bool,
+  isRequired: PropTypes.bool,
   autoFocus: PropTypes.bool,
 };

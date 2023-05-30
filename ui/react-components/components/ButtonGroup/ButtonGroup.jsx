@@ -4,15 +4,16 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {buttonGroup, selected} from './ButtonGroup.module.scss'
 import Label from "../Label/Label.jsx";
+import Title from "../Title/Title.jsx";
 
 const ButtonGroup = props => {
 
-    const {buttonsList, onClick, enable = true } = props;
-
+    const {buttonsList, onClick, enable = true, isRequired } = props;
+    const label = <Label translationKey={"REPEATS_ON_LABEL"} defaultValue={"Repeats On"}/>
     return (
         <div>
             <div style={{fontSize: "12px", color: "black"}}>
-                <Label translationKey={"REPEATS_ON_LABEL"} defaultValue={"Repeats On"}/>
+                <Title text={label} isRequired={isRequired} />
             </div>
 
             <div className={classNames(buttonGroup)}>

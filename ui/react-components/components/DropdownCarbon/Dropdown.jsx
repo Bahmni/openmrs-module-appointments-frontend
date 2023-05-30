@@ -2,6 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { injectIntl } from "react-intl";
 import { Dropdown } from "carbon-components-react";
+import Title from "../Title/Title.jsx";
 
 const DropdownCarbon = (props) => {
     const {
@@ -11,8 +12,10 @@ const DropdownCarbon = (props) => {
         isDisabled,
         selectedValue,
         id,
-        titleText
+        titleText,
+        isRequired
     } = props;
+    const title = <Title text={titleText} isRequired={isRequired}/>
     return (
         <div
             data-testid="select dropdown"
@@ -22,7 +25,7 @@ const DropdownCarbon = (props) => {
                 id={id}
                 items={options}
                 onChange={onChange}
-                titleText={titleText}
+                titleText={title}
                 disabled={isDisabled}
                 label={"Choose an option"}
                 initialSelectedItem={selectedValue}

@@ -21,6 +21,7 @@ const ProviderSearch = props => {
     components,
     customSelectStyle,
     autoFocus,
+    isRequired
   } = props;
 
   const placeHolder = intl.formatMessage({
@@ -105,6 +106,7 @@ const ProviderSearch = props => {
         components={components}
         customSelectStyle={customSelectStyle}
         autoFocus={autoFocus}
+        isRequired={isRequired}
       />
       <Tags
         onChange={onProviderRemove}
@@ -126,6 +128,7 @@ ProviderSearch.propTypes = {
   onProviderRemove: PropTypes.func,
   selectedProviders: PropTypes.array,
   isDisabled: PropTypes.bool,
+  isRequired: PropTypes.bool,
   autoFocus: PropTypes.bool
 };
 
