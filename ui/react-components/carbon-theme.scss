@@ -92,3 +92,9 @@ $css--body: false;
 .bx--number__control-btn{
   border: none;
 }
+.bx--inline-notification__close-button{
+  margin: 0;
+  &:hover{
+    background: none;
+  }
+}

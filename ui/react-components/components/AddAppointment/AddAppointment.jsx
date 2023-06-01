@@ -70,6 +70,7 @@ import Dropdown from '../DropdownCarbon/Dropdown.jsx'
 import {isAppointmentPriorityOptionEnabled, isAppointmentStatusOptionEnabled} from "../../helper";
 import NumberInput from "../NumberInput/NumberInputCarbon.jsx";
 import Title from "../Title/Title.jsx";
+import Popup from "../Notifications/popup.jsx";
 
 const AddAppointment = props => {
 
@@ -387,7 +388,7 @@ const AddAppointment = props => {
         setDisableSaveButton(true);
         if (isValidAppointment()) {
             const appointment = getAppointmentRequest();
-            if (appointment.status == APPOINTMENT_STATUSES.WaitList) {
+            if (appointment.status === APPOINTMENT_STATUSES.WaitList) {
                 await save(appointment);
             } else {
                 const response = await getAppointmentConflicts(appointment);
@@ -751,7 +752,7 @@ const AddAppointment = props => {
                                 <RadioButtonGroup
                                     legendText={statusTitleText}
                                     name="appointment-status-option"
-                                    defaultSelected={appointmentDetails.status}
+                                    valueSelected={appointmentDetails.status || null}
                                     onChange={handleStatusChange}
                                     >
                                     <RadioButton
@@ -835,11 +836,12 @@ const AddAppointment = props => {
                 <div data-testid={"appointment-notes"}>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
-            {showSuccessPopup ? React.cloneElement(savePopup, {
+            {showSuccessPopup && ( showEmailWarning || showEmailNotSentWarning ) ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
                 closeOnEscape: false
             }) : undefined}
+                <Popup showMessage={showSuccessPopup} title={"Appointment Created"} action={reInitialiseComponent}/>
         </div>
         <div  data-testid="Appointment-editer-footer">
             <AppointmentEditorFooter

@@ -139,6 +139,20 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     </tr>
                     <tr>
                         <td>
+                            {isServiceTypeEnabled(appConfig) ?
+                                <div data-testid="service-type-search">
+                                    <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
+                                        updateAppointmentDetails({serviceType: optionSelected});
+                                        optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
+                                    }}
+                                                       serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
+                                                       isDisabled={componentsDisableStatus.serviceType}/>
+                                </div> : undefined}
+                        </td>
+                        <td/>
+                    </tr>
+                    <tr>
+                        <td>
                             <div data-testid="provider-search">
                                 <ProviderSearch
                                     onChange={selectedProvider => {
@@ -175,17 +189,6 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         </td>
                     </tr>
                 </table>
-                <div>
-                    {isServiceTypeEnabled(appConfig) ?
-                        <div data-testid="service-type-search">
-                            <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
-                                updateAppointmentDetails({serviceType: optionSelected});
-                                optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
-                            }}
-                                               serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
-                                               isDisabled={componentsDisableStatus.serviceType}/>
-                        </div> : undefined}
-                </div>
             </div>
         </Fragment>
     );
