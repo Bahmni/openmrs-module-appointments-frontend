@@ -11,9 +11,8 @@ import Label from "../components/Label/Label.jsx";
 import {FormattedMessage} from "react-intl";
 
 export const CustomModal = props => {
-    const { triggerComponent, titleKey, bodyKey, defaultTitle, defaultBody, primaryButton } = props;
+    const { triggerComponent, titleKey, defaultTitle, body, primaryButton } = props;
     const title = <FormattedMessage id={titleKey} defaultMessage={defaultTitle} />
-    const body = <FormattedMessage id={bodyKey} defaultMessage={defaultBody} />
     const closeButton = useRef();
     const ModalStateManager = ({
        renderLauncher: LauncherContent,

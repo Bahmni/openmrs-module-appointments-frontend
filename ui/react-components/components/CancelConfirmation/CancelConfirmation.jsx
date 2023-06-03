@@ -1,12 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { CustomModal } from '../../Modal/Modal.jsx';
+import CustomModal from '../../Modal/Modal.jsx';
 import {AppContext} from "../AppContext/AppContext";
 import {Button} from "carbon-components-react";
 import Label from "../Label/Label.jsx";
+import {FormattedMessage} from "react-intl";
 
 const CancelConfirmation  = prop => {
     const { triggerComponent, onBack } = prop
+    const body = <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT'}
+                                   defaultMessage={'You will loose appointment details. Do you want to discard these changes?'} />
     const primaryButton =  <Button
         kind="danger"
         onClick={onBack}>
@@ -16,8 +19,7 @@ const CancelConfirmation  = prop => {
                         triggerComponent={triggerComponent}
                         titleKey={'APPOINTMENT_CANCEL_CONFIRMATION_TITLE'}
                         defaultTitle={"Discard appointment?"}
-                        bodyKey={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT'}
-                        defaultBody={"You will loose appointment details. Do you want to discard these changes?"}
+                        body={body}
                         primaryButton={primaryButton}
                         />
 }
