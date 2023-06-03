@@ -100,7 +100,6 @@ const ProviderSearch = props => {
         options={providerOptions}
         placeholder={placeHolder}
         onChange={onChange ? onProviderSelect : onChangeHandler}
-        selectedValue={""}
         openMenuOnClick={openMenuOnClick}
         openMenuOnFocus={openMenuOnFocus}
         components={components}

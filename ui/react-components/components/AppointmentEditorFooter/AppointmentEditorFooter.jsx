@@ -25,8 +25,6 @@ const AppointmentEditorFooter = props => {
         setShowUpdateButtons(!showUpdateButtons);
     };
 
-    const popupContent = <CancelConfirmation {...cancelConfirmationMessage} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
-
     const cancelButton = <Button kind="secondary" style={{width: "270px", height: "64px" }} data-testid="cancel">
                             <span><FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/></span>
                         </Button>;
@@ -38,7 +36,7 @@ const AppointmentEditorFooter = props => {
             </div>
         <div className={classNames(footer)}>
             <div>
-                <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
+                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={cancelButton}/>
                 {isEdit
                     ? <Button kind="primary" style={{width: "270px", height: "64px" }}  className={classNames(button, save)}
                               onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}

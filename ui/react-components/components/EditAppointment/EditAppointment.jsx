@@ -555,7 +555,6 @@ const EditAppointment = props => {
         generateAppointmentDetails(setDisableStatus).then();
     }, [appConfig]);
 
-    const popupContent = <CancelConfirmation {...CANCEL_CONFIRMATION_MESSAGE_ADD} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
 
     const closeButton = <div className={classNames(close)}>
         <Close20/>
@@ -596,7 +595,7 @@ const EditAppointment = props => {
     return (<div className={classNames(overlay)}>
         <div data-testid="appointment-editor"
              className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? recurring : '')}>
-            <CustomPopup triggerComponent={closeButton} popupContent={popupContent} style={customPopup}/>
+            <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton}/>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails} errors={errors}
                                                   updateErrorIndicators={updateErrorIndicators}
                                                   endTimeBasedOnService={endTimeBasedOnService}
