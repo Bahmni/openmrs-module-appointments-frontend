@@ -9,8 +9,6 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
 import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
-import CustomPopup from "../CustomPopup/CustomPopup.jsx";
-import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import {AppContext} from "../AppContext/AppContext";
 import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
@@ -18,7 +16,7 @@ import {Button} from "carbon-components-react";
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit, isOptionsRequired, disableSaveAndUpdateButton, cancelConfirmationMessage, errorMessage} = props;
+    const {checkAndSave, isEdit, isOptionsRequired, disableSaveAndUpdateButton, errorMessage} = props;
     const[showUpdateButtons, setShowUpdateButtons] = useState(false);
 
     const getUpdateButtons =() =>{

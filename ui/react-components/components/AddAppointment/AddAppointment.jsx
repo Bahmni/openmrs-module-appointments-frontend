@@ -273,7 +273,7 @@ const AddAppointment = props => {
         updateErrorIndicators({priorityError: !isValidPriority});
         const isValidStatus = !isAppointmentStatusOptionEnabled(appConfig) || appointmentDetails.status
         updateErrorIndicators({statusError: !isValidStatus});
-        if (appointmentDetails.status == APPOINTMENT_STATUSES.WaitList) {
+        if (appointmentDetails.status === APPOINTMENT_STATUSES.WaitList) {
             updateErrorIndicators({
                 patientError: !isValidPatient,
                 serviceError: !appointmentDetails.service,

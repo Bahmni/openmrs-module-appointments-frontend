@@ -2,7 +2,7 @@ import { getAllProviders } from "../../api/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, {useEffect, useState} from "react";
 import Tags from "../Tags/Tags.jsx";
-import {find, forEach, isEqual, sortBy} from "lodash";
+import {find, forEach, sortBy} from "lodash";
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import {getValidProviders} from "../../helper";

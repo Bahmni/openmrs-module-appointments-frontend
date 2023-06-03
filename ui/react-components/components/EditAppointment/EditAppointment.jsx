@@ -9,7 +9,6 @@ import {
     teleconsultation,
     overlay,
     recurringContainerBlock,
-    firstBlock,
     close
 } from "../AddAppointment/AddAppointment.module.scss";
 import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
@@ -34,16 +33,11 @@ import {
     WALK_IN_APPOINTMENT_TYPE,
     weekRecurrenceType,
     VIRTUAL_APPOINTMENT_TYPE,
-    CANCEL_CONFIRMATION_MESSAGE_ADD,
     APPOINTMENT_STATUSES
 } from "../../constants";
 import AppointmentType from "../AppointmentType/AppointmentType.jsx";
 import Label from "../Label/Label.jsx";
-import {
-    editAppointment,
-    weekDaySelector,
-    recurring,
-} from './EditAppointment.module.scss'
+import {editAppointment, weekDaySelector} from './EditAppointment.module.scss'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import ButtonGroup from "../ButtonGroup/ButtonGroup.jsx";
 import {getSelectedWeekDays, getWeekDays, selectWeekDays} from "../../services/WeekDaysService/WeekDaysService";
@@ -418,7 +412,7 @@ const EditAppointment = props => {
         const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
         updateCommonErrorIndicators(startTimeBeforeEndTime);
         updateErrorIndicators({appointmentDateError: !appointmentDetails.appointmentDate});
-        return appointmentDetails.service && appointmentDetails.appointmentDate && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime && isValidPriority && isValidStatus;;
+        return appointmentDetails.service && appointmentDetails.appointmentDate && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime && isValidPriority && isValidStatus;
     };
 
     const updateCommonErrorIndicators = (startTimeBeforeEndTime) => updateErrorIndicators({
