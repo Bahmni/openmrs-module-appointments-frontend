@@ -70,7 +70,7 @@ import Dropdown from '../DropdownCarbon/Dropdown.jsx'
 import {isAppointmentPriorityOptionEnabled, isAppointmentStatusOptionEnabled} from "../../helper";
 import NumberInput from "../NumberInput/NumberInputCarbon.jsx";
 import Title from "../Title/Title.jsx";
-import Popup from "../Notifications/popup.jsx";
+import Notification from "../Notifications/Notifications.jsx";
 
 const AddAppointment = props => {
 
@@ -139,6 +139,7 @@ const AddAppointment = props => {
     }
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
+    const [appointmentTouched, setAppointmentTouched] = useState("not-ready");
     const [showEmailWarning, setShowEmailWarning] = useState(false);
     const [showEmailNotSentWarning, setShowEmailNotSentWarning] = useState(false);
     const [conflicts, setConflicts] = useState();
@@ -148,6 +149,19 @@ const AddAppointment = props => {
     const [disableSaveButton, setDisableSaveButton] = useState(false);
     const [requiredFields, setRequiredFields] = useState(initialRequired);
 
+    useEffect(()=>{
+        setAppointmentTouched((prevState)=>{
+            if(prevState === "pristine"){
+                return "touched";
+            }
+            else if(prevState === "ready"){
+                return "pristine";
+            }
+            else {
+                return prevState
+            }
+        })
+    }, [appointmentDetails])
     const on = intl.formatMessage({
         id: 'ON_LABEL', defaultMessage: 'On'
     });
@@ -183,6 +197,7 @@ const AddAppointment = props => {
         if(urlParams && urlParams.patient) {
             populatePatientDetails(urlParams.patient).then();
         }
+        setAppointmentTouched("ready");
     }, [appConfig]);
 
     async function populatePatientDetails(patientUuid) {
@@ -192,13 +207,13 @@ const AddAppointment = props => {
     }
 
     const reInitialiseComponent = () => {
+        setAppointmentTouched("ready");
         updateAppointmentDetails({
             ...initialAppointmentState,
             weekDays: getWeekDays(appConfig && appConfig.startOfWeek)
         });
         updateErrorIndicators(initialErrorsState);
         setConflicts(undefined);
-        setShowSuccessPopup(false);
     };
 
     const getRecurringPattern = () => {
@@ -329,6 +344,7 @@ const AddAppointment = props => {
         const date = startDate ? moment(startDate) : moment();
         setViewDate(date.startOf('day').toDate())
         setShowSuccessPopup(true);
+        reInitialiseComponent();
     };
 
     const setServiceErrorMessageFromResponse = response => {
@@ -548,7 +564,7 @@ const AddAppointment = props => {
 
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
-                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton}/>
+                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
                 <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
                 updateAppointmentDetails={updateAppointmentDetails}
                 updateErrorIndicators={updateErrorIndicators}
@@ -839,7 +855,7 @@ const AddAppointment = props => {
                 closeOnDocumentClick: false,
                 closeOnEscape: false
             }) : undefined}
-                <Popup showMessage={showSuccessPopup} title={"Appointment Created"} action={reInitialiseComponent}/>
+                <Notification showMessage={showSuccessPopup} title={"Appointment Created"} onClose={() => setShowSuccessPopup(false)}/>
         </div>
         <div  data-testid="Appointment-editer-footer">
             <AppointmentEditorFooter
@@ -847,6 +863,7 @@ const AddAppointment = props => {
                 checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
                 cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
                 disableSaveAndUpdateButton={disableSaveButton}
+                appointmentTouched={appointmentTouched}
             />
         </div>
         {conflicts &&

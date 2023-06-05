@@ -7,7 +7,7 @@ import {
     ModalBody,
     ModalHeader
 } from 'carbon-components-react';
-import Label from "../components/Label/Label.jsx";
+import Label from "../Label/Label.jsx";
 import {FormattedMessage} from "react-intl";
 
 export const CustomModal = props => {

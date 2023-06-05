@@ -16,7 +16,7 @@ import {Button} from "carbon-components-react";
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit, isOptionsRequired, disableSaveAndUpdateButton, errorMessage} = props;
+    const {checkAndSave, isEdit, isOptionsRequired, disableSaveAndUpdateButton, errorMessage, appointmentTouched} = props;
     const[showUpdateButtons, setShowUpdateButtons] = useState(false);
 
     const getUpdateButtons =() =>{
@@ -34,7 +34,7 @@ const AppointmentEditorFooter = props => {
             </div>
         <div className={classNames(footer)}>
             <div>
-                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={cancelButton}/>
+                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={cancelButton} skipConfirm={appointmentTouched !== "touched"}/>
                 {isEdit
                     ? <Button kind="primary" style={{width: "270px", height: "64px" }}  className={classNames(button, save)}
                               onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}
