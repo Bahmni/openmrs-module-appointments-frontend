@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CustomModal from '../Modal/Modal.jsx';
+import CustomModalWithStateManager from '../Modal/Modal.jsx';
 import {AppContext} from "../AppContext/AppContext";
 import {Button} from "carbon-components-react";
 import Label from "../Label/Label.jsx";
@@ -20,7 +20,7 @@ const CancelConfirmation  = prop => {
                     {triggerComponent}
                 </span>
     }
-    return <CustomModal onBack={React.useContext(AppContext).onBack}
+    return <CustomModalWithStateManager onBack={React.useContext(AppContext).onBack}
                         triggerComponent={triggerComponent}
                         titleKey={'APPOINTMENT_CANCEL_CONFIRMATION_TITLE'}
                         defaultTitle={"Discard appointment?"}

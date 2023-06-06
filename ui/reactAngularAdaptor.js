@@ -31,6 +31,7 @@ reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope'
 function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
     let onBack = false;
     let backUrl = "^";
+    $scope.editConflict = 0;
     $scope.onBack = function () {
         onBack = true;
         $state.go(backUrl, $state.params, {reload: true});
@@ -42,7 +43,7 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
         if (next.url !== "/new" && !onBack) {
             event.preventDefault();
             backUrl = next.name;
-            $scope.editConflict = Math.random();
+            $scope.editConflict += 1 ;
         }
     });
     $scope.onClose = function () {

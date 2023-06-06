@@ -10,8 +10,8 @@ import {
 import Label from "../Label/Label.jsx";
 import {FormattedMessage} from "react-intl";
 
-export const CustomModal = props => {
-    const { triggerComponent, titleKey, defaultTitle, body, primaryButton } = props;
+export const CustomModalWithStateManager = props => {
+    const { triggerComponent, titleKey, defaultTitle, body, primaryButton, secondaryButtonKey='CANCEL_KEY', secondaryButtonDefaultValue = "Cancel" } = props;
     const title = <FormattedMessage id={titleKey} defaultMessage={defaultTitle} />
     const closeButton = useRef();
     const ModalStateManager = ({
@@ -56,8 +56,8 @@ export const CustomModal = props => {
                     <ModalFooter>
                         <Button
                             kind="secondary"
-                            onClick={() => {setOpen(false); }}>
-                            <Label translationKey={'CANCEL_KEY'} defaultValue={'Cancel'}/>
+                            onClick={() => {setOpen(false)}}>
+                            <Label translationKey={secondaryButtonKey} defaultValue={secondaryButtonDefaultValue}/>
                         </Button>
                         {primaryButton}
                     </ModalFooter>
@@ -66,4 +66,4 @@ export const CustomModal = props => {
         </ModalStateManager>
     );
 }
-export default CustomModal;
+export default CustomModalWithStateManager;
