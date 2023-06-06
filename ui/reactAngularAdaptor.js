@@ -17,7 +17,7 @@ angular.module('bahmni.appointments')
 angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
     template: '<react-add-appointment on-back="onBack" set-view-date="setViewDate" appointment-uuid="appointmentUuid"' +
         ' is-recurring="isRecurring" state="state" current-provider="currentProvider" appointment-params="appointmentParams"' +
-        'url-params="urlParams" >',
+        'url-params="urlParams" edit-conflict="editConflict">',
     controller: reactAddAppointmentController
 });
 
@@ -25,10 +25,6 @@ angular.module('bahmni.appointments').component('reactAppointmentSummaryWrapper'
     template: '<react-appointment-summary state="state" current-provider="currentProvider" go-to-list-view="goToListView" full-summary="fullSummary">',
     controller: reactAppointmentSummaryController
 });
-
-angular.module('bahmni.appointments').run(['$templateCache', function ($templateCache) {
-    $templateCache.put('templateId', '<cancel-confirmation-wrapper appointment-uuid="appointmentUuid" close="onClose" on-back="onBack">');
-}]);
 
 reactAddAppointmentController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
 reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope', '$state', 'appService'];
@@ -46,11 +42,7 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
         if (next.url !== "/new" && !onBack) {
             event.preventDefault();
             backUrl = next.name;
-            $scope.dialog = ngDialog.open({
-                template: 'templateId',
-                className: 'ngdialog-react-popup',
-                scope: $scope
-            });
+            $scope.editConflict = Math.random();
         }
     });
     $scope.onClose = function () {

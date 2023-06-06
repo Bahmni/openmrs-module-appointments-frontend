@@ -1,34 +1,46 @@
-import CancelConfirmation from "./CancelConfirmation.jsx";
-import {IntlProvider} from "react-intl";
+import { FormattedMessage } from "react-intl";
 import React, {useEffect, useState} from "react";
-import {getLocale} from "../../utils/LocalStorageUtil";
-import {getMessages} from "../AppContext/AppService";
 import PropTypes from "prop-types";
 import {CANCEL_CONFIRMATION_MESSAGE_ADD, CANCEL_CONFIRMATION_MESSAGE_EDIT} from "../../constants";
+import {Modal} from "carbon-components-react";
+import Label from "../Label/Label.jsx";
 
 const CancelConfirmationWrapper = props => {
+    const {onBack, appointmentUuid, show } =props;
 
-    const locale = getLocale();
-    const [messages, setMessages] = useState([]);
+    useEffect(()=>{
+        setOpen(true);
+    }, [show])
 
-    useEffect(() => {
-        async () => setMessages(await getMessages(locale));
-    });
+    const cancelConfirmationMessage =  appointmentUuid
+        ? CANCEL_CONFIRMATION_MESSAGE_EDIT : CANCEL_CONFIRMATION_MESSAGE_ADD;
+    const [open, setOpen] = useState(true);
 
-    const getCancelConfirmationMessage = () => props.appointmentUuid
-      ? CANCEL_CONFIRMATION_MESSAGE_EDIT : CANCEL_CONFIRMATION_MESSAGE_ADD;
-
+    const title = <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TITLE'} defaultMessage={"Discard appointment?"} />
+    const body = <Label translationKey={cancelConfirmationMessage.translationKey} defaultValue={cancelConfirmationMessage.defaultMessage}/>
+    const secondaryText = <FormattedMessage id={'NO_KEY'} defaultMessage={"No"}/>
+    const primaryText = <FormattedMessage id={'YES_KEY'} defaultMessage={"Yes"}/>
+    const closeModal = () =>{
+        setOpen(false);
+    }
     return (
-        <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
-            <CancelConfirmation {...getCancelConfirmationMessage()}
-                                onBack={props.onBack} close={props.close}/>
-        </IntlProvider>
+        <Modal
+            open={open}
+            danger
+            onRequestClose={closeModal}
+            onSecondarySubmit={closeModal}
+            preventCloseOnClickOutside={true}
+            modalHeading={title}
+            primaryButtonText={primaryText}
+            secondaryButtonText={secondaryText}
+            onRequestSubmit={onBack}>
+                {body}
+        </Modal>
     );
 };
 
 CancelConfirmationWrapper.propTypes = {
     onBack: PropTypes.func.isRequired,
-    close: PropTypes.func.isRequired,
     appointmentUuid: PropTypes.string.isRequired
 };
 
