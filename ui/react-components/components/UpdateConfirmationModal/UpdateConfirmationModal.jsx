@@ -1,24 +1,41 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {FormattedMessage, injectIntl} from "react-intl";
 import PropTypes from "prop-types";
-import CustomModalWithStateManager  from "../Modal/Modal.jsx";
-import { Button } from "carbon-components-react";
+import {Modal} from "carbon-components-react";
 
 
 const UpdateConfirmationModal = (props) => {
 
-    const {save, triggerComponent} = props;
+    const {save, show} = props;
+    const [open, setOpen] = useState(true);
+    useEffect(()=>{
+        setOpen(true);
+    }, [show])
+    const closeModal = () =>{
+        setOpen(false);
+    }
     const body = <FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_TEXT_SINGLE_APPOINTMENT'}
                               defaultMessage={'This will update the details of the selected appointment. This cannot be reversed!'}/>
 
-    const primaryButton = <Button kind={"primary"} onClick={save}>
-        <FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_YES'}
-                          defaultMessage={'Yes, I confirm'}/>
-    </Button>
+    const title=<FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_TITLE'} defaultMessage={"Kindly Confirm"} />
 
-    return <CustomModalWithStateManager titleKey={'APPOINTMENT_UPDATE_CONFIRMATION_TITLE'} defaultTitle={"Kindly Confirm"}
-                           body={body} primaryButton={primaryButton} secondaryButtonKey={'APPOINTMENT_UPDATE_CONFIRMATION_NO'}
-                           secondaryButtonDefaultValue={'No, go back'} triggerComponent={triggerComponent}/>
+    const primaryButtonText = <FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_YES'} defaultMessage={'Yes, I confirm'}/>
+
+    const secondaryText = <FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_NO'} defaultMessage={"No, go back"}/>
+
+    return (
+        <Modal
+            open={open}
+            onRequestClose={closeModal}
+            onSecondarySubmit={closeModal}
+            preventCloseOnClickOutside={true}
+            modalHeading={title}
+            primaryButtonText={primaryButtonText}
+            secondaryButtonText={secondaryText}
+            onRequestSubmit={save}>
+            {body}
+        </Modal>
+    );
 };
 
 UpdateConfirmationModal.propTypes = {

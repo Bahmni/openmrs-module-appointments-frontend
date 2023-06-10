@@ -10,27 +10,27 @@ import {
 import Label from "../Label/Label.jsx";
 import {FormattedMessage} from "react-intl";
 
+export const ModalStateManager = ({
+                                      renderLauncher: LauncherContent,
+                                      children: ModalContent,
+                                  }) => {
+    const [open, setOpen] = useState(false);
+    return (
+        <>
+            {!ModalContent || typeof document === 'undefined'
+                ? null
+                : createPortal(
+                    <ModalContent open={open} setOpen={setOpen}/>,
+                    document.body
+                )}
+            {LauncherContent && <LauncherContent open={open} setOpen={setOpen}/>}
+        </>
+    );
+};
 export const CustomModalWithStateManager = props => {
     const { triggerComponent, titleKey, defaultTitle, body, primaryButton, secondaryButtonKey='CANCEL_KEY', secondaryButtonDefaultValue = "Cancel" } = props;
     const title = <FormattedMessage id={titleKey} defaultMessage={defaultTitle} />
     const closeButton = useRef();
-    const ModalStateManager = ({
-       renderLauncher: LauncherContent,
-       children: ModalContent,
-       }) => {
-        const [open, setOpen] = useState(false);
-        return (
-              <>
-                {!ModalContent || typeof document === 'undefined'
-                  ? null
-                      : createPortal(
-                          <ModalContent open={open} setOpen={setOpen} />,
-                     document.body
-                    )}
-            {LauncherContent && <LauncherContent open={open} setOpen={setOpen} />}
-          </>
-        );
-      };
     return (
         <ModalStateManager
             renderLauncher={({ setOpen }) => (
@@ -66,4 +66,5 @@ export const CustomModalWithStateManager = props => {
         </ModalStateManager>
     );
 }
+
 export default CustomModalWithStateManager;

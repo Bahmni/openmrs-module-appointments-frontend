@@ -1,36 +1,69 @@
 import classNames from "classnames";
-import {updateOptions, updateButton} from "../EditAppointment/UpdateButtons.module.scss";
-import {FormattedMessage} from "react-intl";
-import React, {useEffect} from "react";
-import PropTypes from "prop-types";
-import {Button} from "carbon-components-react";
-const UpdateButtons = (props) => {
+import { FormattedMessage, useIntl } from "react-intl";
+import React, {useEffect, useState} from "react";
+import {
+    Modal,
+    RadioButton,
+    RadioButtonGroup
+} from "carbon-components-react";
+import Title from "../Title/Title.jsx";
+import { title } from './UpdateButtons.module.scss'
+const UpdateButtonsModal = props => {
+    const { show, checkAndSave, updateOptionsVisibleStatus } = props;
+    const intl = useIntl()
+    const [updateAllOccurrences, setUpdateAllOccurrences] = useState(true);
+    const [open, setOpen] = useState(true);
+    const [updateDisabled, setUpdateDisabled] = useState(true);
+    const updateAllTitle = intl.formatMessage( { id: 'APPOINTMENT_UPDATE_TITLE',  defaultMessage: "Update occurrences"});
+    const updateAll = <FormattedMessage id={'APPOINTMENT_UPDATE_ALL_LABEL'} defaultMessage={"All occurrences"}/>
+    const updateSingle = <FormattedMessage id={'APPOINTMENT_UPDATE_ONE_LABEL'} defaultMessage={"This occurrences"}/>
+    const primaryButtonText = <FormattedMessage id={'OK_KEY'} defaultMessage={'Ok'}/>
+    const secondaryButtonText = <FormattedMessage id={'CANCEL_KEY'} defaultMessage={'Cancel'}/>
+    const titleText = <Title style={classNames(title)} text={updateAllTitle} isRequired={true}/>
 
-    const {updateOptionsVisibleStatus, checkAndSave} = props;
+    useEffect(()=>{
+        setOpen(true);
+    }, [show])
 
-    useEffect(() => {
-        return () => updateOptionsVisibleStatus(false);
-    });
+    const closeModal = () =>{
+        setOpen(false);
+        updateOptionsVisibleStatus(false);
+    }
+    const changeState = (updateAll) => {
+        setUpdateAllOccurrences(updateAll);
+        setUpdateDisabled(false);
+    }
 
     return (
-        <div className={classNames(updateOptions)}>
-            <Button kind={"primary"} className={classNames(updateButton)} onClick={() => checkAndSave(false)}
-                    data-testid="check-and-save">
-                <span>
-                        <FormattedMessage id={'APPOINTMENT_UPDATE_ONE_LABEL'} defaultMessage={"Update this occurrence"}/>
-                </span>
-            </Button>
-            <Button kind={"primary"} className={classNames(updateButton)} onClick={() => checkAndSave(true)}
-                    data-testid="check-and-save">
-                <span>
-                    <FormattedMessage id={'APPOINTMENT_UPDATE_ALL_LABEL'} defaultMessage={'Update all occurrences'}/>
-                </span>
-            </Button>
-        </div>);
+        <Modal
+            open={open}
+            onRequestClose={closeModal}
+            onSecondarySubmit={closeModal}
+            preventCloseOnClickOutside={true}
+            modalHeading={titleText}
+            primaryButtonText={primaryButtonText}
+            primaryButtonDisabled={updateDisabled}
+            secondaryButtonText={secondaryButtonText}
+            onRequestSubmit={() => {
+                checkAndSave(updateAllOccurrences)
+                closeModal()
+            }}>
+            <RadioButtonGroup
+                name="occurences-update-option"
+                orientation={"vertical"}>
+                <RadioButton
+                    labelText={updateSingle}
+                    value={"single"}
+                    onClick={()=>{changeState(false);}}
+                />
+                <RadioButton
+                    labelText={updateAll}
+                    value={"all"}
+                    onClick={()=>{changeState(true);}}
+                />
+            </RadioButtonGroup>
+        </Modal>
+    );
 };
 
-UpdateButtons.propTypes = {
-    checkAndSave: PropTypes.func
-};
-
-export default UpdateButtons;
+export default UpdateButtonsModal;

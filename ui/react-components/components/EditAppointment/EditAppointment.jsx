@@ -11,7 +11,6 @@ import {
     recurringContainerBlock,
     close
 } from "../AddAppointment/AddAppointment.module.scss";
-import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import AppointmentEditorCommonFieldsWrapper
     from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
 import {getRecurringAppointment} from "../../api/recurringAppointmentsApi";
@@ -68,6 +67,7 @@ import {ContentSwitcher, RadioButton, RadioButtonGroup, Switch} from "carbon-com
 import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
 import NumberInputCarbon from "../NumberInput/NumberInputCarbon.jsx";
 import Title from "../Title/Title.jsx";
+import Notification from "../Notifications/Notifications.jsx";
 
 const EditAppointment = props => {
 
@@ -203,14 +203,11 @@ const EditAppointment = props => {
         }
     };
 
-    const updateSuccessPopup = <CustomPopup style={customPopup} popupContent={<UpdateSuccessModal
-        updateSeries={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE && applyForAll}/>}/>;
 
-    const updateConfirmPopup = <CustomPopup style={customPopup} onClose={() => setShowUpdateConfirmPopup(false)}
-                                            popupContent={
-                                                <UpdateConfirmationModal
-                                                    updateSeries={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE && applyForAll}
-                                                    save={saveAppointments}/>}/>;
+    const updateConfirmPopup = <UpdateConfirmationModal
+                                                updateSeries={appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE && applyForAll}
+                                                show={showUpdateConfirmPopup}
+                                                save={saveAppointments}/>
 
     const requestAppointmentType = () => {
         if (appointmentDetails.teleconsultation) {
@@ -586,6 +583,11 @@ const EditAppointment = props => {
         }
     }
     const recurring = isRecurringAppointment();
+
+    if(showUpdateSuccessPopup){
+        return <Notification showMessage={showUpdateSuccessPopup} title={"Update Successful!"} onClose={React.useContext(AppContext).onBack}/>
+    }
+
     return (<div className={classNames(overlay)}>
         <div data-testid="appointment-editor"
              className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? recurring : '')}>
@@ -761,11 +763,6 @@ const EditAppointment = props => {
             <div data-testid={"appointment-notes"}>
                 <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
             </div>
-            {showUpdateSuccessPopup ? React.cloneElement(updateSuccessPopup, {
-                open: true,
-                closeOnDocumentClick: false,
-                closeOnEscape: false
-            }) : undefined}
 
             {showUpdateConfirmPopup ? React.cloneElement(updateConfirmPopup, {
                 open: true,
