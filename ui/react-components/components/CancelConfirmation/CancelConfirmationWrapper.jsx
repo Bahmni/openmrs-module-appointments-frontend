@@ -6,7 +6,7 @@ import {Modal} from "carbon-components-react";
 import Label from "../Label/Label.jsx";
 
 const CancelConfirmationWrapper = props => {
-    const {onBack, appointmentUuid, show } =props;
+    const {onBack, appointmentUuid, show, resetEditConflict } =props;
 
     useEffect(()=>{
         setOpen(true);
@@ -22,6 +22,7 @@ const CancelConfirmationWrapper = props => {
     const primaryText = <FormattedMessage id={'YES_KEY'} defaultMessage={"Yes"}/>
     const closeModal = () =>{
         setOpen(false);
+        resetEditConflict();
     }
     return (
         <Modal
@@ -41,6 +42,7 @@ const CancelConfirmationWrapper = props => {
 
 CancelConfirmationWrapper.propTypes = {
     onBack: PropTypes.func.isRequired,
+    resetEditConflict: PropTypes.func,
     appointmentUuid: PropTypes.string.isRequired
 };
 

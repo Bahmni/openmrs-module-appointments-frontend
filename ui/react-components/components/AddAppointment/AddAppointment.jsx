@@ -863,7 +863,7 @@ const AddAppointment = props => {
                 checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
                 cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
                 disableSaveAndUpdateButton={disableSaveButton}
-                appointmentTouched={appointmentTouched}
+                skipConfirm={appointmentTouched !== "touched"}
             />
         </div>
         {conflicts &&

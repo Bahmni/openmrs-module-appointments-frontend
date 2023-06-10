@@ -17,7 +17,7 @@ angular.module('bahmni.appointments')
 angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
     template: '<react-add-appointment on-back="onBack" set-view-date="setViewDate" appointment-uuid="appointmentUuid"' +
         ' is-recurring="isRecurring" state="state" current-provider="currentProvider" appointment-params="appointmentParams"' +
-        'url-params="urlParams" edit-conflict="editConflict">',
+        'url-params="urlParams" edit-conflict="editConflict" reset-edit-conflict="resetEditConflict">',
     controller: reactAddAppointmentController
 });
 
@@ -31,7 +31,7 @@ reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope'
 function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
     let onBack = false;
     let backUrl = "^";
-    $scope.editConflict = 0;
+    $scope.editConflict = false;
     $scope.onBack = function () {
         onBack = true;
         $state.go(backUrl, $state.params, {reload: true});
@@ -43,7 +43,7 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
         if (next.url !== "/new" && !onBack) {
             event.preventDefault();
             backUrl = next.name;
-            $scope.editConflict += 1 ;
+            $scope.editConflict = true ;
         }
     });
     $scope.onClose = function () {
@@ -52,6 +52,9 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
     $scope.setViewDate = function (date) {
       $state.params.viewDate = date;
     };
+    $scope.resetEditConflict = () => {
+        $scope.editConflict = false;
+    }
     $scope.appointmentUuid = $state.current.url === '/:uuid?isRecurring' ? $stateParams.uuid : undefined;
     $scope.isRecurring = $stateParams.isRecurring;
     $scope.state = $state;

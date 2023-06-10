@@ -38,7 +38,7 @@ class AppointmentContainer extends Component {
     render() {
         const {locale, messages, appConfig, isAppointmentSMSEnabled} = this.state;
 
-        const {appointmentUuid,isRecurring, setViewDate, onBack, appointmentParams, currentProvider, urlParams, editConflict} = this.props;
+        const {appointmentUuid,isRecurring, setViewDate, onBack, appointmentParams, currentProvider, urlParams, editConflict, resetEditConflict} = this.props;
         return (
             <AppContext.Provider value={{onBack: onBack, setViewDate: setViewDate}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
@@ -46,7 +46,7 @@ class AppointmentContainer extends Component {
                         ? <EditAppointment appConfig={appConfig} appointmentUuid={appointmentUuid} isRecurring={isRecurring}  currentProvider={currentProvider} isAppointmentSMSEnabled={isAppointmentSMSEnabled}/>
                         : <div>
                             <AddAppointment appConfig={appConfig} appointmentParams={appointmentParams} currentProvider={currentProvider} urlParams={urlParams} isAppointmentSMSEnabled={isAppointmentSMSEnabled}/>
-                            { editConflict &&  <CancelConfirmationWrapper show={editConflict} appointmentUuid={appointmentUuid} onBack={onBack}/>}
+                            { editConflict &&  <CancelConfirmationWrapper show={editConflict} appointmentUuid={appointmentUuid} onBack={onBack} resetEditConflict={resetEditConflict}/>}
                         </div>}
                 </IntlProvider>
             </AppContext.Provider>);
@@ -63,7 +63,8 @@ AppointmentContainer .propTypes = {
     appointmentParams: PropTypes.object,
     currentProvider: PropTypes.object,
     urlParams: PropTypes.object,
-    editConflict: PropTypes.string
+    editConflict: PropTypes.string,
+    resetEditConflict: PropTypes.func
 };
 
 export default AppointmentContainer;
