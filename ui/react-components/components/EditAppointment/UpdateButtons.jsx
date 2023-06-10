@@ -16,7 +16,7 @@ const UpdateButtonsModal = props => {
     const [updateDisabled, setUpdateDisabled] = useState(true);
     const updateAllTitle = intl.formatMessage( { id: 'APPOINTMENT_UPDATE_TITLE',  defaultMessage: "Update occurrences"});
     const updateAll = <FormattedMessage id={'APPOINTMENT_UPDATE_ALL_LABEL'} defaultMessage={"All occurrences"}/>
-    const updateSingle = <FormattedMessage id={'APPOINTMENT_UPDATE_ONE_LABEL'} defaultMessage={"This occurrences"}/>
+    const updateSingle = <FormattedMessage id={'APPOINTMENT_UPDATE_ONE_LABEL'} defaultMessage={"This occurrence"}/>
     const primaryButtonText = <FormattedMessage id={'OK_KEY'} defaultMessage={'Ok'}/>
     const secondaryButtonText = <FormattedMessage id={'CANCEL_KEY'} defaultMessage={'Cancel'}/>
     const titleText = <Title style={classNames(title)} text={updateAllTitle} isRequired={true}/>
@@ -35,6 +35,7 @@ const UpdateButtonsModal = props => {
     }
 
     return (
+        <div data-testid={"update-buttons"}>
         <Modal
             open={open}
             onRequestClose={closeModal}
@@ -63,6 +64,7 @@ const UpdateButtonsModal = props => {
                 />
             </RadioButtonGroup>
         </Modal>
+        </div>
     );
 };
 

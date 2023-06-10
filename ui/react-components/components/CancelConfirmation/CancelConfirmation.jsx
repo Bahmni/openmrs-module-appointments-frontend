@@ -9,7 +9,7 @@ import {FormattedMessage} from "react-intl";
 const CancelConfirmation  = prop => {
     const { triggerComponent, onBack, skipConfirm } = prop
     const body = <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT'}
-                                   defaultMessage={'You will loose appointment details. Do you want to discard these changes?'} />
+                                   defaultMessage={'You will lose appointment details. Do you want to discard these changes?'} />
     const primaryButton =  <Button
         kind="danger"
         onClick={onBack}>
