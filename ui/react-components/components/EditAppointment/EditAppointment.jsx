@@ -138,8 +138,28 @@ const EditAppointment = props => {
     const [existingProvidersUuids, setExistingProvidersUuids] = useState([]);
     const [appointmentTimeBeforeEdit, setAppointmentTimeBeforeEdit] = useState({});
     const [disableUpdateButton, setDisableUpdateButton] = useState(false);
+    const [appointmentTouched, setAppointmentTouched] = useState("not-ready");
     const [requiredFields, setRequiredFields] = useState(initialRequired);
 
+    useEffect(()=>{
+        setAppointmentTouched((prevState)=> {
+            if(prevState === "not-ready"){
+                return "ready"
+            }
+            else if(prevState === "ready"){
+                return "intermediate"
+            }
+            else if(prevState === "intermediate"){
+                return "pristine"
+            }
+            else if(prevState === "pristine"){
+                return "touched"
+            }
+            else{
+                return prevState
+            }
+        });
+    }, [appointmentDetails])
     const after = intl.formatMessage({
         id: 'AFTER_LABEL', defaultMessage: 'After'
     });
@@ -501,6 +521,9 @@ const EditAppointment = props => {
                 updateRequired({appointmentStartDate: false, appointmentStartTime: false, appointmentEndTime: false});
             }
         }
+        if(isRecurringAppointment()){
+            setAppointmentTouched("intermediate");
+        }
         callback(appointmentResponse);
     };
 
@@ -591,7 +614,7 @@ const EditAppointment = props => {
     return (<div className={classNames(overlay)}>
         <div data-testid="appointment-editor"
              className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? recurring : '')}>
-            <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton}/>
+            <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails} errors={errors}
                                                   updateErrorIndicators={updateErrorIndicators}
                                                   endTimeBasedOnService={endTimeBasedOnService}
@@ -779,6 +802,7 @@ const EditAppointment = props => {
                 isOptionsRequired={isRecurringAppointment() && isApplicableForAll()}
                 disableSaveAndUpdateButton={disableUpdateButton || (isStartDateModified() && (isEndDateModified() || isOccurrencesModified()))}
                 cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_EDIT}
+                skipConfirm={appointmentTouched !== "touched"}
             />
             {conflicts &&
                 <div style={{"-webkit-box-sizing": "border-box"}}>
