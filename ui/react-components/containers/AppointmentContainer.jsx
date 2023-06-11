@@ -42,12 +42,13 @@ class AppointmentContainer extends Component {
         return (
             <AppContext.Provider value={{onBack: onBack, setViewDate: setViewDate}}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
+                    <div>
                     {appointmentUuid
                         ? <EditAppointment appConfig={appConfig} appointmentUuid={appointmentUuid} isRecurring={isRecurring}  currentProvider={currentProvider} isAppointmentSMSEnabled={isAppointmentSMSEnabled}/>
-                        : <div>
-                            <AddAppointment appConfig={appConfig} appointmentParams={appointmentParams} currentProvider={currentProvider} urlParams={urlParams} isAppointmentSMSEnabled={isAppointmentSMSEnabled}/>
-                            { editConflict &&  <CancelConfirmationWrapper show={editConflict} appointmentUuid={appointmentUuid} onBack={onBack} resetEditConflict={resetEditConflict}/>}
-                        </div>}
+                        : <AddAppointment appConfig={appConfig} appointmentParams={appointmentParams} currentProvider={currentProvider} urlParams={urlParams} isAppointmentSMSEnabled={isAppointmentSMSEnabled}/>
+                    }
+                    { editConflict &&  <CancelConfirmationWrapper show={editConflict} appointmentUuid={appointmentUuid} onBack={onBack} resetEditConflict={resetEditConflict}/>}
+                    </div>
                 </IntlProvider>
             </AppContext.Provider>);
     }

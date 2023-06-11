@@ -45,6 +45,12 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
             backUrl = next.name;
             $scope.editConflict = true ;
         }
+        else if (next.url === "/new" && !onBack) {
+            event.preventDefault();
+            backUrl = next.name;
+            $scope.editConflict = true ;
+            $scope.appointmentUuid = undefined;
+        }
     });
     $scope.onClose = function () {
         $scope.dialog.close();
