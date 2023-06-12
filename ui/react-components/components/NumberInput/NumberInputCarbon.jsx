@@ -1,7 +1,8 @@
 import React from "react";
 import { NumberInput } from 'carbon-components-react';
+import Title from "../Title/Title.jsx";
 const NumberInputCarbon = props => {
-    const {onChange, value, id, testId, label} = props;
+    const {onChange, value, id, testId, label, isRequired} = props;
     const handleChange = (event, carbonEvent, value) => {
         if(typeof carbonEvent === "object"){
             onChange(+carbonEvent.value);
@@ -10,6 +11,7 @@ const NumberInputCarbon = props => {
             onChange(value);
         }
     }
+    const title = label && <Title text={label} isRequired={isRequired}/>;
 
     return <NumberInput
         data-testid={testId}
@@ -18,7 +20,7 @@ const NumberInputCarbon = props => {
         min={0}
         value = { value || 0}
         invalidText={null}
-        label={label}
+        label={title}
     />
 }
 

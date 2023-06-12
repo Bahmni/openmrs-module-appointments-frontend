@@ -27,7 +27,7 @@ import AppointmentCategory from "../AppointmentCategory/AppointmentCategory.jsx"
 
 const AppointmentEditorCommonFieldsWrapper = props => {
 
-    const {updateAppointmentDetails, updateErrorIndicators} = props;
+    const {updateAppointmentDetails, updateErrorIndicators, requiredFields} = props;
     const {appointmentDetails, errors, endTimeBasedOnService, appConfig, intl, autoFocus} = props;
     const componentsDisableStatus = props.componentsDisableStatus || {};
     const errorTranslations = getErrorTranslations(intl);
@@ -93,6 +93,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                         }
                                         updateErrorIndicators({priorityError: !selectedCategory.selectedItem});
                                     }} isDisabled={componentsDisableStatus.priority}
+                                     isRequired={requiredFields.category}
                                     autoFocus={componentsDisableStatus.patient}/>
                                 <ErrorMessage message={errors.priorityError ? errorTranslations.priorityErrorMessage : undefined}/>
                             </div>
@@ -112,6 +113,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                                               location: null
                                                           })}}
                                                       isDisabled={componentsDisableStatus.speciality}
+                                                      isRequired={requiredFields.speciality}
                                                       autoFocus={componentsDisableStatus.patient && componentsDisableStatus.priority}/>
                                 </div> : null
                             }
@@ -127,12 +129,27 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                     && appointmentDetails.speciality.value.uuid}
                                                isDisabled={componentsDisableStatus.service}
                                                specialityEnabled = {isSpecialitiesEnabled(appConfig)}
+                                               isRequired={requiredFields.service}
                                                autoFocus={componentsDisableStatus.patient && componentsDisableStatus.priority}
                                 />
                                 <ErrorMessage
                                     message={errors.serviceError ? errorTranslations.serviceErrorMessage : undefined}/>
                             </div>
                         </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {isServiceTypeEnabled(appConfig) ?
+                                <div data-testid="service-type-search">
+                                    <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
+                                        updateAppointmentDetails({serviceType: optionSelected});
+                                        optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
+                                    }}
+                                                       serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
+                                                       isDisabled={componentsDisableStatus.serviceType}/>
+                                </div> : undefined}
+                        </td>
+                        <td/>
                     </tr>
                     <tr>
                         <td>
@@ -150,6 +167,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                             }
                                         }
                                     }}
+                                    isRequired={requiredFields.provider}
                                     onProviderRemove={providerIdentifier => updateAppointmentDetails({providers: filter(appointmentDetails.providers, provider => provider.value !== providerIdentifier)})}
                                     selectedProviders={appointmentDetails.providers}
                                     isDisabled={componentsDisableStatus.providers}
@@ -164,23 +182,13 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                                 <LocationSearch value={appointmentDetails.location}
                                                 onChange={(optionSelected) => updateAppointmentDetails({location: optionSelected})}
                                                 isDisabled={componentsDisableStatus.location}
+                                                isRequired={requiredFields.location}
                                                 autoFocus={componentsDisableStatus.patient && componentsDisableStatus.priority && componentsDisableStatus.speciality && componentsDisableStatus.service}/>
                                 <ErrorMessage message={undefined}/>
                             </div>
                         </td>
                     </tr>
                 </table>
-                <div>
-                    {isServiceTypeEnabled(appConfig) ?
-                        <div data-testid="service-type-search">
-                            <ServiceTypeSearch value={appointmentDetails.serviceType} onChange={(optionSelected) => {
-                                updateAppointmentDetails({serviceType: optionSelected});
-                                optionSelected && endTimeBasedOnService(appointmentDetails.startTime, undefined, optionSelected.value);
-                            }}
-                                               serviceUuid={appointmentDetails.service && appointmentDetails.service.value.uuid}
-                                               isDisabled={componentsDisableStatus.serviceType}/>
-                        </div> : undefined}
-                </div>
             </div>
         </Fragment>
     );

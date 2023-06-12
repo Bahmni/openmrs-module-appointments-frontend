@@ -10,7 +10,7 @@ import {searchFieldOnChangeHandler,searchFieldOnRemoveHandler} from '../../helpe
 
 const LocationSearch = (props) => {
 
-    const {intl, onChange, value, isDisabled, autoFocus} = props;
+    const {intl, onChange, value, isDisabled, autoFocus, isRequired} = props;
     const {showTags=false, openMenuOnClick=true, openMenuOnFocus=true, style='',components,customSelectStyle}=props
 
     const createDropdownOptions = (locations) => {
@@ -59,6 +59,7 @@ const LocationSearch = (props) => {
             style={style}
             components={components}
             customSelectStyle={customSelectStyle}
+            isRequired={isRequired}
         />
         {showTags?
         <Tags
@@ -77,6 +78,7 @@ LocationSearch.propTypes = {
     onChange: PropTypes.func,
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
+    isRequired: PropTypes.bool,
     autoFocus: PropTypes.bool
 };
 

@@ -2,7 +2,7 @@ import { getAllProviders } from "../../api/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, {useEffect, useState} from "react";
 import Tags from "../Tags/Tags.jsx";
-import {find, forEach, isEqual, sortBy} from "lodash";
+import {find, forEach, sortBy} from "lodash";
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import {getValidProviders} from "../../helper";
@@ -21,6 +21,7 @@ const ProviderSearch = props => {
     components,
     customSelectStyle,
     autoFocus,
+    isRequired
   } = props;
 
   const placeHolder = intl.formatMessage({
@@ -99,12 +100,12 @@ const ProviderSearch = props => {
         options={providerOptions}
         placeholder={placeHolder}
         onChange={onChange ? onProviderSelect : onChangeHandler}
-        selectedValue={""}
         openMenuOnClick={openMenuOnClick}
         openMenuOnFocus={openMenuOnFocus}
         components={components}
         customSelectStyle={customSelectStyle}
         autoFocus={autoFocus}
+        isRequired={isRequired}
       />
       <Tags
         onChange={onProviderRemove}
@@ -126,6 +127,7 @@ ProviderSearch.propTypes = {
   onProviderRemove: PropTypes.func,
   selectedProviders: PropTypes.array,
   isDisabled: PropTypes.bool,
+  isRequired: PropTypes.bool,
   autoFocus: PropTypes.bool
 };
 

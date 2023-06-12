@@ -3,12 +3,14 @@ import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {SelectItem, TimePicker, TimePickerSelect} from "carbon-components-react";
 import moment from "moment";
+import Title from "../Title/Title.jsx";
 
 const AppointmentTimePicker = (props) => {
-    const { intl, onChange, defaultTime, translationKey, defaultTranslationKey, width, isDisabled } = props;
+    const { intl, onChange, defaultTime, translationKey, defaultTranslationKey, width, isDisabled, isRequired } = props;
     const key = intl.formatMessage({
         id: translationKey, defaultMessage: defaultTranslationKey
     });
+    let title = <Title text={key} isRequired={isRequired} />
     let timeStamp = []; // = ["12:00", "AM"];
     if(defaultTime){
         timeStamp = moment(defaultTime).format("h:mm A").split(" ");
@@ -31,7 +33,7 @@ const AppointmentTimePicker = (props) => {
     }
 
     return (
-    <TimePicker id="time-selector" labelText={key} onBlur={handleChange} value={time}
+    <TimePicker id="time-selector" labelText={title} onBlur={handleChange} value={time}
                 style={{ width: "72px", padding: "0 0 0 1rem"}} autoComplete={"off"} disabled={isDisabled}>
              <TimePickerSelect id="time-picker-select-1" labelText={"Choose a time"} onChange={handlePeriod} value={period} disabled={isDisabled}>
                <SelectItem value="AM" text="AM" />

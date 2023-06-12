@@ -69,6 +69,8 @@ import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
 import Dropdown from '../DropdownCarbon/Dropdown.jsx'
 import {isAppointmentPriorityOptionEnabled, isAppointmentStatusOptionEnabled} from "../../helper";
 import NumberInput from "../NumberInput/NumberInputCarbon.jsx";
+import Title from "../Title/Title.jsx";
+import Notification from "../Notifications/Notifications.jsx";
 
 const AddAppointment = props => {
 
@@ -120,7 +122,24 @@ const AddAppointment = props => {
         statusError: false
     };
 
+    const initialRequired = {
+        patient: true,
+        category: true,
+        service: true,
+        status: true,
+        appointmentStartDate: false,
+        appointmentStartTime: false,
+        appointmentEndTime: false,
+        recurringStartDate: true,
+        recurringStartTime: true,
+        recurringEndTime: true,
+        repeatsEvery: true,
+        ends: true,
+        repeatsOn: true,
+    }
+
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
+    const [appointmentTouched, setAppointmentTouched] = useState("not-ready");
     const [showEmailWarning, setShowEmailWarning] = useState(false);
     const [showEmailNotSentWarning, setShowEmailNotSentWarning] = useState(false);
     const [conflicts, setConflicts] = useState();
@@ -128,7 +147,21 @@ const AddAppointment = props => {
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [serviceErrorMessage, setServiceErrorMessage] = useState('');
     const [disableSaveButton, setDisableSaveButton] = useState(false);
+    const [requiredFields, setRequiredFields] = useState(initialRequired);
 
+    useEffect(()=>{
+        setAppointmentTouched((prevState)=>{
+            if(prevState === "pristine"){
+                return "touched";
+            }
+            else if(prevState === "ready"){
+                return "pristine";
+            }
+            else {
+                return prevState
+            }
+        })
+    }, [appointmentDetails])
     const on = intl.formatMessage({
         id: 'ON_LABEL', defaultMessage: 'On'
     });
@@ -146,7 +179,11 @@ const AddAppointment = props => {
     const waitListPlaceHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_STATUS_WAITLIST', defaultMessage: "Waitlist"
     });
+    const repeatsOn = intl.formatMessage({
+        id: 'REPEATS_ON_LABEL', defaultMessage: "Repeats on"
+    })
 
+    const statusTitleText = <Title text={statusPlaceHolder} isRequired={requiredFields.status}/>
 
     const recurringTypeOptions = [
         {label: "Day(s)", value: "DAY"},
@@ -160,6 +197,7 @@ const AddAppointment = props => {
         if(urlParams && urlParams.patient) {
             populatePatientDetails(urlParams.patient).then();
         }
+        setAppointmentTouched("ready");
     }, [appConfig]);
 
     async function populatePatientDetails(patientUuid) {
@@ -169,13 +207,13 @@ const AddAppointment = props => {
     }
 
     const reInitialiseComponent = () => {
+        setAppointmentTouched("ready");
         updateAppointmentDetails({
             ...initialAppointmentState,
             weekDays: getWeekDays(appConfig && appConfig.startOfWeek)
         });
         updateErrorIndicators(initialErrorsState);
         setConflicts(undefined);
-        setShowSuccessPopup(false);
     };
 
     const getRecurringPattern = () => {
@@ -240,6 +278,9 @@ const AddAppointment = props => {
     const updateAppointmentDetails = modifiedAppointmentDetails => setAppointmentDetails(prevAppointmentDetails => {
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
+    const updateRequired = modifiedRequiredList => setRequiredFields(prevRequiredList => {
+        return {...prevRequiredList, ...modifiedRequiredList}
+    });
 
     const isValidAppointment = () => {
         const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.value.uuid;
@@ -247,7 +288,7 @@ const AddAppointment = props => {
         updateErrorIndicators({priorityError: !isValidPriority});
         const isValidStatus = !isAppointmentStatusOptionEnabled(appConfig) || appointmentDetails.status
         updateErrorIndicators({statusError: !isValidStatus});
-        if (appointmentDetails.status == APPOINTMENT_STATUSES.WaitList) {
+        if (appointmentDetails.status === APPOINTMENT_STATUSES.WaitList) {
             updateErrorIndicators({
                 patientError: !isValidPatient,
                 serviceError: !appointmentDetails.service,
@@ -303,6 +344,7 @@ const AddAppointment = props => {
         const date = startDate ? moment(startDate) : moment();
         setViewDate(date.startOf('day').toDate())
         setShowSuccessPopup(true);
+        reInitialiseComponent();
     };
 
     const setServiceErrorMessageFromResponse = response => {
@@ -362,7 +404,7 @@ const AddAppointment = props => {
         setDisableSaveButton(true);
         if (isValidAppointment()) {
             const appointment = getAppointmentRequest();
-            if (appointment.status == APPOINTMENT_STATUSES.WaitList) {
+            if (appointment.status === APPOINTMENT_STATUSES.WaitList) {
                 await save(appointment);
             } else {
                 const response = await getAppointmentConflicts(appointment);
@@ -502,19 +544,19 @@ const AddAppointment = props => {
         updateAppointmentDetails({status: value});
         errors.statusError && value && updateErrorIndicators({statusError: !value});
         if(value === APPOINTMENT_STATUSES.WaitList) {
-            updateAppointmentDetails({appointmentDate: null});
-            updateAppointmentDetails({startTime: null});
-            updateAppointmentDetails({endTime: null});
+            updateAppointmentDetails({appointmentDate: null, startTime: null, endTime: null});
             updateErrorIndicators({
                 appointmentDateError: undefined,
                 startTimeError: undefined,
                 startTimeBeforeEndTimeError: undefined,
                 endTimeError: undefined
             });
+            updateRequired({appointmentStartDate: false, appointmentStartTime: false, appointmentEndTime: false});
+        }
+        else{
+            updateRequired({appointmentStartDate: true, appointmentStartTime: true, appointmentEndTime: true});
         }
     }
-
-    const popupContent = <CancelConfirmation {...CANCEL_CONFIRMATION_MESSAGE_ADD} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
 
     const closeButton = <div className={classNames(close)}>
         <Close24/>
@@ -522,12 +564,12 @@ const AddAppointment = props => {
 
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
-                <CustomPopup triggerComponent={closeButton} popupContent={popupContent} style={customPopup}/>
-            <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
+                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
+                <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
                 updateAppointmentDetails={updateAppointmentDetails}
                 updateErrorIndicators={updateErrorIndicators}
                 endTimeBasedOnService={endTimeBasedOnService}
-                appConfig={appConfig} errors={errors} autoFocus={true}/>
+                appConfig={appConfig} errors={errors} autoFocus={true} requiredFields={requiredFields}/>
             <div data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
                     <ContentSwitcher selectedIndex={isRecurringAppointment() ? 1: 0} onChange={(e) => {
@@ -566,6 +608,7 @@ const AddAppointment = props => {
                                     }
                                 }}
                                 minDate={moment().format("MM-DD-YYYY")}
+                                isRequired={requiredFields.recurringStartDate}
                                 title={"Appointment start date"}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
@@ -584,7 +627,9 @@ const AddAppointment = props => {
                                                 appointmentDetails.serviceType && appointmentDetails.serviceType.value);
                                             updateErrorIndicators({startTimeError: !time});
                                         }
-                                    }}/>
+                                    }}
+                                    isRequired={requiredFields.recurringStartTime}
+                                />
                                 <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                             </span>
                             <span data-testid="recurring-end-time-selector">
@@ -602,6 +647,7 @@ const AddAppointment = props => {
                                                       });
                                                   }
                                               }}
+                                              isRequired={requiredFields.recurringEndTime}
                                               />
                                 { errors.endTimeError ?
                                     <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/> :
@@ -622,6 +668,7 @@ const AddAppointment = props => {
                                         value={appointmentDetails.period || 0}
                                         id={"period"}
                                         label={repeatsEvery}
+                                        isRequired={requiredFields.repeatsEvery}
                                     />
                                 </div>
                                 <div style={{minWidth: "120px", verticalAlign: "bottom"}}>
@@ -649,7 +696,9 @@ const AddAppointment = props => {
                                             prevWeekDaysMap.set(buttonKey, nextEntry);
                                             updateAppointmentDetails({weekDays: prevWeekDaysMap});
                                             updateErrorIndicators({weekDaysError: false});
-                                        }}/>
+                                        }}
+                                        label={repeatsOn}
+                                        isRequired={requiredFields.repeatsOn}/>
                                     </div>
                                     <br/>
                                     <ErrorMessage message={errors.weekDaysError && errorTranslations.weekDaysErrorMessage }/>
@@ -664,6 +713,7 @@ const AddAppointment = props => {
                                               }}
                                               selectedValue={appointmentDetails.endDateType || after}
                                               titleText={ends}
+                                              isRequired={requiredFields.ends}
                                     />
                                 </div>
                                 <div style={{verticalAlign:"middle"}}>
@@ -714,9 +764,9 @@ const AddAppointment = props => {
                         {isAppointmentStatusOptionEnabled(appConfig) && 
                             <div data-testid="appointment-status">
                                 <RadioButtonGroup
-                                    legendText={statusPlaceHolder}
+                                    legendText={statusTitleText}
                                     name="appointment-status-option"
-                                    defaultSelected={appointmentDetails.status}
+                                    valueSelected={appointmentDetails.status || null}
                                     onChange={handleStatusChange}
                                     >
                                     <RadioButton
@@ -748,6 +798,7 @@ const AddAppointment = props => {
                                     updateErrorIndicators({appointmentDateError: !date[0]});
                                 }}
                                 minDate={moment().format("MM-DD-YYYY")}
+                                isRequired={requiredFields.appointmentStartDate}
                                 title={"Appointment date"}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
@@ -755,6 +806,7 @@ const AddAppointment = props => {
                             <div style={{marginRight: "5px"}} data-testid="start-time-selector">
                             <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
                                         isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList}
+                                        isRequired={requiredFields.appointmentStartTime}
                                         onChange={time => {
                                             if(time && !time.isValid()) {
                                                 updateAppointmentDetails({startTime: null});
@@ -771,6 +823,7 @@ const AddAppointment = props => {
                             </div>
                             <div data-testid="end-time-selector">
                                 <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
+                                            isRequired={requiredFields.appointmentEndTime}
                                             isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList}
                                             onChange={time => {
                                                 if(time && !time.isValid()) {
@@ -797,11 +850,12 @@ const AddAppointment = props => {
                 <div data-testid={"appointment-notes"}>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
-            {showSuccessPopup ? React.cloneElement(savePopup, {
+            {showSuccessPopup && ( showEmailWarning || showEmailNotSentWarning ) ? React.cloneElement(savePopup, {
                 open: true,
                 closeOnDocumentClick: false,
                 closeOnEscape: false
             }) : undefined}
+                <Notification showMessage={showSuccessPopup} title={"Appointment Created"} onClose={() => setShowSuccessPopup(false)}/>
         </div>
         <div  data-testid="Appointment-editer-footer">
             <AppointmentEditorFooter
@@ -809,6 +863,7 @@ const AddAppointment = props => {
                 checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
                 cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
                 disableSaveAndUpdateButton={disableSaveButton}
+                skipConfirm={appointmentTouched !== "touched"}
             />
         </div>
         {conflicts &&

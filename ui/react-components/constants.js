@@ -41,12 +41,12 @@ export const PROVIDER_RESPONSES = {
 
 export const CANCEL_CONFIRMATION_MESSAGE_ADD = {
   translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT',
-  defaultMessage: 'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'
+  defaultMessage: 'You will lose appointment details. Do you want to discard these changes?'
 };
 
 export const CANCEL_CONFIRMATION_MESSAGE_EDIT = {
   translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT_EDIT',
-  defaultMessage: 'Are you sure you want to cancel editing the appointment? This will not save any of the changes made.'
+  defaultMessage: 'You will lose the edited appointment details. Do you want to discard these changes?'
 };
 
 const appointmentTimeProps = {

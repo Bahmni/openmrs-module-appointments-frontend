@@ -1,31 +1,22 @@
 import classNames from "classnames";
-import {
-    button,
-    footer,
-    save,
-    errorMessageContainer
-} from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
+import { footer, errorMessageContainer} from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
 import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
-import CustomPopup from "../CustomPopup/CustomPopup.jsx";
-import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import {AppContext} from "../AppContext/AppContext";
-import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
+import UpdateButtonsModal from "../EditAppointment/UpdateButtons.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import {Button} from "carbon-components-react";
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit, isOptionsRequired, disableSaveAndUpdateButton, cancelConfirmationMessage, errorMessage} = props;
+    const {checkAndSave, isEdit, isOptionsRequired, disableSaveAndUpdateButton, errorMessage, skipConfirm} = props;
     const[showUpdateButtons, setShowUpdateButtons] = useState(false);
 
     const getUpdateButtons =() =>{
         setShowUpdateButtons(!showUpdateButtons);
     };
-
-    const popupContent = <CancelConfirmation {...cancelConfirmationMessage} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
 
     const cancelButton = <Button kind="secondary" style={{width: "270px", height: "64px" }} data-testid="cancel">
                             <span><FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/></span>
@@ -38,9 +29,9 @@ const AppointmentEditorFooter = props => {
             </div>
         <div className={classNames(footer)}>
             <div>
-                <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
+                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={cancelButton} skipConfirm={skipConfirm}/>
                 {isEdit
-                    ? <Button kind="primary" style={{width: "270px", height: "64px" }}  className={classNames(button, save)}
+                    ? <Button kind="primary" style={{width: "270px", height: "64px" }}
                               onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}
                               disabled={disableSaveAndUpdateButton}
                               data-testid="check-and-save">
@@ -53,7 +44,7 @@ const AppointmentEditorFooter = props => {
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
                     </span>
                     </Button>}
-                {isOptionsRequired && showUpdateButtons ? <UpdateButtons updateOptionsVisibleStatus={setShowUpdateButtons} checkAndSave={applyForAll =>  checkAndSave(applyForAll)} /> : undefined}
+                {isOptionsRequired && showUpdateButtons ? <UpdateButtonsModal updateOptionsVisibleStatus={setShowUpdateButtons} show={isOptionsRequired && showUpdateButtons} checkAndSave={applyForAll =>  checkAndSave(applyForAll)} /> : undefined}
 
             </div>
         </div>
