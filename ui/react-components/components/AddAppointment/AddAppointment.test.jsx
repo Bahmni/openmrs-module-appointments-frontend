@@ -640,7 +640,7 @@ describe('Add appointment with appointment request enabled', () => {
 
         const button = getByTestId('check-and-save');
         fireEvent.click(button);
-        await waitForElement(() => (container.querySelector('.popup-overlay')));
+        await waitForElement(() => (container.querySelector('.bx--inline-notification__details')));
 
         expect(getConflictsSpy).toHaveBeenCalled();
         expect(saveAppointmentSpy).toHaveBeenCalled();
@@ -666,7 +666,7 @@ describe('Add appointment with appointment request enabled', () => {
 
         const button = getByTestId('check-and-save');
         fireEvent.click(button);
-        await waitForElement(() => (container.querySelector('.popup-overlay')));
+        await waitForElement(() => (container.querySelector('.bx--inline-notification__details')));
 
         expect(getConflictsSpy).toHaveBeenCalled();
         expect(saveAppointmentSpy).toHaveBeenCalled();
@@ -680,3 +680,4 @@ describe('Add appointment with appointment request enabled', () => {
         expect(appointmentRequestData.providers[1].response).toEqual("AWAITING");
     })
 });
+

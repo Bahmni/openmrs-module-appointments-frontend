@@ -5,6 +5,7 @@ import {conflictsFor, getAppointment} from "../../api/appointmentsApi";
 import {act, fireEvent, waitForElement} from "@testing-library/react";
 import moment from "moment";
 import {AppContext} from "../AppContext/AppContext";
+import {getByTestId} from "@testing-library/dom";
 
 
 jest.mock('../../api/appointmentsApi');
@@ -78,28 +79,30 @@ describe('Edit Appointment', () => {
     //TODO Warnings while running tests
     it('should render appointment details coming from response', async () => {
         let getByTextInDom = undefined;
+        let getByTestIdInDom = undefined;
         let containerInDom = undefined;
         const config = {
             "enableSpecialities": true,
             "enableServiceTypes": true
         };
         act(() => {
-            const {getByText, container} = renderWithReactIntl(<EditAppointment
+            const {getByText, container, getByTestId} = renderWithReactIntl(<EditAppointment
                 appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} isRecurring="false" appConfig={config}/>);
             getByTextInDom = getByText;
+            getByTestIdInDom = getByTestId;
             containerInDom = container;
         });
         await flushPromises();
         expect(containerInDom.querySelector(".bx--search-input").value).toEqual("9DEC81BF 9DEC81C6 (IQ1114)");
         expect(containerInDom.querySelectorAll(".bx--text-input")[0].value).toEqual("test speciality");
         expect(containerInDom.querySelectorAll(".bx--text-input")[1].value).toEqual("Physiotherapy OPD");
-        expect(containerInDom.querySelectorAll(".bx--text-input")[3].value).toEqual("Operating Theatre");
+        expect(containerInDom.querySelectorAll(".bx--text-input")[4].value).toEqual("Operating Theatre");
         expect(containerInDom.querySelectorAll(".bx--time-picker__input-field")[0].value).toEqual("11:00");
         expect(containerInDom.querySelectorAll(".bx--time-picker__input-field")[1].value).toEqual("11:30");
         expect(containerInDom.querySelector(".bx--text-area").value).toEqual("comments");
         getByTextInDom('comments');
         getByTextInDom('Update');
-        getByTextInDom('Cancel');
+        getByTestIdInDom('cancel');
     });
 
     it('should render daily recurring appointment details coming from response', async () => {
@@ -123,8 +126,8 @@ describe('Edit Appointment', () => {
         const inputs = containerInDom.querySelectorAll(".bx--text-input")
         expect(inputs[0].value).toEqual('test speciality');
         expect(inputs[1].value).toEqual('Physiotherapy OPD');
-        expect(inputs[3].value).toEqual('Operating Theatre');
-        expect(inputs[4].value).toEqual('1 session');
+        expect(inputs[4].value).toEqual('Operating Theatre');
+        expect(inputs[2].value).toEqual('1 session');
         expect(inputs[5].value).toEqual('11:00');
         expect(inputs[6].value).toEqual('11:30');
         getByTextInDom('Repeats every');
@@ -135,7 +138,7 @@ describe('Edit Appointment', () => {
         expect(containerInDom.querySelectorAll(".bx--time-picker__input-field")[1].value).toBe('11:30');
         getByTextInDom('comments');
         getByTextInDom('Update');
-        getByTextInDom('Cancel');
+        getByTestIdInDom('cancel');
     });
 
     it('should render weekly recurring appointment details coming from response', async () => {
@@ -159,8 +162,8 @@ describe('Edit Appointment', () => {
         const inputs = containerInDom.querySelectorAll(".bx--text-input")
         expect(inputs[0].value).toEqual('test speciality');
         expect(inputs[1].value).toEqual('Physiotherapy OPD');
-        expect(inputs[3].value).toEqual('Operating Theatre');
-        expect(inputs[4].value).toEqual('1 session');
+        expect(inputs[4].value).toEqual('Operating Theatre');
+        expect(inputs[2].value).toEqual('1 session');
         expect(inputs[5].value).toEqual('11:00');
         expect(inputs[6].value).toEqual('11:30');
         getByTextInDom('Repeats every');
@@ -176,7 +179,7 @@ describe('Edit Appointment', () => {
         expect(containerInDom.querySelectorAll(".bx--time-picker__input-field")[1].value).toBe('11:30');
         getByTextInDom('comments');
         getByTextInDom('Update');
-        getByTextInDom('Cancel');
+        getByTestIdInDom('cancel');
     });
 
     it('should recurring plan component', () => {
@@ -233,7 +236,7 @@ describe('Edit Appointment', () => {
 
         fireEvent.click(getByTextInDom('Update'));
 
-        expect(containerInDom.querySelector('.updateOptions')).not.toBeNull();
+        expect(getByTestIdInDom("update-buttons")).not.toBeNull();
         expect(recurringConflictsApiSpy).toHaveBeenCalledTimes(0);
 
     });
@@ -290,7 +293,7 @@ describe('Edit Appointment', () => {
         fireEvent.click(containerInDom.querySelector('.bx--number__control-btn.up-icon'));
         fireEvent.click(getByTextInDom('Update'));
 
-        expect(containerInDom.querySelector('.updateOptions')).not.toBeNull();
+        expect(getByTestIdInDom('update-buttons')).not.toBeNull();
         expect(recurringConflictsApiSpy).toHaveBeenCalledTimes(0);
 
     });
@@ -546,9 +549,9 @@ describe('Edit appointment with appointment request enabled', () => {
         await flushPromises();
         clickOnFirstDayOfNextMonth(containerInDom);
         fireEvent.click(getByTextInDom('Update'));
-        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
-        fireEvent.click(await getByTestIdInDom("update-confirm-button"));
-        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+        await waitForElement(() => (containerInDom.querySelector('.bx--modal-container')));
+        fireEvent.click(await getByTextInDom("Yes, I confirm"));
+        await waitForElement(() => (containerInDom.querySelector('.bx--inline-notification__details')));
 
         expect(getConflictsSpy).toHaveBeenCalled();
         expect(saveAppointmentSpy).toHaveBeenCalled();
@@ -579,9 +582,9 @@ describe('Edit appointment with appointment request enabled', () => {
 
         await flushPromises();
         fireEvent.click(getByTextInDom('Update'));
-        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
-        fireEvent.click(await getByTestIdInDom("update-confirm-button"));
-        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+        await waitForElement(() => (containerInDom.querySelector('.bx--modal-container')));
+        fireEvent.click(await getByTextInDom("Yes, I confirm"));
+        await waitForElement(() => (containerInDom.querySelector('.bx--inline-notification__details')));
 
         expect(getConflictsSpy).toHaveBeenCalled();
         expect(saveAppointmentSpy).toHaveBeenCalled();
@@ -614,9 +617,9 @@ describe('Edit appointment with appointment request enabled', () => {
         selectProvider(containerInDom, getByTestIdInDom, getByTextInDom, "Three", "Provider Three");
 
         fireEvent.click(getByTextInDom('Update'));
-        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
-        fireEvent.click(await getByTestIdInDom("update-confirm-button"));
-        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+        await waitForElement(() => (containerInDom.querySelector('.bx--modal-container')));
+        fireEvent.click(await getByTextInDom("Yes, I confirm"));
+        await waitForElement(() => (containerInDom.querySelector('.bx--inline-notification__details')));
 
         expect(getConflictsSpy).toHaveBeenCalled();
         expect(saveAppointmentSpy).toHaveBeenCalled();
@@ -653,9 +656,9 @@ describe('Edit appointment with appointment request enabled', () => {
         selectProvider(containerInDom, getByTestIdInDom, getByTextInDom, "One", "Provider One");
 
         fireEvent.click(getByTextInDom('Update'));
-        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
-        fireEvent.click(await getByTestIdInDom("update-confirm-button"));
-        await waitForElement(() => (containerInDom.querySelector('.popup-overlay')));
+        await waitForElement(() => (containerInDom.querySelector('.bx--modal-container')));
+        fireEvent.click(await getByTextInDom("Yes, I confirm"));
+        await waitForElement(() => (containerInDom.querySelector('.bx--inline-notification__details')));
 
         expect(getConflictsSpy).toHaveBeenCalled();
         expect(saveAppointmentSpy).toHaveBeenCalled();
@@ -669,3 +672,4 @@ describe('Edit appointment with appointment request enabled', () => {
         expect(appointmentRequestData.providers[1].response).toEqual("ACCEPTED");
     })
 });
+

@@ -1,6 +1,7 @@
 button[class*="bx--"]{
-  &:disabled{
-    margin: 0;
+  &:hover{
+    background-image: none;
   }
+  margin: 0;
   background-image: none;
 }

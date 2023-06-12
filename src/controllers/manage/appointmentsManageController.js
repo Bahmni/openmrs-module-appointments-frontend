@@ -33,7 +33,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.getCurrentView = function () {
-                return $state.current && $state.current.view;
+                return ($state.current && $state.current.view) || ("calendar");
             };
 
         }]);

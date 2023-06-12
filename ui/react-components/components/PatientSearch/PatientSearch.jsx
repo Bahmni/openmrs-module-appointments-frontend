@@ -53,9 +53,7 @@ const PatientSearch = (props) => {
         setSelectedPatient(null);
     }, [userInput])
     useEffect(()=>{
-        if(value){
-            setSelectedPatient(value);
-        }
+        setSelectedPatient(value);
     }, value)
 
     const showPatients = () => {
@@ -70,6 +68,7 @@ const PatientSearch = (props) => {
                   key={patient.value}
                   onClick={() => {
                       setSelectedPatient(patient);
+                      setUserInput("")
                       onChange && onChange(patient);
                   }}
                 >
