@@ -128,7 +128,8 @@ angular
                     viewDate: null,
                     patient: null,
                     doFetchAppointmentsData: true,
-                    appointmentsData: null
+                    appointmentsData: null,
+                    filterParams: {}
                 },
                 views: {
                     'content@viewAppointments': {
@@ -166,7 +167,9 @@ angular
             }).state('home.manage.awaitingappointments', {
                 url: '/awaiting-appointments',
                 params: {
-                    filterParams: {},
+                    filterParams: {
+                        statusList: ["WaitList"]
+                    },
                     isFilterOpen: true,
                     isSearchEnabled: false
                 },

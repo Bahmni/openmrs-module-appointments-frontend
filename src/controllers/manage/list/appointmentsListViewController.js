@@ -30,7 +30,7 @@ angular.module('bahmni.appointments')
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
             const APPOINTMENT_STATUS_WAITLIST = {
-                "status" : "WaitList"
+                "isDatelessAppointments": true
             }
             const APPOINTMENTS_TAB_NAME = "appointments";
             const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
@@ -101,7 +101,7 @@ angular.module('bahmni.appointments')
             };
 
             var modifyAppointmentPriorities = function(){
-                $scope.filteredAppointments.map((appointment) => {
+                $scope.appointments.map((appointment) => {
                     var priorityModified = false;
                     $scope.priorityOptionsList.map((priority) => {
                         if(priority.value === appointment.priority){
