@@ -138,7 +138,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.translateAppointmentStatus = function (appointmentStatus) {
-                if(appointmentStatus === APPOINTMENT_STATUS_WAITLIST.status)
+                if(appointmentStatus === "WaitList")
                     return $translate.instant("APPOINTMENT_WAITLIST");
                 return appointmentStatus;
             }
@@ -404,6 +404,7 @@ angular.module('bahmni.appointments')
                     $scope.selectedAppointment.status = response.data.status;
                     closeConfirmBox();
                     messagingService.showMessage('info', message);
+                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                 });
             };
 
