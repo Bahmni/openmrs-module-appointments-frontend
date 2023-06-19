@@ -77,7 +77,7 @@ function reactAppointmentSummaryController($rootScope, $location, $scope, $state
     $scope.goToListView = function (date, uuids, type) {
         var params = {
             viewDate: moment(date).toDate(),
-            filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled")}
+            filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled", "WaitList")}
         };
         if (uuids && uuids.length !== 0) {
             if(type === 'Locations'){
