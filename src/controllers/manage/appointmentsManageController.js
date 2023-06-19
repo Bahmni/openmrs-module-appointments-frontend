@@ -10,6 +10,14 @@ angular.module('bahmni.appointments')
                     return;
                 }
                 var stateName = 'home.manage.' + getAppointmentsTabType(viewName);
+                if( viewName === "awaitingappointments"){
+                    $state.params.filterParams =  {
+                        statusList: ["WaitList"]
+                    }
+                }
+                else if(viewName === "appointments"){
+                    $state.params.filterParams =  {}
+                }
                 $state.go(stateName, $state.params, {reload: false});
             };
 
