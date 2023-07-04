@@ -4,7 +4,7 @@ import {alertContainer} from "./popup.module.scss"
 import { InlineNotification } from "carbon-components-react";
 
 const Notifications = props => {
-    const {showMessage = false, title, onClose} = props
+    const {showMessage = false, title, onClose, messageDuration=5000} = props
     const ref = useRef(null)
     useEffect(()=>{
         if(showMessage){
@@ -13,7 +13,7 @@ const Notifications = props => {
             }
             ref.current = setTimeout(() => {
                 onClose();
-            }, 1500);
+            }, messageDuration);
         }
     },[showMessage])
 
