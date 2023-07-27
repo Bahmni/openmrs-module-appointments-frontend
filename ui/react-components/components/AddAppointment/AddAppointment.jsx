@@ -279,10 +279,7 @@ const AddAppointment = props => {
             setShowEmailWarning((isVirtual(response.data) && !checkPatientEmailAvailability(response.data)));
             setShowEmailNotSentWarning((isVirtual(response.data) && !checkNotificationStatus(response.data)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
-            if (isAppointmentSMSEnabled) {
-                sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
-                    getAppointmentBookingMessage(response.data, appConfig, intl));
-            }
+            sendSMS(response.data.uuid)
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
@@ -344,10 +341,7 @@ const AddAppointment = props => {
             setServiceErrorMessage('');
             const immediateAppointment = response.data[0];
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
-            if (isAppointmentSMSEnabled) {
-                sendSMS(await getPhoneNumber(immediateAppointment.appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
-                    getRecurringAppointmentBookingMessage(immediateAppointment, appConfig, intl));
-            }
+            sendSMS(immediateAppointment.appointmentDefaultResponse.uuid)
         } else if (status === 204) {
             setServiceErrorMessage(errorTranslations.noContentErrorMessage);
             resetServiceErrorMessage();

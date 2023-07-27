@@ -8,6 +8,7 @@
     "locationUrl": "/openmrs/ws/rest/v1/location",
     "specialityUrl": "/openmrs/ws/rest/v1/speciality/all",
     "appointmentSaveUrl": "/openmrs/ws/rest/v1/appointment",
+    "appointmentSmsUrl":"/openmrs/ws/rest/v1/appointment/sendAppointmentBookingSMS/",
     "appointmentsSaveUrl": "/openmrs/ws/rest/v1/appointments",
     "appointmentByUuidUrl": "/openmrs/ws/rest/v1/appointment/",
     "recurringAppointmentFetchUrl": "/openmrs/ws/rest/v1/recurring-appointments/",

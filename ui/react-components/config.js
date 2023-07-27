@@ -9,6 +9,7 @@ export const providerUrl = reactConfig["providerUrl"];
 export const providerParams = reactConfig["providerParams"];
 export const locationUrl = reactConfig["locationUrl"];
 export const specialityUrl = reactConfig["specialityUrl"];
+export const appointmentSmsUrl = reactConfig["appointmentSmsUrl"];
 export const appointmentSaveUrl = reactConfig["appointmentSaveUrl"];
 export const appointmentsSaveUrl = reactConfig["appointmentsSaveUrl"];
 export const appointmentByUuidUrl = reactConfig["appointmentByUuidUrl"];

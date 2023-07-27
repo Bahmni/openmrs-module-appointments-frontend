@@ -9,6 +9,7 @@ export const localReactConfig = {
     "specialityUrl": "/openmrs/ws/rest/v1/speciality/all",
     "appointmentSaveUrl": "/openmrs/ws/rest/v1/appointment",
     "appointmentsSaveUrl": "/openmrs/ws/rest/v1/appointments",
+    "appointmentSmsUrl":"/openmrs/ws/rest/v1/appointment/sendAppointmentBookingSMS/",
     "appointmentByUuidUrl": "/openmrs/ws/rest/v1/appointment/",
     "recurringAppointmentFetchUrl": "/openmrs/ws/rest/v1/recurring-appointments/",
     "recurringAppointmentsSaveUrl": "/openmrs/ws/rest/v1/recurring-appointments",
