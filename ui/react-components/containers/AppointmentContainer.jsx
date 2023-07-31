@@ -22,7 +22,8 @@ class AppointmentContainer extends Component {
             locale: getLocale() === 'pt_BR' ? 'pt-BR': getLocale(),
             messages: translations[props.locale],
             appConfig: null,
-            isAppointmentSMSEnabled: false
+            isAppointmentSMSEnabled: false,
+            holidays: null
         };
         (async () => {
             this.setState({messages: await getMessages(getLocale())});
@@ -31,12 +32,13 @@ class AppointmentContainer extends Component {
             if (this.state.isAppointmentSMSEnabled) {
                 localStorage.setItem(helpDeskNumber, await getFromGlobalProperty(helpDeskNumber));
             }
+            this.setState({holidays:  await getFromGlobalProperty('appointments.holidays')});
         })();
         moment.locale(getLocale() === 'pt_BR' ? 'pt-BR': getLocale());
     }
 
     render() {
-        const {locale, messages, appConfig, isAppointmentSMSEnabled} = this.state;
+        const {locale, messages, appConfig, isAppointmentSMSEnabled, holidays} = this.state;
 
         const {appointmentUuid,isRecurring, setViewDate, onBack, appointmentParams, currentProvider, urlParams, editConflict, resetEditConflict} = this.props;
         return (
@@ -44,8 +46,8 @@ class AppointmentContainer extends Component {
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
                     <div>
                     {appointmentUuid
-                        ? <EditAppointment appConfig={appConfig} appointmentUuid={appointmentUuid} isRecurring={isRecurring}  currentProvider={currentProvider} isAppointmentSMSEnabled={isAppointmentSMSEnabled}/>
-                        : <AddAppointment appConfig={appConfig} appointmentParams={appointmentParams} currentProvider={currentProvider} urlParams={urlParams} isAppointmentSMSEnabled={isAppointmentSMSEnabled}/>
+                        ? <EditAppointment appConfig={appConfig} appointmentUuid={appointmentUuid} isRecurring={isRecurring}  currentProvider={currentProvider} isAppointmentSMSEnabled={isAppointmentSMSEnabled} holidays={holidays}/>
+                        : <AddAppointment appConfig={appConfig} appointmentParams={appointmentParams} currentProvider={currentProvider} urlParams={urlParams} isAppointmentSMSEnabled={isAppointmentSMSEnabled} holidays={holidays}/>
                     }
                     { editConflict &&  <CancelConfirmationWrapper show={editConflict} appointmentUuid={appointmentUuid} onBack={onBack} resetEditConflict={resetEditConflict}/>}
                     </div>
