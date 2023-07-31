@@ -5,7 +5,7 @@ import moment from "moment";
 import Title from "../Title/Title.jsx";
 const DatePickerCarbon = props => {
 
-    const {onChange, value, title, minDate, testId, width, isDisabled, isRequired} = props;
+    const {onChange, value, title, minDate, testId, width, isDisabled, isRequired, showWarning, intl} = props;
     let defaultTime = value;
     if( value && value instanceof moment){
         defaultTime = value.format("MM/DD/YYYY");
@@ -23,6 +23,8 @@ const DatePickerCarbon = props => {
                     autoComplete={"off"}
                     disabled={isDisabled}
                     required={isRequired}
+                    warn={showWarning}
+                    warnText={warningText}
                 />
             </DatePicker>
         </div>

@@ -71,7 +71,7 @@ import Notification from "../Notifications/Notifications.jsx";
 
 const EditAppointment = props => {
 
-    const {appConfig, appointmentUuid, isRecurring, intl, currentProvider, isAppointmentSMSEnabled} = props;
+    const {appConfig, appointmentUuid, isRecurring, intl, currentProvider, isAppointmentSMSEnabled, holidays} = props;
 
     const {setViewDate} = React.useContext(AppContext);
 
@@ -140,6 +140,7 @@ const EditAppointment = props => {
     const [disableUpdateButton, setDisableUpdateButton] = useState(false);
     const [appointmentTouched, setAppointmentTouched] = useState("not-ready");
     const [requiredFields, setRequiredFields] = useState(initialRequired);
+    const [showHolidayWarning, setShowHolidayWarning] = useState(false);
 
     useEffect(()=>{
         setAppointmentTouched((prevState)=> {
@@ -664,9 +665,17 @@ const EditAppointment = props => {
                                 if(date.length > 0) {
                                     const selectedDate = moment(date[0]).toDate();
                                     updateAppointmentDetails({appointmentDate: selectedDate});
+
+                                    if (holidays) {
+                                        const formattedHolidays = holidays.replace(/\s+/g, '').split(',');
+                                        const formattedDate = moment(date[0]).format('YYYY-MM-DD');
+                                        const isHoliday = formattedHolidays.includes(formattedDate);
+                                        setShowHolidayWarning(isHoliday);
+                                    }
                                 }
                                 else {
                                     updateAppointmentDetails({appointmentDate: null});
+                                    setShowHolidayWarning(false);
                                 }
                                 updateErrorIndicators({appointmentDateError: !date[0]});
                             }}
@@ -674,6 +683,8 @@ const EditAppointment = props => {
                             isDisabled={componentsDisableStatus.startDate}
                             minDate={getMinDate(appointmentDetails.appointmentDate)}
                             isRequired={requiredFields.appointmentStartDate}
+                            showWarning={showHolidayWarning}
+                            intl={intl}
                             title={"Appointment date"}/>
                         <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                     </div>
