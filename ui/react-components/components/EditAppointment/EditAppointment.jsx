@@ -239,7 +239,7 @@ const EditAppointment = props => {
         }
         return isWalkInAppointment() ? WALK_IN_APPOINTMENT_TYPE : SCHEDULED_APPOINTMENT_TYPE;
     };
-                                                    
+
     const getAppointmentRequest = () => {
         let appointment = {
             uuid: appointmentUuid,
@@ -357,7 +357,7 @@ const EditAppointment = props => {
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
             if (isAppointmentSMSEnabled) {
-                sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
+                sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute),
                     getAppointmentBookingMessage(response.data, appConfig, intl));
             }
         } else if (response.data && response.data.error) {
@@ -380,7 +380,7 @@ const EditAppointment = props => {
             setShowUpdateConfirmPopup(false);
             setViewDateAndShowSuccessPopup(appointmentDetails.appointmentDate);
             if (isAppointmentSMSEnabled) {
-                sendSMS(await getPhoneNumber(response.data[0].appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
+                sendSMS(await getPhoneNumber(response.data[0].appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute),
                     getRecurringAppointmentBookingMessage(response.data[0], appConfig, intl));
             }
         } else if (response.data && response.data.error) {
@@ -780,6 +780,7 @@ const EditAppointment = props => {
                                             width={"160px"}
                                             value={appointmentDetails.recurringEndDate}
                                             isDisabled={componentsDisableStatus.endDate}
+                                            intl={intl}
                                             minDate={(appointmentDetails.appointmentDate && moment(appointmentDetails.appointmentDate).format("MM-DD-YYYY"))
                                                 || moment().format("MM-DD-YYYY")}
                                             testId={"recurring-end-date-selector"}/>

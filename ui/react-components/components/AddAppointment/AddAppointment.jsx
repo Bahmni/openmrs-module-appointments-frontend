@@ -373,7 +373,7 @@ const AddAppointment = props => {
             setShowEmailNotSentWarning((isVirtual(response.data) && !checkNotificationStatus(response.data)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
             if (isAppointmentSMSEnabled) {
-                sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
+                sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute),
                     getAppointmentBookingMessage(response.data, appConfig, intl));
             }
         } else if (response.data && response.data.error) {
@@ -442,7 +442,7 @@ const AddAppointment = props => {
             const immediateAppointment = response.data[0];
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
             if (isAppointmentSMSEnabled) {
-                sendSMS(await getPhoneNumber(immediateAppointment.appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
+                sendSMS(await getPhoneNumber(immediateAppointment.appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute),
                     getRecurringAppointmentBookingMessage(immediateAppointment, appConfig, intl));
             }
         } else if (status === 204) {
@@ -531,7 +531,7 @@ const AddAppointment = props => {
         var allowVirtualConsultation = appConfig && appConfig.allowVirtualConsultation;
         if (allowVirtualConsultation) {
             return <AppointmentType appointmentType={appointmentDetails.appointmentType}
-                    isTeleconsultation={appointmentDetails.teleconsultation}     
+                    isTeleconsultation={appointmentDetails.teleconsultation}
                     onChange={(e) => {
                         updateAppointmentDetails({ teleconsultation: e });
                     }} />;
@@ -610,6 +610,7 @@ const AddAppointment = props => {
                                 }}
                                 minDate={moment().format("MM-DD-YYYY")}
                                 isRequired={requiredFields.recurringStartDate}
+                                intl={intl}
                                 title={"Appointment start date"}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
@@ -731,6 +732,7 @@ const AddAppointment = props => {
                                                 }
                                             }}
                                             width={"160px"}
+                                            intl={intl}
                                             minDate = { (appointmentDetails.recurringStartDate && moment(appointmentDetails.recurringStartDate).format("MM-DD-YYYY"))
                                                 || moment().format("MM-DD-YYYY")}
                                             testId={"recurring-end-date-selector"}/>:
@@ -762,7 +764,7 @@ const AddAppointment = props => {
                     </div>:
                     //Regular Appointments
                     <div >
-                        {isAppointmentStatusOptionEnabled(appConfig) && 
+                        {isAppointmentStatusOptionEnabled(appConfig) &&
                             <div data-testid="appointment-status">
                                 <RadioButtonGroup
                                     legendText={statusTitleText}

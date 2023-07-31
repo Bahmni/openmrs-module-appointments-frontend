@@ -11,6 +11,10 @@ const DatePickerCarbon = props => {
         defaultTime = value.format("MM/DD/YYYY");
     }
     let titleText=  title && <Title text={title} isRequired={isRequired}/>
+    const warningText = intl.formatMessage({
+        id: 'PUBLIC_HOLIDAY_WARNING',
+        defaultMessage: 'Date selected is a Public Holiday',
+    });
     return (
         <div data-testid={testId || "datePicker"}>
             <DatePicker datePickerType={"single"} onChange={onChange} disabled={isDisabled} minDate={minDate} value={defaultTime}>
@@ -39,6 +43,7 @@ DatePickerCarbon.propTypes = {
     testId: PropTypes.string,
     isDisabled: PropTypes.bool,
     isRequired: PropTypes.bool,
+    showWarning: PropTypes.bool,
 };
 
 export default DatePickerCarbon;
