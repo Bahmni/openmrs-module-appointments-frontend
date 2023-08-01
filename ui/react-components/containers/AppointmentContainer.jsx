@@ -33,6 +33,10 @@ class AppointmentContainer extends Component {
                 localStorage.setItem(helpDeskNumber, await getFromGlobalProperty(helpDeskNumber));
             }
             this.setState({holidays:  await getFromGlobalProperty('appointments.holidays')});
+            if (this.state.holidays) {
+                this.setState({holidays: this.state.holidays.replace(/\s+/g, '').split(',')});
+            }
+
         })();
         moment.locale(getLocale() === 'pt_BR' ? 'pt-BR': getLocale());
     }

@@ -795,9 +795,8 @@ const AddAppointment = props => {
                                         updateAppointmentDetails({appointmentDate: selectedDate});
 
                                         if (holidays) {
-                                            const formattedHolidays = holidays.replace(/\s+/g, '').split(',');
                                             const formattedDate = moment(date[0]).format('YYYY-MM-DD');
-                                            const isHoliday = formattedHolidays.includes(formattedDate);
+                                            const isHoliday = holidays.includes(formattedDate);
                                             setShowHolidayWarning(isHoliday);
                                         }
                                     } else {
