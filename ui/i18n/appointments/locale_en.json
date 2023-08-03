@@ -198,6 +198,7 @@
   "UNEXPECTED_SERVICE_ERROR": "There was an unexpected issue on the server. Please try again",
   "PRIORITY_ERROR_MESSAGE": "Please select appointment category",
   "STATUS_ERROR_MESSAGE": "Please select appointment status",
+  "PUBLIC_HOLIDAY_WARNING": "Date selected is a Public Holiday",
   "APPOINTMENT_CANCEL_CONFIRMATION_TEXT": "You will lose appointment details. Do you want to discard these changes?",
   "APPOINTMENT_CANCEL_CONFIRMATION_TITLE": "Discard appointment?",
   "APPOINTMENT_CANCEL_CONFIRMATION_NO": "No",

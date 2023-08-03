@@ -95,3 +95,7 @@ $css--body: false;
 .bx--modal-container{
   width: 500px;
 }
+.bx--date-picker .bx--date-picker-input__wrapper--warn~.bx--form-requirement {
+  color: #d48c08;
+  padding-left: 5px;
+}
