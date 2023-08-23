@@ -90,27 +90,31 @@ export const transformAppointmentsData = (data) => {
   transformData(providerMap),
   transformData(locationMap)]
 }
-
+const loadMessage = (message, gridName) => {
+  return <div className={classNames(tableGridWrapper)}>
+    <h3 className={gridHeading}>{gridName}</h3>
+    <table className={tableGridSummary}>
+      <tbody>
+      <tr>
+        <td></td>
+        <td className={noAppointments}>
+          {message}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+}
 const GridSummary = props => {
   const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick, gridName } = props;
   let week = []
-  const { fullSummary } = React.useContext(AppContext)
+  const { fullSummary, isLoading } = React.useContext(AppContext)
   const intl = useIntl();
+  if(isLoading){
+    return loadMessage(intl.formatMessage({id: "LOADING_APPOINTMENT_SUMMARY", defaultMessage: "Loading Appointments for the week"}), gridName);
+  }
   if(gridData.length === 0 && fullSummary){
-    return (
-        <div className={classNames(tableGridWrapper)}>
-          <h3 className={gridHeading}>{gridName}</h3>
-          <table className={tableGridSummary}>
-            <tbody>
-              <tr>
-                <td></td>
-                <td className={noAppointments}>
-                  {intl.formatMessage({id: "NO_APPOINTMENT_SUMMARY_VIEW"}, {gridName: gridName})}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>)
+    return loadMessage(intl.formatMessage({id: "NO_APPOINTMENT_SUMMARY_VIEW"}, {gridName: gridName}), gridName);
   }
 
   return (
