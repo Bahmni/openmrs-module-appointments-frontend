@@ -31,10 +31,12 @@ class AppointmentSummaryContainer extends Component {
         this.getSummary = async (startDate, endDate) => {
             const weekStartDate = moment(startDate).startOf('day').format("YYYY-MM-DDTHH:mm:ss.SSSZZ")
             const weekEndDate = moment(endDate).endOf('day').format("YYYY-MM-DDTHH:mm:ss.SSSZZ")
+            const spinner = this.props.spinner.show();
             const response = await getAppointmentSummary(weekStartDate, weekEndDate)
             this.setState({data: transformAppointmentSummaryToGridData(response.data)})
             const appointments = await searchAppointments({startDate:weekStartDate, endDate:weekEndDate})
             const [speciality, provider, location] = transformAppointmentsData(appointments.data);
+            this.props.spinner.hide(spinner);
             this.setState({specialityData: speciality});
             this.setState({providersData: provider});
             this.setState({locationData: location});
@@ -92,7 +94,8 @@ AppointmentSummaryContainer .propTypes = {
     state: PropTypes.object.isRequired,
     goToListView: PropTypes.func.isRequired,
     currentProvider: PropTypes.object,
-    fullSummary: PropTypes.bool
+    fullSummary: PropTypes.bool,
+    spinner: PropTypes.object,
 };
 
 export default AppointmentSummaryContainer;
