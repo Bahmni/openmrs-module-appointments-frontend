@@ -134,6 +134,7 @@
   "SERVICES_NO_APPOINTMENTS_MESSAGE": "This week, no appointments are available for any of the Services",
   "LOCATIONS_NO_APPOINTMENTS_MESSAGE": "This week, no appointments are available for any of the Locations",
   "SPECIALITIES_NO_APPOINTMENTS_MESSAGE": "This week, no appointments are available for any of the Specialities",
+  "LOADING_APPOINTMENT_SUMMARY": "Loading Appointments for the week",
   "SEARCH_KEY": "Search ...",
   "APPOINTMENT_ENTER_PROVIDER_NAME_KEY": "Enter provider name",
   "APPOINTMENT_ENTER_LOCATION_NAME_KEY": "Enter location name",
