@@ -23,7 +23,8 @@ class AppointmentSummaryContainer extends Component {
             data: [],
             specialityData: [],
             providersData: [],
-            locationData:[]
+            locationData:[],
+            isLoading: true,
         };
         (async () => {
             this.setState({messages: await getMessages(getLocale())});
@@ -31,10 +32,14 @@ class AppointmentSummaryContainer extends Component {
         this.getSummary = async (startDate, endDate) => {
             const weekStartDate = moment(startDate).startOf('day').format("YYYY-MM-DDTHH:mm:ss.SSSZZ")
             const weekEndDate = moment(endDate).endOf('day').format("YYYY-MM-DDTHH:mm:ss.SSSZZ")
+            this.setState({isLoading: true});
+            const spinner = this.props.spinner.show();
             const response = await getAppointmentSummary(weekStartDate, weekEndDate)
             this.setState({data: transformAppointmentSummaryToGridData(response.data)})
             const appointments = await searchAppointments({startDate:weekStartDate, endDate:weekEndDate})
             const [speciality, provider, location] = transformAppointmentsData(appointments.data);
+            this.setState({isLoading: false});
+            this.props.spinner.hide(spinner);
             this.setState({specialityData: speciality});
             this.setState({providersData: provider});
             this.setState({locationData: location});
@@ -55,7 +60,7 @@ class AppointmentSummaryContainer extends Component {
     }
 
     render() {
-        const {locale, messages, startDate, endDate, data, specialityData, providersData, locationData} = this.state;
+        const {locale, messages, startDate, endDate, data, specialityData, providersData, locationData, isLoading} = this.state;
         const { goToListView , state, fullSummary} = this.props;
         const setStartDate = date => {
             this.setState({ startDate: date })
@@ -64,7 +69,7 @@ class AppointmentSummaryContainer extends Component {
             this.setState({ endDate: date })
         };
         return (
-            <AppContext.Provider value={{ goToListView, setStartDate, setEndDate, state, startDate, endDate, fullSummary }}>
+            <AppContext.Provider value={{ goToListView, setStartDate, setEndDate, state, startDate, endDate, fullSummary, isLoading }}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
                     <DateOrWeekNavigator isWeek={true} weekStart={1} />
                     { fullSummary? (
@@ -92,7 +97,8 @@ AppointmentSummaryContainer .propTypes = {
     state: PropTypes.object.isRequired,
     goToListView: PropTypes.func.isRequired,
     currentProvider: PropTypes.object,
-    fullSummary: PropTypes.bool
+    fullSummary: PropTypes.bool,
+    spinner: PropTypes.object,
 };
 
 export default AppointmentSummaryContainer;

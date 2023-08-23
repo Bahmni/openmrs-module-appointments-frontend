@@ -22,12 +22,12 @@ angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
 });
 
 angular.module('bahmni.appointments').component('reactAppointmentSummaryWrapper',{
-    template: '<react-appointment-summary state="state" current-provider="currentProvider" go-to-list-view="goToListView" full-summary="fullSummary">',
+    template: '<react-appointment-summary state="state" current-provider="currentProvider" go-to-list-view="goToListView" full-summary="fullSummary" spinner="spinner">',
     controller: reactAppointmentSummaryController
 });
 
 reactAddAppointmentController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
-reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope', '$state', 'appService'];
+reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope', '$state', 'appService', 'spinner'];
 function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
     let onBack = false;
     let backUrl = "^";
@@ -69,7 +69,7 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
     $scope.urlParams = $location.$$search;
 }
 
-function reactAppointmentSummaryController($rootScope, $location, $scope, $state, appService) {
+function reactAppointmentSummaryController($rootScope, $location, $scope, $state, appService, spinner) {
 
     $scope.setViewDate = function (date) {
         $state.params.viewDate = date;
@@ -93,6 +93,7 @@ function reactAppointmentSummaryController($rootScope, $location, $scope, $state
         $state.go('home.manage.appointments.list', params);
     }
     $scope.state = $state;
+    $scope.spinner = spinner;
     $scope.currentProvider = $rootScope.currentProvider;
     $scope.fullSummary = appService.getAppDescriptor().getConfigValue('enableDetailedSummaryView')
 
