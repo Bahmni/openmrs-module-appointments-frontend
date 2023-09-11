@@ -51,6 +51,9 @@
                 <td ng-show="::enableColumnsForAppointments">{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td class="table-mid-width">{{::appointment.location.name}}</td>
                 <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
+                <td class="table-mid-width" ng-repeat="(key, attribute) in configAttributes" ng-if="attribute.showInListView" ng-style="{'order': attribute.order}">
+                    {{::appointment.patient.customAttributes[key]}}
+                </td>
                 <td>{{::appointment.comments}}</td>
             </tr>
             </tbody>
@@ -60,16 +63,16 @@
     <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'disabled': !selectedAppointment}">
 
         <button ng-if="isVirtualConsultationEnabled()"
-            show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" 
-            ng-click="openTeleConsultation()" 
+            show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
+            ng-click="openTeleConsultation()"
             ng-disabled="!isTeleconsultationAllowed()">
             {{::'JOIN_TELE_CONSULTATION' |translate}}
         </button>
 
-        <button class="copy-clip" title="{{::'COPY_LINK' | translate}}" 
+        <button class="copy-clip" title="{{::'COPY_LINK' | translate}}"
             ng-if="isVirtualConsultationEnabled()"
             show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
-            ng-click="copyTeleConsultationMeetingURL()" 
+            ng-click="copyTeleConsultationMeetingURL()"
             ng-disabled="!isTeleconsultationAllowed()">
         </button>
 

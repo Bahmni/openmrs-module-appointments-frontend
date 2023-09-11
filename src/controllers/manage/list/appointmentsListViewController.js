@@ -12,6 +12,7 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
+            $scope.configAttributes = appService.getAppDescriptor().getConfigValue('configAttributes') || [];
             var allowVirtualConsultation = appService.getAppDescriptor().getConfigValue('allowVirtualConsultation');
 
             $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
@@ -60,12 +61,41 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             }
+
+            function updateTableHeaderWithConfigAttributes($scope) {
+                const additionalHeadings = [];
+
+                for (const key in $scope.configAttributes) {
+                  if ($scope.configAttributes.hasOwnProperty(key)) {
+                    const attribute = $scope.configAttributes[key];
+                    if (attribute.showInListView) {
+                      additionalHeadings.push({
+                        heading: attribute.label,
+                        sortInfo: 'patient.customAttributes.${key}',
+                        key: key,
+                        class: true,
+                        enable: true
+                      });
+                    }
+                  }
+                }
+
+                additionalHeadings.sort((a, b) => {
+                  return $scope.configAttributes[a.key].order - $scope.configAttributes[b.key].order;
+                });
+
+                const insertionIndex = $scope.tableInfo.length - 1;
+
+                Array.prototype.splice.apply($scope.tableInfo, [insertionIndex, 0].concat(additionalHeadings));
+            }
+
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
                 $scope.enableColumnsForAppointments = $scope.enableColumnForTab(APPOINTMENTS_TAB_NAME)
                 updateTableHeader();
+                updateTableHeaderWithConfigAttributes($scope);
                 appointmentCommonService.addProviderToFilterFromQueryString();
             };
 
@@ -73,10 +103,10 @@ angular.module('bahmni.appointments')
                 autoRefreshStatus = false;
                 if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME)
                     return appointmentsService.getAllAppointments(params)
-                    .then((response) => updateAppointments(response)); 
-                else 
+                    .then((response) => updateAppointments(response));
+                else
                     return appointmentsService.search(APPOINTMENT_STATUS_WAITLIST)
-                    .then((response) => updateAppointments(response)); 
+                    .then((response) => updateAppointments(response));
             };
 
             var updateAppointments = function (response){
@@ -232,7 +262,7 @@ angular.module('bahmni.appointments')
                 return appointmentType === 'WalkIn' ? 'Yes' : 'No';
             };
 
-            $scope.editAppointment = function () {     
+            $scope.editAppointment = function () {
                 var params = $stateParams;
                 params.uuid = $scope.selectedAppointment.uuid;
                 params.isRecurring = $scope.selectedAppointment.recurring;
@@ -240,14 +270,14 @@ angular.module('bahmni.appointments')
             };
 
             $scope.openTeleConsultation = function () {
-                window.open("https://" + 
-                    window.location.hostname + 
-                    Bahmni.Common.Constants.patientsURL + 
+                window.open("https://" +
+                    window.location.hostname +
+                    Bahmni.Common.Constants.patientsURL +
                     $scope.selectedAppointment.patient.uuid +
                     Bahmni.Common.Constants.patientsURLGeneralInformationTab
                     , '_self')
-            }; 
-            
+            };
+
             $scope.copyTeleConsultationMeetingURL = function () {
                 var jitsiMeetingUrl = $scope.selectedAppointment.teleconsultationLink;
                 const el = document.createElement('textarea');
