@@ -62,7 +62,7 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             }
 
-            function updateTableHeaderWithConfigAttributes($scope) {
+            function updateTableHeaderWithConfigAttributes() {
                 const additionalHeadings = [];
 
                 for (const key in $scope.configAttributes) {
@@ -95,7 +95,7 @@ angular.module('bahmni.appointments')
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
                 $scope.enableColumnsForAppointments = $scope.enableColumnForTab(APPOINTMENTS_TAB_NAME)
                 updateTableHeader();
-                updateTableHeaderWithConfigAttributes($scope);
+                updateTableHeaderWithConfigAttributes();
                 appointmentCommonService.addProviderToFilterFromQueryString();
             };
 
