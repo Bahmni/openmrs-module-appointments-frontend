@@ -71,7 +71,7 @@ angular.module('bahmni.appointments')
                     if (attribute.showInListView) {
                       additionalHeadings.push({
                         heading: attribute.label,
-                        sortInfo: 'patient.customAttributes.${key}',
+                        sortInfo: `patient.customAttributes.${key}`,
                         key: key,
                         class: true,
                         enable: true
