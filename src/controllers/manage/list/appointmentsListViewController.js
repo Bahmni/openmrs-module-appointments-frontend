@@ -289,7 +289,7 @@ angular.module('bahmni.appointments').controller('AppointmentsListViewController
                     toParams.doFetchAppointmentsData = false;
                 }
             });
-            if ($state.params.doFetchAppointmentsData) {
+            if ($state.params.doFetchAppointmentsData && $state.params.patient != null ) {
                 spinner.forPromise(setAppointments(params));
             } else {
                 $scope.filteredAppointments = appointmentsFilter(
