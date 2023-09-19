@@ -2,9 +2,9 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
-        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', 'appointmentCommonService', '$interval',
+        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', 'appointmentCommonService', '$interval','$window','$location',
         function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
-                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, appointmentCommonService, $interval) {
+                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, appointmentCommonService, $interval, $window, $location,) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.priorityOptionsList = appService.getAppDescriptor().getConfigValue('priorityOptionsList') || [];
@@ -73,12 +73,12 @@ angular.module('bahmni.appointments')
 
             var setAppointments = function (params) {
                 autoRefreshStatus = false;
-                if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME)
+                if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME && $state.params.patient != null)
                     return appointmentsService.getAllAppointments(params)
-                    .then((response) => updateAppointments(response)); 
-                else 
-                    return appointmentsService.search(APPOINTMENT_STATUS_WAITLIST)
-                    .then((response) => updateAppointments(response)); 
+                    .then((response) => updateAppointments(response));
+                else
+                return appointmentsService.search( $location.search()['patient'] ? { patientUuid: $location.search()['patient'] } : APPOINTMENT_STATUS_WAITLIST)
+                .then((response) => updateAppointments(response));
             };
 
             var updateAppointments = function (response){
@@ -206,8 +206,12 @@ angular.module('bahmni.appointments')
                 $scope.selectedAppointment = undefined;
             };
 
-            $scope.hasNoAppointments = function () {
+            $scope.hasNoAppointments = function () {if ($state.params.patient && $state.params.patient.label === 'undefined (undefined)') {
+                $window.location.reload();
+                return false;
+            } else {
                 return _.isEmpty($scope.filteredAppointments);
+            }
             };
 
             $scope.goBackToPreviousView = function () {
@@ -234,7 +238,7 @@ angular.module('bahmni.appointments')
                 return appointmentType === 'WalkIn' ? 'Yes' : 'No';
             };
 
-            $scope.editAppointment = function () {     
+            $scope.editAppointment = function () {
                 var params = $stateParams;
                 params.uuid = $scope.selectedAppointment.uuid;
                 params.isRecurring = $scope.selectedAppointment.recurring;
@@ -242,14 +246,14 @@ angular.module('bahmni.appointments')
             };
 
             $scope.openTeleConsultation = function () {
-                window.open("https://" + 
-                    window.location.hostname + 
-                    Bahmni.Common.Constants.patientsURL + 
+                window.open("https://" +
+                    window.location.hostname +
+                    Bahmni.Common.Constants.patientsURL +
                     $scope.selectedAppointment.patient.uuid +
                     Bahmni.Common.Constants.patientsURLGeneralInformationTab
                     , '_self')
-            }; 
-            
+            };
+
             $scope.copyTeleConsultationMeetingURL = function () {
                 var jitsiMeetingUrl = $scope.selectedAppointment.teleconsultationLink;
                 const el = document.createElement('textarea');
