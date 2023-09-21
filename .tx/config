@@ -1,9 +1,12 @@
 [main]
 host = https://www.transifex.com
 
-[o:openmrs:p:bahmni:r:appointments-app]
-file_filter = ui/i18n/appointments/locale_<lang>.json
-source_file = ui/i18n/appointments/locale_en.json
-source_lang = en
-type = KEYVALUEJSON
+[o:openmrs:p:bahmni:r:appointments-frontend-app]
+file_filter            = i18n/appointments/locale_<lang>.json
+source_file            = i18n/appointments/locale_en.json
+type                   = KEYVALUEJSON
+minimum_perc           = 0
+resource_name          = Appointments Frontend App
+replace_edited_strings = false
+keep_translations      = false
 
