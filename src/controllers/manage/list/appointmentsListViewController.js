@@ -72,12 +72,14 @@ angular.module('bahmni.appointments')
             };
 
             var setAppointments = function (params) {
+                const prefilledPatient = $location.search()['patient'];
                 autoRefreshStatus = false;
-                if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME && $state.params.patient != null)
+                if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME && !prefilledPatient){
                     return appointmentsService.getAllAppointments(params)
                     .then((response) => updateAppointments(response));
+                }
                 else
-                return appointmentsService.search( $location.search()['patient'] ? { patientUuid: $location.search()['patient'] } : APPOINTMENT_STATUS_WAITLIST)
+                return appointmentsService.search( prefilledPatient ? { patientUuid: prefilledPatient } : APPOINTMENT_STATUS_WAITLIST)
                 .then((response) => updateAppointments(response));
             };
 
