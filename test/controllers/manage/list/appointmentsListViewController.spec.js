@@ -14,9 +14,8 @@ describe('AppointmentsListViewController', function () {
             controller = $controller;
             stateparams = $stateParams;
             _appointmentsFilter = jasmine.createSpy('appointmentsFilter');
-            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus', 'undoCheckIn', 'changeProviderResponse' , 'search']);
+            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus', 'undoCheckIn', 'changeProviderResponse']);
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
-            appointmentsService.search.and.returnValue(specUtil.simplePromise({}));
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             printer = jasmine.createSpyObj('printer', ['print']);
@@ -115,7 +114,6 @@ describe('AppointmentsListViewController', function () {
         createController();
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         $state.params = {doFetchAppointmentsData: true};
-        $state.params.patient = '123';
         scope.getAppointmentsForDate(viewDate);
         expect(stateparams.viewDate).toEqual(viewDate);
         expect(appointmentsService.getAllAppointments).toHaveBeenCalledWith({forDate: viewDate});
@@ -244,7 +242,7 @@ describe('AppointmentsListViewController', function () {
         stateparams.filterParams = {serviceUuids: ["02666cc6-5f3e-4920-856d-ab7e28d3dbdb"]};
         createController();
         var viewDate = new Date('2017-08-28T11:30:00.000Z');
-        $state.params = {doFetchAppointmentsData: true , patient: "123"};
+        $state.params = {doFetchAppointmentsData: true};
         scope.getAppointmentsForDate(viewDate);
         expect(scope.appointments).toBe(appointments);
         expect(scope.filteredAppointments.length).toEqual(1);
