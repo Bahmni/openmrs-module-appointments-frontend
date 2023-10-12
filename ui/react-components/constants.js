@@ -61,4 +61,3 @@ export const appointmentEndTimeProps = endTime => {
 };
 
 export const helpDeskNumber = "clinic.helpDeskNumber";
-export const appointmentSMSToggle = "sms.enableAppointmentBookingSMSAlert";
