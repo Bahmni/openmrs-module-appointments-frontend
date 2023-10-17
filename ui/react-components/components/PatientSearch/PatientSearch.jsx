@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import { debounce } from 'lodash';
 import {getPatientForDropdown, getPatientName} from "../../mapper/patientMapper";
 import {getPatientsByLocation} from '../../api/patientApi';
 import {currentLocation} from '../../utils/CookieUtil';
@@ -46,9 +47,16 @@ const PatientSearch = (props) => {
         }
     };
 
+    const debouncedLoadPatients = useCallback(
+        debounce(loadPatients, 3000, {
+          leading: true,
+        }),
+        [],
+      );
+
     useEffect(() => {
         if (userInput.length > 1) {
-            loadPatients(userInput);
+            debouncedLoadPatients(userInput);
         }
         setSelectedPatient(null);
     }, [userInput])

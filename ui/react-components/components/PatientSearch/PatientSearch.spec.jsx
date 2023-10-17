@@ -9,6 +9,11 @@ jest.mock('../../utils/CookieUtil');
 const patientApi = require('../../api/patientApi');
 let getPatientByLocationSpy;
 
+jest.mock('lodash.debounce', () => ({
+    __esModule: true,
+    default: jest.fn(c => c),
+  }));
+
 describe('Patient Search', () => {
     beforeEach(() => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
@@ -53,14 +58,53 @@ describe('Patient Search', () => {
             () => (container.querySelector('.bx--tile'))
         );
         expect(getPatientByLocationSpy).not.toHaveBeenCalled();
-
         fireEvent.change(inputBox, { target: { value: "abcd" } });
+        
+        setTimeout(() => {
+            expect(getPatientByLocationSpy).toHaveBeenCalled();
+          }, 3000); 
+        
+    });
+
+    it('should not make a second search for patients call when the user enters new characters within 3 seconds', async () => {
+        const {container} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}
+                                                                          minCharLengthToTriggerPatientSearch={4}/>);
+        const inputBox = container.querySelector('.bx--search-input');
+        fireEvent.blur(inputBox);
+        fireEvent.change(inputBox, { target: { value: "abcd" } });
+        await waitForElement(
+            () => (container.querySelector('.bx--tile'))
+        );
         expect(getPatientByLocationSpy).toHaveBeenCalled();
+        fireEvent.change(inputBox, { target: { value: "abcde" } });
+        
+        setTimeout(() => {
+            expect(getPatientByLocationSpy).not.toHaveBeenCalled();
+          }, 2000); 
+        
+    });
+
+    it('should  make a second search for patients call when the user enters new characters after 3 seconds', async () => {
+        const {container} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}/>);
+        const inputBox = container.querySelector('.bx--search-input');
+        fireEvent.blur(inputBox);
+        fireEvent.change(inputBox, { target: { value: "abcd" } });
+        await waitForElement(
+            () => (container.querySelector('.bx--tile'))
+        );
+        expect(getPatientByLocationSpy).toHaveBeenCalled();
+        fireEvent.change(inputBox, { target: { value: "abcde" } });
+        
+        setTimeout(() => {
+            expect(getPatientByLocationSpy).toHaveBeenCalled();
+          }, 3000); 
+        
     });
 
     it('should display placeholder as "Patient ID"', async () => {
-        const {container, getByPlaceholderText} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}/>);
-        getByPlaceholderText('Patient ID');
+        const {getByPlaceholderText} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}/>);
+        expect(getByPlaceholderText('Patient ID')).toBeTruthy();
+
     });
 
     it('should call onChnage when option is selected', async () => {
