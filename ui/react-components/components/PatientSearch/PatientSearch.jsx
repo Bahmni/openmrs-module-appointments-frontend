@@ -5,7 +5,7 @@ import {getPatientsByLocation} from '../../api/patientApi';
 import {currentLocation} from '../../utils/CookieUtil';
 import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import {MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH} from "../../constants";
+import {MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH,DEBOUNCE_PATIENT_SEARCH_DELAY_IN_MILLISECONDS} from "../../constants";
 import {Search, ClickableTile, Tile} from "carbon-components-react";
 
 const styles = {
@@ -26,11 +26,12 @@ const styles = {
 }
 const PatientSearch = (props) => {
 
-    const {intl, onChange, value, isDisabled, minCharLengthToTriggerPatientSearch, autoFocus} = props;
+    const {intl, onChange, value, isDisabled, minCharLengthToTriggerPatientSearch,debouncePatientSearchDelayInMilliseconds, autoFocus} = props;
     const [userInput, setUserInput] = useState('')
     const [patients, setPatients] = useState([])
     const [selectedPatient, setSelectedPatient] = useState(value)
     const [isCalled, setIsCalled] = useState(false)
+    const debouncePatientSearchDelay = debouncePatientSearchDelayInMilliseconds || DEBOUNCE_PATIENT_SEARCH_DELAY_IN_MILLISECONDS;
     const createDropdownOptions = (patients) => {
         return patients.map(patient => getPatientForDropdown(patient));
     };
@@ -48,7 +49,7 @@ const PatientSearch = (props) => {
     };
 
     const debouncedLoadPatients = useCallback(
-        debounce(loadPatients, 3000, {
+        debounce(loadPatients, debouncePatientSearchDelay, {
           leading: true,
         }),
         [],
@@ -127,6 +128,7 @@ PatientSearch.propTypes = {
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
     minCharLengthToTriggerPatientSearch: PropTypes.number,
+    debouncePatientSearchDelayInMilliseconds: PropTypes.number,
     autoFocus: PropTypes.bool
 };
 
