@@ -257,7 +257,7 @@
   "NUMBER_OF_OCCURRENCE_LABEL": "# of occurrences",
   "APPOINTMENT_UPDATE_CONFIRMATION_TITLE": "Kindly Confirm",
   "APPOINTMENT_UPDATE_CONFIRMATION_TEXT_RECURRING_APPOINTMENT": "This will update the details of the entire appointment series. This cannot be reversed!",
-  "APPOINTMENT_UPDATE_CONFIRMATION_TEXT_SINGLE_APPOINTMENT": "This will update the details of the selected appointment. This cannot be reversed!",
+  "APPOINTMENT_UPDATE_CONFIRMATION_TEXT_SINGLE_APPOINTMENT": "This will update the details of the selected appointment",
   "APPOINTMENT_UPDATE_CONFIRMATION_NO": "No, go back",
   "APPOINTMENT_UPDATE_CONFIRMATION_YES": "Yes, I confirm",
   "APPOINTMENT_SAVE_SUCCESS_TEXT": "The new appointment for the patient {patientDetails} has been saved.",
