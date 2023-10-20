@@ -549,7 +549,9 @@ const AddAppointment = props => {
     const closeButton = <div className={classNames(close)}>
         <Close24/>
     </div>
-
+    if(showSuccessPopup){
+        return <Notification showMessage={showSuccessPopup} title={"Appointment Created!"} onClose={React.useContext(AppContext).onBack}/>
+    }
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
                 <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
@@ -843,7 +845,6 @@ const AddAppointment = props => {
                 closeOnDocumentClick: false,
                 closeOnEscape: false
             }) : undefined}
-                <Notification showMessage={showSuccessPopup} title={"Appointment Created"} onClose={() => setShowSuccessPopup(false)}/>
         </div>
         <div  data-testid="Appointment-editer-footer">
             <AppointmentEditorFooter
