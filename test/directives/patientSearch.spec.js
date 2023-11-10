@@ -6,8 +6,8 @@ describe("Patient Search", function () {
     beforeEach(module('bahmni.appointments', function ($provide) {
         $location = jasmine.createSpyObj('$location', ['search']);
         $location.search.and.returnValue({});
-        patientService = jasmine.createSpyObj('patientService', ['search','getPatient']);
-        patientService.search.and.returnValue(specUtil.simplePromise({data: {}}));
+        patientService = jasmine.createSpyObj('patientService', ['luceneSearch','getPatient']);
+        patientService.luceneSearch.and.returnValue(specUtil.simplePromise({data: {}}));
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         spinner.forPromise.and.callFake(function (param) {
             return {
@@ -50,7 +50,7 @@ describe("Patient Search", function () {
         var compiledScope = element.isolateScope();
         compiledScope.patient = 'test patient';
         compiledScope.search();
-        expect(patientService.search).toHaveBeenCalledWith(compiledScope.patient);
+        expect(patientService.luceneSearch).toHaveBeenCalledWith(compiledScope.patient);
     });
 
     it('should build response map with patient name and identifier for list of patients', function () {
