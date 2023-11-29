@@ -39,7 +39,7 @@
         "karma-junit-reporter": "^0.2.2",
         "karma-sourcemap-loader": "^0.3.7",
         "karma-webpack": "^4.0.2",
-        "node-sass": "^4.12.0",
+        "node-sass": "^7.0.0",
         "sass-loader": "^7.1.0",
         "style-loader": "^0.23.1",
         "url-loader": "^2.1.0",
