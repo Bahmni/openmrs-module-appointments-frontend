@@ -553,10 +553,6 @@ describe('Add Appointment', () => {
         expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
 
     });
-    it('should fetch patient details on load if patient is present in url params', () => {
-        const {findByText} = renderWithReactIntl(<AddAppointment urlParams={{patient:"6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad"}}/>);
-        expect(findByText('Test Patient')).not.toBeNull();
-    });
 });
 
 describe('Add appointment with appointment request enabled', () => {
@@ -676,6 +672,11 @@ describe('Add appointment with appointment request enabled', () => {
         expect(appointmentRequestData.providers[0].response).toEqual("ACCEPTED");
         expect(appointmentRequestData.providers[1].name).toEqual("Provider Two");
         expect(appointmentRequestData.providers[1].response).toEqual("AWAITING");
-    })
+    });
+
+    it('should fetch patient details on load if patient is present in url params', () => {
+        const {findByText} = renderWithReactIntl(<AddAppointment urlParams={{patient:"6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad"}}/>);
+        expect(findByText('Test Patient')).not.toBeNull();
+    });
 });
 
