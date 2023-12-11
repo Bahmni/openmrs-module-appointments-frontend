@@ -9,7 +9,7 @@ import { getPatientForDropdown } from "../../mapper/patientMapper";
 import { debounce } from "lodash";
 import Title from "../Title/Title.jsx";
 
-export const SearchPatient = (props) => {
+export const PatientSearch = (props) => {
     const {
         intl,
         onChange,
@@ -73,7 +73,7 @@ export const SearchPatient = (props) => {
         text={intl.formatMessage({id: 'APPOINTMENT_PATIENT_SEARCH_LABEL', defaultMessage: 'Search Patient'})}
         isRequired={true}/>
     return <ComboBox
-        id={"SearchPatient"}
+        id={"PatientSearch"}
         items={items}
         placeholder={intl.formatMessage({
             id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT',
@@ -92,7 +92,7 @@ export const SearchPatient = (props) => {
     />
 }
 
-SearchPatient.propTypes = {
+PatientSearch.propTypes = {
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.object,
@@ -102,4 +102,4 @@ SearchPatient.propTypes = {
     autoFocus: PropTypes.bool
 };
 
-export default injectIntl(SearchPatient);
+export default injectIntl(PatientSearch);
