@@ -472,32 +472,6 @@ describe('Add Appointment', () => {
         expect(queryByText("Provider Two")).toBeNull();
     });
 
-    it('should display error message and disappear after 3 seconds when second provider is selected and ' +
-        'maxAppointmentProvidersAllowed is 1', async () => {
-        const config = {maxAppointmentProviders: 1};
-        const {getByTestId, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-
-        let selectedProvider = "Provider One";
-        const inputBox = getByTestId('provider-search').querySelector('.bx--text-input');
-        fireEvent.change(inputBox, {target: {value: "One"}});
-        let providerDropDownOption;
-        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
-        expect(getByText(selectedProvider)).toBeTruthy();
-        fireEvent.click(providerDropDownOption);
-
-        fireEvent.change(inputBox, {target: {value: "Two"}});
-        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
-        selectedProvider = "Provider Two";
-        expect(getByText(selectedProvider)).toBeTruthy();
-        fireEvent.click(providerDropDownOption);
-
-        expect(queryByText("Provider One")).not.toBeNull();
-        getByText("Please select maximum of 1 provider(s)");
-        expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 200);
-        jest.runAllTimers();
-        expect(queryByText("Please select maximum of 1 provider(s)")).toBeNull();
-    });
-
     it('should hide service appointment type if enableServiceTypes is undefined', () => {
         const {queryByText} = renderWithReactIntl(<AddAppointment/>);
         expect(queryByText("Service App Type")).toBeNull();
@@ -677,6 +651,31 @@ describe('Add appointment with appointment request enabled', () => {
     it('should fetch patient details on load if patient is present in url params', () => {
         const {findByText} = renderWithReactIntl(<AddAppointment urlParams={{patient:"6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad"}}/>);
         expect(findByText('Test Patient')).not.toBeNull();
+    });
+    it('should display error message and disappear after 3 seconds when second provider is selected and ' +
+        'maxAppointmentProvidersAllowed is 1', async () => {
+        const config = {maxAppointmentProviders: 1};
+        const {getByTestId, getByText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
+
+        let selectedProvider = "Provider One";
+        const inputBox = getByTestId('provider-search').querySelector('.bx--text-input');
+        fireEvent.change(inputBox, {target: {value: "One"}});
+        let providerDropDownOption;
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
+        expect(getByText(selectedProvider)).toBeTruthy();
+        fireEvent.click(providerDropDownOption);
+
+        fireEvent.change(inputBox, {target: {value: "Two"}});
+        await waitForElement(() => (providerDropDownOption = getByTestId('provider-search').querySelector('.bx--list-box__menu-item__option')));
+        selectedProvider = "Provider Two";
+        expect(getByText(selectedProvider)).toBeTruthy();
+        fireEvent.click(providerDropDownOption);
+
+        expect(queryByText("Provider One")).not.toBeNull();
+        getByText("Please select maximum of 1 provider(s)");
+        expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 200);
+        jest.runAllTimers();
+        expect(queryByText("Please select maximum of 1 provider(s)")).toBeNull();
     });
 });
 
