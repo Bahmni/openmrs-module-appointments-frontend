@@ -77,9 +77,9 @@ describe('Add Appointment', () => {
             "enableServiceTypes": true
         };
         const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-        expect(container.querySelector('.bx--search-input')).not.toBeNull();
+        expect(container.querySelector('.bx--text-input')).not.toBeNull();
         expect(container.querySelector('.bx--list-box')).not.toBeNull();
-        expect(container.querySelectorAll('.bx--list-box').length).toEqual(4);
+        expect(container.querySelectorAll('.bx--list-box').length).toEqual(5);
         expect(getByTestId('search-patient')).not.toBeNull();
         expect(getByTestId('service-search')).not.toBeNull();
         expect(() => getByTestId('speciality-search')).toThrow();
@@ -93,9 +93,9 @@ describe('Add Appointment', () => {
             "enableServiceTypes": true
         };
         const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-        expect(container.querySelector('.bx--search-input')).not.toBeNull();
+        expect(container.querySelector('.bx--text-input')).not.toBeNull();
         expect(container.querySelector('.bx--list-box')).not.toBeNull();
-        expect(container.querySelectorAll('.bx--list-box').length).toEqual(5);
+        expect(container.querySelectorAll('.bx--list-box').length).toEqual(6);
         expect(getByTestId('patient-search')).not.toBeNull();
         expect(getByTestId('service-search')).not.toBeNull();
         expect(getByTestId('speciality-search')).not.toBeNull();
@@ -136,18 +136,17 @@ describe('Add Appointment', () => {
 
         //select patient
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
-            () => (container.querySelector('.bx--tile--clickable'))
+            () => (container.querySelector('.bx--list-box__menu-item'))
         );
-        fireEvent.click(container.querySelector('.bx--tile--clickable'))
+        fireEvent.click(container.querySelector('.bx--list-box__menu-item'))
 
 
         //select service
         const targetService = 'Physiotherapy OPD';
-        const inputBoxService = container.querySelector('.bx--text-input');
+        const inputBoxService = container.querySelectorAll('.bx--text-input')[1];
         fireEvent.change(inputBoxService, { target: { value: "Phy" } });
         await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const option = getByText(targetService);
@@ -566,12 +565,11 @@ describe('Add appointment with appointment request enabled', () => {
 
     const selectPatient = async (container, getByText) => {
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "abc" } });
         let searchedPatient;
         await waitForElement(
-            () => (searchedPatient = container.querySelector('.bx--tile--clickable'))
+            () => (searchedPatient = container.querySelector('.bx--list-box__menu-item'))
         );
         expect(getByText(targetPatient)).toBeTruthy();
         fireEvent.click(searchedPatient);
@@ -627,13 +625,13 @@ describe('Add appointment with appointment request enabled', () => {
     });
 
     it('should update the appointment status and provider responses if the AppointmentRequest is Enabled', async () => {
-        const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
+        const {container, queryAllByText, getByText, getByTestId, queryByText} = renderWithReactIntl(
             <AppContext.Provider value={{setViewDate: jest.fn()}}>
                 <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider}/>
             </AppContext.Provider>
 
         );
-        await selectPatient(container, getByText);
+        await selectPatient(container, queryAllByText);
         await selectService(getByTestId, getByText);
         await selectProvider(getByTestId, getByText, "Two", "Provider Two");
         await selectProvider(getByTestId, getByText, "Three", "Provider Three");

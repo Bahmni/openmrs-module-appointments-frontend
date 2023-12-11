@@ -7,6 +7,7 @@ import {
     teleconsultation,
     overlay,
     close,
+    closeIcon,
     firstBlock,
     recurringContainerBlock,
 } from './AddAppointment.module.scss';
@@ -559,15 +560,17 @@ const AddAppointment = props => {
         }
     }
 
-    const closeButton = <div className={classNames(close)}>
+    const closeButton = <span className={classNames(closeIcon)}>
         <Close24/>
-    </div>
+    </span>
     if(showSuccessPopup){
         return <Notification showMessage={showSuccessPopup} title={"Appointment Created!"} onClose={React.useContext(AppContext).onBack}/>
     }
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
-                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
+                <div className={classNames(close)}>
+                    <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
+                </div>
                 <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
                 updateAppointmentDetails={updateAppointmentDetails}
                 updateErrorIndicators={updateErrorIndicators}
