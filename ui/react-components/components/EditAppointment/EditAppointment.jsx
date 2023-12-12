@@ -580,9 +580,9 @@ const EditAppointment = props => {
             return undefined;
         }
         if( moment(date).isBefore(moment().startOf("day"))){
-            return moment(date).format("MM-DD-YYYY");
+            return moment(date).format("DD-MM-YYYY");
         }
-        return moment().format("MM-DD-YYYY")
+        return moment().format("DD-MM-YYYY")
     }
 
     const handleStatusChange = value => {
@@ -783,8 +783,8 @@ const EditAppointment = props => {
                                             value={appointmentDetails.recurringEndDate}
                                             isDisabled={componentsDisableStatus.endDate}
                                             intl={intl}
-                                            minDate={(appointmentDetails.appointmentDate && moment(appointmentDetails.appointmentDate).format("MM-DD-YYYY"))
-                                                || moment().format("MM-DD-YYYY")}
+                                            minDate={(appointmentDetails.appointmentDate && moment(appointmentDetails.appointmentDate).format("DD-MM-YYYY"))
+                                                || moment().format("DD-MM-YYYY")}
                                             testId={"recurring-end-date-selector"}/>
                                 </div>)}
                         <div className={classNames(recurringContainerBlock)}>

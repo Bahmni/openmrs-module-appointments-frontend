@@ -35,7 +35,7 @@ const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'month'); // Get the moment object for the next month
     const firstDayNextMonth = nextMonth.startOf('month');
     const datePickerInput = container.querySelector('.bx--date-picker__input');
-    fireEvent.change(datePickerInput, {target: {value: firstDayNextMonth.format("MM/DD/YYYY") }});
+    fireEvent.change(datePickerInput, {target: {value: firstDayNextMonth.format("DD/MM/YYYY") }});
     fireEvent.blur(datePickerInput)
     return firstDayNextMonth;
 };
@@ -156,7 +156,7 @@ describe('Add Appointment', () => {
         const selectedDate = clickOnFirstDayOfNextMonth(container)
 
         const dateInputField = container.querySelector('.bx--date-picker__input');
-        expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
+        expect(dateInputField.value).toBe(selectedDate.format('DD/MM/YYYY'));
 
         fireEvent.click(getByText('Check and Save'));
 
@@ -230,8 +230,8 @@ describe('Add Appointment', () => {
                 "defaultNumberOfOccurrences": 10
             }
         };
-        const today =  moment().format("MM/DD/YYYY");
-        const fiveDaysFromToday =  moment().add(5, 'days').format("MM/DD/YYYY");
+        const today =  moment().format("DD/MM/YYYY");
+        const fiveDaysFromToday =  moment().add(5, 'days').format("DD/MM/YYYY");
         const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AddAppointment
             appConfig={config}/>);
         const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveRecurring');
@@ -425,8 +425,8 @@ describe('Add Appointment', () => {
             appointmentParams={appointmentParams}/>);
         expect(container.querySelectorAll('.bx--time-picker__input-field')[0].value).toBe(today.format('h:mm').toLowerCase());
         expect(container.querySelectorAll('.bx--time-picker__input-field')[1].value).toBe(addTwoHoursFromNow.format('h:mm').toLowerCase());
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mm/yyyy');
+        expect(dateInputField.value).toBe(today.format('DD/MM/YYYY'));
     });
 
     it('should populate the start date, start time and end time coming as prop for recurring appointment', function () {
@@ -445,9 +445,9 @@ describe('Add Appointment', () => {
         expect(container.querySelectorAll('.bx--time-picker__input-field')[0].value).toBe(today.format('h:mm').toLowerCase());
         expect(container.querySelectorAll('.bx--time-picker__input-field')[1].value).toBe(addTwoHoursFromNow.format('h:mm').toLowerCase());
 
-        const dateInputField = getAllByPlaceholderText('mm/dd/yyyy')[0];
+        const dateInputField = getAllByPlaceholderText('dd/mm/yyyy')[0];
 
-        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
+        expect(dateInputField.value).toBe(today.format('DD/MM/YYYY'));
     });
 
     it('should not add second provider when maxAppointmentProvidersAllowed is 1', async () => {
@@ -549,8 +549,8 @@ describe('Add Appointment', () => {
         const {container, getByPlaceholderText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         const selectedDate = clickOnFirstDayOfNextMonth(container);
 
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mm/yyyy');
+        expect(dateInputField.value).toBe(selectedDate.format('DD/MM/YYYY'));
 
     });
 });

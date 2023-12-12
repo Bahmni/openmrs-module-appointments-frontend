@@ -38,7 +38,7 @@ const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'month'); // Get the moment object for the next month
     const firstDayNextMonth = nextMonth.startOf('month');
     const datePickerInput = container.querySelector('.bx--date-picker__input');
-    fireEvent.change(datePickerInput, {target: {value: firstDayNextMonth.format("MM/DD/YYYY") }});
+    fireEvent.change(datePickerInput, {target: {value: firstDayNextMonth.format("DD/MM/YYYY") }});
     fireEvent.blur(datePickerInput)
     return firstDayNextMonth;
 };
@@ -446,7 +446,7 @@ describe('Edit Appointment', () => {
         });
         await flushPromises();
         const dateSelectedField = containerInDom.querySelector('.bx--date-picker__input');
-        expect(moment(dateSelectedField.value).date()).toBe(11);
+        expect(moment(dateSelectedField.value,'DD/MM/YYYY').date()).toBe(11);
     })
 });
 
