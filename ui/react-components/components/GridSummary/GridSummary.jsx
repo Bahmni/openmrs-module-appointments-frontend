@@ -105,7 +105,7 @@ const GridSummary = props => {
               <tr>
                 <td></td>
                 <td className={noAppointments}>
-                  {intl.formatMessage({id: "NO_APPOINTMENT_SUMMARY_VIEW"}, {gridName: gridName})}
+                  {intl.formatMessage({id: "NO_APPOINTMENT_SUMMARY_VIEW", defaultMessage: `This week, no appointments are available for any of the ${gridName}`}, {gridName: gridName})}
                 </td>
               </tr>
             </tbody>
