@@ -739,8 +739,7 @@ const AddAppointment = props => {
                                             }}
                                             width={"160px"}
                                             intl={intl}
-                                            minDate = { (appointmentDetails.recurringStartDate && moment(appointmentDetails.recurringStartDate))
-                                                || today}
+                                            minDate = { (appointmentDetails.recurringStartDate && new Date(moment(appointmentDetails.recurringStartDate).startOf("day")).toISOString()) || today}
                                             testId={"recurring-end-date-selector"}/>:
                                         <div className={classNames(recurringContainerBlock)}>
                                             <div style={{width: "140px", marginRight: "5px"}}>
