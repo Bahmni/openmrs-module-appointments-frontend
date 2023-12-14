@@ -25,11 +25,10 @@ describe('Patient Search', () => {
     it('should allow user to search and select a patient', async () => {
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const {container, getByText} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}/>);
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
-            () => (container.querySelector('.bx--tile--clickable'))
+            () => (container.querySelector('.bx--list-box__menu-item'))
         );
         const option = getByText(targetPatient);
         fireEvent.click(option);
@@ -37,13 +36,11 @@ describe('Patient Search', () => {
     });
 
     it('should not search for patients when less than 3 characters are entered', async () => {
-        const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const {container, getByText} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}/>);
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "ab" } });
         await waitForElement(
-            () => (container.querySelector('.bx--tile'))
+            () => (getByText('Type to search'))
         );
         expect(getPatientByLocationSpy).not.toHaveBeenCalled();
     });
@@ -51,11 +48,10 @@ describe('Patient Search', () => {
     it('should search for patients only when the user enters the given number of characters', async () => {
         const {container} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}
                                                                           minCharLengthToTriggerPatientSearch={4}/>);
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
-            () => (container.querySelector('.bx--tile'))
+            () => (container.querySelector('.bx--list-box__menu-item__option'))
         );
         expect(getPatientByLocationSpy).not.toHaveBeenCalled();
         fireEvent.change(inputBox, { target: { value: "abcd" } });
@@ -69,11 +65,10 @@ describe('Patient Search', () => {
     it('should not make a second search for patients call when the user enters new characters within 3 seconds', async () => {
         const {container} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}
                                                                           minCharLengthToTriggerPatientSearch={4}/>);
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "abcd" } });
         await waitForElement(
-            () => (container.querySelector('.bx--tile'))
+            () => (container.querySelector('.bx--list-box__menu-item__option'))
         );
         expect(getPatientByLocationSpy).toHaveBeenCalled();
         fireEvent.change(inputBox, { target: { value: "abcde" } });
@@ -86,11 +81,10 @@ describe('Patient Search', () => {
 
     it('should  make a second search for patients call when the user enters new characters after 3 seconds', async () => {
         const {container} = renderWithReactIntl(<PatientSearch onChange={jest.fn()}/>);
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "abcd" } });
         await waitForElement(
-            () => (container.querySelector('.bx--tile'))
+            () => (container.querySelector('.bx--list-box__menu-item__option'))
         );
         expect(getPatientByLocationSpy).toHaveBeenCalled();
         fireEvent.change(inputBox, { target: { value: "abcde" } });
@@ -111,11 +105,10 @@ describe('Patient Search', () => {
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
         const onChangeSpy = jest.fn();
         const {container, getByText} = renderWithReactIntl(<PatientSearch onChange={onChangeSpy}/>);
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
-            () => (container.querySelector('.bx--tile--clickable'))
+            () => (container.querySelector('.bx--list-box__menu-item'))
         );
         const option = getByText(targetPatient);
         fireEvent.click(option);

@@ -9,7 +9,8 @@ import {
     teleconsultation,
     overlay,
     recurringContainerBlock,
-    close
+    close,
+    closeIcon
 } from "../AddAppointment/AddAppointment.module.scss";
 import AppointmentEditorCommonFieldsWrapper
     from "../AppointmentEditorCommonFieldsWrapper/AppointmentEditorCommonFieldsWrapper.jsx";
@@ -571,17 +572,17 @@ const EditAppointment = props => {
     }, [appConfig]);
 
 
-    const closeButton = <div className={classNames(close)}>
+    const closeButton = <span className={classNames(closeIcon)}>
         <Close20/>
-    </div>
+    </span>
     const getMinDate = (date) => {
         if(appointmentDetails.status === APPOINTMENT_STATUSES.WaitList){
             return undefined;
         }
         if( moment(date).isBefore(moment().startOf("day"))){
-            return moment(date).format("MM-DD-YYYY");
+            return moment(date).format("DD-MM-YYYY");
         }
-        return moment().format("MM-DD-YYYY")
+        return moment().format("DD-MM-YYYY")
     }
 
     const handleStatusChange = value => {
@@ -615,7 +616,9 @@ const EditAppointment = props => {
     return (<div className={classNames(overlay)}>
         <div data-testid="appointment-editor"
              className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? recurring : '')}>
-            <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
+            <div className={classNames(close)}>
+                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
+            </div>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails} errors={errors}
                                                   updateErrorIndicators={updateErrorIndicators}
                                                   endTimeBasedOnService={endTimeBasedOnService}
@@ -780,8 +783,8 @@ const EditAppointment = props => {
                                             value={appointmentDetails.recurringEndDate}
                                             isDisabled={componentsDisableStatus.endDate}
                                             intl={intl}
-                                            minDate={(appointmentDetails.appointmentDate && moment(appointmentDetails.appointmentDate).format("MM-DD-YYYY"))
-                                                || moment().format("MM-DD-YYYY")}
+                                            minDate={(appointmentDetails.appointmentDate && moment(appointmentDetails.appointmentDate).format("DD-MM-YYYY"))
+                                                || moment().format("DD-MM-YYYY")}
                                             testId={"recurring-end-date-selector"}/>
                                 </div>)}
                         <div className={classNames(recurringContainerBlock)}>

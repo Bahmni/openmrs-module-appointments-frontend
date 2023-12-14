@@ -7,6 +7,7 @@ import {
     teleconsultation,
     overlay,
     close,
+    closeIcon,
     firstBlock,
     recurringContainerBlock,
 } from './AddAppointment.module.scss';
@@ -149,6 +150,7 @@ const AddAppointment = props => {
     const [disableSaveButton, setDisableSaveButton] = useState(false);
     const [requiredFields, setRequiredFields] = useState(initialRequired);
     const [showHolidayWarning, setShowHolidayWarning] = useState(false);
+    const today = new Date(moment().startOf("day"))
 
     useEffect(()=>{
         setAppointmentTouched((prevState)=>{
@@ -559,15 +561,17 @@ const AddAppointment = props => {
         }
     }
 
-    const closeButton = <div className={classNames(close)}>
+    const closeButton = <span className={classNames(closeIcon)}>
         <Close24/>
-    </div>
+    </span>
     if(showSuccessPopup){
         return <Notification showMessage={showSuccessPopup} title={"Appointment Created!"} onClose={React.useContext(AppContext).onBack}/>
     }
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
-                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
+                <div className={classNames(close)}>
+                    <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
+                </div>
                 <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
                 updateAppointmentDetails={updateAppointmentDetails}
                 updateErrorIndicators={updateErrorIndicators}
@@ -610,7 +614,7 @@ const AddAppointment = props => {
                                         updateAppointmentDetails({recurringStartDate: null, selectedRecurringStartDate: null});
                                     }
                                 }}
-                                minDate={moment().format("MM-DD-YYYY")}
+                                minDate={today}
                                 isRequired={requiredFields.recurringStartDate}
                                 intl={intl}
                                 title={"Appointment start date"}/>
@@ -735,8 +739,7 @@ const AddAppointment = props => {
                                             }}
                                             width={"160px"}
                                             intl={intl}
-                                            minDate = { (appointmentDetails.recurringStartDate && moment(appointmentDetails.recurringStartDate).format("MM-DD-YYYY"))
-                                                || moment().format("MM-DD-YYYY")}
+                                            minDate = { (appointmentDetails.recurringStartDate && new Date(moment(appointmentDetails.recurringStartDate).startOf("day")).toISOString()) || today}
                                             testId={"recurring-end-date-selector"}/>:
                                         <div className={classNames(recurringContainerBlock)}>
                                             <div style={{width: "140px", marginRight: "5px"}}>
@@ -809,7 +812,7 @@ const AddAppointment = props => {
                                     find((priority) => priority === appointmentDetails.priority) &&
                                     updateErrorIndicators({appointmentDateError: !date[0]});
                                 }}
-                                minDate={moment().format("MM-DD-YYYY")}
+                                minDate={today}
                                 isRequired={requiredFields.appointmentStartDate}
                                 showWarning={showHolidayWarning}
                                 intl={intl}

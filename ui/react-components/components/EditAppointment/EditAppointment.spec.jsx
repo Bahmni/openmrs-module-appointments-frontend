@@ -12,6 +12,7 @@ jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/recurringAppointmentsApi');
 jest.mock('../../api/serviceApi');
 jest.mock('../../api/providerApi');
+jest.mock('../../utils/CookieUtil');
 jest.mock('../../utils/LocalStorageUtil.js', () => ({
     getLocale: jest.fn().mockReturnValue("en-US"),
 }));
@@ -38,7 +39,7 @@ const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'month'); // Get the moment object for the next month
     const firstDayNextMonth = nextMonth.startOf('month');
     const datePickerInput = container.querySelector('.bx--date-picker__input');
-    fireEvent.change(datePickerInput, {target: {value: firstDayNextMonth.format("MM/DD/YYYY") }});
+    fireEvent.change(datePickerInput, {target: {value: firstDayNextMonth.format("DD/MM/YYYY") }});
     fireEvent.blur(datePickerInput)
     return firstDayNextMonth;
 };
@@ -93,10 +94,10 @@ describe('Edit Appointment', () => {
             containerInDom = container;
         });
         await flushPromises();
-        expect(containerInDom.querySelector(".bx--search-input").value).toEqual("9DEC81BF 9DEC81C6 (IQ1114)");
-        expect(containerInDom.querySelectorAll(".bx--text-input")[0].value).toEqual("test speciality");
-        expect(containerInDom.querySelectorAll(".bx--text-input")[1].value).toEqual("Physiotherapy OPD");
-        expect(containerInDom.querySelectorAll(".bx--text-input")[4].value).toEqual("Operating Theatre");
+        expect(containerInDom.querySelectorAll(".bx--text-input")[0].value).toEqual("9DEC81BF 9DEC81C6 (IQ1114)");
+        expect(containerInDom.querySelectorAll(".bx--text-input")[1].value).toEqual("test speciality");
+        expect(containerInDom.querySelectorAll(".bx--text-input")[2].value).toEqual("Physiotherapy OPD");
+        expect(containerInDom.querySelectorAll(".bx--text-input")[5].value).toEqual("Operating Theatre");
         expect(containerInDom.querySelectorAll(".bx--time-picker__input-field")[0].value).toEqual("11:00");
         expect(containerInDom.querySelectorAll(".bx--time-picker__input-field")[1].value).toEqual("11:30");
         expect(containerInDom.querySelector(".bx--text-area").value).toEqual("comments");
@@ -123,13 +124,13 @@ describe('Edit Appointment', () => {
         await flushPromises();
         expect(getByTestIdInDom("search-patient").value).toEqual('9DEC81BF 9DEC81C6 (IQ1114)');
 
-        const inputs = containerInDom.querySelectorAll(".bx--text-input")
-        expect(inputs[0].value).toEqual('test speciality');
-        expect(inputs[1].value).toEqual('Physiotherapy OPD');
-        expect(inputs[4].value).toEqual('Operating Theatre');
-        expect(inputs[2].value).toEqual('1 session');
-        expect(inputs[5].value).toEqual('11:00');
-        expect(inputs[6].value).toEqual('11:30');
+        const inputs = containerInDom.querySelectorAll(".bx--text-input");
+        expect(inputs[1].value).toEqual('test speciality');
+        expect(inputs[2].value).toEqual('Physiotherapy OPD');
+        expect(inputs[5].value).toEqual('Operating Theatre');
+        expect(inputs[3].value).toEqual('1 session');
+        expect(inputs[6].value).toEqual('11:00');
+        expect(inputs[7].value).toEqual('11:30');
         getByTextInDom('Repeats every');
         getByTextInDom('Day(s)');
         expect(getByTestIdInDom("recurring-occurrences").value).toBe('3');
@@ -159,13 +160,13 @@ describe('Edit Appointment', () => {
         await flushPromises();
         expect(getByTestIdInDom("search-patient").value).toEqual('9DEC81BF 9DEC81C6 (IQ1114)');
 
-        const inputs = containerInDom.querySelectorAll(".bx--text-input")
-        expect(inputs[0].value).toEqual('test speciality');
-        expect(inputs[1].value).toEqual('Physiotherapy OPD');
-        expect(inputs[4].value).toEqual('Operating Theatre');
-        expect(inputs[2].value).toEqual('1 session');
-        expect(inputs[5].value).toEqual('11:00');
-        expect(inputs[6].value).toEqual('11:30');
+        const inputs = containerInDom.querySelectorAll(".bx--text-input");
+        expect(inputs[1].value).toEqual('test speciality');
+        expect(inputs[2].value).toEqual('Physiotherapy OPD');
+        expect(inputs[5].value).toEqual('Operating Theatre');
+        expect(inputs[3].value).toEqual('1 session');
+        expect(inputs[6].value).toEqual('11:00');
+        expect(inputs[7].value).toEqual('11:30');
         getByTextInDom('Repeats every');
         getByTextInDom('Week(s)');
         expect(getByTestIdInDom('SUNDAY').hasAttribute('disabled')).toBeTruthy();
@@ -204,7 +205,7 @@ describe('Edit Appointment', () => {
             getByTestIdInDom = getByTestId;
         });
         await flushPromises();
-        const serviceBox = containerInDom.querySelectorAll('.bx--text-input')[0]
+        const serviceBox = containerInDom.querySelectorAll('.bx--text-input')[1]
         expect(serviceBox.value).toBe('Physiotherapy OPD');
         getAllServicesSpy.mockResolvedValue([{"name" : "Physiotherapy OPD", "uuid" : "2b87edcf-39ac-4dec-94c9-713b932e847c",
             "speciality": {"name": "test speciality", "uuid": "8de35e75-20e0-11e7-a53f-5usc29e530d2"},
@@ -446,7 +447,7 @@ describe('Edit Appointment', () => {
         });
         await flushPromises();
         const dateSelectedField = containerInDom.querySelector('.bx--date-picker__input');
-        expect(moment(dateSelectedField.value).date()).toBe(11);
+        expect(moment(dateSelectedField.value,'DD/MM/YYYY').date()).toBe(11);
     })
 });
 

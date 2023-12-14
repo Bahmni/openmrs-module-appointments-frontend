@@ -8,7 +8,7 @@ const DatePickerCarbon = props => {
     const {onChange, value, title, minDate, testId, width, isDisabled, isRequired, showWarning, intl} = props;
     let defaultTime = value;
     if( value && value instanceof moment){
-        defaultTime = value.format("MM/DD/YYYY");
+        defaultTime = new Date(value.toISOString());
     }
     let titleText=  title && <Title text={title} isRequired={isRequired}/>
     const warningText = intl.formatMessage({
@@ -17,10 +17,10 @@ const DatePickerCarbon = props => {
     });
     return (
         <div data-testid={testId || "datePicker"}>
-            <DatePicker datePickerType={"single"} onChange={onChange} disabled={isDisabled} minDate={minDate} value={defaultTime}>
+            <DatePicker datePickerType={"single"} onChange={onChange} disabled={isDisabled} minDate={minDate} value={defaultTime} dateFormat={"d/m/Y"}>
                 <DatePickerInput
                     id={"Appointment Date"}
-                    placeholder={"mm/dd/yyyy"}
+                    placeholder={"dd/mm/yyyy"}
                     labelText={titleText}
                     size={"md"}
                     style={{width: width || "250px"}}
