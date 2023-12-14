@@ -25,7 +25,7 @@ export const PatientSearch = (props) => {
     const debouncePatientSearchDelay = debouncePatientSearchDelayInMilliseconds || DEBOUNCE_PATIENT_SEARCH_DELAY_IN_MILLISECONDS;
 
     const loadPatients = async (searchString) => {
-        if (searchString.length >= minCharLengthToTriggerPatientSearch) {
+        if (searchString.length >= (minCharLengthToTriggerPatientSearch || 3)) {
             setIsLoading(true);
             const patients = await getPatientsByLocation(currentLocation().uuid, searchString);
             setIsLoading(false);
@@ -47,7 +47,7 @@ export const PatientSearch = (props) => {
     );
 
     useEffect(() => {
-        if (userInput.length >= (minCharLengthToTriggerPatientSearch)) {
+        if (userInput.length > 1) {
             debouncedLoadPatients(userInput);
         }
     }, [userInput])
@@ -87,7 +87,7 @@ export const PatientSearch = (props) => {
         disabled={isDisabled}
         autoFocus={autoFocus}
         titleText={label}
-        value={value ? value.label : userInput}
+        selectedItem={value}
         data-testid={"search-patient"}
     />
 }

@@ -12,6 +12,7 @@ jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/recurringAppointmentsApi');
 jest.mock('../../api/serviceApi');
 jest.mock('../../api/providerApi');
+jest.mock('../../utils/CookieUtil');
 jest.mock('../../utils/LocalStorageUtil.js', () => ({
     getLocale: jest.fn().mockReturnValue("en-US"),
 }));

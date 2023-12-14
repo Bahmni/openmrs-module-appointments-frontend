@@ -8,7 +8,7 @@ const DatePickerCarbon = props => {
     const {onChange, value, title, minDate, testId, width, isDisabled, isRequired, showWarning, intl} = props;
     let defaultTime = value;
     if( value && value instanceof moment){
-        defaultTime = value.format("DD/MM/YYYY");
+        defaultTime = new Date(value.toISOString());
     }
     let titleText=  title && <Title text={title} isRequired={isRequired}/>
     const warningText = intl.formatMessage({

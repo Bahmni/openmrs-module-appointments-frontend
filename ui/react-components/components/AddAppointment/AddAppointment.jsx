@@ -150,6 +150,7 @@ const AddAppointment = props => {
     const [disableSaveButton, setDisableSaveButton] = useState(false);
     const [requiredFields, setRequiredFields] = useState(initialRequired);
     const [showHolidayWarning, setShowHolidayWarning] = useState(false);
+    const today = new Date(moment().startOf("day"))
 
     useEffect(()=>{
         setAppointmentTouched((prevState)=>{
@@ -613,7 +614,7 @@ const AddAppointment = props => {
                                         updateAppointmentDetails({recurringStartDate: null, selectedRecurringStartDate: null});
                                     }
                                 }}
-                                minDate={moment().format("MM-DD-YYYY")}
+                                minDate={today}
                                 isRequired={requiredFields.recurringStartDate}
                                 intl={intl}
                                 title={"Appointment start date"}/>
@@ -738,8 +739,8 @@ const AddAppointment = props => {
                                             }}
                                             width={"160px"}
                                             intl={intl}
-                                            minDate = { (appointmentDetails.recurringStartDate && moment(appointmentDetails.recurringStartDate).format("MM-DD-YYYY"))
-                                                || moment().format("MM-DD-YYYY")}
+                                            minDate = { (appointmentDetails.recurringStartDate && moment(appointmentDetails.recurringStartDate))
+                                                || today}
                                             testId={"recurring-end-date-selector"}/>:
                                         <div className={classNames(recurringContainerBlock)}>
                                             <div style={{width: "140px", marginRight: "5px"}}>
@@ -812,7 +813,7 @@ const AddAppointment = props => {
                                     find((priority) => priority === appointmentDetails.priority) &&
                                     updateErrorIndicators({appointmentDateError: !date[0]});
                                 }}
-                                minDate={moment().format("MM-DD-YYYY")}
+                                minDate={today}
                                 isRequired={requiredFields.appointmentStartDate}
                                 showWarning={showHolidayWarning}
                                 intl={intl}
