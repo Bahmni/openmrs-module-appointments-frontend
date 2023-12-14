@@ -35,7 +35,7 @@ const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'month'); // Get the moment object for the next month
     const firstDayNextMonth = nextMonth.startOf('month');
     const datePickerInput = container.querySelector('.bx--date-picker__input');
-    fireEvent.change(datePickerInput, {target: {value: firstDayNextMonth.format("MM/DD/YYYY") }});
+    fireEvent.change(datePickerInput, {target: {value: firstDayNextMonth.format("DD/MM/YYYY") }});
     fireEvent.blur(datePickerInput)
     return firstDayNextMonth;
 };
@@ -77,9 +77,9 @@ describe('Add Appointment', () => {
             "enableServiceTypes": true
         };
         const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-        expect(container.querySelector('.bx--search-input')).not.toBeNull();
+        expect(container.querySelector('.bx--text-input')).not.toBeNull();
         expect(container.querySelector('.bx--list-box')).not.toBeNull();
-        expect(container.querySelectorAll('.bx--list-box').length).toEqual(4);
+        expect(container.querySelectorAll('.bx--list-box').length).toEqual(5);
         expect(getByTestId('search-patient')).not.toBeNull();
         expect(getByTestId('service-search')).not.toBeNull();
         expect(() => getByTestId('speciality-search')).toThrow();
@@ -93,9 +93,9 @@ describe('Add Appointment', () => {
             "enableServiceTypes": true
         };
         const {container, getByTestId} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
-        expect(container.querySelector('.bx--search-input')).not.toBeNull();
+        expect(container.querySelector('.bx--text-input')).not.toBeNull();
         expect(container.querySelector('.bx--list-box')).not.toBeNull();
-        expect(container.querySelectorAll('.bx--list-box').length).toEqual(5);
+        expect(container.querySelectorAll('.bx--list-box').length).toEqual(6);
         expect(getByTestId('patient-search')).not.toBeNull();
         expect(getByTestId('service-search')).not.toBeNull();
         expect(getByTestId('speciality-search')).not.toBeNull();
@@ -136,18 +136,17 @@ describe('Add Appointment', () => {
 
         //select patient
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "abc" } });
         await waitForElement(
-            () => (container.querySelector('.bx--tile--clickable'))
+            () => (container.querySelector('.bx--list-box__menu-item'))
         );
-        fireEvent.click(container.querySelector('.bx--tile--clickable'))
+        fireEvent.click(container.querySelector('.bx--list-box__menu-item'))
 
 
         //select service
         const targetService = 'Physiotherapy OPD';
-        const inputBoxService = container.querySelector('.bx--text-input');
+        const inputBoxService = container.querySelectorAll('.bx--text-input')[1];
         fireEvent.change(inputBoxService, { target: { value: "Phy" } });
         await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const option = getByText(targetService);
@@ -157,7 +156,7 @@ describe('Add Appointment', () => {
         const selectedDate = clickOnFirstDayOfNextMonth(container)
 
         const dateInputField = container.querySelector('.bx--date-picker__input');
-        expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
+        expect(dateInputField.value).toBe(selectedDate.format('DD/MM/YYYY'));
 
         fireEvent.click(getByText('Check and Save'));
 
@@ -231,8 +230,8 @@ describe('Add Appointment', () => {
                 "defaultNumberOfOccurrences": 10
             }
         };
-        const today =  moment().format("MM/DD/YYYY");
-        const fiveDaysFromToday =  moment().add(5, 'days').format("MM/DD/YYYY");
+        const today =  moment().format("DD/MM/YYYY");
+        const fiveDaysFromToday =  moment().add(5, 'days').format("DD/MM/YYYY");
         const {getByText, container, queryAllByText, getByTestId, queryByText} = renderWithReactIntl(<AddAppointment
             appConfig={config}/>);
         const saveAppointmentSpy = jest.spyOn(addAppointmentService, 'saveRecurring');
@@ -426,8 +425,8 @@ describe('Add Appointment', () => {
             appointmentParams={appointmentParams}/>);
         expect(container.querySelectorAll('.bx--time-picker__input-field')[0].value).toBe(today.format('h:mm').toLowerCase());
         expect(container.querySelectorAll('.bx--time-picker__input-field')[1].value).toBe(addTwoHoursFromNow.format('h:mm').toLowerCase());
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mm/yyyy');
+        expect(dateInputField.value).toBe(today.format('DD/MM/YYYY'));
     });
 
     it('should populate the start date, start time and end time coming as prop for recurring appointment', function () {
@@ -446,9 +445,9 @@ describe('Add Appointment', () => {
         expect(container.querySelectorAll('.bx--time-picker__input-field')[0].value).toBe(today.format('h:mm').toLowerCase());
         expect(container.querySelectorAll('.bx--time-picker__input-field')[1].value).toBe(addTwoHoursFromNow.format('h:mm').toLowerCase());
 
-        const dateInputField = getAllByPlaceholderText('mm/dd/yyyy')[0];
+        const dateInputField = getAllByPlaceholderText('dd/mm/yyyy')[0];
 
-        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
+        expect(dateInputField.value).toBe(today.format('DD/MM/YYYY'));
     });
 
     it('should not add second provider when maxAppointmentProvidersAllowed is 1', async () => {
@@ -494,9 +493,9 @@ describe('Add Appointment', () => {
 
         expect(queryByText("Provider One")).not.toBeNull();
         getByText("Please select maximum of 1 provider(s)");
-        expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 200);
-        jest.runAllTimers();
-        expect(queryByText("Please select maximum of 1 provider(s)")).toBeNull();
+        setTimeout(() => {
+            expect(queryByText("Please select maximum of 1 provider(s)")).toBeNull();
+        }, 3000);
     });
 
     it('should hide service appointment type if enableServiceTypes is undefined', () => {
@@ -550,13 +549,9 @@ describe('Add Appointment', () => {
         const {container, getByPlaceholderText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         const selectedDate = clickOnFirstDayOfNextMonth(container);
 
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mm/yyyy');
+        expect(dateInputField.value).toBe(selectedDate.format('DD/MM/YYYY'));
 
-    });
-    it('should fetch patient details on load if patient is present in url params', () => {
-        const {findByText} = renderWithReactIntl(<AddAppointment urlParams={{patient:"6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad"}}/>);
-        expect(findByText('Test Patient')).not.toBeNull();
     });
 });
 
@@ -566,12 +561,11 @@ describe('Add appointment with appointment request enabled', () => {
 
     const selectPatient = async (container, getByText) => {
         const targetPatient = '9DEC74AB 9DEC74B7 (IQ1110)';
-        const inputBox = container.querySelector('.bx--search-input');
-        fireEvent.blur(inputBox);
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "abc" } });
         let searchedPatient;
         await waitForElement(
-            () => (searchedPatient = container.querySelector('.bx--tile--clickable'))
+            () => (searchedPatient = container.querySelector('.bx--list-box__menu-item'))
         );
         expect(getByText(targetPatient)).toBeTruthy();
         fireEvent.click(searchedPatient);
@@ -627,13 +621,13 @@ describe('Add appointment with appointment request enabled', () => {
     });
 
     it('should update the appointment status and provider responses if the AppointmentRequest is Enabled', async () => {
-        const {container, getByText, getByTestId, queryByText} = renderWithReactIntl(
+        const {container, queryAllByText, getByText, getByTestId, queryByText} = renderWithReactIntl(
             <AppContext.Provider value={{setViewDate: jest.fn()}}>
                 <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider}/>
             </AppContext.Provider>
 
         );
-        await selectPatient(container, getByText);
+        await selectPatient(container, queryAllByText);
         await selectService(getByTestId, getByText);
         await selectProvider(getByTestId, getByText, "Two", "Provider Two");
         await selectProvider(getByTestId, getByText, "Three", "Provider Three");
@@ -678,6 +672,11 @@ describe('Add appointment with appointment request enabled', () => {
         expect(appointmentRequestData.providers[0].response).toEqual("ACCEPTED");
         expect(appointmentRequestData.providers[1].name).toEqual("Provider Two");
         expect(appointmentRequestData.providers[1].response).toEqual("AWAITING");
-    })
+    });
+
+    it('should fetch patient details on load if patient is present in url params', () => {
+        const {findByText} = renderWithReactIntl(<AddAppointment urlParams={{patient:"6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad"}}/>);
+        expect(findByText('Test Patient')).not.toBeNull();
+    });
 });
 

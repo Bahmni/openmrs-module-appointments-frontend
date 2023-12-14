@@ -7,6 +7,7 @@ import {
     teleconsultation,
     overlay,
     close,
+    closeIcon,
     firstBlock,
     recurringContainerBlock,
 } from './AddAppointment.module.scss';
@@ -146,7 +147,7 @@ const AddAppointment = props => {
     const [serviceErrorMessage, setServiceErrorMessage] = useState('');
     const [disableSaveButton, setDisableSaveButton] = useState(false);
     const [requiredFields, setRequiredFields] = useState(initialRequired);
-
+    const today = new Date(moment().startOf("day"))
     useEffect(()=>{
         setAppointmentTouched((prevState)=>{
             if(prevState === "pristine"){
@@ -518,7 +519,7 @@ const AddAppointment = props => {
         var allowVirtualConsultation = appConfig && appConfig.allowVirtualConsultation;
         if (allowVirtualConsultation) {
             return <AppointmentType appointmentType={appointmentDetails.appointmentType}
-                    isTeleconsultation={appointmentDetails.teleconsultation}     
+                    isTeleconsultation={appointmentDetails.teleconsultation}
                     onChange={(e) => {
                         updateAppointmentDetails({ teleconsultation: e });
                     }} />;
@@ -546,15 +547,17 @@ const AddAppointment = props => {
         }
     }
 
-    const closeButton = <div className={classNames(close)}>
+    const closeButton = <span className={classNames(closeIcon)}>
         <Close24/>
-    </div>
+    </span>
     if(showSuccessPopup){
         return <Notification showMessage={showSuccessPopup} title={"Appointment Created!"} onClose={React.useContext(AppContext).onBack}/>
     }
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
-                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
+                <div className={classNames(close)}>
+                    <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={closeButton} skipConfirm={appointmentTouched !== "touched"}/>
+                </div>
                 <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
                 updateAppointmentDetails={updateAppointmentDetails}
                 updateErrorIndicators={updateErrorIndicators}
@@ -597,7 +600,7 @@ const AddAppointment = props => {
                                         updateAppointmentDetails({recurringStartDate: null, selectedRecurringStartDate: null});
                                     }
                                 }}
-                                minDate={moment().format("MM-DD-YYYY")}
+                                minDate={today}
                                 isRequired={requiredFields.recurringStartDate}
                                 title={"Appointment start date"}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
@@ -720,8 +723,7 @@ const AddAppointment = props => {
                                                 }
                                             }}
                                             width={"160px"}
-                                            minDate = { (appointmentDetails.recurringStartDate && moment(appointmentDetails.recurringStartDate).format("MM-DD-YYYY"))
-                                                || moment().format("MM-DD-YYYY")}
+                                            minDate = { (appointmentDetails.recurringStartDate && new Date(moment(appointmentDetails.recurringStartDate).startOf("day")).toISOString()) || today}
                                             testId={"recurring-end-date-selector"}/>:
                                         <div className={classNames(recurringContainerBlock)}>
                                             <div style={{width: "140px", marginRight: "5px"}}>
@@ -751,7 +753,7 @@ const AddAppointment = props => {
                     </div>:
                     //Regular Appointments
                     <div >
-                        {isAppointmentStatusOptionEnabled(appConfig) && 
+                        {isAppointmentStatusOptionEnabled(appConfig) &&
                             <div data-testid="appointment-status">
                                 <RadioButtonGroup
                                     legendText={statusTitleText}
@@ -787,7 +789,7 @@ const AddAppointment = props => {
                                     find((priority) => priority === appointmentDetails.priority) &&
                                     updateErrorIndicators({appointmentDateError: !date[0]});
                                 }}
-                                minDate={moment().format("MM-DD-YYYY")}
+                                minDate={today}
                                 isRequired={requiredFields.appointmentStartDate}
                                 title={"Appointment date"}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
