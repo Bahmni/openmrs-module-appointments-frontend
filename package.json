@@ -21,6 +21,8 @@
     },
     "author": "bahmni@thoughtworks.com",
     "devDependencies": {
+        "@types/carbon-components-react": "^7.55.1",
+        "carbon-components": "^10.19.0",
         "angular-mocks": "1.4.9",
         "q": "1.0.1",
         "copy-webpack-plugin": "^5.0.3",
@@ -49,6 +51,8 @@
     },
     "dependencies": {
         "@uirouter/angularjs": "0.2.18",
+        "@carbon/icons-react": "^10.18.0",
+        "carbon-components-react": "^7.25.0",
         "angular": "1.5.7",
         "angular-bindonce": "github:pasvaz/bindonce#0.3.3",
         "angular-cookies": "1.4.9",
@@ -72,6 +76,10 @@
         "select2": "github:select2/select2#3.4.8",
         "stacktrace-js": "0.6.4",
         "zeroclipboard": "2.1.6"
+    },
+    "peerDependencies": {
+        "carbon-components": "^10.19.0",
+        "carbon-icons": "^7.0.7"
     },
     "readmeFilename": "README.md"
 }

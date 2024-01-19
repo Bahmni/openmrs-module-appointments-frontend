@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import classNames from 'classnames';
 import {
     appointmentEditor,
@@ -7,11 +7,12 @@ import {
     isRecurring,
     recurringContainer,
     recurringContainerLeft,
-    recurringContainerRight,
-    searchFieldsContainer,
-    appointmentTypeContainer,
+    tableWrapper,
+    teleconsultation,
     timeSelector,
-    weekDaysContainer
+    weekDaysContainer,
+    overlay,
+    close,
 } from './AddAppointment.module.scss';
 import {conflictsPopup, customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
@@ -26,9 +27,9 @@ import {
 } from "../../services/AppointmentsService/AppointmentsService";
 import Label from '../Label/Label.jsx';
 import {getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
+import {getAppointmentBookingMessage, getRecurringAppointmentBookingMessage, getPhoneNumber} from '../../utils/AppointmentSMS.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
-import AppointmentPlan from "../AppointmentPlan/AppointmentPlan.jsx";
 import AppointmentType from "../AppointmentType/AppointmentType.jsx";
 import CustomPopup from "../CustomPopup/CustomPopup.jsx";
 import SuccessConfirmation from "../SuccessModal/SuccessModal.jsx";
@@ -47,7 +48,6 @@ import {
     RECURRING_APPOINTMENT_TYPE,
     SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL,
     TODAY,
-    TELECONSULTATION_APPOINTMENT,
     WALK_IN_APPOINTMENT_TYPE,
     VIRTUAL_APPOINTMENT_TYPE,
     SCHEDULED_APPOINTMENT_TYPE
@@ -64,12 +64,22 @@ import Conflicts from "../Conflicts/Conflicts.jsx";
 import updateAppointmentStatusAndProviderResponse from "../../appointment-request/AppointmentRequest";
 import * as patientApi from "../../api/patientApi";
 import {mapOpenMRSPatient} from "../../mapper/patientMapper";
+import {sendSMS} from "../../api/smsService";
+import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
+import { Close20 } from '@carbon/icons-react';
+import { ContentSwitcher, Switch } from 'carbon-components-react';
+import '../../carbon-conflict-fixes.scss';
+import '../../carbon-theme.scss';
+import './AddAppointment.module.scss';
+import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
+import {isAppointmentPriorityOptionEnabled} from "../../helper";
 
 const AddAppointment = props => {
 
-    const {appConfig, intl, appointmentParams, currentProvider, urlParams } = props;
+    const {appConfig, intl, appointmentParams, currentProvider, urlParams, isAppointmentSMSEnabled } = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
+    const [selectedPriority, setSelectedPriority] = useState({})
 
     const initialAppointmentState = {
         patient: null,
@@ -92,7 +102,8 @@ const AddAppointment = props => {
         occurrences: undefined,
         period: undefined,
         weekDays: undefined,
-        selectedRecurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime))
+        selectedRecurringStartDate: appointmentParams && moment(new Date(appointmentParams.startDateTime)),
+        priority: undefined,
     };
 
     const initialErrorsState = {
@@ -108,7 +119,8 @@ const AddAppointment = props => {
         recurrencePeriodError: false,
         startTimeBeforeEndTimeError: false,
         weekDaysError: false,
-        providerError: false
+        providerError: false,
+        priorityError: false
     };
 
     const [appointmentDetails, setAppointmentDetails] = useState(initialAppointmentState);
@@ -128,6 +140,17 @@ const AddAppointment = props => {
             populatePatientDetails(urlParams.patient).then();
         }
     }, [appConfig]);
+
+    useEffect(() => {
+        updateErrorIndicators({priorityError: undefined});
+        if (isDatelessAppointment())
+            updateErrorIndicators({
+                appointmentDateError: undefined,
+                startTimeError: undefined,
+                startTimeBeforeEndTimeError: undefined,
+                endTimeError: undefined
+            });
+    }, [selectedPriority]);
 
     async function populatePatientDetails(patientUuid) {
         const patient = await patientApi.getPatient(patientUuid);
@@ -186,7 +209,8 @@ const AddAppointment = props => {
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
             appointmentKind: requestAppointmentType(),
-            comments: appointmentDetails.notes
+            comments: appointmentDetails.notes,
+            priority: appointmentDetails.priority || null,
         };
         if (!appointment.serviceTypeUuid || appointment.serviceTypeUuid.length < 1)
             delete appointment.serviceTypeUuid;
@@ -206,12 +230,30 @@ const AddAppointment = props => {
         return {...prevAppointmentDetails, ...modifiedAppointmentDetails}
     });
 
+    const isDatelessAppointment = () => {
+        return appointmentDetails && appConfig && appConfig.enablePriorityOption && appConfig.prioritiesForDateless && appConfig.prioritiesForDateless.includes(appointmentDetails.priority)
+            && !appointmentDetails.appointmentDate && !appointmentDetails.startTime && !appointmentDetails.endTime;
+    }
+
     const isValidAppointment = () => {
         const isValidPatient = appointmentDetails.patient && appointmentDetails.patient.value.uuid;
-        const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
-        updateCommonErrorIndicators(isValidPatient, startTimeBeforeEndTime);
-        updateErrorIndicators({appointmentDateError: !appointmentDetails.appointmentDate});
-        return isValidPatient && appointmentDetails.service && appointmentDetails.appointmentDate && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime;
+        const isValidPriority = !isAppointmentPriorityOptionEnabled(appConfig) || appointmentDetails.priority
+        updateErrorIndicators({priorityError: !isValidPriority});
+        if (isDatelessAppointment()) {
+            updateErrorIndicators({
+                patientError: !isValidPatient,
+                serviceError: !appointmentDetails.service,
+                startTimeError: undefined,
+                endTimeError: undefined,
+                startTimeBeforeEndTimeError: undefined
+            });
+            return isValidPatient && appointmentDetails.service && isValidPriority
+        } else {
+            const startTimeBeforeEndTime = isStartTimeBeforeEndTime(appointmentDetails.startTime, appointmentDetails.endTime);
+            updateCommonErrorIndicators(isValidPatient, startTimeBeforeEndTime);
+            updateErrorIndicators({appointmentDateError: !appointmentDetails.appointmentDate});
+            return isValidPatient && appointmentDetails.service && appointmentDetails.appointmentDate && appointmentDetails.startTime && appointmentDetails.endTime && startTimeBeforeEndTime && isValidPriority;
+        }
     };
 
     const isValidRecurringAppointment = () => {
@@ -249,7 +291,8 @@ const AddAppointment = props => {
         (appointmentDetails.endDateType === "After" && appointmentDetails.occurrences && appointmentDetails.occurrences > 0);
 
     const setViewDateAndShowSuccessPopup = startDate => {
-        setViewDate(moment(startDate).startOf('day').toDate());
+        const date = startDate ? moment(startDate) : moment();
+        setViewDate(date.startOf('day').toDate())
         setShowSuccessPopup(true);
     };
 
@@ -277,6 +320,10 @@ const AddAppointment = props => {
             setShowEmailWarning((isVirtual(response.data) && !checkPatientEmailAvailability(response.data)));
             setShowEmailNotSentWarning((isVirtual(response.data) && !checkNotificationStatus(response.data)));
             setViewDateAndShowSuccessPopup(response.data.startDateTime);
+            if (isAppointmentSMSEnabled) {
+                sendSMS(await getPhoneNumber(response.data.patient.uuid, appConfig.smsAttribute), 
+                    getAppointmentBookingMessage(response.data, appConfig, intl));
+            }
         } else if (response.data && response.data.error) {
             setConflicts(undefined);
             setServiceErrorMessageFromResponse(response.data);
@@ -306,16 +353,20 @@ const AddAppointment = props => {
         setDisableSaveButton(true);
         if (isValidAppointment()) {
             const appointment = getAppointmentRequest();
-            const response = await getAppointmentConflicts(appointment);
-            const status = response.status;
-            if (status === 204) {
+            if (isDatelessAppointment()) {
                 await save(appointment);
-            } else if (status === 200) {
-                setConflicts(response.data);
-            } else if (response.data && response.data.error) {
-                setConflicts(undefined);
-                setServiceErrorMessageFromResponse(response.data);
-                resetServiceErrorMessage();
+            } else {
+                const response = await getAppointmentConflicts(appointment);
+                const status = response.status;
+                if (status === 204) {
+                    await save(appointment);
+                } else if (status === 200) {
+                    setConflicts(response.data);
+                } else if (response.data && response.data.error) {
+                    setConflicts(undefined);
+                    setServiceErrorMessageFromResponse(response.data);
+                    resetServiceErrorMessage();
+                }
             }
         }
         setDisableSaveButton(false);
@@ -338,6 +389,10 @@ const AddAppointment = props => {
             setServiceErrorMessage('');
             const immediateAppointment = response.data[0];
             setViewDateAndShowSuccessPopup(immediateAppointment.appointmentDefaultResponse.startDateTime);
+            if (isAppointmentSMSEnabled) {
+                sendSMS(await getPhoneNumber(immediateAppointment.appointmentDefaultResponse.patient.uuid, appConfig.smsAttribute), 
+                    getRecurringAppointmentBookingMessage(immediateAppointment, appConfig, intl));
+            }
         } else if (status === 204) {
             setServiceErrorMessage(errorTranslations.noContentErrorMessage);
             resetServiceErrorMessage();
@@ -426,14 +481,11 @@ const AddAppointment = props => {
             return <AppointmentType appointmentType={appointmentDetails.appointmentType}
                     isTeleconsultation={appointmentDetails.teleconsultation}     
                     onChange={(e) => {
-                        if (e.target.name === TELECONSULTATION_APPOINTMENT) {
-                            updateAppointmentDetails({ teleconsultation: e.target.checked });
-                            if (e.target.checked && appointmentDetails.appointmentType === WALK_IN_APPOINTMENT_TYPE) {
-                                updateAppointmentDetails({ appointmentType: VIRTUAL_APPOINTMENT_TYPE });
-                            }
-                            if (!e.target.checked && appointmentDetails.appointmentType === VIRTUAL_APPOINTMENT_TYPE) {
-                                updateAppointmentDetails({ appointmentType: undefined });
-                            }
+                        if (e) {
+                            updateAppointmentDetails({ teleconsultation: e });
+                        }
+                        if (!e && appointmentDetails.appointmentType === VIRTUAL_APPOINTMENT_TYPE) {
+                            updateAppointmentDetails({ appointmentType: undefined });
                         }
                     }} />;
 
@@ -442,38 +494,44 @@ const AddAppointment = props => {
         }
     };
 
+    const popupContent = <CancelConfirmation {...CANCEL_CONFIRMATION_MESSAGE_ADD} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
+
+    const closeButton = <div className={classNames(close)}>
+        <Close20/>
+    </div>
 
     const on = "On";
-    return (<Fragment>
-        <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
+    return (<div className={classNames(overlay)}>
+            <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
+                <CustomPopup triggerComponent={closeButton} popupContent={popupContent} style={customPopup}/>
             <AppointmentEditorCommonFieldsWrapper appointmentDetails={appointmentDetails}
                 updateAppointmentDetails={updateAppointmentDetails}
                 updateErrorIndicators={updateErrorIndicators}
                 endTimeBasedOnService={endTimeBasedOnService}
-                appConfig={appConfig} errors={errors} autoFocus={true} />
-            <div className={classNames(searchFieldsContainer)} data-testid="recurring-plan-checkbox">
+                appConfig={appConfig} errors={errors} autoFocus={true} setSelectedPriority={setSelectedPriority}/>
+            <div data-testid="recurring-plan-checkbox">
                 <div className={classNames(appointmentPlanContainer)}>
-                    <AppointmentPlan appointmentType={appointmentDetails.appointmentType}
-                        onChange={(e) => {
-                            if (appointmentDetails.appointmentType === e.target.name) {
-                                updateAppointmentDetails({ appointmentType: undefined });    
-                            } else {
-                                updateAppointmentDetails({ appointmentType: e.target.name });
-                            }
-                            if (e.target.name === WALK_IN_APPOINTMENT_TYPE) {
-                                updateAppointmentDetails({ teleconsultation: false});
-                            }
-                        }} />
+                    <ContentSwitcher selectedIndex={0} onChange={(e) => {
+                        if (appointmentDetails.appointmentType === e.name) {
+                            updateAppointmentDetails({ appointmentType: undefined });
+                        } else {
+                            updateAppointmentDetails({ appointmentType: e.name });
+                        }
+                        if (e.index === 1) {
+                            updateAppointmentDetails({ teleconsultation: false});
+                        }
+                    }}>
+                        <Switch name="Regular" >Regular Appointment</Switch>
+                        <Switch name="Recurring" disabled={true}>Recurring Appointment</Switch>
+                    </ContentSwitcher>
                 </div>
             </div>
-            <div className={classNames(appointmentTypeContainer)} data-testid="appointment-type-checkbox">
-                <div className={classNames(appointmentPlanContainer)}>
+            <div data-testid="appointment-type-checkbox" className={classNames(teleconsultation)}>
                     {showAppointmentTypeControl()}
-                </div>
             </div>
-            <div className={classNames(recurringContainer)}>
+            <div>
                 {isRecurringAppointment() ?
-                    <div className={classNames(recurringContainerLeft)}>
+                    <div className={classNames(recurringContainerLeft, recurringContainer)}>
                         <div data-testid="start-date-group">
                             <div className={classNames(dateHeading)}>
                                 <Label translationKey="STARTS_LABEL" defaultValue="Starts"/>
@@ -580,58 +638,91 @@ const AddAppointment = props => {
                             </div>
                         </div>
                     </div> :
-                    <div className={classNames(recurringContainerLeft)}>
-                        <div data-testid="date-selector">
-                            <div className={classNames(dateHeading)}>
-                                <Label translationKey="APPOINTMENT_DATE_LABEL" defaultValue="Appointment date"/>
-                            </div>
-                            <AppointmentDatePicker
-                                onChange={date => {
-                                    updateAppointmentDetails({appointmentDate: date});
-                                    updateErrorIndicators({appointmentDateError: !date});
-                                }}
-                                value={appointmentDetails.appointmentDate}
-                                minDate={moment()}/>
-                            <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
-                        </div>
-                        <div>
-                            <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_TIME_LABEL" defaultValue="Choose a time slot"/></div>
-                            <div data-testid="start-time-selector">
-                                <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
-                                              onChange={time => {
-                                                  updateAppointmentDetails({startTime: time});
-                                                  endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
-                                                      appointmentDetails.serviceType && appointmentDetails.serviceType.value);
-                                                  updateErrorIndicators({startTimeError: !time});
-                                              }}/>
-                                <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
-                            </div>
-                            <div data-testid="end-time-selector">
-                                <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
-                                              onChange={time => {
-                                                  updateAppointmentDetails({endTime: time});
-                                                  updateErrorIndicators({
-                                                      startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
-                                                      endTimeError: !time
-                                                  });
-                                              }}/>
-                                <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
-                            </div>
-                            <ErrorMessage
-                                message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
-                        </div>
-                    </div>}
-                <div className={classNames(recurringContainerRight)}>
-                    <div className={classNames(dateHeading)}><Label translationKey="APPOINTMENT_NOTES" defaultValue="Notes"/></div>
+                    <div className={classNames(tableWrapper)}>
+                    <table>
+                        <tr>
+                            <td>
+                                <div data-testid="date-selector">
+                                    <DatePickerCarbon
+                                        value={appointmentDetails.appointmentDate}
+                                        onChange={date => {
+                                            if(date.length > 0) {
+                                                const selectedDate = moment(date[0]).toDate();
+                                                updateAppointmentDetails({appointmentDate: selectedDate});
+                                            } else {
+                                                updateAppointmentDetails({appointmentDate: null});
+                                            }
+                                            updateErrorIndicators({appointmentDateError: !date[0]});
+                                        }}/>
+                                    <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
+                                </div>
+                            </td>
+                            <td/>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div data-testid="start-time-selector">
+                                    <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
+                                                  onChange={time => {
+                                                      if(time && !time.isValid()) {
+                                                        updateAppointmentDetails({startTime: null});
+                                                        updateErrorIndicators({startTimeError: true});
+                                                      }
+                                                      else {
+                                                        updateAppointmentDetails({startTime: time});
+                                                        endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
+                                                            appointmentDetails.serviceType && appointmentDetails.serviceType.value);
+                                                        updateErrorIndicators({startTimeError: !time});
+                                                      }
+                                                  }}/>
+                                    {
+                                        errors.startTimeError ?
+                                            <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/> :<ErrorMessage
+                                                message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div data-testid="end-time-selector">
+                                    <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
+                                                  onChange={time => {
+                                                      if(time && !time.isValid()) {
+                                                        updateAppointmentDetails({endTime: null});
+                                                        updateErrorIndicators({endTimeError: true});
+                                                      }
+                                                      else {
+                                                          updateAppointmentDetails({endTime: time});
+                                                          updateErrorIndicators({
+                                                              startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
+                                                              endTimeError: !time
+                                                          });
+                                                      }
+                                                  }}/>
+                                    <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </table>
+                    </div>
+                }
+            </div>
+                <div data-testid={"appointment-notes"}>
                     <AppointmentNotes value={appointmentDetails.notes} onChange={(event) => updateAppointmentDetails({notes: event.target.value})}/>
                 </div>
-            </div>
-            <AppointmentEditorFooter
-                errorMessage={serviceErrorMessage}
-                checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
-                cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
-                disableSaveAndUpdateButton={disableSaveButton}
-            />
+            {showSuccessPopup ? React.cloneElement(savePopup, {
+                open: true,
+                closeOnDocumentClick: false,
+                closeOnEscape: false
+            }) : undefined}
+        </div>
+        <div  data-testid="Appointment-editer-footer">
+        <AppointmentEditorFooter
+            errorMessage={serviceErrorMessage}
+            checkAndSave={isRecurringAppointment() ? checkAndSaveRecurringAppointments : checkAndSave}
+            cancelConfirmationMessage={CANCEL_CONFIRMATION_MESSAGE_ADD}
+            disableSaveAndUpdateButton={disableSaveButton}
+        />
             {conflicts &&
                 <CustomPopup style={conflictsPopup} open={true}
                              closeOnDocumentClick={false}
@@ -642,13 +733,8 @@ const AddAppointment = props => {
                                                       conflicts={conflicts} service={appointmentDetails.service}
                                                       disableSaveAnywayButton={disableSaveButton}
                                                       isRecurring={appointmentDetails.isRecurring}/>}/>}
-            {showSuccessPopup ? React.cloneElement(savePopup, {
-                open: true,
-                closeOnDocumentClick: false,
-                closeOnEscape: false
-            }) : undefined}
         </div>
-    </Fragment>);
+    </div>);
 };
 
 AddAppointment.propTypes = {
@@ -656,7 +742,8 @@ AddAppointment.propTypes = {
     appConfig: PropTypes.object,
     appointmentParams: PropTypes.object,
     currentProvider: PropTypes.object,
-    urlParams: PropTypes.object
+    urlParams: PropTypes.object,
+    isAppointmentSMSEnabled: PropTypes.bool
 };
 
 export const isVirtual = (appt) => {

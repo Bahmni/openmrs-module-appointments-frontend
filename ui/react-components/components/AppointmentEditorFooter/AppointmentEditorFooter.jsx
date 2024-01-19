@@ -2,8 +2,6 @@ import classNames from "classnames";
 import {
     button,
     footer,
-    footerElements,
-    cancelPopup,
     save,
     errorMessageContainer
 } from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
@@ -16,7 +14,7 @@ import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import {AppContext} from "../AppContext/AppContext";
 import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
-
+import {Button} from "carbon-components-react";
 
 const AppointmentEditorFooter = props => {
 
@@ -29,10 +27,9 @@ const AppointmentEditorFooter = props => {
 
     const popupContent = <CancelConfirmation {...cancelConfirmationMessage} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
 
-    const cancelButton = <button className={classNames(button)} data-testid="cancel">
-                            <i className={classNames("fa", "fa-times")}/>
+    const cancelButton = <Button kind="secondary" style={{width: "270px"}} data-testid="cancel">
                             <span><FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/></span>
-                        </button>;
+                        </Button>;
 
     return (
         <div>
@@ -40,10 +37,10 @@ const AppointmentEditorFooter = props => {
                 <ErrorMessage message={errorMessage} />
             </div>
         <div className={classNames(footer)}>
-            <div className={classNames(footerElements)}>
+            <div>
                 <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
                 {isEdit
-                    ? <button className={classNames(button, save)}
+                    ? <Button kind="secondary" style={{width: "270px"}}  className={classNames(button, save)}
                               onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}
                               disabled={disableSaveAndUpdateButton}
                               data-testid="check-and-save">
@@ -51,13 +48,12 @@ const AppointmentEditorFooter = props => {
                         <span>
                         <FormattedMessage id={'APPOINTMENT_UPDATE_LABEL'} defaultMessage={'Update'}/>
                     </span>
-                    </button>
-                    : <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save" disabled={disableSaveAndUpdateButton}>
-                        <i className={classNames("fa", "fa-check")}/>
+                    </Button>
+                    : <Button kind="primary" style={{width: "270px"}} onClick={checkAndSave} data-testid="check-and-save" disabled={disableSaveAndUpdateButton}>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
                     </span>
-                    </button>}
+                    </Button>}
                 {isOptionsRequired && showUpdateButtons ? <UpdateButtons updateOptionsVisibleStatus={setShowUpdateButtons} checkAndSave={applyForAll =>  checkAndSave(applyForAll)} /> : undefined}
 
             </div>
