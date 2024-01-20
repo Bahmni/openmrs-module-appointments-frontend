@@ -6,7 +6,7 @@ describe("Patient Search", function () {
     beforeEach(module('bahmni.appointments', function ($provide) {
         $location = jasmine.createSpyObj('$location', ['search']);
         $location.search.and.returnValue({});
-        patientService = jasmine.createSpyObj('patientService', ['search','getPatient']);
+        patientService = jasmine.createSpyObj('patientService', ['search', 'getPatient','luceneSearch']);
         patientService.luceneSearch.and.returnValue(specUtil.simplePromise({data: {}}));
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         spinner.forPromise.and.callFake(function (param) {
