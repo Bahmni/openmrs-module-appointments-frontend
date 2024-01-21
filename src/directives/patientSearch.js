@@ -12,7 +12,7 @@ angular.module('bahmni.appointments')
             link: {
                 pre: function ($scope) {
                     $scope.search = function () {
-                        return spinner.forPromise(patientService.search($scope.patient).then(function (response) {
+                        return spinner.forPromise(patientService.luceneSearch($scope.patient).then(function (response) {
                             return response.data.pageOfResults;
                         }));
                     };
