@@ -19,7 +19,7 @@ if (locale) {
 }
 
 const dateToMomentDate = (date) => date === '' || date === null || date === undefined ? date
-    : moment(date, 'MM/DD/YYYY');
+    : moment(date, 'DD/MMM/YYYY');
 const AppointmentDatePicker = (props) => {
     const {minDate, value, onChange, isDisabled, handleDateSelection} = props;
     let calendarStyles = [appointmentDatePicker];
@@ -34,7 +34,7 @@ const AppointmentDatePicker = (props) => {
         onChange(valueEntered);
     };
 
-    const dateInputValue = isDisabled ? '' : (value && value !== '' ? value.format('MM/DD/YYYY') : value);
+    const dateInputValue = isDisabled ? '' : (value && value !== '' ? value.format('DD/MMM/YYYY') : value);
 
     return (
         <div data-testid="datePicker" className={classNames(containerStyles)}>

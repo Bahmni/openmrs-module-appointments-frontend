@@ -15,12 +15,12 @@ const DateInput = (props) =>{
     const validateDate= ({dateValue, minDate, maxDate}) =>{
         const isDateFormatValid = isValidUSDate(dateValue) || dateValue==='';
         if(minDate && isDateFormatValid && dateValue!== ''){
-          if( moment(dateValue, 'MM/DD/YYYY').isBefore(moment(minDate).startOf('day'))) {
+          if( moment(dateValue, 'DD/MMM/YYYY').isBefore(moment(minDate).startOf('day'))) {
               return false;
           }
         }
         if(maxDate && isDateFormatValid && dateValue!== ''){
-            if( moment(dateValue, 'MM/DD/YYYY').isAfter(moment(maxDate).startOf('day'))) {
+            if( moment(dateValue, 'DD/MMM/YYYY').isAfter(moment(maxDate).startOf('day'))) {
                 return false;
             }
         }
@@ -76,7 +76,7 @@ const DateInput = (props) =>{
 
     return(
         <div className={classNames(dateTextHolder)}>
-            <input placeholder="mm/dd/yyyy" onChange={(e) => setComponentValue(e.target.value)}
+            <input placeholder="dd/mmm/yyyy" onChange={(e) => setComponentValue(e.target.value)}
                    className={classNames(inputFieldStyles)}
                    onKeyDown={handleKeyDown}
                    ref={inputRef}

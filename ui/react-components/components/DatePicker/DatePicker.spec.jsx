@@ -48,8 +48,8 @@ describe('DatePicker', () => {
         const {container, getByPlaceholderText} = render(<AppointmentDatePicker value={fiveDaysFromToday}/>);
         const dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(fiveDaysFromToday.date().toFixed(0));
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(fiveDaysFromToday.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mmm/yyyy');
+        expect(dateInputField.value).toBe(fiveDaysFromToday.format('DD/MMM/YYYY'));
     })
 
     it('should not allow entry of date before min date and should fallback to previously selected date',()=>{
@@ -59,15 +59,15 @@ describe('DatePicker', () => {
                                                                                 minDate={minDate}/>);
         let dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(fiveDaysFromToday.date().toFixed(0));
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(fiveDaysFromToday.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mmm/yyyy');
+        expect(dateInputField.value).toBe(fiveDaysFromToday.format('DD/MMM/YYYY'));
 
         fireEvent.change(dateInputField, {target:{value: minDate.subtract(1, 'days')
-                    .format('MM/DD/YYYY')}})
+                    .format('DD/MMM/YYYY')}})
         fireEvent.blur(dateInputField);
         dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(fiveDaysFromToday.date().toFixed(0));
-        expect(dateInputField.value).toBe(fiveDaysFromToday.format('MM/DD/YYYY'));
+        expect(dateInputField.value).toBe(fiveDaysFromToday.format('DD/MMM/YYYY'));
     })
 
     it('should update the calendar and the input field when new valid date is entered inside the input field',()=>{
@@ -79,15 +79,15 @@ describe('DatePicker', () => {
                                                                                 minDate={minDate}/>);
         let dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(fiveDaysFromToday.date().toFixed(0));
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(fiveDaysFromToday.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mmm/yyyy');
+        expect(dateInputField.value).toBe(fiveDaysFromToday.format('DD/MMM/YYYY'));
 
-        fireEvent.change(dateInputField, {target:{value: newSelectedDate.format('MM/DD/YYYY')}})
+        fireEvent.change(dateInputField, {target:{value: newSelectedDate.format('DD/MMM/YYYY')}})
         fireEvent.blur(dateInputField);
 
         dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(newSelectedDate.date().toFixed(0));
-        expect(dateInputField.value).toBe(newSelectedDate.format('MM/DD/YYYY'));
+        expect(dateInputField.value).toBe(newSelectedDate.format('DD/MMM/YYYY'));
     })
 
     it('should update the calendar and the input field when new valid date is selected from the calendar view', async ()=>{
@@ -97,8 +97,8 @@ describe('DatePicker', () => {
         let dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(today.date().toFixed(0));
 
-        let dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
+        let dateInputField = getByPlaceholderText('dd/mmm/yyyy');
+        expect(dateInputField.value).toBe(today.format('DD/MMM/YYYY'));
 
         const nextMonth =today.add(1, 'months');
         const nextButton = container.querySelector('.react-datepicker__navigation--next');
@@ -111,8 +111,8 @@ describe('DatePicker', () => {
         dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(selectedDate.date().toFixed(0));
 
-        dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
+        dateInputField = getByPlaceholderText('dd/mmm/yyyy');
+        expect(dateInputField.value).toBe(selectedDate.format('DD/MMM/YYYY'));
 
     })
 
@@ -120,7 +120,7 @@ describe('DatePicker', () => {
         const fiveDaysFromToday = moment().add(5, 'days');
         const {container, getByPlaceholderText, getByTestId} = render(<AppointmentDatePicker value={fiveDaysFromToday}
                                                                                 isDisabled={true}/>);
-        let dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        let dateInputField = getByPlaceholderText('dd/mmm/yyyy');
         expect(dateInputField.disabled).toBe(true);
         const dateCalendarContainer = getByTestId('datePicker-Calendar');
         expect(dateCalendarContainer).toHaveAttribute('disabled');
@@ -131,7 +131,7 @@ describe('DatePicker', () => {
         const fiveDaysFromToday = moment().add(5, 'days');
         const {container, getByPlaceholderText, getByTestId} = render(<AppointmentDatePicker value={fiveDaysFromToday}
                                                                                              isDisabled={false}/>);
-        let dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        let dateInputField = getByPlaceholderText('dd/mmm/yyyy');
         expect(dateInputField.disabled).toBe(false);
         const dateCalendarContainer = getByTestId('datePicker-Calendar');
         expect(dateCalendarContainer).not.toHaveAttribute('disabled');
@@ -141,7 +141,7 @@ describe('DatePicker', () => {
         const fiveDaysFromToday = moment().add(5, 'days');
         const {container, getByPlaceholderText, getByTestId} = render(<AppointmentDatePicker value={fiveDaysFromToday}
                                                                                              isDisabled={true}/>);
-        let dateInputField = getByPlaceholderText('mm/dd/yyyy');
+        let dateInputField = getByPlaceholderText('dd/mmm/yyyy');
         expect(dateInputField.disabled).toBe(true);
         const dateCalendarContainer = getByTestId('datePicker-Calendar');
         expect(dateCalendarContainer).toHaveAttribute('disabled');
@@ -191,15 +191,15 @@ describe('DatePicker', () => {
                                                                         minDate={minDate}/>);
         let dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(fiveDaysFromToday.date().toFixed(0));
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(fiveDaysFromToday.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mmm/yyyy');
+        expect(dateInputField.value).toBe(fiveDaysFromToday.format('DD/MMM/YYYY'));
 
-        fireEvent.change(dateInputField, {target:{value: newSelectedDate.format('MM/DD/YYYY')}})
+        fireEvent.change(dateInputField, {target:{value: newSelectedDate.format('DD/MMM/YYYY')}})
         fireEvent.blur(dateInputField);
 
         dateSelectedField = container.querySelector('.react-datepicker__day--selected');
         expect(dateSelectedField.textContent).toBe(newSelectedDate.date().toFixed(0));
-        expect(dateInputField.value).toBe(newSelectedDate.format('MM/DD/YYYY'));
+        expect(dateInputField.value).toBe(newSelectedDate.format('DD/MMM/YYYY'));
 
         let datePickerHeader = getByTestId('date-picker-header-label');
         const monthYearHeader = datePickerHeader.childNodes[0];
