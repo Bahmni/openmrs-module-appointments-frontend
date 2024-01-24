@@ -9,9 +9,8 @@ angular.module('bahmni.appointments')
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
 
             $scope.navigateTo = function (viewName) {
-                $scope.currentTab = viewName;
-                var path = 'home.manage.appointments.' + viewName;
                 $state.params.appointmentsData = $rootScope.appointmentsData;
+                var path = "home.manage." + viewName
                 $state.go(path, $state.params, {reload: false});
             };
 

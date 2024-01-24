@@ -40,6 +40,7 @@ describe('AppointmentsListViewController', function () {
             rootScope.currentProvider = {};
             rootScope.currentUser = {};
             scope.selectedAppointment = {};
+            $state.current = {tabName : "appointments"};
         });
     });
 
@@ -708,20 +709,22 @@ describe('AppointmentsListViewController', function () {
         });
 
         it("should have table info", function () {
-            var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
-                {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
-                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
-                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
-                {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: true},
-                {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
-                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
-                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
-                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+            var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', class: true,enable: true},
+            {heading: 'APPOINTMENT_CREATION_DATE', sortInfo: 'dateCreated', class: true, enable: false},
+            {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
+            {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
+            {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
+            {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'comments', class: true, enable: false},
+            {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: true},
+            {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
+            {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
+            {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
+            {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
                 createController();
 
                 expect(scope.tableInfo).toEqual(tableInfo);
@@ -1562,7 +1565,28 @@ describe('AppointmentsListViewController', function () {
             createController();
             scope.acceptInviteForCurrentProvider();
         });
-
+    });
+    
+    it("should have table info for awaiting appointments", function () {
+        $state.current.tabName = "awaitingappointments";
+        var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', class: true, enable: true},
+        {heading: 'APPOINTMENT_CREATION_DATE', sortInfo: 'dateCreated', class: true, enable: true},
+        {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
+        {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: false},
+        {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: false},
+        {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: false},
+        {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
+        {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'comments', class: true, enable: true},
+        {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: true},
+        {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
+        {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: true},
+        {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
+        {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: false},
+        {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
+        {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
+        {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+            createController();
+            expect(scope.tableInfo).toEqual(tableInfo);
     });
 
 });

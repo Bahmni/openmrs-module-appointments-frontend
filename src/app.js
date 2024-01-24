@@ -77,7 +77,8 @@ angular
                 }
             }).state('home.manage.appointments.calendar', {
                 url: '/calendar',
-                tabName: 'calendar',
+                tabName: 'appointments',
+                view: 'calendar',
                 params: {
                     viewDate: null,
                     doFetchAppointmentsData: true,
@@ -92,6 +93,7 @@ angular
                 }
             }).state('home.manage.appointments.calendar.new', {
                 url: '/new',
+                tabName: 'appointments',
                 params: {
                     appointment: null
                 },
@@ -110,6 +112,7 @@ angular
                 }
             }).state('home.manage.appointments.calendar.edit', {
                 url: '/:uuid?isRecurring',
+                tabName: 'appointments',
                 params: {
                     isRecurring: null
                 },
@@ -120,7 +123,8 @@ angular
                 }
             }).state('home.manage.appointments.list', {
                 url: '/list',
-                tabName: 'list',
+                tabName: 'appointments',
+                view:'list',
                 params: {
                     viewDate: null,
                     patient: null,
@@ -135,6 +139,7 @@ angular
                 }
             }).state('home.manage.appointments.list.new', {
                 url: '/new',
+                tabName: 'appointments',
                 views: {
                     'content@appointment': {
                         template: '<react-add-appointment-wrapper />'
@@ -150,6 +155,68 @@ angular
                 }
             }).state('home.manage.appointments.list.edit', {
                 url: '/:uuid?isRecurring',
+                tabName: 'appointments',
+                params: {
+                    isRecurring: null
+                },
+                views: {
+                    'content@appointment': {
+                        template: '<react-add-appointment-wrapper />'
+                    }
+                }
+            }).state('home.manage.awaitingappointments', {
+                url: '/awaiting-appointments',
+                params: {
+                    filterParams: {},
+                    isFilterOpen: true,
+                    isSearchEnabled: false
+                },
+                views: {
+                    'filter': {
+                        template: require('./views/manage/appointmentFilter.html'),
+                        controller: 'AppointmentsFilterController'
+                    },
+                    'content@manage': {
+                        template: require('./views/manage/allAppointments.html'),
+                        controller: 'AllAppointmentsController'
+                    }
+
+                }
+            }).state('home.manage.awaitingappointments.list', {
+                url: '/list',
+                tabName: 'awaitingappointments',
+                view: 'list',
+                params: {
+                    viewDate: null,
+                    patient: null,
+                    doFetchAppointmentsData: true,
+                    appointmentsData: null
+                },
+                views: {
+                    'content@viewAppointments': {
+                        template: require('./views/manage/list/listView.html'),
+                        controller: 'AppointmentsListViewController'
+                    }
+                }
+            }).state('home.manage.awaitingappointments.list.new', {
+                url: '/new',
+                tabName: 'awaitingappointments',
+                views: {
+                    'content@appointment': {
+                        template: '<react-add-appointment-wrapper />'
+                    }
+                },
+                resolve: {
+                    appointmentContext: ['appointmentInitialization', '$stateParams', function (appointmentInitialization, $stateParams) {
+                        return appointmentInitialization($stateParams);
+                    }],
+                    appointmentCreateConfig: ['initializeConfig', 'appointmentConfigInitialization', 'appointmentContext', function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                        return appointmentConfigInitialization(appointmentContext);
+                    }]
+                }
+            }).state('home.manage.awaitingappointments.list.edit', {
+                url: '/:uuid?isRecurring',
+                tabName: 'awaitingappointments',
                 params: {
                     isRecurring: null
                 },

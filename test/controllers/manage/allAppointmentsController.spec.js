@@ -31,22 +31,22 @@ describe('AllAppointmentsController', function () {
     it("should navigate to calendar view if calendar button in pressed", function () {
         state.params = {filterParams: {serviceUuids: ['serviceUuid1']}};
         createController();
-        scope.navigateTo('calendar');
+        scope.navigateTo('appointments.calendar');
         expect(state.go).toHaveBeenCalledWith('home.manage.appointments.calendar', state.params, {reload: false});
     });
 
     it("should navigate to list view if list button is pressed", function () {
         state.params = {filterParams: {serviceUuids: ['serviceUuid1']}};
         createController();
-        scope.navigateTo('list');
+        scope.navigateTo('appointments.list');
         expect(state.go).toHaveBeenCalledWith('home.manage.appointments.list', state.params, {reload: false});
     });
 
     it("should get tabName from state.current", function () {
-        state.current = {tabName : 'calendar'};
+        state.current = {tabName : 'appointments'};
         createController();
         var tabName = scope.getCurrentAppointmentTabName();
-        expect(tabName).toBe("calendar");
+        expect(tabName).toBe("appointments");
     });
 
 });

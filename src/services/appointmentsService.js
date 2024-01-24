@@ -32,7 +32,7 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            this.getAllAppointments = function (params) {
+            this.getAllAppointments = function (params = {}) {
                 return $http.get(Bahmni.Appointments.Constants.getAllAppointmentsUrl, {
                     params: params,
                     withCredentials: true,
