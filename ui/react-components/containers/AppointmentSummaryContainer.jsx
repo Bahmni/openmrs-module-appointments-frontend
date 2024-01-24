@@ -67,20 +67,24 @@ class AppointmentSummaryContainer extends Component {
         const servicesTitle = <FormattedMessage id={'SERVICES'} defaultMessage={'Services'}/>
         const locationsTitle = <FormattedMessage id={'LOCATIONS'} defaultMessage={'Locations'}/>
         const specialitiesTitle = <FormattedMessage id={'SPECIALITIES'} defaultMessage={'Specialities'}/>
+        const noAppointmentsMessageProviders = <FormattedMessage id={'PROVIDERS_NO_APPOINTMENTS_MESSAGE'} defaultMessage={'Providers'}/>
+        const noAppointmentsMessageServices = <FormattedMessage id={'SERVICES_NO_APPOINTMENTS_MESSAGE'} defaultMessage={'Services'}/>
+        const noAppointmentsMessageLocations = <FormattedMessage id={'LOCATIONS_NO_APPOINTMENTS_MESSAGE'} defaultMessage={'Locations'}/>
+        const noAppointmentsMessageSpecialities = <FormattedMessage id={'SPECIALITIES_NO_APPOINTMENTS_MESSAGE'} defaultMessage={'Specialities'}/>
         return (
             <AppContext.Provider value={{ goToListView, setStartDate, setEndDate, state, startDate, endDate, fullSummary }}>
                 <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
                     <DateOrWeekNavigator isWeek={true} weekStart={1} />
                     { fullSummary? (
                         <div>
-                            <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={specialitiesTitle}/>
+                            <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={specialitiesTitle} noAppointmentsMessage={noAppointmentsMessageSpecialities}/>
                             <hr/>
-                            <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={providersTitle}/>
+                            <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={providersTitle} noAppointmentsMessage={noAppointmentsMessageProviders}/>
                             <hr/>
                             <GridSummary gridData={sortBy(data, row => row.rowLabel.toLowerCase())}
-                                         weekStartDate={startDate} onClick={goToListView} gridName={servicesTitle}/>
+                                         weekStartDate={startDate} onClick={goToListView} gridName={servicesTitle} noAppointmentsMessage={noAppointmentsMessageServices}/>
                             <hr/>
-                            <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={locationsTitle}/>
+                            <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={locationsTitle} noAppointmentsMessage={noAppointmentsMessageLocations}/>
                             <br/>
                         </div>) : (
                         <GridSummary gridData={ data } weekStartDate={startDate} onClick={goToListView}/>

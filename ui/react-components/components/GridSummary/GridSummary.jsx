@@ -92,7 +92,7 @@ export const transformAppointmentsData = (data) => {
 }
 
 const GridSummary = props => {
-  const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick, gridName } = props;
+  const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick, gridName, noAppointmentsMessage } = props;
   let week = []
   const { fullSummary } = React.useContext(AppContext)
   const intl = useIntl();
@@ -105,7 +105,7 @@ const GridSummary = props => {
               <tr>
                 <td></td>
                 <td className={noAppointments}>
-                  {intl.formatMessage({id: "NO_APPOINTMENT_SUMMARY_VIEW", defaultMessage: `This week, no appointments are available for any of the {gridName}`}, {gridName: gridName})}
+                  {noAppointmentsMessage}
                 </td>
               </tr>
             </tbody>
