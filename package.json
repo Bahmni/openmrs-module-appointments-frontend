@@ -61,7 +61,7 @@
         "angular-translate-storage-local": "*",
         "angular-ui-calendar": "1.0.2",
         "angular-ui-select2": "0.0.5",
-        "bahmni-commons-ng": "0.0.1",
+        "bahmni-commons-ng": "0.0.2",
         "fullcalendar": "2.7.3",
         "fullcalendar-scheduler": "1.3.2",
         "jquery": "1.9.1",
