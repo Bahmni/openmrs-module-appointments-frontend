@@ -6,14 +6,14 @@ import{
     disable
 } from './DateInput.module.scss'
 import classNames from 'classnames';
-import {isValidUSDate} from '../../utils/DateUtil'
+import {isValidDate} from '../../utils/DateUtil'
 import PropTypes from "prop-types";
 import moment from "moment";
 import {isNil} from 'lodash'
 
 const DateInput = (props) =>{
     const validateDate= ({dateValue, minDate, maxDate}) =>{
-        const isDateFormatValid = isValidUSDate(dateValue) || dateValue==='';
+        const isDateFormatValid = isValidDate(dateValue) || dateValue==='';
         if(minDate && isDateFormatValid && dateValue!== ''){
           if( moment(dateValue, 'DD/MMM/YYYY').isBefore(moment(minDate).startOf('day'))) {
               return false;

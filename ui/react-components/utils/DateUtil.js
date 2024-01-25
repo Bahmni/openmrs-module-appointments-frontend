@@ -12,7 +12,7 @@ export const isStartTimeBeforeEndTime = (startDateTime, endDateTime) => {
     return (!startDateTime || !endDateTime) || moment(startDateTime).isBefore(moment(endDateTime));
 };
 
-export const isValidUSDate= (dateValue) =>{
+export const isValidDate= (dateValue) =>{
     let selectedDate = dateValue;
 
     if (_.isNil(selectedDate) || selectedDate === '') {
