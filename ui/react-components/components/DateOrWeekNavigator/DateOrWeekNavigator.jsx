@@ -9,15 +9,17 @@ import PropTypes from "prop-types";
 import {getWeekEndDate, getWeekStartDate} from "../../utils/DateOrWeekNavigator/weekDatesHelper";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {AppContext} from "../AppContext/AppContext";
 
 const DateOrWeekNavigator = (props) => {
 
-    const {isWeek, weekStart} = props;
+    const { isWeek, weekStart } = props;
+    let { setStartDate, setEndDate } = React.useContext(AppContext);
 
     const initialDates = {
         viewDate: moment().format('YYYY-MM-DD'),
-        weekStartDate: getWeekStartDate(moment().toDate(), weekStart),
-        weekEndDate: getWeekEndDate(moment().toDate(), weekStart)
+        weekStartDate: getWeekStartDate(moment().toDate(), weekStart).format('DD MMM'),
+        weekEndDate: getWeekEndDate(moment().toDate(), weekStart).format('DD MMM')
     };
 
     const [calendarDates, setCalendarDates] = useState(initialDates);
@@ -37,11 +39,15 @@ const DateOrWeekNavigator = (props) => {
 
 
     const updateViewDateAndWeekDays = (date) => {
+        const startDate = getWeekStartDate(date, weekStart);
+        const endDate = getWeekEndDate(date, weekStart)
         setCalendarDates({
             viewDate: moment(date).format('YYYY-MM-DD'),
-            weekStartDate: getWeekStartDate(date, weekStart),
-            weekEndDate: getWeekEndDate(date, weekStart)
+            weekStartDate: startDate.format('DD MMM'),
+            weekEndDate: endDate.format('DD MMM')
         });
+        setStartDate(startDate)
+        setEndDate(endDate)
     };
 
 

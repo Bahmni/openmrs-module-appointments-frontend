@@ -16,8 +16,10 @@ export const recurringAppointmentFetchUrl = reactConfig["recurringAppointmentFet
 export const recurringAppointmentsSaveUrl = reactConfig["recurringAppointmentsSaveUrl"];
 export const appointmentConflictsUrl = reactConfig["appointmentConflictsUrl"];
 export const recurringAppointmentsConflictsUrl = reactConfig["recurringAppointmentsConflictsUrl"];
-
+export const appointmentSummaryUrl = reactConfig["appointmentSummaryUrl"];
+export const searchAppointmentsUrl = reactConfig["searchAppointmentsUrl"];
 export const i18nConfigPath = reactConfig["i18nConfigPath"];
+
 export const BAHMNI_CONFIG_URL = reactConfig["BAHMNI_CONFIG_URL"];
 export const IMPLEMENTATION_CONFIG_URL = reactConfig["IMPLEMENTATION_CONFIG_URL"];
 export const locationTagName = reactConfig["locationTagName"];
