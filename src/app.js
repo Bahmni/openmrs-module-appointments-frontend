@@ -53,8 +53,7 @@ angular
                 },
                 views: {
                     'content@manage': {
-                        template: require('./views/manage/appointmentsSummary.html'),
-                        controller: 'AppointmentsSummaryController'
+                        template: '<react-appointment-summary-wrapper />'
                     }
                 }
             }).state('home.manage.appointments', {

@@ -426,8 +426,8 @@ describe('Add Appointment', () => {
             appointmentParams={appointmentParams}/>);
         expect(container.querySelectorAll('.bx--time-picker__input-field')[0].value).toBe(today.format('h:mm').toLowerCase());
         expect(container.querySelectorAll('.bx--time-picker__input-field')[1].value).toBe(addTwoHoursFromNow.format('h:mm').toLowerCase());
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mmm/yyyy');
+        expect(dateInputField.value).toBe(today.format('DD/MMM/YYYY'));
     });
 
     it('should populate the start date, start time and end time coming as prop for recurring appointment', function () {
@@ -446,9 +446,9 @@ describe('Add Appointment', () => {
         expect(container.querySelectorAll('.bx--time-picker__input-field')[0].value).toBe(today.format('h:mm').toLowerCase());
         expect(container.querySelectorAll('.bx--time-picker__input-field')[1].value).toBe(addTwoHoursFromNow.format('h:mm').toLowerCase());
 
-        const dateInputField = getAllByPlaceholderText('mm/dd/yyyy')[0];
+        const dateInputField = getAllByPlaceholderText('dd/mmm/yyyy')[0];
 
-        expect(dateInputField.value).toBe(today.format('MM/DD/YYYY'));
+        expect(dateInputField.value).toBe(today.format('DD/MMM/YYYY'));
     });
 
     it('should not add second provider when maxAppointmentProvidersAllowed is 1', async () => {
@@ -550,8 +550,8 @@ describe('Add Appointment', () => {
         const {container, getByPlaceholderText, queryByText} = renderWithReactIntl(<AddAppointment appConfig={config}/>);
         const selectedDate = clickOnFirstDayOfNextMonth(container);
 
-        const dateInputField = getByPlaceholderText('mm/dd/yyyy');
-        expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
+        const dateInputField = getByPlaceholderText('dd/mmm/yyyy');
+        expect(dateInputField.value).toBe(selectedDate.format('DD/MMM/YYYY'));
 
     });
     it('should fetch patient details on load if patient is present in url params', () => {
