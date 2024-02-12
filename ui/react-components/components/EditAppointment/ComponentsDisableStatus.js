@@ -2,7 +2,7 @@ import {isAppointmentScheduledOrCheckedIn} from "../../utils/AppointmentUtil";
 import moment from "moment";
 import {APPOINTMENT_STATUSES} from "../../constants";
 
-export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEditable) => {
+export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEditable, appConfig={}) => {
     const componentDisableStatus = {
         patient: true,
         speciality: true,
@@ -31,6 +31,8 @@ export const getComponentsDisableStatus = (appointment, isServiceOnAppointmentEd
         componentDisableStatus.providers = false;
         componentDisableStatus.location = false;
         componentDisableStatus.priority = false;
+        componentDisableStatus.startDate = !!appConfig.disableDatesForWaitListAppointment;
+        componentDisableStatus.time = !!appConfig.disableDatesForWaitListAppointment;
     }
 
     if (isPastAppointment)

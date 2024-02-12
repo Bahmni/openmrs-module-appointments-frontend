@@ -445,8 +445,6 @@ const AddAppointment = props => {
         setDisableSaveButton(false);
     };
 
-
-
     const checkAndSaveRecurringAppointments = async () => {
         setDisableSaveButton(true);
         if (isValidRecurringAppointment()) {
@@ -775,7 +773,7 @@ const AddAppointment = props => {
                         <div data-testid="date-selector">
                             <DatePickerCarbon
                                 value={appointmentDetails.appointmentDate}
-                                isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList}
+                                isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList && !!appConfig.disableDatesForWaitListAppointment}
                                 onChange={date => {
                                     if(date.length > 0) {
                                         const selectedDate = moment(date[0]).toDate();
@@ -795,7 +793,7 @@ const AddAppointment = props => {
                         <div style={{display: "flex"}}>
                             <div style={{marginRight: "5px"}} data-testid="start-time-selector">
                             <TimeSelector {...appointmentStartTimeProps(appointmentDetails.startTime)}
-                                        isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList}
+                                        isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList && !!appConfig.disableDatesForWaitListAppointment}
                                         isRequired={requiredFields.appointmentStartTime}
                                         onChange={time => {
                                             if(time && !time.isValid()) {
@@ -814,7 +812,7 @@ const AddAppointment = props => {
                             <div data-testid="end-time-selector">
                                 <TimeSelector {...appointmentEndTimeProps(appointmentDetails.endTime)}
                                             isRequired={requiredFields.appointmentEndTime}
-                                            isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList}
+                                            isDisabled={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList && !!appConfig.disableDatesForWaitListAppointment}
                                             onChange={time => {
                                                 if(time && !time.isValid()) {
                                                     updateAppointmentDetails({endTime: null});

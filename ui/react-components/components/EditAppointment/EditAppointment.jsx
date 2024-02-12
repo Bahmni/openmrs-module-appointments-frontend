@@ -555,7 +555,7 @@ const EditAppointment = props => {
 
     useEffect(() => {
         const setDisableStatus = (appointmentResponse) => setComponentsDisableStatus(getComponentsDisableStatus(appointmentResponse,
-            appConfig && appConfig.isServiceOnAppointmentEditable));
+            appConfig && appConfig.isServiceOnAppointmentEditable, appConfig));
         generateAppointmentDetails(setDisableStatus).then();
     }, [appConfig]);
 
@@ -584,8 +584,8 @@ const EditAppointment = props => {
                 startTimeBeforeEndTimeError: undefined,
                 endTimeError: undefined
             });
-            componentsDisableStatus.startDate = true;
-            componentsDisableStatus.time = true;
+            componentsDisableStatus.startDate = !!appConfig.disableDatesForWaitListAppointment;
+            componentsDisableStatus.time = !!appConfig.disableDatesForWaitListAppointment;
             updateRequired({appointmentStartDate: false, appointmentStartTime: false, appointmentEndTime: false});
         }
         else if(value === APPOINTMENT_STATUSES.Scheduled){
@@ -660,7 +660,7 @@ const EditAppointment = props => {
                                 }
                                 updateErrorIndicators({appointmentDateError: !date[0]});
                             }}
-                            value={appointmentDetails.status === APPOINTMENT_STATUSES.WaitList ? "" : appointmentDetails.appointmentDate}
+                            value={appointmentDetails.appointmentDate}
                             isDisabled={componentsDisableStatus.startDate}
                             minDate={getMinDate(appointmentDetails.appointmentDate)}
                             isRequired={requiredFields.appointmentStartDate}

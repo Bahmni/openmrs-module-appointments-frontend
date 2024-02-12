@@ -141,7 +141,7 @@ angular.module('bahmni.appointments')
             var parseAppointments = function (allAppointments, filterParams) {
                 if (allAppointments) {
                     var appointments = allAppointments.filter(function (appointment) {
-                        return appointment.status !== 'Cancelled';
+                        return appointment.status !== 'Cancelled' && appointment.status !== 'WaitList';
                     });
 
                     var resources = _.chain(appointments)

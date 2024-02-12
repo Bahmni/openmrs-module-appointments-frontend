@@ -16,6 +16,7 @@ angular.module('bahmni.appointments')
 
             $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
             $scope.isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
+            $scope.disableDatesForWaitListAppointment = appService.getAppDescriptor().getConfigValue('disableDatesForWaitListAppointment');
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
@@ -29,9 +30,9 @@ angular.module('bahmni.appointments')
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
-            const APPOINTMENT_STATUS_WAITLIST = {
-                "isDatelessAppointments": true
-            }
+            const APPOINTMENT_STATUS_WAITLIST = $scope.disableDatesForWaitListAppointment ?
+                {"isDatelessAppointments": true} :
+                {"status" : "WaitList"}
             const APPOINTMENTS_TAB_NAME = "appointments";
             const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
@@ -57,6 +58,7 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: $scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY', sortInfo: 'startDateTime', class: true, enable: (!$scope.disableDatesForWaitListAppointment && $scope.getCurrentTabName() === 'awaitingappointments')},
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             }

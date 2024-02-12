@@ -50,6 +50,7 @@
                 <td>{{translateAppointmentStatus(appointment.status)}}</td>
                 <td ng-show="::enableColumnsForAppointments">{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td class="table-mid-width">{{::appointment.location.name}}</td>
+                <td class="table-mid-width" ng-show="!disableDatesForWaitListAppointment && getCurrentTabName() === 'awaitingappointments'">{{appointment.startDateTime | bahmniDateTime}} - {{appointment.endDateTime | bahmniDateTime}} </td>
                 <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
                 <td>{{::appointment.comments}}</td>
             </tr>
