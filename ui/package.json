@@ -155,5 +155,8 @@
       "jest-watch-typeahead/filename",
       "jest-watch-typeahead/testname"
     ]
+  },
+  "resolutions": {
+    "@ibm/telemetry-js": "1.1.0"
   }
 }

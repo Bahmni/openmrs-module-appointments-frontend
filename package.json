@@ -81,5 +81,8 @@
         "carbon-components": "^10.19.0",
         "carbon-icons": "^7.0.7"
     },
-    "readmeFilename": "README.md"
+    "readmeFilename": "README.md",
+    "resolutions": {
+        "@ibm/telemetry-js": "1.1.0"
+    }
 }
