@@ -613,12 +613,12 @@ const EditAppointment = props => {
                                                   requiredFields={requiredFields}
                                                   componentsDisableStatus={componentsDisableStatus}/>
             <div data-testid="recurring-plan-checkbox">
-                    <div className={classNames(appointmentPlanContainer)}>
-                        <ContentSwitcher selectedIndex={recurring? 1 : 0} >
-                            <Switch name="Regular" text={intl.formatMessage({id: 'REGULAR_APPOINTMENT_LABEL', defaultMessage: "Regular Appointment"})}/>
-                            <Switch name="Recurring" text={intl.formatMessage({id: 'RECURRING_APPOINTMENT_LABEL', defaultMessage: "Recurring Appointment"})}/>
-                        </ContentSwitcher>
-                    </div>
+                <div className={classNames(appointmentPlanContainer)}>
+                    <ContentSwitcher selectedIndex={recurring? 1 : 0} >
+                        <Switch name="Regular" disabled={recurring}text={intl.formatMessage({id: 'REGULAR_APPOINTMENT_LABEL', defaultMessage: "Regular Appointment"})}/>
+                        <Switch name="Recurring" disabled={!recurring}text={intl.formatMessage({id: 'RECURRING_APPOINTMENT_LABEL', defaultMessage: "Recurring Appointment"})}/>
+                    </ContentSwitcher>
+                </div>
             </div>
             <div data-testid="appointment-type-checkbox" className={classNames(teleconsultation)}>
                 {showAppointmentTypeControl()}
