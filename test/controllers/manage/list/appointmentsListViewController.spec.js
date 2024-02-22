@@ -723,6 +723,7 @@ describe('AppointmentsListViewController', function () {
             {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
             {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
             {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
+            { heading : 'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY', sortInfo : 'startDateTime', class : true, enable : false },
             {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
             {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
                 createController();
@@ -1566,7 +1567,7 @@ describe('AppointmentsListViewController', function () {
             scope.acceptInviteForCurrentProvider();
         });
     });
-    
+
     it("should have table info for awaiting appointments", function () {
         $state.current.tabName = "awaitingappointments";
         var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', class: true, enable: true},
@@ -1583,6 +1584,7 @@ describe('AppointmentsListViewController', function () {
         {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
         {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: false},
         {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
+        {heading: 'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY', sortInfo: 'startDateTime', class: true, enable: false},
         {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
         {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             createController();
