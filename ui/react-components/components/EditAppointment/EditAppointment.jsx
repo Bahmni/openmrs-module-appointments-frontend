@@ -615,8 +615,8 @@ const EditAppointment = props => {
             <div data-testid="recurring-plan-checkbox">
                     <div className={classNames(appointmentPlanContainer)}>
                         <ContentSwitcher selectedIndex={recurring? 1 : 0} >
-                            <Switch name="Regular" disabled={recurring}>Regular Appointment</Switch>
-                            <Switch name="Recurring" disabled={!recurring}>Recurring Appointment</Switch>
+                            <Switch name="Regular" text={intl.formatMessage({id: 'REGULAR_APPOINTMENT_LABEL', defaultMessage: "Regular Appointment"})}/>
+                            <Switch name="Recurring" text={intl.formatMessage({id: 'RECURRING_APPOINTMENT_LABEL', defaultMessage: "Recurring Appointment"})}/>
                         </ContentSwitcher>
                     </div>
             </div>

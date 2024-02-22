@@ -567,8 +567,8 @@ const AddAppointment = props => {
                             updateAppointmentDetails({ appointmentType: e.name });
                         }
                     }}>
-                        <Switch name="Regular" >Regular Appointment</Switch>
-                        <Switch name="Recurring">Recurring Appointment</Switch>
+                        <Switch name="Regular" text={intl.formatMessage({id: 'REGULAR_APPOINTMENT_LABEL', defaultMessage: "Regular Appointment"})}/>
+                        <Switch name="Recurring" text={intl.formatMessage({id: 'RECURRING_APPOINTMENT_LABEL', defaultMessage: "Recurring Appointment"})}/>
                     </ContentSwitcher>
                 </div>
             </div>
