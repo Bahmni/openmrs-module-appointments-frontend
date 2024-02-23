@@ -10,6 +10,10 @@
     "test": "test"
   },
   "dependencies": {
+    "@carbon/icons-react": "^10.18.0",
+    "carbon-components-react": "7.55.1",
+    "carbon-components": "^10.19.0",
+    "carbon-icons": "^7.0.7",
     "axios": "^0.19.0",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
@@ -50,6 +54,8 @@
     "@testing-library/jest-dom": "^4.1.0",
     "@testing-library/react": "^9.1.4",
     "@testing-library/react-hooks": "^3.4.1",
+    "@types/carbon-components-react": "^7.55.1",
+    "carbon-components": "^10.19.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
@@ -149,5 +155,8 @@
       "jest-watch-typeahead/filename",
       "jest-watch-typeahead/testname"
     ]
+  },
+  "resolutions": {
+    "@ibm/telemetry-js": "1.1.0"
   }
 }

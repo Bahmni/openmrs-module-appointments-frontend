@@ -112,7 +112,7 @@
       "angularCalendarDaysOfWeek": [0,1,2,3,4,5,6],
       "defaultWeekStartDayName": "Sunday",
       "minDurationForAppointment": 30,
-      "appointmentStatusList": ["Requested","Scheduled","CheckedIn","Completed","Cancelled","Missed"],
+      "appointmentStatusList": ["Requested","Scheduled","CheckedIn","Completed","Cancelled","Missed", "WaitList"],
       "regexForTime": "(?:(?:1[0-2]|0?[1-9]):[0-5]\\d\\s*[AaPp][Mm])?",
       "privilegeManageAppointments": "app:appointments:manageAppointmentsTab",
       "privilegeForAdmin": "app:appointments:adminTab",

@@ -1,38 +1,26 @@
 import classNames from "classnames";
-import {
-    button,
-    footer,
-    footerElements,
-    cancelPopup,
-    save,
-    errorMessageContainer
-} from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
+import { footer, errorMessageContainer} from "../AppointmentEditorFooter/AppointmentEditorFooter.module.scss";
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {FormattedMessage} from "react-intl";
 import CancelConfirmation from "../CancelConfirmation/CancelConfirmation.jsx";
-import CustomPopup from "../CustomPopup/CustomPopup.jsx";
-import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import {AppContext} from "../AppContext/AppContext";
-import UpdateButtons from "../EditAppointment/UpdateButtons.jsx";
+import UpdateButtonsModal from "../EditAppointment/UpdateButtons.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
-
+import {Button} from "carbon-components-react";
 
 const AppointmentEditorFooter = props => {
 
-    const {checkAndSave, isEdit, isOptionsRequired, disableSaveAndUpdateButton, cancelConfirmationMessage, errorMessage} = props;
+    const {checkAndSave, isEdit, isOptionsRequired, disableSaveAndUpdateButton, errorMessage, skipConfirm} = props;
     const[showUpdateButtons, setShowUpdateButtons] = useState(false);
 
     const getUpdateButtons =() =>{
         setShowUpdateButtons(!showUpdateButtons);
     };
 
-    const popupContent = <CancelConfirmation {...cancelConfirmationMessage} onBack={React.useContext(AppContext).onBack} isFocusLocked={true}/>;
-
-    const cancelButton = <button className={classNames(button)} data-testid="cancel">
-                            <i className={classNames("fa", "fa-times")}/>
+    const cancelButton = <Button kind="secondary" style={{width: "270px", height: "64px" }} data-testid="cancel">
                             <span><FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/></span>
-                        </button>;
+                        </Button>;
 
     return (
         <div>
@@ -40,25 +28,23 @@ const AppointmentEditorFooter = props => {
                 <ErrorMessage message={errorMessage} />
             </div>
         <div className={classNames(footer)}>
-            <div className={classNames(footerElements)}>
-                <CustomPopup triggerComponent={cancelButton} popupContent={popupContent} style={customPopup}/>
+            <div>
+                <CancelConfirmation onBack={React.useContext(AppContext).onBack} triggerComponent={cancelButton} skipConfirm={skipConfirm}/>
                 {isEdit
-                    ? <button className={classNames(button, save)}
+                    ? <Button kind="primary" style={{width: "270px", height: "64px" }}
                               onClick={() => isOptionsRequired ? getUpdateButtons() : checkAndSave(undefined)}
                               disabled={disableSaveAndUpdateButton}
                               data-testid="check-and-save">
-                        <i className={classNames("fa", "fa-check")}/>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_UPDATE_LABEL'} defaultMessage={'Update'}/>
                     </span>
-                    </button>
-                    : <button className={classNames(button, save)} onClick={checkAndSave} data-testid="check-and-save" disabled={disableSaveAndUpdateButton}>
-                        <i className={classNames("fa", "fa-check")}/>
+                    </Button>
+                    : <Button kind="primary" style={{width: "270px", height: "64px" }} onClick={checkAndSave} data-testid="check-and-save" disabled={disableSaveAndUpdateButton}>
                         <span>
                         <FormattedMessage id={'APPOINTMENT_CREATE_CHECK_AND_SAVE'} defaultMessage={'Check and Save'}/>
                     </span>
-                    </button>}
-                {isOptionsRequired && showUpdateButtons ? <UpdateButtons updateOptionsVisibleStatus={setShowUpdateButtons} checkAndSave={applyForAll =>  checkAndSave(applyForAll)} /> : undefined}
+                    </Button>}
+                {isOptionsRequired && showUpdateButtons ? <UpdateButtonsModal updateOptionsVisibleStatus={setShowUpdateButtons} show={isOptionsRequired && showUpdateButtons} checkAndSave={applyForAll =>  checkAndSave(applyForAll)} /> : undefined}
 
             </div>
         </div>

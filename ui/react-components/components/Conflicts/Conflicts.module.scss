@@ -1,14 +1,20 @@
 .conflictsContainer {
-    padding-top: 20px;
-    .button {
-        position: relative;
-        background: none;
-        border: none;
-        padding: 10px 0;
-        float: right;
-        &:hover {
-            border: none;
-            background: none;
-        }
-    }
+    background: #ffffff;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    top: 112px;
+    min-width: 540px;
+    z-index: 600;
+    align-items: center;
+    box-shadow: -1px 2px 3px 0px #aaa;
+}
+
+.conflictsClose {
+    display: block;
+    border: none;
+    padding: 12px 0;
+    cursor: pointer;
+    text-align: right;
+    margin-right: 10px;
 }

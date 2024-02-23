@@ -30,41 +30,25 @@ describe('Service Search', () => {
     it('should allow user to search and select a location', async () => {
         const targetLocation = 'OPD-1';
         const {container, getByText} = renderWithReactIntl(<LocationSearch onChange={jest.fn()}/>);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
+        fireEvent.focus(inputBox);
         fireEvent.change(inputBox, {target: {value: "OP"}});
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const option = getByText(targetLocation);
         fireEvent.click(option);
-        let singleValue;
-        await waitForElement(
-            () =>
-                (singleValue = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
-        getByText('OPD-1');
         expect(getAllByTagSpy).toHaveBeenCalled();
-        expect(singleValue).toHaveTextContent(targetLocation);
     });
 
     it('should call onChange when option is selected', async () => {
         const targetLocation = 'Unknown Location';
         const onChangeSpy = jest.fn();
         const {container, getByText} = renderWithReactIntl(<LocationSearch onChange={onChangeSpy}/>);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
+        fireEvent.focus(inputBox);
         fireEvent.change(inputBox, {target: {value: "Unk"}});
-        await waitForElement(
-            () => (container.querySelector('.react-select__menu'))
-        );
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const option = getByText(targetLocation);
         fireEvent.click(option);
-        let singleValue;
-        await waitForElement(
-            () =>
-                (singleValue = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
 });

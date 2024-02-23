@@ -17,7 +17,7 @@ angular.module('bahmni.appointments')
 angular.module('bahmni.appointments').component('reactAddAppointmentWrapper',{
     template: '<react-add-appointment on-back="onBack" set-view-date="setViewDate" appointment-uuid="appointmentUuid"' +
         ' is-recurring="isRecurring" state="state" current-provider="currentProvider" appointment-params="appointmentParams"' +
-        'url-params="urlParams" >',
+        'url-params="urlParams" edit-conflict="editConflict" reset-edit-conflict="resetEditConflict">',
     controller: reactAddAppointmentController
 });
 
@@ -26,15 +26,12 @@ angular.module('bahmni.appointments').component('reactAppointmentSummaryWrapper'
     controller: reactAppointmentSummaryController
 });
 
-angular.module('bahmni.appointments').run(['$templateCache', function ($templateCache) {
-    $templateCache.put('templateId', '<cancel-confirmation-wrapper appointment-uuid="appointmentUuid" close="onClose" on-back="onBack">');
-}]);
-
 reactAddAppointmentController.$inject = ['$rootScope', '$location', '$scope', '$state', 'ngDialog', '$stateParams'];
 reactAppointmentSummaryController.$inject = ['$rootScope', '$location', '$scope', '$state', 'appService', 'spinner'];
 function reactAddAppointmentController($rootScope, $location, $scope, $state, ngDialog, $stateParams) {
     let onBack = false;
     let backUrl = "^";
+    $scope.editConflict = false;
     $scope.onBack = function () {
         onBack = true;
         $state.go(backUrl, $state.params, {reload: true});
@@ -46,11 +43,13 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
         if (next.url !== "/new" && !onBack) {
             event.preventDefault();
             backUrl = next.name;
-            $scope.dialog = ngDialog.open({
-                template: 'templateId',
-                className: 'ngdialog-react-popup',
-                scope: $scope
-            });
+            $scope.editConflict = true ;
+        }
+        else if (next.url === "/new" && !onBack) {
+            event.preventDefault();
+            backUrl = next.name;
+            $scope.editConflict = true ;
+            $scope.appointmentUuid = undefined;
         }
     });
     $scope.onClose = function () {
@@ -59,6 +58,9 @@ function reactAddAppointmentController($rootScope, $location, $scope, $state, ng
     $scope.setViewDate = function (date) {
       $state.params.viewDate = date;
     };
+    $scope.resetEditConflict = () => {
+        $scope.editConflict = false;
+    }
     $scope.appointmentUuid = $state.current.url === '/:uuid?isRecurring' ? $stateParams.uuid : undefined;
     $scope.isRecurring = $stateParams.isRecurring;
     $scope.state = $state;
@@ -75,7 +77,7 @@ function reactAppointmentSummaryController($rootScope, $location, $scope, $state
     $scope.goToListView = function (date, uuids, type) {
         var params = {
             viewDate: moment(date).toDate(),
-            filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled")}
+            filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled", "WaitList")}
         };
         if (uuids && uuids.length !== 0) {
             if(type === 'Locations'){

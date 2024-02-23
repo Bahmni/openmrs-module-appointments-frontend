@@ -24,7 +24,8 @@ export const APPOINTMENT_STATUSES = {
     "CheckedIn": "CheckedIn",
     "Completed": "Completed",
     "Missed": "Missed",
-    "Cancelled": "Cancelled"
+    "Cancelled": "Cancelled",
+    "WaitList": "WaitList"
 };
 
 export const RECURRENCE_TERMINATION_AFTER = "After";
@@ -40,12 +41,12 @@ export const PROVIDER_RESPONSES = {
 
 export const CANCEL_CONFIRMATION_MESSAGE_ADD = {
   translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT',
-  defaultMessage: 'Are you sure you want to cancel adding the new appointment?This will erase everything you have filled. Nothing will be saved.'
+  defaultMessage: 'You will lose appointment details. Do you want to discard these changes?'
 };
 
 export const CANCEL_CONFIRMATION_MESSAGE_EDIT = {
   translationKey: 'APPOINTMENT_CANCEL_CONFIRMATION_TEXT_EDIT',
-  defaultMessage: 'Are you sure you want to cancel editing the appointment? This will not save any of the changes made.'
+  defaultMessage: 'You will lose the edited appointment details. Do you want to discard these changes?'
 };
 
 const appointmentTimeProps = {
@@ -53,11 +54,11 @@ const appointmentTimeProps = {
 };
 
 export const appointmentStartTimeProps = startTime => {
-    return {...appointmentTimeProps, defaultValue: 'From', defaultTime: startTime, translationKey: 'APPOINTMENT_TIME_FROM_LABEL'}
+    return {...appointmentTimeProps, defaultValue: 'Start time', defaultTime: startTime, translationKey: 'APPOINTMENT_TIME_FROM_LABEL'}
 };
 
 export const appointmentEndTimeProps = endTime => {
-    return {...appointmentTimeProps, defaultValue: 'To', defaultTime: endTime, translationKey: 'APPOINTMENT_TIME_TO_LABEL'}
+    return {...appointmentTimeProps, defaultValue: 'End time', defaultTime: endTime, translationKey: 'APPOINTMENT_TIME_TO_LABEL'}
 };
 
 export const helpDeskNumber = "clinic.helpDeskNumber";

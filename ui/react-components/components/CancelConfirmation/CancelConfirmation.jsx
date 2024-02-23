@@ -1,53 +1,35 @@
-import React, {useEffect, useRef} from "react";
-import classNames from "classnames";
-import {FormattedMessage} from "react-intl";
-import {
-    button,
-    cancelModal,
-    cancelModalBody,
-    cancelModalCloseIcon,
-    cancelModalTitle,
-    no
-} from "../CancelConfirmation/CancelConfirmation.module.scss";
+import React from "react";
 import PropTypes from "prop-types";
-import FocusLock from 'react-focus-lock';
+import CustomModalWithStateManager from '../Modal/Modal.jsx';
+import {AppContext} from "../AppContext/AppContext";
+import {Button} from "carbon-components-react";
+import Label from "../Label/Label.jsx";
+import {FormattedMessage} from "react-intl";
 
-const CancelConfirmation = (props) => {
-    const {close, onBack, translationKey, defaultMessage, isFocusLocked} = props;
-    const abortCancel = useRef(null);
-
-    useEffect(() => abortCancel && abortCancel.current.focus());
-
-    const content = () => <div className={classNames(cancelModal)}>
-        <div className={classNames(cancelModalCloseIcon)}>
-            <button data-testid="cancel-close-icon" onClick={close}>
-                <i className={classNames("fa", "fa-times")}/>
-            </button>
-        </div>
-        <div>
-            <h1 className={classNames(cancelModalTitle)}>
-                <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TITLE'} defaultMessage={'Wait!'}/>
-            </h1>
-            <div className={classNames(cancelModalBody)}>
-                <FormattedMessage id={translationKey} defaultMessage={defaultMessage}/>
-            </div>
-            <div>
-                <button className={classNames(button, no)} ref={abortCancel} data-testid="cancel-no" onClick={close}>
-                    <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_NO'} defaultMessage={'No'}/>
-                </button>
-                <button className={classNames(button)} data-testid="cancel-yes" onClick={onBack}>
-                    <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_YES'} defaultMessage={'Yes'}/>
-                </button>
-            </div>
-        </div>
-    </div>;
-    return isFocusLocked ? <FocusLock>{content()}</FocusLock> : content();
-};
+const CancelConfirmation  = prop => {
+    const { triggerComponent, onBack, skipConfirm } = prop
+    const body = <FormattedMessage id={'APPOINTMENT_CANCEL_CONFIRMATION_TEXT'}
+                                   defaultMessage={'You will lose appointment details. Do you want to discard these changes?'} />
+    const primaryButton =  <Button
+        kind="danger"
+        onClick={onBack}>
+        <Label translationKey={'DISCARD_KEY'} defaultValue={'Discard'}/>
+    </Button>
+    if(skipConfirm){
+        return <span onClick={onBack}>
+                    {triggerComponent}
+                </span>
+    }
+    return <CustomModalWithStateManager onBack={React.useContext(AppContext).onBack}
+                        triggerComponent={triggerComponent}
+                        titleKey={'APPOINTMENT_CANCEL_CONFIRMATION_TITLE'}
+                        defaultTitle={"Discard appointment?"}
+                        body={body}
+                        primaryButton={primaryButton}
+                        />
+}
 CancelConfirmation.propTypes = {
-    close: PropTypes.func,
     onBack: PropTypes.func,
-    translationKey: PropTypes.string.isRequired,
-    defaultMessage: PropTypes.string.isRequired,
-    isFocusLocked: PropTypes.bool
+    triggerComponent: PropTypes.element
 };
 export default CancelConfirmation;

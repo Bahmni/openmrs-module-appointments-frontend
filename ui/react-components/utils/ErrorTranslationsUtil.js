@@ -22,7 +22,7 @@ export const getErrorTranslations = intl => {
             id: 'RECURRENCE_PERIOD_ERROR_MESSAGE', defaultMessage: 'Please select valid recurrence period'
         }),
         startTimeLessThanEndTimeMessage: intl.formatMessage({
-            id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'From time should be before to time'
+            id: 'START_TIME_LESSTHAN_END_TME_ERROR_MESSAGE', defaultMessage: 'End time shouldn\'t be before start time'
         }),
         weekDaysErrorMessage: intl.formatMessage({
             id: 'RECURRENCE_WEEKDAYS_ERROR_MESSAGE', defaultMessage: 'Please select the day(s)'
@@ -32,6 +32,12 @@ export const getErrorTranslations = intl => {
         }),
         unexpectedServiceErrorMessage: intl.formatMessage({
             id: 'UNEXPECTED_SERVICE_ERROR', defaultMessage: 'There was an unexpected issue on the server. Please try again'
+        }),
+        priorityErrorMessage: intl.formatMessage({
+            id: 'PRIORITY_ERROR_MESSAGE', defaultMessage: 'Please select appointment category'
+        }),
+        statusErrorMessage: intl.formatMessage({
+            id: 'STATUS_ERROR_MESSAGE', defaultMessage: 'Please select appointment status'
         })
     };
 };
@@ -40,7 +46,7 @@ export const getMaxAppointmentProvidersErrorMessage = (intl, maxAppointmentProvi
     return {
         providerErrorMessage: intl.formatMessage({
             id: 'PROVIDER_ERROR_MESSAGE',
-            defaultMessage: 'Please select only a maximum of {maxAppointmentProviders} provider(s)',
+            defaultMessage: 'Please select maximum of {maxAppointmentProviders} provider(s)',
         }, {maxAppointmentProviders: maxAppointmentProviders})
     }
 };

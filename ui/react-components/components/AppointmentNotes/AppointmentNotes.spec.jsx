@@ -8,8 +8,8 @@ describe('Appointment Notes', () => {
    it('should call onChange when notes has entered',() => {
        const onChangeSpy =  jest.fn();
        const {container, getByText} = renderWithReactIntl(<AppointmentNotes onChange={onChangeSpy}/>);
-       const inputBox = container.querySelector('.notes');
-       fireEvent.change(inputBox, {target:{value:'someNotes'}});
+       const inputBox = container.querySelector('.bx--text-area');
+       fireEvent.blur(inputBox, {target:{value:'someNotes'}});
        expect(onChangeSpy.mock.calls.length).toBe(1);
    });
 
@@ -26,7 +26,7 @@ describe('Appointment Notes', () => {
        const {container} = renderWithReactIntl(<AppointmentNotes onChange={onChangeSpy}
                                                                  placeHolderTranslationKey={placeHolderKey}
                                                                  placeHolderDefaultMessage={defaultValue}/>);
-       const textArea = container.querySelector('.notes');
+       const textArea = container.querySelector('.bx--text-area');
        expect(textArea.placeholder).toBe("Maximum of 250 characters");
        expect(textArea.maxLength).toBe(250);
    });

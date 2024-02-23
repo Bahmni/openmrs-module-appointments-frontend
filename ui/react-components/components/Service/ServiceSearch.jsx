@@ -7,7 +7,7 @@ import {forEach} from 'lodash';
 
 const ServiceSearch = (props) => {
 
-    const {intl, onChange, specialityUuid, value, isDisabled, specialityEnabled, autoFocus} = props;
+    const {intl, onChange, specialityUuid, value, isDisabled, specialityEnabled, autoFocus, isRequired} = props;
     const placeHolder = intl.formatMessage({
         id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_SERVICE', defaultMessage: 'Service'
     });
@@ -38,7 +38,6 @@ const ServiceSearch = (props) => {
         });
         return options;
     };
-
     return (
         <Dropdown data-testid="service-search"
                   options={Object.values(dropdownOptions)}
@@ -46,6 +45,7 @@ const ServiceSearch = (props) => {
                   onChange={onChange}
                   selectedValue={value}
                   isDisabled={isDisabled}
+                  isRequired={isRequired}
                   isClearable={false}
                   autoFocus={!specialityEnabled && autoFocus}
         />
@@ -58,6 +58,7 @@ ServiceSearch.propTypes = {
     specialityUuid: PropTypes.string,
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
+    isRequired: PropTypes.bool,
     specialityEnabled: PropTypes.bool,
     autoFocus: PropTypes.bool
 };

@@ -20,20 +20,13 @@ describe('Service Search', () => {
     it('should allow user to search and select a service', async () => {
         const targetService = 'Physiotherapy OPD';
         const {container, getByText} = renderWithReactIntl(<ServiceSearch onChange={jest.fn()}/>);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "Phy" } });
-        await waitForElement(() => (container.querySelector('.react-select__menu')));
+        await waitForElement(() => (container.querySelector('.bx--list-box__menu')));
         const option = getByText(targetService);
         fireEvent.click(option);
-        let singleValue;
-        await waitForElement(
-            () =>
-                (singleValue = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
+
         expect(getAllServicesSpy).toHaveBeenCalled();
-        expect(singleValue).toHaveTextContent(targetService);
     });
 
 
@@ -46,20 +39,13 @@ describe('Service Search', () => {
         const targetService = 'Physiotherapy OPD';
         const onChangeSpy = jest.fn();
         const {container, getByText} = renderWithReactIntl(<ServiceSearch onChange={onChangeSpy}/>);
-        const inputBox = container.querySelector('.react-select__input input');
+        const inputBox = container.querySelector('.bx--text-input');
         fireEvent.change(inputBox, { target: { value: "Phy" } });
         await waitForElement(
-            () => (container.querySelector('.react-select__menu'))
+            () => (container.querySelector('.bx--list-box__menu'))
         );
         const option = getByText(targetService);
         fireEvent.click(option);
-        let singleValue;
-        await waitForElement(
-            () =>
-                (singleValue = container.querySelector(
-                    '.react-select__single-value'
-                ))
-        );
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
 });

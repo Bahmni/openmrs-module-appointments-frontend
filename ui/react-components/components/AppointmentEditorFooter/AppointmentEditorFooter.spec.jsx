@@ -15,43 +15,41 @@ describe('Appointment editor Footer Search', () => {
     });
 
     it('should render Check and Save and Cancel buttons', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} checkAndSave={() => jest.fn()}/>);
-        getByText('Cancel');
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} checkAndSave={() => jest.fn()}/>);
+        getByTestId('cancel');
         getByText('Check and Save');
-        expect(container.querySelectorAll('.button').length).toBe(2);
     });
 
     it('should render Update and Cancel buttons', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true}/>);
-        getByText('Cancel');
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true}/>);
+        getByTestId('cancel');
         getByText('Update');
-        expect(container.querySelectorAll('.button').length).toBe(2);
     });
 
     it('should render update options on click of update button', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} isOptionsRequired={true}/>);
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} isOptionsRequired={true}/>);
         const update = getByText('Update');
         fireEvent.click(update);
         expect(container.hasChildNodes()).toBeTruthy();
-        expect(container.querySelector('.updateOptions')).not.toBeNull();
+        expect(getByTestId("update-buttons")).not.toBeNull();
     });
 
     it('should not render update options and checkAndSave should be called on click of update button', () => {
         const checkAndSaveSpy = jest.fn();
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} isOptionsRequired={false} checkAndSave={checkAndSaveSpy}/>);
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} isOptionsRequired={false} checkAndSave={checkAndSaveSpy}/>);
         const update = getByText('Update');
         fireEvent.click(update);
-        expect(container.querySelector('.updateOptions')).toBeNull();
+        expect(() => getByTestId("update-buttons")).toThrow();
         expect(checkAndSaveSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should render update options on click of update button and hide update options on reclick', () => {
-        const {container, getByText} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} isOptionsRequired={true}/>);
+        const {container, getByText, getByTestId} = renderWithReactIntl(<AppointmentEditorFooter {...cancelConfirmationMessage} isEdit={true} isOptionsRequired={true}/>);
         const update = getByText('Update');
         fireEvent.click(update);
         fireEvent.click(update);
         expect(container.hasChildNodes()).toBeTruthy();
-        expect(container.querySelector('.updateOptions')).toBeNull();
+        expect(() => getByTestId("update-buttons")).toThrow();
     });
 
     it('should disable update button', () => {

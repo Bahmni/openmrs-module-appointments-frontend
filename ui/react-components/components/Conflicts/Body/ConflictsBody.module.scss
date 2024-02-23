@@ -7,30 +7,12 @@
   }
 }
 
-ul[class*='react-tabs__tab-list'] {
-  border-bottom: none;
-  margin-left: 1.5%;
-}
-
-li[class*='react-tabs__tab'] {
-  border: none;
-  margin-right: 5%;
-  padding: 15px 0 15px 0;
-  bottom: -4px;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-li[class*='react-tabs__tab'][aria-selected="true"] {
-  color: $primary-color-2;
-  border-bottom: 2px solid $primary-color-2;
-}
-
 .conflictsHeading {
-  margin: 2% 0 1.5rem 1.5%;
+  position: relative;
+  font-weight: 400;
   font-size: 14px;
-  height: 19px;
-  color: $secondary-color-2;
+  line-height: 18px;
+  color: #393939;
 }
 
 .conflictsList {
@@ -39,15 +21,38 @@ li[class*='react-tabs__tab'][aria-selected="true"] {
 }
 
 .appointmentConflict {
-  margin: 0.9rem 0 3% 1.5%;
+  margin-top: 2.5%;
   font-size: 14px;
-  color: $secondary-color-2;
   .conflictMessage {
-    padding: 1% 0 1% 0;
+    color: #393939;
+    padding-bottom: 10px;
   }
   .conflictDetails {
-    padding-top: 0.5%;
-    font-size: 18px;
-    font-weight: 600;
+    position: relative;
+    font-weight: 400;
+    font-size: 14px;
+    color: #393939;
   }
+}
+
+.conflictsWarningMessage {
+  display: inline-block;
+  position: relative;
+  font-size: 20px;
+  color: #393939;
+  margin-left: 30px;
+}
+
+.tabPanelContent {
+  overflow: auto;
+}
+
+.conflictsBody {
+  max-width: 540px;
+  padding: 0 16px;
+  -webkit-box-sizing: border-box;
+}
+
+.conflictsTabs {
+  padding-top: 15px
 }

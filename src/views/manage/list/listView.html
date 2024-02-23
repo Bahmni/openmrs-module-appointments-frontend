@@ -24,14 +24,15 @@
             </thead>
             <tbody>
             <tr ng-repeat="appointment in filteredAppointments" ng-click="select(appointment)" ng-style="{'background-color': colorsForListView[appointment.status]}" ng-class="{'selected' : isSelected(appointment)}">
-                <td>
+                <td class="table-mid-width">
                     <a ng-show="shouldShowAppointmentsListPatientLink" href="#" target="_blank" ng-click="$event.stopPropagation()" ng-href="{{generateAppointmentsListPatientLink(appointment)}}">{{::appointment.patient.identifier}}</a>
                     <span ng-hide="shouldShowAppointmentsListPatientLink">{{::appointment.patient.identifier}}</span>
                 </td>
+                <td class="table-mid-width" ng-show="::!enableColumnsForAppointments">{{::appointment.dateCreated | bahmniDate}}</td>
                 <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
-                <td>{{::appointment.startDateTime | bahmniDate}}</td>
-                <td>{{::appointment.startDateTime | bahmniTime}}</td>
-                <td>{{::appointment.endDateTime | bahmniTime}}</td>
+                <td ng-show="::enableColumnsForAppointments">{{::appointment.startDateTime | bahmniDate}} {{::info}}</td>
+                <td ng-show="::enableColumnsForAppointments">{{::appointment.startDateTime | bahmniTime}}</td>
+                <td ng-show="::enableColumnsForAppointments">{{::appointment.endDateTime | bahmniTime}}</td>
                 <td class="table-mid-width">
                     <ul>
                         <li ng-repeat="appProvider in appointment.providers">
@@ -42,12 +43,14 @@
                         </li>
                     </ul>
                 </td>
-                <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
+                <td class="table-mid-width" ng-show="::!enableColumnsForAppointments">{{::appointment.priority}}</td>
+                <td class="table-mid-width" ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td class="table-mid-width">{{::appointment.service.name}}</td>
                 <td class="table-mid-width" ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
-                <td>{{appointment.status}}</td>
-                <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
+                <td>{{translateAppointmentStatus(appointment.status)}}</td>
+                <td ng-show="::enableColumnsForAppointments">{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td class="table-mid-width">{{::appointment.location.name}}</td>
+                <td class="table-mid-width" ng-show="!disableDatesForWaitListAppointment && getCurrentTabName() === 'awaitingappointments'">{{appointment.startDateTime | bahmniDateTime}} - {{appointment.endDateTime | bahmniDateTime}} </td>
                 <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
                 <td>{{::appointment.comments}}</td>
             </tr>

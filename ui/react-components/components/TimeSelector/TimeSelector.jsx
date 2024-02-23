@@ -1,28 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Label from "../Label/Label.jsx";
 import AppointmentTimePicker from "../TimePicker/TimePicker.jsx";
-import classNames from 'classnames';
-import {timeSelector} from './TimeSelector.module.scss';
 import {injectIntl} from "react-intl";
 
 const TimeSelector = props => {
 
-    const {
-        translationKey, defaultValue, onChange,
-        placeHolderTranslationKey, placeHolderDefaultMessage, defaultTime, isDisabled
-    } = props;
+    const { translationKey, defaultValue, onChange, defaultTime, isDisabled, width, isRequired } = props;
     return (
-        <div className={classNames(timeSelector)}>
-            <div>
-                <Label translationKey={translationKey}
-                       defaultValue={defaultValue}/>
-            </div>
+        <div>
             <AppointmentTimePicker onChange={onChange}
-                                   placeHolderTranslationKey={placeHolderTranslationKey}
-                                   placeHolderDefaultMessage={placeHolderDefaultMessage}
                                    defaultTime={defaultTime}
-                                   isDisabled={isDisabled} />
+                                   translationKey={translationKey}
+                                   defaultTranslationKey={defaultValue}
+                                   isRequired={isRequired}
+                                   isDisabled={isDisabled} width={width}/>
         </div>
     )
 };
@@ -35,8 +26,9 @@ TimeSelector.propTypes = {
     defaultValue: PropTypes.string.isRequired,
     placeHolderTranslationKey: PropTypes.string,
     defaultTime: PropTypes.object,
-    placeHolderDefaultMessage: PropTypes.string.isRequired,
-    isDisabled: PropTypes.bool
+    isDisabled: PropTypes.bool,
+    isRequired: PropTypes.bool,
+    width: PropTypes.string,
 };
 
 export default injectIntl(TimeSelector);

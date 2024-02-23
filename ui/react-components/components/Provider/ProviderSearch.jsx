@@ -2,7 +2,7 @@ import { getAllProviders } from "../../api/providerApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import React, {useEffect, useState} from "react";
 import Tags from "../Tags/Tags.jsx";
-import {find, forEach, isEqual, sortBy} from "lodash";
+import {find, forEach, sortBy} from "lodash";
 import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import {getValidProviders} from "../../helper";
@@ -19,7 +19,9 @@ const ProviderSearch = props => {
     openMenuOnFocus = true,
     style = "",
     components,
-    customSelectStyle
+    customSelectStyle,
+    autoFocus,
+    isRequired
   } = props;
 
   const placeHolder = intl.formatMessage({
@@ -71,12 +73,14 @@ const ProviderSearch = props => {
   };
 
   const onProviderSelect = selectedProviderOption => {
-    setSelectedProvider(null);
-    const selectedProviderObj = find(providerOptions, [
-      "value",
-      selectedProviderOption.value
-    ]);
-    onChange(selectedProviderObj);
+    if(selectedProviderOption !== null){
+      setSelectedProvider(null);
+      const selectedProviderObj = find(providerOptions, [
+        "value",
+        selectedProviderOption.value
+      ]);
+      onChange(selectedProviderObj);
+    }
   };
 
   const onChangeHandler = eventChangedValue => {
@@ -96,11 +100,12 @@ const ProviderSearch = props => {
         options={providerOptions}
         placeholder={placeHolder}
         onChange={onChange ? onProviderSelect : onChangeHandler}
-        selectedValue={""}
         openMenuOnClick={openMenuOnClick}
         openMenuOnFocus={openMenuOnFocus}
         components={components}
         customSelectStyle={customSelectStyle}
+        autoFocus={autoFocus}
+        isRequired={isRequired}
       />
       <Tags
         onChange={onProviderRemove}
@@ -121,7 +126,9 @@ ProviderSearch.propTypes = {
   onChange: PropTypes.func,
   onProviderRemove: PropTypes.func,
   selectedProviders: PropTypes.array,
-  isDisabled: PropTypes.bool
+  isDisabled: PropTypes.bool,
+  isRequired: PropTypes.bool,
+  autoFocus: PropTypes.bool
 };
 
 export default injectIntl(ProviderSearch);
