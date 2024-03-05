@@ -22,6 +22,7 @@ const AppointmentType = props => {
                 defaultChecked={isVirtual()}
                 labelText={TELECONSULTATION_APPOINTMENT}
                 disabled={isTeleconsultationDisabled}
+                checked={isVirtual()}
             />
     </div>)
 };

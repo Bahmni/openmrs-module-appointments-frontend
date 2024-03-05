@@ -471,7 +471,10 @@ const AddAppointment = props => {
     };
 
     const savePopup = <CustomPopup style={customPopup} popupContent={<SuccessConfirmation
-      resetAppointmentModal={reInitialiseComponent}
+        resetAppointmentModal={() => {
+            setShowSuccessPopup(false);
+            reInitialiseComponent();
+        }}
       patientDetails={appointmentDetails.patient && `${appointmentDetails.patient.value.name} (${appointmentDetails.patient.value.identifier})`}
       showEmailWarning={showEmailWarning}
       showEmailNotSentWarning={showEmailNotSentWarning}/>}/>;
@@ -550,7 +553,7 @@ const AddAppointment = props => {
     const closeButton = <span className={classNames(closeIcon)}>
         <Close24/>
     </span>
-    if(showSuccessPopup){
+    if(showSuccessPopup && !( showEmailWarning || showEmailNotSentWarning )){
         return <Notification showMessage={showSuccessPopup} title={"Appointment Created!"} onClose={React.useContext(AppContext).onBack}/>
     }
     return (<div className={classNames(overlay)}>
