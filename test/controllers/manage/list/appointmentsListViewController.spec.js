@@ -346,7 +346,7 @@ describe('AppointmentsListViewController', function () {
         };
         createController();
         var viewDate = new Date('2017-08-28T11:30:00.000Z');
-        $state.params = {doFetchAppointmentsData: true};
+        $state.params = {doFetchAppointmentsData: true , patient:"123"};
         scope.getAppointmentsForDate(viewDate);
         expect(scope.appointments).toBe(appointments);
         expect(scope.searchedPatient).toBeFalsy();

@@ -12,7 +12,7 @@ const AppointmentCategory = (props) => {
     });
     const title = <Title text={placeHolder} isRequired={isRequired}/>
     const filterItems = data => {
-        return data.item.label.includes(data.inputValue);
+        return data.item.label.toLowerCase().includes(data.inputValue.toLowerCase());
     }
 
     return (

@@ -15,7 +15,7 @@ const UpdateConfirmationModal = (props) => {
         setOpen(false);
     }
     const body = <FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_TEXT_SINGLE_APPOINTMENT'}
-                              defaultMessage={'This will update the details of the selected appointment. This cannot be reversed!'}/>
+                              defaultMessage={'This will update the details of the selected appointment.'}/>
 
     const title=<FormattedMessage id={'APPOINTMENT_UPDATE_CONFIRMATION_TITLE'} defaultMessage={"Kindly Confirm"} />
 

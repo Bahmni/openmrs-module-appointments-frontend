@@ -9,7 +9,7 @@ describe('Update Confirmation Modal ', () => {
     it('should render update confirm modal closeIcon, title, body, yes and no buttons', () => {
             const {getByText} = renderWithReactIntl(<UpdateConfirmationModal />);
             getByText('Kindly Confirm');
-            getByText('This will update the details of the selected appointment. This cannot be reversed!');
+            getByText('This will update the details of the selected appointment.');
             getByText('No, go back');
             getByText('Yes, I confirm');
         });

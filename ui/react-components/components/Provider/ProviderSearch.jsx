@@ -39,14 +39,7 @@ const ProviderSearch = props => {
   const createDropdownOptions = results => {
     const options = [];
     forEach(results, provider => {
-      if (
-        provider.attributes.length > 0
-          ? provider.attributes[0].attributeType.display ===
-          availableForAppointments
-          : false
-      ) {
         options.push(createProviderOption(provider));
-      }
     });
     return sortBy(options, providerOption =>
       providerOption.label.toLowerCase()
