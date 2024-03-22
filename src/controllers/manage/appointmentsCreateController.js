@@ -35,8 +35,6 @@ angular.module('bahmni.appointments')
             var patientSearchURL = appService.getAppDescriptor().getConfigValue('patientSearchUrl');
             var loginLocationUuid = sessionService.getLoginLocationUuid();
             $scope.minCharLengthToTriggerPatientSearch = appService.getAppDescriptor().getConfigValue('minCharLengthToTriggerPatientSearch') || 3;
-            $scope.debouncePatientSearchDelayInMilliseconds = appService.getAppDescriptor().getConfigValue('debouncePatientSearchDelayInMilliseconds') || 3000;
-
             $scope.maxAppointmentProviders = appService.getAppDescriptor().getConfigValue("maxAppointmentProviders") || 1;
 
             var isProviderNotAvailableForAppointments = function (selectedProvider) {
