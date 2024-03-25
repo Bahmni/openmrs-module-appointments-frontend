@@ -22,6 +22,13 @@ export const PatientSearch = (props) => {
     const [userInput, setUserInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [cancelToken, setCancelToken] = useState(null);
+
+    const setDisabledItems = ( translationKey, defaultMessage) => {
+        setItems([{
+            label: intl.formatMessage({id: translationKey, defaultMessage: defaultMessage}),
+            disabled: true
+        }])
+    }
     const loadPatients = async (searchString) => {
         if (searchString.length >= minCharLengthToTriggerPatientSearch) {
             try{
@@ -33,18 +40,12 @@ export const PatientSearch = (props) => {
                 setCancelToken(source);
                 const patients = await getPatientsByLocation(currentLocation().uuid, searchString, source.token);
                 if (patients.length === 0) {
-                    setItems([{
-                        label: intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'No patients found'}),
-                        disabled: true
-                    }])
+                    setDisabledItems('DROPDOWN_NO_OPTIONS_MESSAGE', 'No patients found');
                 } else {
                     setItems(patients.map(getPatientForDropdown));
                 }
             } catch (e) {
-                setItems([{
-                    label: intl.formatMessage({id: 'DROPDOWN_NO_OPTIONS_MESSAGE', defaultMessage: 'No patients found'}),
-                    disabled: true
-                }])
+                setDisabledItems('DROPDOWN_NO_OPTIONS_MESSAGE', 'No patients found')
             }
             finally {
                 setIsLoading(false);
@@ -61,23 +62,14 @@ export const PatientSearch = (props) => {
     const handleInputChange = async (searchString) => {
         setUserInput(searchString);
         if (searchString.length < 3) {
-            setItems([{
-                label: intl.formatMessage({id: 'DROPDOWN_TYPE_TO_SEARCH_MESSAGE', defaultMessage: 'Type to search'}),
-                disabled: true
-            }]);
+            setDisabledItems('DROPDOWN_TYPE_TO_SEARCH_MESSAGE', 'Type to search');
         } else{
-            setItems([{
-                label: intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'}),
-                disabled: true
-            }]);
+            setDisabledItems('DROPDOWN_LOADING_MESSAGE', 'Loading...');
         }
     }
     useEffect(() => {
         if (isLoading) {
-            setItems([{
-                label: intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'}),
-                disabled: true
-            }])
+            setDisabledItems('DROPDOWN_LOADING_MESSAGE', 'Loading...');
         }
     }, [isLoading])
     const label = <Title
