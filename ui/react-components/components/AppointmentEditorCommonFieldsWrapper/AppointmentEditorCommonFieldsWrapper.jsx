@@ -70,7 +70,6 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                     <PatientSearch
                         value={appointmentDetails.patient}
                         minCharLengthToTriggerPatientSearch={appConfig && appConfig.minCharLengthToTriggerPatientSearch}
-                        debouncePatientSearchDelayInMilliseconds={appConfig && appConfig.debouncePatientSearchDelayInMilliseconds}
                         onChange={(optionSelected) => {
                             const newValue = optionSelected ? optionSelected : null;
                             updateAppointmentDetails({patient: newValue});

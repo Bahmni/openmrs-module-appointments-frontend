@@ -2,7 +2,6 @@ export const appName = 'appointments';
 export const availableForAppointments = "Available for appointments";
 export const minDurationForAppointment = 30;
 export const MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH = 3;
-export const DEBOUNCE_PATIENT_SEARCH_DELAY_IN_MILLISECONDS = 3000;
 export const DEFAULT_MAX_APPOINTMENT_PROVIDERS = 1;
 export const PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL = 5000;
 export const SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL = 5000;
