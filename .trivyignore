@@ -19,3 +19,4 @@ CVE-2022-24785
 CVE-2022-31129
 GHSA-v78c-4p63-2j6c
 CVE-2021-23343
+CVE-2024-21490 #angular: Inefficient Regular Expression Complexity https://avd.aquasec.com/nvd/cve-2024-21490
