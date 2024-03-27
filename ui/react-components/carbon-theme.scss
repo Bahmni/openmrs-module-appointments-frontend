@@ -86,8 +86,8 @@ $css--body: false;
 .bx--radio-button:checked+.bx--radio-button__label .bx--radio-button__appearance::before {
   background-color: #0a74ff;
 }
-.bx--list-box__wrapper{
-  max-width: 250px;
+.bx--list-box__menu-item[disabled] .bx--list-box__menu-item__option {
+  color: #363463;
 }
 .bx--number__control-btn{
   border: none;
