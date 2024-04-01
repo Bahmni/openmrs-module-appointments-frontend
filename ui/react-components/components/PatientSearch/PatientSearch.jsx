@@ -101,7 +101,6 @@ PatientSearch.propTypes = {
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
     minCharLengthToTriggerPatientSearch: PropTypes.number,
-    debouncePatientSearchDelayInMilliseconds: PropTypes.number,
     autoFocus: PropTypes.bool
 };
 
