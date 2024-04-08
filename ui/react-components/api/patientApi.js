@@ -18,7 +18,7 @@ export const getPatientsByLocation = async (locationUuid, searchQuery, cancelTok
         if (!axios.isCancel(error)) {
             console.error(error);
         }
-        return error.response;
+        return error;
     }
 };
 
