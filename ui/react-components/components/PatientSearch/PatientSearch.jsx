@@ -1,117 +1,99 @@
-import React, {useState, useEffect} from 'react';
-import {getPatientForDropdown, getPatientName} from "../../mapper/patientMapper";
-import {getPatientsByLocation} from '../../api/patientApi';
-import {currentLocation} from '../../utils/CookieUtil';
-import { injectIntl } from 'react-intl';
-import PropTypes from 'prop-types';
-import {MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH} from "../../constants";
-import {Search, ClickableTile, Tile} from "carbon-components-react";
+import React, { useEffect, useState} from "react";
+import PropTypes from "prop-types";
+import { injectIntl } from "react-intl";
+import { MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH } from "../../constants";
+import { ComboBox } from "carbon-components-react";
+import { getPatientsByLocation } from "../../api/patientApi";
+import { currentLocation } from "../../utils/CookieUtil";
+import { getPatientForDropdown } from "../../mapper/patientMapper";
+import Title from "../Title/Title.jsx";
+import axios from "axios";
 
-const styles = {
-    patientSearch : {
-        "z-index": "100",
-        "position": "absolute",
-        "width": "508px",
-        "box-shadow": "0 2px 6px rgba(0,0,0,0.3)",
-        "max-height": "250px",
-        "overflow": "auto"
-      },
-      patientSearchDropdown : {
-          "height": "48px",
-          "display": "flex",
-          "align-items": "center",
-          "padding": "0 1rem"
-      }
-}
-const PatientSearch = (props) => {
+export const PatientSearch = (props) => {
+    const {
+        intl,
+        onChange,
+        value,
+        isDisabled,
+        minCharLengthToTriggerPatientSearch = MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH,
+        autoFocus
+    } = props;
+    const [items, setItems] = useState([]);
+    const [userInput, setUserInput] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [cancelToken, setCancelToken] = useState(null);
 
-    const {intl, onChange, value, isDisabled, minCharLengthToTriggerPatientSearch, autoFocus} = props;
-    const [userInput, setUserInput] = useState('')
-    const [patients, setPatients] = useState([])
-    const [selectedPatient, setSelectedPatient] = useState(value)
-    const [isCalled, setIsCalled] = useState(false)
-    const createDropdownOptions = (patients) => {
-        return patients.map(patient => getPatientForDropdown(patient));
-    };
-
+    const setDisabledItems = ( translationKey, defaultMessage) => {
+        setItems([{
+            label: intl.formatMessage({id: translationKey, defaultMessage: defaultMessage}),
+            disabled: true
+        }])
+    }
     const loadPatients = async (searchString) => {
-        const minCharLength = minCharLengthToTriggerPatientSearch || MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH;
-        if (searchString.length < minCharLength) {
-            setPatients([]);
-        } else {
-            setIsCalled(true);
-            const patients = await getPatientsByLocation(currentLocation().uuid, searchString);
-            setIsCalled(false);
-            setPatients(createDropdownOptions(patients));
+        if (searchString.length >= minCharLengthToTriggerPatientSearch) {
+            try{
+                setIsLoading(true);
+                if(cancelToken){
+                    cancelToken.cancel('New Request made');
+                }
+                const source = axios.CancelToken.source();
+                setCancelToken(source);
+                const patients = await getPatientsByLocation(currentLocation().uuid, searchString, source.token);
+                if (patients.length === 0) {
+                    setDisabledItems('DROPDOWN_NO_OPTIONS_MESSAGE', 'No patients found');
+                } else {
+                    setItems(patients.map(getPatientForDropdown));
+                }
+            } catch (e) {
+                setDisabledItems('DROPDOWN_NO_OPTIONS_MESSAGE', 'No patients found')
+            }
+            finally {
+                setIsLoading(false);
+            }
         }
     };
 
     useEffect(() => {
-        if (userInput.length > 1) {
+        if (userInput.length >= MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH) {
             loadPatients(userInput);
         }
-        setSelectedPatient(null);
     }, [userInput])
-    useEffect(()=>{
-        setSelectedPatient(value);
-    }, value)
 
-    const showPatients = () => {
-        if(userInput.length>= MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH && isCalled){
-            return (
-                <Tile style={styles.patientSearchDropdown}>{intl.formatMessage({id: 'DROPDOWN_LOADING_MESSAGE', defaultMessage: 'Loading...'})}</Tile>
-            )
+    const handleInputChange = async (searchString) => {
+        setUserInput(searchString);
+        if (searchString.length < 3) {
+            setDisabledItems('DROPDOWN_TYPE_TO_SEARCH_MESSAGE', 'Type to search');
+        } else{
+            setDisabledItems('DROPDOWN_LOADING_MESSAGE', 'Loading...');
         }
-        else if(patients.length !== 0 ) {
-            return patients.map((patient) => (
-                <ClickableTile style={styles.patientSearchDropdown}
-                  key={patient.value}
-                  onClick={() => {
-                      setSelectedPatient(patient);
-                      setUserInput("")
-                      onChange && onChange(patient);
-                  }}
-                >
-                  {patient.label}
-                </ClickableTile>
-              ));
-        }
-        else{
-            return (
-                <Tile style={styles.patientSearchDropdown}>{intl.formatMessage({id: 'DROPDOWN_TYPE_TO_SEARCH_MESSAGE', defaultMessage: 'Type to search'})}</Tile>
-            );
-        }
-        
     }
-    
-
-    const placeholder = intl.formatMessage({id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT', defaultMessage: 'Patient Name or ID'});
-    return (
-        <div>
-            <Search
-                id="search"
-                data-testid="search-patient"
-                placeholder={placeholder}
-                onChange={(e) =>{
-                        setUserInput(e.target.value)
-                    }
-                }
-                onClear={() => {
-                    setUserInput('');
-                    setSelectedPatient(undefined)
-                    onChange(undefined)
-                    setPatients([])
-                }}
-                disabled={isDisabled}
-                value={selectedPatient ? selectedPatient.label : userInput}
-                autoFocus={autoFocus}
-            />
-            {patients && !selectedPatient && userInput.length >= 1 && (
-                <div style={styles.patientSearch}>{showPatients()}</div>
-            )}
-        </div>
-        );
-};
+    useEffect(() => {
+        if (isLoading) {
+            setDisabledItems('DROPDOWN_LOADING_MESSAGE', 'Loading...');
+        }
+    }, [isLoading])
+    const label = <Title
+        text={intl.formatMessage({id: 'APPOINTMENT_PATIENT_SEARCH_LABEL', defaultMessage: 'Search Patient'})}
+        isRequired={true}/>
+    return <ComboBox
+        id={"PatientSearch"}
+        items={items}
+        placeholder={intl.formatMessage({
+            id: 'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT',
+            defaultMessage: 'Patient Name or ID'
+        })}
+        onChange={(e) => {
+            onChange(e.selectedItem);
+        }}
+        size={"xl"}
+        onInputChange={handleInputChange}
+        disabled={isDisabled}
+        autoFocus={autoFocus}
+        titleText={label}
+        selectedItem={value}
+        data-testid={"search-patient"}
+    />
+}
 
 PatientSearch.propTypes = {
     intl: PropTypes.object.isRequired,

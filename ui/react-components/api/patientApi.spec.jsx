@@ -9,9 +9,20 @@ afterEach(() => {
 });
 
 describe('Patient Api', () => {
-    it('should take location uuid and search query to return list of patients', async () =>{
+    it('should take location uuid and search query and cancel Token to return list of patients', async () =>{
         let locationUuid = "locationUuid";
         let searchQuery = "searchquery";
+        let cancelToken = "CancelToken";
+        let expectedParams =  {
+            cancelToken: cancelToken,
+            params: {
+                filterOnAllIdentifiers: true,
+                identifier: searchQuery,
+                loginLocationUuid: locationUuid,
+                q: searchQuery,
+                startIndex: 0
+            }
+        }
         let mockResponse = {
             "totalCount": null,
             "pageOfResults": [
@@ -41,11 +52,10 @@ describe('Patient Api', () => {
             })
         );
 
-        let patientsByLocation = await getPatientsByLocation(locationUuid, searchQuery);
+        let patientsByLocation = await getPatientsByLocation(locationUuid, searchQuery, cancelToken);
 
         expect(mockAxios.get)
-            .toHaveBeenCalledWith(
-                `${searchPatientUrl}?loginLocationUuid=${locationUuid}&filterOnAllIdentifiers=true&identifier=${searchQuery}&q=${searchQuery}&startIndex=0`);
+            .toHaveBeenCalledWith(searchPatientUrl, expectedParams);
         expect(patientsByLocation).toEqual(mockResponse.pageOfResults);
     });
 
@@ -53,6 +63,17 @@ describe('Patient Api', () => {
         let locationUuid = "locationUuid";
         let searchQuery = "searchquery";
         let startIndex = 6;
+        let cancelToken = "CancelToken";
+        let expectedParams =  {
+            cancelToken: cancelToken,
+            params: {
+                filterOnAllIdentifiers: true,
+                identifier: searchQuery,
+                loginLocationUuid: locationUuid,
+                q: searchQuery,
+                startIndex: startIndex
+            }
+        }
         let mockResponse = {
             "totalCount": null,
             "pageOfResults": [
@@ -82,11 +103,10 @@ describe('Patient Api', () => {
             })
         );
 
-        await getPatientsByLocation(locationUuid, searchQuery, startIndex);
+        await getPatientsByLocation(locationUuid, searchQuery, cancelToken, startIndex);
 
         expect(mockAxios.get)
-            .toHaveBeenCalledWith(
-                `${searchPatientUrl}?loginLocationUuid=${locationUuid}&filterOnAllIdentifiers=true&identifier=${searchQuery}&q=${searchQuery}&startIndex=${startIndex}`);
+            .toHaveBeenCalledWith(searchPatientUrl, expectedParams);
     });
 
     it('should fetch patient by given uuid', async () =>{
@@ -125,4 +145,26 @@ describe('Patient Api', () => {
         expect(patient).toEqual(mockResponse);
     });
 
+    it('should return cancelled Response', async () => {
+        let locationUuid = "locationUuid";
+        let searchQuery = "searchquery";
+        const source = mockAxios.CancelToken.source();
+        let expectedParams =  {
+            cancelToken: source.token,
+            params: {
+                filterOnAllIdentifiers: true,
+                identifier: searchQuery,
+                loginLocationUuid: locationUuid,
+                q: searchQuery,
+                startIndex: 0
+            }
+        }
+        const promise = getPatientsByLocation(locationUuid, searchQuery, source.token);
+        source.cancel("Request Cancelled by user");
+        const response = await promise;
+        expect(mockAxios.get)
+            .toHaveBeenCalledWith(searchPatientUrl, expectedParams);
+        expect(mockAxios.isCancel(response)).toBeTruthy();
+        expect(response.message).toEqual("Request Cancelled by user");
+    });
 });
