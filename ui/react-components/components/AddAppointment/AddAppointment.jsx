@@ -179,6 +179,9 @@ const AddAppointment = props => {
     });
     const repeatsOn = intl.formatMessage({
         id: 'REPEATS_ON_LABEL', defaultMessage: "Repeats on"
+    });
+    const successMessage = intl.formatMessage({
+        id:'APPOINTMENT_CREATED_MESSAGE', defaultMessage:"Appointment Created!"
     })
 
     const statusTitleText = <Title text={statusPlaceHolder} isRequired={requiredFields.status}/>
@@ -550,7 +553,7 @@ const AddAppointment = props => {
         <Close24/>
     </div>
     if(showSuccessPopup){
-        return <Notification showMessage={showSuccessPopup} title={"Appointment Created!"} onClose={React.useContext(AppContext).onBack}/>
+        return <Notification showMessage={showSuccessPopup} title={successMessage} onClose={React.useContext(AppContext).onBack}/>
     }
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
