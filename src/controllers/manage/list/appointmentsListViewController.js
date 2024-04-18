@@ -272,6 +272,7 @@ angular.module('bahmni.appointments')
                 var params = $stateParams;
                 params.uuid = $scope.selectedAppointment.uuid;
                 params.isRecurring = $scope.selectedAppointment.recurring;
+                params.filterParams.statusList = [];
                 $state.go('home.manage.appointments.list.edit', params);
             };
 
