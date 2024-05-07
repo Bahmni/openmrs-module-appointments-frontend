@@ -31,7 +31,7 @@ angular.module('bahmni.appointments')
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
             const APPOINTMENT_STATUS_WAITLIST = {
-                "isDatelessAppointments": true
+                "withoutDates": true
             }
             const APPOINTMENTS_TAB_NAME = "appointments";
             const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
@@ -108,7 +108,8 @@ angular.module('bahmni.appointments')
                 }
                 else
                 return appointmentsService.search( prefilledPatient ? { patientUuid: prefilledPatient } : APPOINTMENT_STATUS_WAITLIST)
-                .then((response) => updateAppointments(response));
+                .then((response) => updateAppointments(response))
+                .catch((error) => messagingService.showMessage('error', 'UNEXPECTED_SERVICE_ERROR'));
             };
 
             var updateAppointments = function (response){
