@@ -31,7 +31,7 @@ angular.module('bahmni.appointments')
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
             const APPOINTMENT_STATUS_WAITLIST = {
-                "isDatelessAppointments": true
+                "withoutDates": true
             }
             const APPOINTMENTS_TAB_NAME = "appointments";
             const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
