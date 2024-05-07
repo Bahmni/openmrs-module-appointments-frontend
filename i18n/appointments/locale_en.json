@@ -216,6 +216,7 @@
   "RECURRENCE_WEEKDAYS_ERROR_MESSAGE": "Please select the day(s)",
   "NO_CONTENT_ERROR_MESSAGE": "Selected days do not fall under the end date selected",
   "UNEXPECTED_SERVICE_ERROR": "There was an unexpected issue on the server. Please try again",
+  "APPOINTMENT_SEARCH_TIME_ERROR": "Connection timed out. The request took too long to complete.",
   "PRIORITY_ERROR_MESSAGE": "Please select appointment category",
   "STATUS_ERROR_MESSAGE": "Please select appointment status",
   "PUBLIC_HOLIDAY_WARNING": "Date selected is a Public Holiday",
