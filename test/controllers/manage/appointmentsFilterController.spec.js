@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AppointmentsFilterController', function () {
-    var controller, scope, state, appService, appDescriptor, appointmentsServiceService, ivhTreeviewMgr, q, translate;
+    var controller, scope, state, appService, appDescriptor, appointmentsServiceService, ivhTreeviewMgr, q, translate, appointmentsService;
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     var providerService = jasmine.createSpyObj('providerService', ['list']);
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -93,6 +93,7 @@ describe('AppointmentsFilterController', function () {
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getAllServicesWithServiceTypes']);
+            appointmentsService = jasmine.createSpyObj('appointmentsService', ['search']);
             ivhTreeviewMgr = jasmine.createSpyObj('ivhTreeviewMgr', ['deselectAll', 'selectEach', 'collapseRecursive']);
             translate = jasmine.createSpyObj('$translate', ['instant']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -115,6 +116,7 @@ describe('AppointmentsFilterController', function () {
             $scope: scope,
             appService: appService,
             appointmentsServiceService: appointmentsServiceService,
+            appointmentsService: appointmentsService,
             $state: state,
             ivhTreeviewMgr: ivhTreeviewMgr,
             $q: q,
@@ -799,5 +801,21 @@ describe('AppointmentsFilterController', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
         createController();
         expect(scope.providers.length).toBe(2)
+    });
+
+    it("should make appointments search call when in awaiting appointments tab when filters are clicked", function() {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
+        createController();
+        state.current.tabName = "awaitingappointments";
+        appointmentsService.search.and.returnValue(specUtil.simplePromise({data: []}));
+        scope.applyFilter();
+        expect(appointmentsService.search).toHaveBeenCalledWith({
+            serviceUuids: [],
+            serviceTypeUuids : [],
+            providerUuids: [],
+            locationUuids: [],
+            statusList: [],
+            withoutDates: true
+        });
     });
 });
