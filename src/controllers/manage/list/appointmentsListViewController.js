@@ -107,7 +107,7 @@ angular.module('bahmni.appointments')
                     .then((response) => updateAppointments(response));
                 }
                 else
-                return appointmentsService.search( prefilledPatient ? { patientUuid: prefilledPatient } : APPOINTMENT_STATUS_WAITLIST)
+                return appointmentsService.search( prefilledPatient ? { patientUuids: [prefilledPatient] } : APPOINTMENT_STATUS_WAITLIST)
                 .then((response) => updateAppointments(response))
                 .catch((error) => messagingService.showMessage('error', 'APPOINTMENT_SEARCH_TIME_ERROR'));
             };
@@ -151,7 +151,7 @@ angular.module('bahmni.appointments')
             }
 
             var setAppointmentsInPatientSearch = function (patientUuid) {
-                appointmentsService.search({patientUuid: patientUuid}).then(function (response) {
+                appointmentsService.search({patientUuids: [patientUuid]}).then(function (response) {
                     var appointmentsInDESCOrderBasedOnStartDateTime = _.sortBy(response.data, "startDateTime").reverse();
                     setFilteredAppointmentsInPatientSearch(appointmentsInDESCOrderBasedOnStartDateTime);
                 });
