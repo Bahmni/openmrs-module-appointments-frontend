@@ -284,7 +284,7 @@ describe("AppointmentsCreateController", function () {
             $scope.patientAppointments = undefined;
             var patientUuid = 'uuid';
             appointmentContext = {appointment: {patient:{uuid: patientUuid}}};
-            var appointmentSearchParams = {patientUuid: patientUuid};
+            var appointmentSearchParams = {patientUuids: [patientUuid]};
             createController();
 
             expect(appointmentsService.search).toHaveBeenCalledWith(appointmentSearchParams);

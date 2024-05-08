@@ -69,7 +69,7 @@ describe("Patient Search", function () {
         var patient = {uuid: 'patientUuid'};
         compiledScope.onSelectPatient(patient);
         expect(state.params.patient).toEqual(patient);
-        expect(appointmentsService.search).toHaveBeenCalledWith({patientUuid: patient.uuid});
+        expect(appointmentsService.search).toHaveBeenCalledWith({patientUuids: [patient.uuid]});
         expect(scope.displaySearchedPatient).toHaveBeenCalled();
     });
 
@@ -90,7 +90,7 @@ describe("Patient Search", function () {
         var element = createElement();
         var compiledScope = element.isolateScope();
         expect(compiledScope.patient).toBe(patient.givenName + " " + patient.familyName + " " + "(" + patient.identifier + ")");
-        expect(appointmentsService.search).toHaveBeenCalledWith({patientUuid: patient.uuid});
+        expect(appointmentsService.search).toHaveBeenCalledWith({patientUuids: [patient.uuid]});
         expect(scope.displaySearchedPatient).toHaveBeenCalled();
     });
 

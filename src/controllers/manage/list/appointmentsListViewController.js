@@ -31,7 +31,7 @@ angular.module('bahmni.appointments')
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
             const APPOINTMENT_STATUS_WAITLIST = {
-                "isDatelessAppointments": true
+                "withoutDates": true
             }
             const APPOINTMENTS_TAB_NAME = "appointments";
             const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
@@ -107,8 +107,9 @@ angular.module('bahmni.appointments')
                     .then((response) => updateAppointments(response));
                 }
                 else
-                return appointmentsService.search( prefilledPatient ? { patientUuid: prefilledPatient } : APPOINTMENT_STATUS_WAITLIST)
-                .then((response) => updateAppointments(response));
+                return appointmentsService.search( prefilledPatient ? { patientUuids: [prefilledPatient] } : APPOINTMENT_STATUS_WAITLIST)
+                .then((response) => updateAppointments(response))
+                .catch((error) => messagingService.showMessage('error', 'APPOINTMENT_SEARCH_TIME_ERROR'));
             };
 
             var updateAppointments = function (response){
@@ -150,7 +151,7 @@ angular.module('bahmni.appointments')
             }
 
             var setAppointmentsInPatientSearch = function (patientUuid) {
-                appointmentsService.search({patientUuid: patientUuid}).then(function (response) {
+                appointmentsService.search({patientUuids: [patientUuid]}).then(function (response) {
                     var appointmentsInDESCOrderBasedOnStartDateTime = _.sortBy(response.data, "startDateTime").reverse();
                     setFilteredAppointmentsInPatientSearch(appointmentsInDESCOrderBasedOnStartDateTime);
                 });
