@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsFilterController', ['$scope', '$state', '$rootScope', '$q', '$translate', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService', 'appService', 'locationService',
-        function ($scope, $state, $rootScope, $q, $translate, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService, appService, locationService) {
+    .controller('AppointmentsFilterController', ['$scope', '$state', '$rootScope', '$q', '$translate', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService', 'appService', 'locationService', 'appointmentsService',
+        function ($scope, $state, $rootScope, $q, $translate, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService, appService, locationService, appointmentsService) {
             var init = function () {
                 $scope.isSpecialityEnabled = appService.getAppDescriptor().getConfigValue('enableSpecialities');
                 $scope.isServiceTypeEnabled = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
@@ -254,6 +254,14 @@ angular.module('bahmni.appointments')
                 $state.params.filterParams.statusList = _.map($scope.selectedStatusList, function (status) {
                     return status.value;
                 });
+                const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
+                if($state.current.tabName === AWAITING_APPOINTMENTS_TAB_NAME) {
+                    let payload = $state.params.filterParams;
+                    payload.withoutDates = true;
+                    spinner.forPromise(appointmentsService.search(payload).then(function (response) {
+                        $rootScope.appointmentsData = response.data;
+                    }));
+                }
             };
 
             $scope.isFilterApplied = function () {

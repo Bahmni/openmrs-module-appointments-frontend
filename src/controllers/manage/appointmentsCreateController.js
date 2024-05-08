@@ -157,7 +157,7 @@ angular.module('bahmni.appointments')
 
             $scope.onSelectPatient = function (data) {
                 $scope.appointment.patient = data;
-                return spinner.forPromise(appointmentsService.search({patientUuid: data.uuid}).then(function (oldAppointments) {
+                return spinner.forPromise(appointmentsService.search({patientUuids: [data.uuid]}).then(function (oldAppointments) {
                     $scope.patientAppointments = oldAppointments.data;
                 }));
             };

@@ -30,9 +30,9 @@ angular.module('bahmni.appointments')
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
-            const APPOINTMENT_STATUS_WAITLIST = $scope.disableDatesForWaitListAppointment ?
-                {"isDatelessAppointments": true} :
-                {"status" : "WaitList"}
+            const APPOINTMENT_STATUS_WAITLIST = {
+                "withoutDates": true
+            }
             const APPOINTMENTS_TAB_NAME = "appointments";
             const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
@@ -75,10 +75,12 @@ angular.module('bahmni.appointments')
                 autoRefreshStatus = false;
                 if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME)
                     return appointmentsService.getAllAppointments(params)
-                    .then((response) => updateAppointments(response)); 
-                else 
-                    return appointmentsService.search(APPOINTMENT_STATUS_WAITLIST)
-                    .then((response) => updateAppointments(response)); 
+                    .then((response) => updateAppointments(response));
+                }
+                else
+                return appointmentsService.search( prefilledPatient ? { patientUuids: [prefilledPatient] } : APPOINTMENT_STATUS_WAITLIST)
+                .then((response) => updateAppointments(response))
+                .catch((error) => messagingService.showMessage('error', 'APPOINTMENT_SEARCH_TIME_ERROR'));
             };
 
             var updateAppointments = function (response){
@@ -120,7 +122,7 @@ angular.module('bahmni.appointments')
             }
 
             var setAppointmentsInPatientSearch = function (patientUuid) {
-                appointmentsService.search({patientUuid: patientUuid}).then(function (response) {
+                appointmentsService.search({patientUuids: [patientUuid]}).then(function (response) {
                     var appointmentsInDESCOrderBasedOnStartDateTime = _.sortBy(response.data, "startDateTime").reverse();
                     setFilteredAppointmentsInPatientSearch(appointmentsInDESCOrderBasedOnStartDateTime);
                 });

@@ -27,7 +27,7 @@ angular.module('bahmni.appointments')
 
                     $scope.onSelectPatient = function (data) {
                         $state.params.patient = data;
-                        spinner.forPromise(appointmentsService.search({patientUuid: data.uuid}).then(function (oldAppointments) {
+                        spinner.forPromise(appointmentsService.search({patientUuids: [data.uuid]}).then(function (oldAppointments) {
                             var appointmentInDESCOrderBasedOnStartDateTime = _.sortBy(oldAppointments.data, "startDateTime").reverse();
                             $scope.onSearch(appointmentInDESCOrderBasedOnStartDateTime);
                         }));
