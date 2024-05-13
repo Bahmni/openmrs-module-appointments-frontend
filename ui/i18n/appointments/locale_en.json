@@ -245,5 +245,6 @@
   "PROVIDER_ERROR_MESSAGE": "Please select maximum of {maxAppointmentProviders} provider(s)",
   "PROVIDERS": "Providers",
   "LOCATIONS": "Locations",
-  "SPECIALITIES": "Specialities"
+  "SPECIALITIES": "Specialities",
+  "APPOINTMENT_CREATED_MESSAGE": "Appointment Created!"
 }
