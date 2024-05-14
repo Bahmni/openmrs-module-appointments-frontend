@@ -365,6 +365,10 @@ angular.module('bahmni.appointments')
                 $scope.reverseSort = !$scope.reverseSort;
             };
 
+            $rootScope.$on('awaitingFilterResponse', function (event, response) {
+                $scope.filteredAppointments = response.data;
+            });
+            
             $scope.printPage = function () {
                 var printTemplateUrl = appService.getAppDescriptor().getConfigValue("printListViewTemplateUrl") || 'views/manage/list/defaultListPrint.html';
                 printer.print(printTemplateUrl, {
