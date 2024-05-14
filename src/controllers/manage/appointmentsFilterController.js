@@ -260,6 +260,7 @@ angular.module('bahmni.appointments')
                     payload.withoutDates = true;
                     spinner.forPromise(appointmentsService.search(payload).then(function (response) {
                         $rootScope.appointmentsData = response.data;
+                        $rootScope.$broadcast("awaitingFilterResponse", response);
                     }));
                 }
             };
