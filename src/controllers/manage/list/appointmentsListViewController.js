@@ -76,7 +76,6 @@ angular.module('bahmni.appointments')
                 if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME)
                     return appointmentsService.getAllAppointments(params)
                     .then((response) => updateAppointments(response));
-                }
                 else
                 return appointmentsService.search( prefilledPatient ? { patientUuids: [prefilledPatient] } : APPOINTMENT_STATUS_WAITLIST)
                 .then((response) => updateAppointments(response))
