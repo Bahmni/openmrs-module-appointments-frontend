@@ -69,7 +69,7 @@ import Notification from "../Notifications/Notifications.jsx";
 
 const EditAppointment = props => {
 
-    const {appConfig, appointmentUuid, isRecurring, intl, currentProvider} = props;
+    const {appConfig, appointmentUuid, isRecurring, intl, currentProvider, setIsAppointmentModalOpen } = props;
 
     const {setViewDate} = React.useContext(AppContext);
 
@@ -320,6 +320,7 @@ const EditAppointment = props => {
         const date = startDate ? moment(startDate) : moment();
         setViewDate(date.startOf('day').toDate())
         setShowUpdateSuccessPopup(true);
+        setIsAppointmentModalOpen(false);
     };
 
     const isRescheduled = function (appointmentTimeBeforeEdit) {
@@ -811,7 +812,8 @@ EditAppointment.propTypes = {
     appConfig: PropTypes.object,
     appointmentUuid: PropTypes.string.isRequired,
     isRecurring: PropTypes.string.isRequired,
-    currentProvider: PropTypes.object
+    currentProvider: PropTypes.object,
+    setIsAppointmentModalOpen: PropTypes.func
 };
 
 export default injectIntl(EditAppointment);
