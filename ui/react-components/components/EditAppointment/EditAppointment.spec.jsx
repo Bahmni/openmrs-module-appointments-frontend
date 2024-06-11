@@ -537,7 +537,7 @@ describe('Edit appointment with appointment request enabled', () => {
             const {container, getByText, queryByText, getByTestId} = renderWithReactIntl(
                 <AppContext.Provider value={{setViewDate: jest.fn()}}>
                     renderWithReactIntl(<EditAppointment appConfig={config} appointmentUuid={'123tr5-7ae5-4708-9fcc-8c98daba0ca9'}
-                                                         isRecurring="false" currentProvider={currentProvider} />);
+                                                         isRecurring="false" currentProvider={currentProvider} setIsAppointmentModalOpen={jest.fn()}/>);
                 </AppContext.Provider>
 
             );
@@ -571,7 +571,7 @@ describe('Edit appointment with appointment request enabled', () => {
             const {container, getByText, queryByText, getByTestId} = renderWithReactIntl(
                 <AppContext.Provider value={{setViewDate: jest.fn()}}>
                     renderWithReactIntl(<EditAppointment appConfig={config} appointmentUuid={'123tr5-7ae5-4708-9fcc-8c98daba0ca9'}
-                                                         isRecurring="false" currentProvider={currentProvider} />);
+                                                         isRecurring="false" currentProvider={currentProvider} setIsAppointmentModalOpen={jest.fn()} />);
                 </AppContext.Provider>
 
             );
@@ -604,7 +604,7 @@ describe('Edit appointment with appointment request enabled', () => {
             const {container, getByText, queryByText, getByTestId} = renderWithReactIntl(
                 <AppContext.Provider value={{setViewDate: jest.fn()}}>
                     renderWithReactIntl(<EditAppointment appConfig={config} appointmentUuid={'123tr5-7y65-4708-9fcc-8c98daba0ca9'}
-                                                         isRecurring="false" currentProvider={currentProvider} />);
+                                                         isRecurring="false" currentProvider={currentProvider} setIsAppointmentModalOpen={jest.fn()} />);
                 </AppContext.Provider>
 
             );
@@ -644,7 +644,7 @@ describe('Edit appointment with appointment request enabled', () => {
                 <AppContext.Provider value={{setViewDate: jest.fn()}}>
                     renderWithReactIntl(<EditAppointment appConfig={config}
                                                          appointmentUuid={'45hj76-7y65-4708-9fcc-8c98daba0ca9'}
-                                                         isRecurring="false" currentProvider={currentProvider} currentProvider={currentProvider}/>);
+                                                         isRecurring="false" currentProvider={currentProvider} currentProvider={currentProvider} setIsAppointmentModalOpen={jest.fn()} />);
                 </AppContext.Provider>
             );
             getByTextInDom = getByText;

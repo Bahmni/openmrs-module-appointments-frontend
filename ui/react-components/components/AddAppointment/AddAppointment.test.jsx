@@ -623,7 +623,7 @@ describe('Add appointment with appointment request enabled', () => {
     it('should update the appointment status and provider responses if the AppointmentRequest is Enabled', async () => {
         const {container, queryAllByText, getByText, getByTestId, queryByText} = renderWithReactIntl(
             <AppContext.Provider value={{setViewDate: jest.fn()}}>
-                <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider}/>
+                <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider} setIsAppointmentModalOpen={jest.fn()}/>
             </AppContext.Provider>
 
         );
@@ -649,7 +649,7 @@ describe('Add appointment with appointment request enabled', () => {
     it('should update the appointment status as Scheduled when current provider is part of appointment', async () => {
         const {container, getByTestId, getByText, queryByText} = renderWithReactIntl(
             <AppContext.Provider value={{setViewDate: jest.fn()}}>
-                <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider}/>
+                <AddAppointment appConfig={config} appointmentParams={appointmentTime} currentProvider={currentProvider} setIsAppointmentModalOpen={jest.fn()}/>
             </AppContext.Provider>
 
         );
