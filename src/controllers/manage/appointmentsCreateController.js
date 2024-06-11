@@ -35,7 +35,6 @@ angular.module('bahmni.appointments')
             var patientSearchURL = appService.getAppDescriptor().getConfigValue('patientSearchUrl');
             var loginLocationUuid = sessionService.getLoginLocationUuid();
             $scope.minCharLengthToTriggerPatientSearch = appService.getAppDescriptor().getConfigValue('minCharLengthToTriggerPatientSearch') || 3;
-
             $scope.maxAppointmentProviders = appService.getAppDescriptor().getConfigValue("maxAppointmentProviders") || 1;
 
             var isProviderNotAvailableForAppointments = function (selectedProvider) {
@@ -158,7 +157,7 @@ angular.module('bahmni.appointments')
 
             $scope.onSelectPatient = function (data) {
                 $scope.appointment.patient = data;
-                return spinner.forPromise(appointmentsService.search({patientUuid: data.uuid}).then(function (oldAppointments) {
+                return spinner.forPromise(appointmentsService.search({patientUuids: [data.uuid]}).then(function (oldAppointments) {
                     $scope.patientAppointments = oldAppointments.data;
                 }));
             };

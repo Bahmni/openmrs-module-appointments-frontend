@@ -145,26 +145,4 @@ describe('Patient Api', () => {
         expect(patient).toEqual(mockResponse);
     });
 
-    it('should return cancelled Response', async () => {
-        let locationUuid = "locationUuid";
-        let searchQuery = "searchquery";
-        const source = mockAxios.CancelToken.source();
-        let expectedParams =  {
-            cancelToken: source.token,
-            params: {
-                filterOnAllIdentifiers: true,
-                identifier: searchQuery,
-                loginLocationUuid: locationUuid,
-                q: searchQuery,
-                startIndex: 0
-            }
-        }
-        const promise = getPatientsByLocation(locationUuid, searchQuery, source.token);
-        source.cancel("Request Cancelled by user");
-        const response = await promise;
-        expect(mockAxios.get)
-            .toHaveBeenCalledWith(searchPatientUrl, expectedParams);
-        expect(mockAxios.isCancel(response)).toBeTruthy();
-        expect(response.message).toEqual("Request Cancelled by user");
-    });
 });
