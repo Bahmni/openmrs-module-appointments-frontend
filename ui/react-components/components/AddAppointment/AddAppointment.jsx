@@ -72,7 +72,7 @@ import Notification from "../Notifications/Notifications.jsx";
 
 const AddAppointment = props => {
 
-    const {appConfig, intl, appointmentParams, currentProvider, urlParams } = props;
+    const {appConfig, intl, appointmentParams, currentProvider, urlParams, setIsAppointmentModalOpen } = props;
     const {setViewDate} = React.useContext(AppContext);
     const errorTranslations = getErrorTranslations(intl);
 
@@ -345,6 +345,7 @@ const AddAppointment = props => {
         const date = startDate ? moment(startDate) : moment();
         setViewDate(date.startOf('day').toDate())
         setShowSuccessPopup(true);
+        setIsAppointmentModalOpen(false);
         reInitialiseComponent();
     };
 
@@ -874,7 +875,8 @@ AddAppointment.propTypes = {
     appConfig: PropTypes.object,
     appointmentParams: PropTypes.object,
     currentProvider: PropTypes.object,
-    urlParams: PropTypes.object
+    urlParams: PropTypes.object,
+    setIsAppointmentModalOpen: PropTypes.func
 };
 
 export const isVirtual = (appt) => {
