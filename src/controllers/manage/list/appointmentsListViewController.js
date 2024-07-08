@@ -2,9 +2,9 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
-        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', 'appointmentCommonService', '$interval',
+        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', 'appointmentCommonService', '$interval','$location',
         function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
-                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, appointmentCommonService, $interval) {
+                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, appointmentCommonService, $interval, $location) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.priorityOptionsList = appService.getAppDescriptor().getConfigValue('priorityOptionsList') || [];
@@ -12,8 +12,8 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
+            $scope.configAttributes = appService.getAppDescriptor().getConfigValue('configAttributes') || [];
             var allowVirtualConsultation = appService.getAppDescriptor().getConfigValue('allowVirtualConsultation');
-
             $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
             $scope.isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
             $scope.disableDatesForWaitListAppointment = appService.getAppDescriptor().getConfigValue('disableDatesForWaitListAppointment');
@@ -62,18 +62,44 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             }
+
+            function updateTableHeaderWithConfigAttributes() {
+                const additionalHeadings = [];
+                for (const key in $scope.configAttributes) {
+                    if ($scope.configAttributes.hasOwnProperty(key)) {
+                        const attribute = $scope.configAttributes[key];
+                        if (attribute.showInListView) {
+                            additionalHeadings.push({
+                                heading: attribute.label,
+                                sortInfo: `patient.customAttributes.${key}`,
+                                key: key,
+                                class: true,
+                                enable: true
+                            });
+                        }
+                    }
+                }
+                additionalHeadings.sort((a, b) => {
+                    return $scope.configAttributes[a.key].order - $scope.configAttributes[b.key].order;
+                });
+                const insertionIndex = $scope.tableInfo.length - 1;
+                Array.prototype.splice.apply($scope.tableInfo, [insertionIndex, 0].concat(additionalHeadings));
+            }
+
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
                 $scope.enableColumnsForAppointments = $scope.enableColumnForTab(APPOINTMENTS_TAB_NAME)
                 updateTableHeader();
+                updateTableHeaderWithConfigAttributes();
                 appointmentCommonService.addProviderToFilterFromQueryString();
             };
 
             var setAppointments = function (params) {
+                const prefilledPatient = $location.search()['patient'];
                 autoRefreshStatus = false;
-                if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME)
+                if($scope.getCurrentTabName() === APPOINTMENTS_TAB_NAME && !prefilledPatient)
                     return appointmentsService.getAllAppointments(params)
                     .then((response) => updateAppointments(response));
                 else
