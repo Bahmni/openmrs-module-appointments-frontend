@@ -808,6 +808,7 @@ describe('AppointmentsFilterController', function () {
         createController();
         state.current.tabName = "awaitingappointments";
         appointmentsService.search.and.returnValue(specUtil.simplePromise({data: []}));
+        scope.disableDatesForWaitListAppointment = false;
         scope.applyFilter();
         expect(appointmentsService.search).toHaveBeenCalledWith({
             serviceUuids: [],
@@ -815,7 +816,7 @@ describe('AppointmentsFilterController', function () {
             providerUuids: [],
             locationUuids: [],
             statusList: [],
-            withoutDates: true
+            status: "WaitList"
         });
     });
 });
