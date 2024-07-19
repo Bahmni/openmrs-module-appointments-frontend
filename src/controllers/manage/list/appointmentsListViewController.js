@@ -413,6 +413,7 @@ angular.module('bahmni.appointments')
                     closeConfirmBox();
                     messagingService.showMessage('info', message);
                     $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                    $state.reload();
                 });
             };
 
