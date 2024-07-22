@@ -13,7 +13,6 @@ angular.module('bahmni.appointments')
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
             var allowVirtualConsultation = appService.getAppDescriptor().getConfigValue('allowVirtualConsultation');
-
             $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
             $scope.isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
             $scope.disableDatesForWaitListAppointment = appService.getAppDescriptor().getConfigValue('disableDatesForWaitListAppointment');
@@ -30,9 +29,7 @@ angular.module('bahmni.appointments')
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
-            const APPOINTMENT_STATUS_WAITLIST = {
-                "withoutDates": true
-            }
+            const APPOINTMENT_STATUS_WAITLIST = $scope.disableDatesForWaitListAppointment ? {"withoutDates": true} : {"status" : "WaitList"};
             const APPOINTMENTS_TAB_NAME = "appointments";
             const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
@@ -62,6 +59,7 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             }
+
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
@@ -77,9 +75,9 @@ angular.module('bahmni.appointments')
                     return appointmentsService.getAllAppointments(params)
                     .then((response) => updateAppointments(response));
                 else
-                return appointmentsService.search( prefilledPatient ? { patientUuids: [prefilledPatient] } : APPOINTMENT_STATUS_WAITLIST)
-                .then((response) => updateAppointments(response))
-                .catch((error) => messagingService.showMessage('error', 'APPOINTMENT_SEARCH_TIME_ERROR'));
+                    return appointmentsService.search(APPOINTMENT_STATUS_WAITLIST)
+                    .then((response) => updateAppointments(response))
+                    .catch((error) => messagingService.showMessage('error', 'APPOINTMENT_SEARCH_TIME_ERROR'));
             };
 
             var updateAppointments = function (response){

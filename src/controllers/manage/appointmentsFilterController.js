@@ -6,6 +6,7 @@ angular.module('bahmni.appointments')
             var init = function () {
                 $scope.isSpecialityEnabled = appService.getAppDescriptor().getConfigValue('enableSpecialities');
                 $scope.isServiceTypeEnabled = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+                $scope.disableDatesForWaitListAppointment = appService.getAppDescriptor().getConfigValue('disableDatesForWaitListAppointment');
                 $scope.isFilterOpen = $state.params.isFilterOpen;
                 $scope.expandToDepth = appService.getAppDescriptor().getConfigValue('collapseServiceFilter') == true ?
                     Bahmni.Appointments.Constants.collapseServiceFilter : Bahmni.Appointments.Constants.defaultExpandServiceFilter;
@@ -254,10 +255,15 @@ angular.module('bahmni.appointments')
                 $state.params.filterParams.statusList = _.map($scope.selectedStatusList, function (status) {
                     return status.value;
                 });
+
                 const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
                 if($state.current.tabName === AWAITING_APPOINTMENTS_TAB_NAME) {
                     let payload = $state.params.filterParams;
-                    payload.withoutDates = true;
+                    if ($scope.disableDatesForWaitListAppointment) {
+                        payload.withoutDates = true;
+                    } else {
+                        payload.status = "WaitList";
+                    }
                     spinner.forPromise(appointmentsService.search(payload).then(function (response) {
                         $rootScope.appointmentsData = response.data;
                         $rootScope.$broadcast("awaitingFilterResponse", response);
