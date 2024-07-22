@@ -29,7 +29,7 @@ describe('AppointmentsListViewController', function () {
                     }
                 };
             });
-            $state = jasmine.createSpyObj('$state', ['go']);
+            $state = jasmine.createSpyObj('$state', ['go', 'reload']);
             confirmBox = jasmine.createSpy('confirmBox');
             messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
             $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
