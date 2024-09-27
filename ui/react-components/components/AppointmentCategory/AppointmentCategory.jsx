@@ -19,7 +19,7 @@ const AppointmentCategory = (props) => {
         <ComboBox id="service-search"
                   items={priorityOptionsList}
                   titleText={title}
-                  placeholder={"Choose an option"}
+                  placeholder={intl.formatMessage({id: 'CHOOSE_AN_OPTION_KEY', defaultMessage: "Choose an option"})}
                   onChange={onChange}
                   isDisabled={isDisabled}
                   autoFocus={!specialityEnabled && autoFocus}

@@ -4,7 +4,7 @@ import {
 import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 import { PropTypes } from "prop-types";
-import { injectIntl } from "react-intl";
+import { injectIntl, useIntl } from "react-intl";
 import { isUndefined } from "lodash";
 import {ComboBox} from "carbon-components-react";
 import Title from "../Title/Title.jsx";
@@ -33,6 +33,7 @@ const Dropdown = (props) => {
   const isComponentDisabled = () =>
     isUndefined(isDisabled) ? false : isDisabled;
   const title = <Title text={placeholder} isRequired={isRequired}/>;
+  const intl = useIntl();
 
   return (
     <div
@@ -49,7 +50,7 @@ const Dropdown = (props) => {
           disabled={isDisabled}
           style={{ width: '250px' }}
           shouldFilterItem={filterItems}
-          placeholder={"Choose an option"}
+          placeholder={intl.formatMessage({id: 'CHOOSE_AN_OPTION_KEY', defaultMessage: "Choose an option"})}
           selectedItem={selectedValue}
       />
     </div>

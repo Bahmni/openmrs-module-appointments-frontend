@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {SelectItem, TimePicker, TimePickerSelect} from "carbon-components-react";
 import moment from "moment";
@@ -35,7 +35,7 @@ const AppointmentTimePicker = (props) => {
     return (
     <TimePicker id="time-selector" labelText={title} onBlur={handleChange} value={time}
                 style={{ width: "72px", padding: "0 0 0 1rem"}} autoComplete={"off"} disabled={isDisabled}>
-             <TimePickerSelect id="time-picker-select-1" labelText={"Choose a time"} onChange={handlePeriod} value={period} disabled={isDisabled}>
+             <TimePickerSelect id="time-picker-select-1" labelText={<FormattedMessage id={'CHOOSE_A_TIME'} defaultMessage={"Choose a time"}/>} onChange={handlePeriod} value={period} disabled={isDisabled}>
                <SelectItem value="AM" text="AM" />
                <SelectItem value="PM" text="PM" />
              </TimePickerSelect>

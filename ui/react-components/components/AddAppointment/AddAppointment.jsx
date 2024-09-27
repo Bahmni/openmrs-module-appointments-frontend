@@ -565,7 +565,7 @@ const AddAppointment = props => {
         <Close24/>
     </span>
     if(showSuccessPopup){
-        return <Notification showMessage={showSuccessPopup} title={"Appointment Created!"} onClose={React.useContext(AppContext).onBack}/>
+        return <Notification showMessage={showSuccessPopup} title={intl.formatMessage({id: 'APPOINTMENT_CREATED_MESSAGE', defaultMessage: "Appointment Created!"})} onClose={React.useContext(AppContext).onBack}/>
     }
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
@@ -617,7 +617,7 @@ const AddAppointment = props => {
                                 minDate={today}
                                 isRequired={requiredFields.recurringStartDate}
                                 intl={intl}
-                                title={"Appointment start date"}/>
+                                title={intl.formatMessage({id: 'APPOINTMENT_START_DATE', defaultMessage: "Appointment start date"})}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div style={{display: "flex"}}>
@@ -681,7 +681,7 @@ const AddAppointment = props => {
                                 </div>
                                 <div style={{minWidth: "120px", verticalAlign: "bottom"}}>
                                     <Dropdown id={"recurrence-type"} options={recurringTypeOptions}
-                                              label={"Choose an option"}
+                                              label={intl.formatMessage({id: 'CHOOSE_AN_OPTION_KEY', defaultMessage: "Choose an option"})}
                                               selectedValue={recurringTypeOptions[0]}
                                               onChange={event => {
                                                   updateAppointmentDetails({recurrenceType: event.selectedItem.value});
