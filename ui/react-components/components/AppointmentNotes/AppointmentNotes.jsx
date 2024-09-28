@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {injectIntl} from "react-intl";
+import {FormattedMessage, injectIntl} from "react-intl";
 import { TextArea } from 'carbon-components-react'
 
 const AppointmentNotes = (props) => {
@@ -17,7 +17,7 @@ const AppointmentNotes = (props) => {
     }
     return (<div data-testid="notes">
             <TextArea value={notes || ""} onChange={handleChange} onBlur={onChange}
-                      data-testid="notes" maxCount={250} labelText={"Notes"} enableCounter={true}
+                      data-testid="notes" maxCount={250} labelText={<FormattedMessage id='APPOINTMENT_CREATE_NOTES' defaultMessage='Notes'/>} enableCounter={true}
                       placeholder={placeHolder}/>
         </div>
     )

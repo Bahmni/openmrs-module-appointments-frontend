@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import GridSummary, {transformAppointmentSummaryToGridData, transformAppointmentsData} from "../components/GridSummary/GridSummary.jsx";
 import DateOrWeekNavigator from "../components/DateOrWeekNavigator/DateOrWeekNavigator.jsx"
-import { IntlProvider } from "react-intl";
+import { IntlProvider, useIntl } from "react-intl";
 import { getLocale } from "../utils/LocalStorageUtil";
 import translations from '../../i18n/appointments';
 import PropTypes from "prop-types";
@@ -61,6 +61,7 @@ class AppointmentSummaryContainer extends Component {
 
     render() {
         const {locale, messages, startDate, endDate, data, specialityData, providersData, locationData, isLoading} = this.state;
+        const intl = useIntl();
         const { goToListView , state, fullSummary} = this.props;
         const setStartDate = date => {
             this.setState({ startDate: date })
@@ -74,14 +75,14 @@ class AppointmentSummaryContainer extends Component {
                     <DateOrWeekNavigator isWeek={true} weekStart={1} />
                     { fullSummary? (
                         <div>
-                            <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={'Specialities'}/>
+                            <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={intl.formatMessage({id: "APPOINTMENT_SPECIALITIES", defaultMessage: "Specialities"})}/>
                             <hr/>
-                            <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={'Providers'}/>
+                            <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={intl.formatMessage({id: "APPOINTMENT_PROVIDERS", defaultMessage: "Providers"})}/>
                             <hr/>
                             <GridSummary gridData={sortBy(data, row => row.rowLabel.toLowerCase())}
-                                         weekStartDate={startDate} onClick={goToListView} gridName={'Services'}/>
+                                         weekStartDate={startDate} onClick={goToListView} gridName={intl.formatMessage({id: "APPOINTMENT_SERVICES", defaultMessage: "Services"})}/>
                             <hr/>
-                            <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={'Locations'}/>
+                            <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={intl.formatMessage({id: "APPOINTMENT_LOCATIONS", defaultMessage: "Locations"})}/>
                             <br/>
                         </div>) : (
                         <GridSummary gridData={ data } weekStartDate={startDate} onClick={goToListView}/>

@@ -14,7 +14,7 @@ import {
 import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
-import {injectIntl} from "react-intl";
+import {FormattedMessage, injectIntl} from "react-intl";
 import PropTypes from "prop-types";
 import {
     getAppointmentConflicts,
@@ -565,7 +565,7 @@ const AddAppointment = props => {
         <Close24/>
     </span>
     if(showSuccessPopup){
-        return <Notification showMessage={showSuccessPopup} title={"Appointment Created!"} onClose={React.useContext(AppContext).onBack}/>
+        return <Notification showMessage={showSuccessPopup} title={intl.formatMessage({id: 'APPOINTMENT_CREATED_MESSAGE', defaultMessage: "Appointment Created!"})} onClose={React.useContext(AppContext).onBack}/>
     }
     return (<div className={classNames(overlay)}>
             <div data-testid="appointment-editor" className={classNames(appointmentEditor, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? isRecurring : '')}>
@@ -617,7 +617,7 @@ const AddAppointment = props => {
                                 minDate={today}
                                 isRequired={requiredFields.recurringStartDate}
                                 intl={intl}
-                                title={"Appointment start date"}/>
+                                title={intl.formatMessage({id: 'APPOINTMENT_START_DATE', defaultMessage: "Appointment start date"})}/>
                             <ErrorMessage message={errors.startDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div style={{display: "flex"}}>
@@ -681,7 +681,7 @@ const AddAppointment = props => {
                                 </div>
                                 <div style={{minWidth: "120px", verticalAlign: "bottom"}}>
                                     <Dropdown id={"recurrence-type"} options={recurringTypeOptions}
-                                              label={"Choose an option"}
+                                              label={intl.formatMessage({id: 'CHOOSE_AN_OPTION_KEY', defaultMessage: "Choose an option"})}
                                               selectedValue={recurringTypeOptions[0]}
                                               onChange={event => {
                                                   updateAppointmentDetails({recurrenceType: event.selectedItem.value});
@@ -816,7 +816,7 @@ const AddAppointment = props => {
                                 isRequired={requiredFields.appointmentStartDate}
                                 showWarning={showHolidayWarning}
                                 intl={intl}
-                                title={"Appointment date"}/>
+                                title={<FormattedMessage id="APPOINTMENT_DATE_LABEL" defaultMessage="Appointment date"/>}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div style={{display: "flex"}}>
@@ -835,7 +835,9 @@ const AddAppointment = props => {
                                                     appointmentDetails.serviceType && appointmentDetails.serviceType.value);
                                                 updateErrorIndicators({startTimeError: !time});
                                             }
-                                        }}/>
+                                        }}
+                                        translationKey={<FormattedMessage id="APPOINTMENT_START_TIME_LABEL" defaultMessage="Appointment start time"/>}
+                                        />
                             <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                             </div>
                             <div data-testid="end-time-selector">
@@ -854,7 +856,9 @@ const AddAppointment = props => {
                                                         endTimeError: !time
                                                     });
                                                 }
-                                            }}/>
+                                            }}
+                                            translationKey={<FormattedMessage id="APPOINTMENT_END_TIME_LABEL" defaultMessage="Appointment end time"/>}
+                                            />
                                 {
                                     errors.endTimeError ? <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/> : <ErrorMessage
                                         message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>

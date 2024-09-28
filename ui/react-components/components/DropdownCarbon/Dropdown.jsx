@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { injectIntl } from "react-intl";
+import { injectIntl, useIntl } from "react-intl";
 import { Dropdown } from "carbon-components-react";
 import Title from "../Title/Title.jsx";
 
@@ -15,6 +15,7 @@ const DropdownCarbon = (props) => {
         titleText,
         isRequired
     } = props;
+    const intl = useIntl();
     const title = titleText && <Title text={titleText} isRequired={isRequired}/>
     return (
         <div
@@ -27,7 +28,7 @@ const DropdownCarbon = (props) => {
                 onChange={onChange}
                 titleText={title}
                 disabled={isDisabled}
-                label={"Choose an option"}
+                label={intl.formatMessage({id: 'CHOOSE_AN_OPTION_KEY', defaultMessage: "Choose an option"})}
                 initialSelectedItem={selectedValue}
             />
         </div>
