@@ -14,7 +14,7 @@ import {
 import {customPopup} from "../CustomPopup/CustomPopup.module.scss";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import AppointmentEditorFooter from "../AppointmentEditorFooter/AppointmentEditorFooter.jsx";
-import {injectIntl} from "react-intl";
+import {FormattedMessage, injectIntl} from "react-intl";
 import PropTypes from "prop-types";
 import {
     getAppointmentConflicts,
@@ -816,7 +816,7 @@ const AddAppointment = props => {
                                 isRequired={requiredFields.appointmentStartDate}
                                 showWarning={showHolidayWarning}
                                 intl={intl}
-                                title={"Appointment date"}/>
+                                title={<FormattedMessage id="APPOINTMENT_DATE_LABEL" defaultMessage="Appointment date"/>}/>
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div style={{display: "flex"}}>
@@ -835,7 +835,9 @@ const AddAppointment = props => {
                                                     appointmentDetails.serviceType && appointmentDetails.serviceType.value);
                                                 updateErrorIndicators({startTimeError: !time});
                                             }
-                                        }}/>
+                                        }}
+                                        translationKey={<FormattedMessage id="APPOINTMENT_START_TIME_LABEL" defaultMessage="Appointment start time"/>}
+                                        />
                             <ErrorMessage message={errors.startTimeError ? errorTranslations.timeErrorMessage : undefined}/>
                             </div>
                             <div data-testid="end-time-selector">
@@ -854,7 +856,9 @@ const AddAppointment = props => {
                                                         endTimeError: !time
                                                     });
                                                 }
-                                            }}/>
+                                            }}
+                                            translationKey={<FormattedMessage id="APPOINTMENT_END_TIME_LABEL" defaultMessage="Appointment end time"/>}
+                                            />
                                 {
                                     errors.endTimeError ? <ErrorMessage message={errors.endTimeError ? errorTranslations.timeErrorMessage : undefined}/> : <ErrorMessage
                                         message={appointmentDetails.startTime && appointmentDetails.endTime && errors.startTimeBeforeEndTimeError ? errorTranslations.startTimeLessThanEndTimeMessage : undefined}/>
