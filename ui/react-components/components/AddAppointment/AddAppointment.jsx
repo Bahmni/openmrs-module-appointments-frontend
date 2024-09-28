@@ -681,7 +681,7 @@ const AddAppointment = props => {
                                 </div>
                                 <div style={{minWidth: "120px", verticalAlign: "bottom"}}>
                                     <Dropdown id={"recurrence-type"} options={recurringTypeOptions}
-                                              label={"Choose an option"}
+                                              label={<FormattedMessage id='CHOOSE_AN_OPTION_KEY' defaultMessage="Choose an option"/>}
                                               selectedValue={recurringTypeOptions[0]}
                                               onChange={event => {
                                                   updateAppointmentDetails({recurrenceType: event.selectedItem.value});

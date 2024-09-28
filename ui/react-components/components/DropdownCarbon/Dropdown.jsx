@@ -27,7 +27,7 @@ const DropdownCarbon = (props) => {
                 onChange={onChange}
                 titleText={title}
                 disabled={isDisabled}
-                label={"Choose an option"}
+                label={<FormattedMessage id='CHOOSE_AN_OPTION_KEY' defaultMessage="Choose an option"/>}
                 initialSelectedItem={selectedValue}
             />
         </div>
