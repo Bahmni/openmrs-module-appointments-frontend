@@ -4,7 +4,7 @@ import {
 import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 import { PropTypes } from "prop-types";
-import { injectIntl } from "react-intl";
+import { FormattedMessage, injectIntl } from "react-intl";
 import { isUndefined } from "lodash";
 import {ComboBox} from "carbon-components-react";
 import Title from "../Title/Title.jsx";
@@ -49,7 +49,7 @@ const Dropdown = (props) => {
           disabled={isDisabled}
           style={{ width: '250px' }}
           shouldFilterItem={filterItems}
-          placeholder={"Choose an option"}
+          placeholder={<FormattedMessage id='CHOOSE_AN_OPTION_KEY' defaultMessage="Choose an option"/>}
           selectedItem={selectedValue}
       />
     </div>
