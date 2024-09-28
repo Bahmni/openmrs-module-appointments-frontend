@@ -816,7 +816,8 @@ const AddAppointment = props => {
                                 isRequired={requiredFields.appointmentStartDate}
                                 showWarning={showHolidayWarning}
                                 intl={intl}
-                                title={<FormattedMessage id="APPOINTMENT_DATE_LABEL" defaultMessage="Appointment date"/>}/>
+                                title={intl.formatMessage({id: 'APPOINTMENT_DATE_LABEL', defaultMessage: "Appointment date"})}
+                            />
                             <ErrorMessage message={errors.appointmentDateError ? errorTranslations.dateErrorMessage : undefined}/>
                         </div>
                         <div style={{display: "flex"}}>
