@@ -118,6 +118,8 @@
       "privilegeForAdmin": "app:appointments:adminTab",
       "privilegeOwnAppointments": "Manage Own Appointments",
       "privilegeResetAppointmentStatus": "Reset Appointment Status",
+      "privilegeManageServices": "app:appointments:manageServices",
+      "privilegeManageServiceAvailability": "app:appointments:manageServiceAvailability",
       "availableForAppointments": "Available for appointments",
       "weekDays": {
         "Monday": 1,

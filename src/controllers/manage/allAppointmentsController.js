@@ -7,6 +7,8 @@ angular.module('bahmni.appointments')
             $scope.isSearchEnabled = false;
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
+            $scope.manageAppointmentServicePrivilege = Bahmni.Appointments.Constants.manageAppointmentServicePrivilege;
+            $scope.manageAppointmentServiceAvailabilityPrivilege = Bahmni.Appointments.Constants.manageAppointmentServiceAvailabilityPrivilege;
 
             $scope.navigateTo = function (viewName) {
                 $state.params.appointmentsData = $rootScope.appointmentsData;
