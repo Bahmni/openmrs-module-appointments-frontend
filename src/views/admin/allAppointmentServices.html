@@ -1,6 +1,6 @@
 <div class="service-admin-wrapper">
     <div class="service-title"><h2>{{ ::'SERVICES' | translate}}</h2></div>
-    <button ng-click="createService()" class="add-service-btn">{{::'APPOINTMENT_SERVICE_ADD_NEW' | translate }}</button>
+    <button show-if-privilege="{{manageAppointmentServicePrivilege}}" ng-click="createService()" class="add-service-btn">{{::'APPOINTMENT_SERVICE_ADD_NEW' | translate }}</button>
     <section class="service-admin-content">
         <table>
             <thead>
@@ -21,7 +21,7 @@
                 <td>{{service.durationMins}}</td>
                 <td class="service-disc-tablecell">{{service.description}}</td>
                 <td>
-                    <a show-if-privilege="{{manageAppointmentServicePrivilege}}" ng-click="editService(service.uuid)" >{{ ::'APPOINTMENT_SERVICE_EDIT_ACTION' | translate}}</a>
+                    <a ng-click="editService(service.uuid)" >{{ ::'APPOINTMENT_SERVICE_EDIT_ACTION' | translate}}</a>
                     <a show-if-privilege="{{manageAppointmentServicePrivilege}}" ng-click="deleteAppointmentService(service)">{{ ::'APPOINTMENT_SERVICE_DELETE_ACTION' | translate}}</a>
                 </td>
             </tr>

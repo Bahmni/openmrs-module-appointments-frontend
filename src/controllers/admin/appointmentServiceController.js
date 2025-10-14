@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentServiceController', ['$scope', '$q', 'spinner', '$state', 'appointmentsServiceService',
+    .controller('AppointmentServiceController', ['$scope', '$rootScope', '$q', 'spinner', '$state', 'appointmentsServiceService', 'appointmentCommonService',
         'locationService', 'messagingService', 'specialityService', 'ngDialog', 'appService', 'appointmentServiceContext',
         'confirmBox',
-        function ($scope, $q, spinner, $state, appointmentsServiceService, locationService,
+        function ($scope, $rootScope, $q, spinner, $state, appointmentsServiceService, appointmentCommonService, locationService,
                   messagingService, specialityService, ngDialog, appService, appointmentServiceContext, confirmBox) {
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
@@ -16,6 +16,9 @@ angular.module('bahmni.appointments')
             $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceDetails);
             $scope.service.color = $scope.service.color || $scope.colorsForAppointmentService && $scope.colorsForAppointmentService[0] || "#008000";
             $scope.initialAppointmentStatusOptions = ["Scheduled", "Requested"];
+            $scope.manageAppointmentServicePrivilege = Bahmni.Appointments.Constants.privilegeManageServices;
+            $scope.manageAppointmentServiceAvailabilityPrivilege = Bahmni.Appointments.Constants.privilegeManageServiceAvailability;
+            
 
             var save = function () {
                 clearValuesIfDisabledAndInvalid();
@@ -55,6 +58,13 @@ angular.module('bahmni.appointments')
 
             $scope.hasServiceTypes = function () {
                 return ($scope.service.serviceTypes.length > 0);
+            };
+
+            $scope.hasPrivilege = function(privilege) {
+                 const currentUserPrivileges = $rootScope.currentUser.privileges;
+                 return !_.isUndefined(_.find(currentUserPrivileges, function (userPrivilege) {
+                    return userPrivilege.name === privilege;
+                }));
             };
 
             var isNew = function () {

@@ -5,6 +5,9 @@ angular.module('bahmni.appointments')
         'appointmentsServiceService', 'appService', 'ngDialog',
         function ($scope, $state, $location, spinner, appointmentsServiceService, appService, ngDialog) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
+            $scope.manageAppointmentServicePrivilege = Bahmni.Appointments.Constants.privilegeManageServices;
+            $scope.manageAppointmentServiceAvailabilityPrivilege = Bahmni.Appointments.Constants.privilegeManageServiceAvailability;
+            
             $scope.createService = function () {
                 $state.go('home.admin.service.edit', {uuid: 'new'});
             };
