@@ -156,6 +156,18 @@ angular.module('bahmni.appointments')
             };
 
             $scope.translateAppointmentStatus = function (appointmentStatus) {
+                if(appointmentStatus === "Requested")
+                    return $translate.instant("APPOINTMENT_REQUESTED");
+                if(appointmentStatus === "Scheduled")
+                    return $translate.instant("APPOINTMENT_SCHEDULED");
+                if(appointmentStatus === "CheckedIn")
+                    return $translate.instant("APPOINTMENT_CHECKEDIN");
+                if(appointmentStatus === "Completed")
+                    return $translate.instant("APPOINTMENT_COMPLETED");
+                if(appointmentStatus === "Missed")
+                    return $translate.instant("APPOINTMENT_MISSED");
+                if(appointmentStatus === "Cancelled")
+                    return $translate.instant("APPOINTMENT_CANCELLED");
                 if(appointmentStatus === "WaitList")
                     return $translate.instant("APPOINTMENT_WAITLIST");
                 return appointmentStatus;
