@@ -60,12 +60,12 @@ angular.module('bahmni.appointments')
                 return ($scope.service.serviceTypes.length > 0);
             };
 
-            $scope.hasPrivilege = function(privilege) {
-                 const currentUserPrivileges = $rootScope.currentUser.privileges;
-                 return !_.isUndefined(_.find(currentUserPrivileges, function (userPrivilege) {
-                    return userPrivilege.name === privilege;
-                }));
-            };
+            // $scope.hasPrivilege = function(privilege) {
+            //      const currentUserPrivileges = $rootScope.currentUser.privileges;
+            //      return !_.isUndefined(_.some(currentUserPrivileges, function (userPrivilege) {
+            //         return userPrivilege.name === privilege;
+            //     }));
+            // };
 
             var isNew = function () {
                 return !$scope.service.uuid;

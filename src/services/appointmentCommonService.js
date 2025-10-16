@@ -24,6 +24,13 @@ angular.module('bahmni.appointments')
                         ? isOwnPrivilegedUserAllowedToPerformEdit(appointmentProviders, currentProviderUuId) : false;
             };
 
+            this.hasPrivilege = function(privilege) {
+                 const currentUserPrivileges = $rootScope.currentUser.privileges;
+                 return !_.isUndefined(_.some(currentUserPrivileges, function (userPrivilege) {
+                    return userPrivilege.name === privilege;
+                }));
+            };
+
             this.addProviderToFilterFromQueryString = function () {
                 if ($location.search()["provider"]) {
                     let fitlers = $state.params.filterParams;

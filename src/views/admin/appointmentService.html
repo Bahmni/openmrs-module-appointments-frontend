@@ -2,7 +2,7 @@
     <form class="create-service" ng-submit="confirmSave()" id="create-service-form" name="createServiceForm">
         <div class="service-title">
             <h2>{{ ::'SERVICES' | translate}}</h2>
-            <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SERVICE_SAVE' | translate }}</button>
+            <button type="submit" ng-disabled="!hasPrivilege('app:appointments:manageServices')"class="service-save-btn">{{::'APPOINTMENT_SERVICE_SAVE' | translate }}</button>
         </div>
         <section class="add-service-content">
             <div class="add-service">
@@ -62,7 +62,7 @@
                     <p>
                         <label class="max-load" for="max-load">
                             {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
-                        </label> <input ng-disabled="hasServiceTypes() || !hasPrivilege('app:appointments:manageServices')" ng-class="{'disabled': hasServiceTypes()}" name="serviceMaxLoad" placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
+                        </label> <input ng-disabled="hasServiceTypes()" ng-class="{'disabled': hasServiceTypes()}" name="serviceMaxLoad" placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
                                         type="number" min="0" ng-model="service.maxAppointmentsLimit">
                     </p>
                 </fieldset>
