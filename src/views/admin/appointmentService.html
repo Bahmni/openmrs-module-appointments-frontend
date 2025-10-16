@@ -12,7 +12,7 @@
                     </label>
                     <input placeholder="{{ ::'PLACEHOLDER_SERVICE_NAME' | translate }}" id="name" name="name"
                            type="text"
-                           ng-disabled="hasPrivilege('app:appointments:manageServiceAvailability')"
+                           ng-disabled="!hasPrivilege('app:appointments:manageServices')"
                            ng-change="validateServiceName()" ng-model="service.name" required/>
                 </p>
                 <p class="caution" ng-show="createServiceForm.name.$error.uniqueServiceName">
@@ -34,7 +34,7 @@
                     </label>
                     <textarea placeholder="{{ ::'PLACEHOLDER_SERVICE_DESCRIPTION' | translate }}" id="description"
                               ng-model="service.description"
-                              ng-disabled="hasPrivilege('app:appointments:manageServiceAvailability')"
+                              ng-disabled="!hasPrivilege('app:appointments:manageServices')"
                               ></textarea>
                 </p>
                 <p>
@@ -43,17 +43,17 @@
                     </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_DURATION' | translate }}" id="duration"
                                     type="number" min="0" 
                                     ng-model="service.durationMins"
-                                    ng-disabled="hasPrivilege('app:appointments:manageServiceAvailability')"
+                                    ng-disabled="!hasPrivilege('app:appointments:manageServices')"
                                 />
                 </p>
                 <fieldset ng-disabled="hasWeeklyAvailability()" ng-class="{'disabled': hasWeeklyAvailability()}">
                     <p name="serviceTime" class="time-wrapper" ng-model="service" time-validator>
                         <label for="start-time">
                             {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
-                        </label> <input id="start-time" type="time" ng-model="service.startTime" ng-disabled="hasPrivilege('app:appointments:manageServiceAvailability')"/>
+                        </label> <input id="start-time" type="time" ng-model="service.startTime" ng-disabled="!hasPrivilege('app:appointments:manageServices')"/>
                         <label class="end-time" for="end-time">
                             {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
-                        </label> <input id="end-time" type="time" ng-model="service.endTime" ng-disabled="hasPrivilege('app:appointments:manageServiceAvailability')"/>
+                        </label> <input id="end-time" type="time" ng-model="service.endTime" ng-disabled="!hasPrivilege('app:appointments:manageServices')"/>
                     </p>
                     <p class="caution" ng-show="createServiceForm.serviceTime.$error.timeSequence">
                         <i class="fa fa-exclamation-circle small"></i>
@@ -62,7 +62,7 @@
                     <p>
                         <label class="max-load" for="max-load">
                             {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
-                        </label> <input ng-disabled="hasServiceTypes() || hasPrivilege('app:appointments:manageServiceAvailability')" ng-class="{'disabled': hasServiceTypes()}" name="serviceMaxLoad" placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
+                        </label> <input ng-disabled="hasServiceTypes() || !hasPrivilege('app:appointments:manageServices')" ng-class="{'disabled': hasServiceTypes()}" name="serviceMaxLoad" placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
                                         type="number" min="0" ng-model="service.maxAppointmentsLimit">
                     </p>
                 </fieldset>
@@ -71,7 +71,7 @@
                     <label for="speciality">
                         {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
                     </label>
-                    <select id="speciality" ng-model="service.specialityUuid" ng-disabled="hasPrivilege('app:appointments:manageServiceAvailability')"
+                    <select id="speciality" ng-model="service.specialityUuid" ng-disabled="!hasPrivilege('app:appointments:manageServices')"
                             ng-options="item.uuid as item.name for item in specialities | orderBy:'name'">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_SPECIALITY' | translate}}</option>
                     </select>
@@ -81,14 +81,14 @@
                         {{'APPOINTMENT_SERVICE_LOCATION_KEY' | translate}}
                     </label>
                     <select id="location" ng-model="service.locationUuid"
-                            ng-disabled="hasPrivilege('app:appointments:manageServiceAvailability')"
+                            ng-disabled="!hasPrivilege('app:appointments:manageServices')"
                             ng-options="item.uuid as item.display for item in locations | orderBy:'display'">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}</option>
                     </select>
                 </p>
                 <p ng-if="enableCalendarView">
                     <label for="label-color">{{:: 'APPOINTMENT_SERVICE_LABEL_COLOUR_KEY' | translate}}</label>
-                    <color-picker colors="colorsForAppointmentService" aria-disabled="hasPrivilege('app:appointments:manageServiceAvailability')" selected-color="service.color" ></color-picker>
+                    <color-picker colors="colorsForAppointmentService" ng-disabled="!hasPrivilege('app:appointments:manageServices')" selected-color="service.color" ></color-picker>
                 </p>
                 <div ng-if="enableServiceTypes">
                     <service-types service="service"></service-types>
