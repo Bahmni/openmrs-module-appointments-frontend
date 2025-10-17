@@ -320,6 +320,12 @@
         }
       }
     }
+
+    &.is-disabled {
+      opacity: 0.6 !important;
+      pointer-events: none;
+    }
+
     @media all and (max-width: 1300px) {
       clear: left;
       padding-top: 10px;
