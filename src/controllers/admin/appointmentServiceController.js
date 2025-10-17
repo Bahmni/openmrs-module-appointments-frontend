@@ -18,9 +18,8 @@ angular.module('bahmni.appointments')
             $scope.initialAppointmentStatusOptions = ["Scheduled", "Requested"];
             $scope.manageAppointmentServicePrivilege = Bahmni.Appointments.Constants.privilegeManageServices;
             $scope.manageAppointmentServiceAvailabilityPrivilege = Bahmni.Appointments.Constants.privilegeManageServiceAvailability;
-            $scope.shouldDisableColorPicker = !appointmentCommonService.hasPrivilege('app:appointments:manageServices') && !appointmentCommonService.hasPrivilege('app:appointments:manageServiceAvailability')
+            $scope.shouldDisableColorPicker = !appointmentCommonService.hasPrivilege('app:appointments:manageServices');
             
-
             var save = function () {
                 clearValuesIfDisabledAndInvalid();
                 if ($scope.createServiceForm.$invalid) {
