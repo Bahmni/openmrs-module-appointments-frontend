@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .service('appointmentCommonService', ['$state', '$location',
-        function ($state, $location) {
+    .service('appointmentCommonService', ['$state', '$rootScope', '$location',
+        function ($state, $rootScope, $location) {
             this.isCurrentUserHavingPrivilege = function (privilege, currentUserPrivileges) {
                 return !_.isUndefined(_.find(currentUserPrivileges, function (userPrivilege) {
                     return userPrivilege.name === privilege;
@@ -26,9 +26,9 @@ angular.module('bahmni.appointments')
 
             this.hasPrivilege = function(privilege) {
                  const currentUserPrivileges = $rootScope.currentUser.privileges;
-                 return !_.isUndefined(_.some(currentUserPrivileges, function (userPrivilege) {
+                 return _.some(currentUserPrivileges, function (userPrivilege) {
                     return userPrivilege.name === privilege;
-                }));
+                });
             };
 
             this.addProviderToFilterFromQueryString = function () {

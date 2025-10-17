@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .directive('serviceAvailability', ['appService', 'confirmBox', '$rootScope', function (appService, confirmBox, $rootScope) {
+    .directive('serviceAvailability', ['appService', 'confirmBox', 'appointmentCommonService', function (appService, confirmBox, appointmentCommonService) {
         var states = {NEW: 0, EDIT: 1, READONLY: 2};
 
         var constDays = [{
@@ -141,12 +141,7 @@ angular.module('bahmni.appointments')
             };
 
             scope.hasPrivilege = function(privilege) {
-                 console.log("yay")
-                 const currentUserPrivileges = $rootScope.currentUser.privileges;
-                 console.log(currentUserPrivileges, "-=-=-=-==--=")
-                 return !_.isUndefined(_.some(currentUserPrivileges, function (userPrivilege) {
-                    return userPrivilege.name === privilege;
-                }));
+                return appointmentCommonService.hasPrivilege(privilege)
             };
 
             init();

@@ -1,26 +1,25 @@
 <ng-form name="availabilityForm">
-    <span>{{hasPrivilege('app:appointments:manageServiceAvailability')}} - abc</span>
     <fieldset ng-disabled="isReadOnly()" ng-class="{'disabled unsaved': isReadOnly()}">
         <p name="availabilityTime" ng-model="availability" time-validator>
             <label class="ava-input-fields">
                 <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY' | translate}}</span>
-                <input type="time" ng-model="availability.startTime" ng-disabled="!hasPrivilege('app:appointments:manageServices') || !hasPrivilege('app:appointments:manageServiceAvailability')"/>
+                <input type="time" ng-model="availability.startTime" ng-disabled="!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability')"/>
             </label>
             <label class="ava-input-fields">
                 <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_END_TIME_KEY' | translate}}</span>
-                <input type="time" ng-model="availability.endTime" ng-disabled="!hasPrivilege('app:appointments:manageServices')"/>
+                <input type="time" ng-model="availability.endTime" ng-disabled="!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability')"/>
             </label>
         </p>
         <div class="weekday-selector-wrapper">
         <label class="ava-input-fields">
             <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY' | translate}}</span>
             <input class="max-load" type="number" min="0" ng-model="availability.maxAppointmentsLimit"
-                   ng-disabled="disableMaxLoad || !hasPrivilege('app:appointments:manageServices')" ng-change="clearValueIfInvalid()" ng-class="{'disabled': disableMaxLoad}">
+                   ng-disabled="disableMaxLoad || (!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability'))" ng-change="clearValueIfInvalid()" ng-class="{'disabled': disableMaxLoad}">
 
         </label>
         <weekday-selector class="service-ava-days"
                           ng-model="availability.days" week-starts-index="startOfWeek"
-                          ng-disabled="isReadOnly() || !hasPrivilege('app:appointments:manageServices')"></weekday-selector>
+                          ng-disabled="isReadOnly() || (!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability'))"></weekday-selector>
         </div>
     </fieldset>
 

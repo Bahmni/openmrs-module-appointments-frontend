@@ -18,6 +18,7 @@ angular.module('bahmni.appointments')
             $scope.initialAppointmentStatusOptions = ["Scheduled", "Requested"];
             $scope.manageAppointmentServicePrivilege = Bahmni.Appointments.Constants.privilegeManageServices;
             $scope.manageAppointmentServiceAvailabilityPrivilege = Bahmni.Appointments.Constants.privilegeManageServiceAvailability;
+            $scope.shouldDisableColorPicker = !appointmentCommonService.hasPrivilege('app:appointments:manageServices') && !appointmentCommonService.hasPrivilege('app:appointments:manageServiceAvailability')
             
 
             var save = function () {
@@ -60,12 +61,9 @@ angular.module('bahmni.appointments')
                 return ($scope.service.serviceTypes.length > 0);
             };
 
-            // $scope.hasPrivilege = function(privilege) {
-            //      const currentUserPrivileges = $rootScope.currentUser.privileges;
-            //      return !_.isUndefined(_.some(currentUserPrivileges, function (userPrivilege) {
-            //         return userPrivilege.name === privilege;
-            //     }));
-            // };
+            $scope.hasPrivilege = function (privilege) {
+                return appointmentCommonService.hasPrivilege(privilege);
+            }
 
             var isNew = function () {
                 return !$scope.service.uuid;

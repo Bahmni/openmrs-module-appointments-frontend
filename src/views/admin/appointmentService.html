@@ -2,7 +2,7 @@
     <form class="create-service" ng-submit="confirmSave()" id="create-service-form" name="createServiceForm">
         <div class="service-title">
             <h2>{{ ::'SERVICES' | translate}}</h2>
-            <button type="submit" ng-disabled="!hasPrivilege('app:appointments:manageServices')"class="service-save-btn">{{::'APPOINTMENT_SERVICE_SAVE' | translate }}</button>
+            <button type="submit" ng-disabled="!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability')"class="service-save-btn">{{::'APPOINTMENT_SERVICE_SAVE' | translate }}</button>
         </div>
         <section class="add-service-content">
             <div class="add-service">
@@ -86,9 +86,9 @@
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}</option>
                     </select>
                 </p>
-                <p ng-if="enableCalendarView">
+                <p ng-if="enableCalendarView" ng-class="{'disable-color-picker': shouldDisableColorPicker}">
                     <label for="label-color">{{:: 'APPOINTMENT_SERVICE_LABEL_COLOUR_KEY' | translate}}</label>
-                    <color-picker colors="colorsForAppointmentService" ng-disabled="!hasPrivilege('app:appointments:manageServices')" selected-color="service.color" ></color-picker>
+                    <color-picker colors="colorsForAppointmentService" selected-color="service.color" ></color-picker>
                 </p>
                 <div ng-if="enableServiceTypes">
                     <service-types service="service"></service-types>
