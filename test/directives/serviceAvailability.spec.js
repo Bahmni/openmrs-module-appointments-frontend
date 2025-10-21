@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ServiceAvailability', function () {
-    var compile, scope, httpBackend, appService, appDescriptor, confirmBox;
+    var compile, scope, httpBackend, appService, appDescriptor, confirmBox, appointmentCommonService;
 
     var days = [{
         dayOfWeek: 'SUNDAY',
@@ -29,11 +29,13 @@ describe('ServiceAvailability', function () {
     beforeEach(module('bahmni.appointments', function ($provide) {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appointmentCommonService = jasmine.createSpyObj('appointmentCommonService', ['hasPrivilege'])
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         confirmBox = jasmine.createSpy('confirmBox');
 
         $provide.value('appService', appService);
         $provide.value('confirmBox', confirmBox);
+        $provide.value('appointmentCommonService', appointmentCommonService);
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {

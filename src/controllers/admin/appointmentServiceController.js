@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentServiceController', ['$scope', '$q', 'spinner', '$state', 'appointmentsServiceService',
+    .controller('AppointmentServiceController', ['$scope', '$q', 'spinner', '$state', 'appointmentsServiceService', 'appointmentCommonService',
         'locationService', 'messagingService', 'specialityService', 'ngDialog', 'appService', 'appointmentServiceContext',
         'confirmBox',
-        function ($scope, $q, spinner, $state, appointmentsServiceService, locationService,
+        function ($scope, $q, spinner, $state, appointmentsServiceService, appointmentCommonService, locationService,
                   messagingService, specialityService, ngDialog, appService, appointmentServiceContext, confirmBox) {
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
@@ -16,7 +16,10 @@ angular.module('bahmni.appointments')
             $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceDetails);
             $scope.service.color = $scope.service.color || $scope.colorsForAppointmentService && $scope.colorsForAppointmentService[0] || "#008000";
             $scope.initialAppointmentStatusOptions = ["Scheduled", "Requested"];
-
+            $scope.manageAppointmentServicePrivilege = Bahmni.Appointments.Constants.privilegeManageServices;
+            $scope.manageAppointmentServiceAvailabilityPrivilege = Bahmni.Appointments.Constants.privilegeManageServiceAvailability;
+            $scope.shouldDisableColorPicker = !appointmentCommonService.hasPrivilege('app:appointments:manageServices');
+            
             var save = function () {
                 clearValuesIfDisabledAndInvalid();
                 if ($scope.createServiceForm.$invalid) {
@@ -56,6 +59,10 @@ angular.module('bahmni.appointments')
             $scope.hasServiceTypes = function () {
                 return ($scope.service.serviceTypes.length > 0);
             };
+
+            $scope.hasPrivilege = function (privilege) {
+                return appointmentCommonService.hasPrivilege(privilege);
+            }
 
             var isNew = function () {
                 return !$scope.service.uuid;

@@ -3,23 +3,28 @@
         <p name="availabilityTime" ng-model="availability" time-validator>
             <label class="ava-input-fields">
                 <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY' | translate}}</span>
-                <input type="time" ng-model="availability.startTime"/>
+                <input type="time" ng-model="availability.startTime" ng-disabled="!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability')"/>
             </label>
             <label class="ava-input-fields">
                 <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_END_TIME_KEY' | translate}}</span>
-                <input type="time" ng-model="availability.endTime">
+                <input type="time" ng-model="availability.endTime" ng-disabled="!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability')"/>
             </label>
         </p>
-        <div class="weekday-selector-wrapper">
+        <div 
+            class="weekday-selector-wrapper" 
+            ng-class="{
+                'is-disabled': !hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability')
+            }"
+        >
         <label class="ava-input-fields">
             <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY' | translate}}</span>
             <input class="max-load" type="number" min="0" ng-model="availability.maxAppointmentsLimit"
-                   ng-disabled="disableMaxLoad" ng-change="clearValueIfInvalid()" ng-class="{'disabled': disableMaxLoad}">
+                   ng-disabled="disableMaxLoad || (!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability'))" ng-change="clearValueIfInvalid()" ng-class="{'disabled': disableMaxLoad}">
 
         </label>
         <weekday-selector class="service-ava-days"
                           ng-model="availability.days" week-starts-index="startOfWeek"
-                          ng-disabled="isReadOnly()"></weekday-selector>
+                          ng-disabled="isReadOnly() || (!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability'))"></weekday-selector>
         </div>
     </fieldset>
 
@@ -39,10 +44,10 @@
     </p>
 
     <p class="app-ava-btn-container" ng-if="isReadOnly()">
-        <button class="edit-ava" type="button" ng-click="enableEdit()">
+        <button class="edit-ava" type="button" ng-click="enableEdit()" ng-disabled="!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability')">
             <i class="fa fa-pencil" aria-hidden="true"></i>
         </button>
-        <button class="delete-ava" type="button" ng-click="confirmDelete()">
+        <button class="delete-ava" type="button" ng-click="confirmDelete()" ng-disabled="!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability')">
             <i class="fa fa-trash-o"></i>
         </button>
     </p>

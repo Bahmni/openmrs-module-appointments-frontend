@@ -3,7 +3,7 @@
 describe("AppointmentServiceController", function () {
     var controller, scope, q, state, appointmentsServiceService, locationService, messagingService,
         locations, specialityService, specialities, ngDialog, appointmentServices, appService, appDescriptor,
-        colorsForAppointmentService, appointmentServiceContext, confirmBox;
+        colorsForAppointmentService, appointmentServiceContext, confirmBox, appointmentCommonService;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -50,6 +50,7 @@ describe("AppointmentServiceController", function () {
             }
         });
         confirmBox = jasmine.createSpy('confirmBox');
+        appointmentCommonService = jasmine.createSpyObj('appointmentCommonService', ['hasPrivilege']);
     });
 
     var createController = function () {
@@ -64,7 +65,8 @@ describe("AppointmentServiceController", function () {
             ngDialog: ngDialog,
             appService: appService,
             appointmentServiceContext: appointmentServiceContext,
-            confirmBox: confirmBox
+            confirmBox: confirmBox,
+            appointmentCommonService: appointmentCommonService
         }
       );
     };

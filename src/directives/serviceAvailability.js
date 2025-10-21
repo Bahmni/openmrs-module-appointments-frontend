@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .directive('serviceAvailability', ['appService', 'confirmBox', function (appService, confirmBox) {
+    .directive('serviceAvailability', ['appService', 'confirmBox', 'appointmentCommonService', function (appService, confirmBox, appointmentCommonService) {
         var states = {NEW: 0, EDIT: 1, READONLY: 2};
 
         var constDays = [{
@@ -138,6 +138,10 @@ angular.module('bahmni.appointments')
 
             scope.isReadOnly = function () {
                 return scope.state === states.READONLY;
+            };
+
+            scope.hasPrivilege = function(privilege) {
+                return appointmentCommonService.hasPrivilege(privilege)
             };
 
             init();
