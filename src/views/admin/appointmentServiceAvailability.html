@@ -13,7 +13,7 @@
         <div 
             class="weekday-selector-wrapper" 
             ng-class="{
-                'is-disabled': isReadOnly() || (!hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability'))
+                'is-disabled': !hasPrivilege('app:appointments:manageServices') && !hasPrivilege('app:appointments:manageServiceAvailability')
             }"
         >
         <label class="ava-input-fields">

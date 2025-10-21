@@ -11,7 +11,7 @@ describe('AppointmentCommonService', function () {
 
     beforeEach(module(function ($provide) {
         $provide.value('$location', mockLocation);
-        $provide.value('$state', mockState);    
+        $provide.value('$state', mockState);
     }));
 
     beforeEach(inject(['appointmentCommonService', '$rootScope', function (appointmentCommonServiceInjected, $rootScopeInjected) {

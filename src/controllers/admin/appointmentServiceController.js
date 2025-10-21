@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentServiceController', ['$scope', '$rootScope', '$q', 'spinner', '$state', 'appointmentsServiceService', 'appointmentCommonService',
+    .controller('AppointmentServiceController', ['$scope', '$q', 'spinner', '$state', 'appointmentsServiceService', 'appointmentCommonService',
         'locationService', 'messagingService', 'specialityService', 'ngDialog', 'appService', 'appointmentServiceContext',
         'confirmBox',
-        function ($scope, $rootScope, $q, spinner, $state, appointmentsServiceService, appointmentCommonService, locationService,
+        function ($scope, $q, spinner, $state, appointmentsServiceService, appointmentCommonService, locationService,
                   messagingService, specialityService, ngDialog, appService, appointmentServiceContext, confirmBox) {
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');

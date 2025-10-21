@@ -88,7 +88,7 @@
                 </p>
                 <p ng-if="enableCalendarView" ng-class="{'disable-color-picker': shouldDisableColorPicker}">
                     <label for="label-color">{{:: 'APPOINTMENT_SERVICE_LABEL_COLOUR_KEY' | translate}}</label>
-                    <color-picker colors="colorsForAppointmentService" selected-color="service.color" ></color-picker>
+                    <color-picker colors="colorsForAppointmentService" selected-color="service.color"></color-picker>
                 </p>
                 <div ng-if="enableServiceTypes">
                     <service-types service="service"></service-types>
