@@ -19,7 +19,7 @@ on:
 jobs:
   build-publish-docker-helm:
     name: Build & Publish Docker Image & Helm Chart
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       HELM_CHART_PATH: package/helm/
     steps:
@@ -29,13 +29,11 @@ jobs:
           wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
           ./setArtifactVersion.sh
           rm setArtifactVersion.sh
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v1
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 14.x
-      - name: Install dependencies ui
-        run:  cd ui && npm install
-      - name: Install dependencies root
+          node-version: '12.22.12'
+      - name: Install dependencies
         run: npm install
       - name: run test
         run: npm run test
