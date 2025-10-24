@@ -341,4 +341,39 @@ describe("AppointmentServiceController", function () {
             expect(ngDialog.close).toHaveBeenCalled();
         });
     });
+
+    describe('showConfirmationPopUp', () => {
+        it('should not show confirmation popup if manageService and manageService privileges are not enabled', () => {
+            appointmentCommonService.hasPrivilege.and.returnValue(false);
+            createController();
+
+            expect(scope.showConfirmationPopUp).toBeFalsy();
+            expect(scope.hasPrivilege(scope.manageAppointmentServicePrivilege)).toBe(false);
+            expect(scope.hasPrivilege(scope.manageAppointmentServiceAvailabilityPrivilege)).toBe(false);
+        })
+
+        it('should show popup when manageServiceAvailabilityPrivilege is enabled', function() {
+            appointmentCommonService.hasPrivilege.and.callFake(privilege => privilege === 'manageAppointmentServiceAvailabilityPrivilege');
+
+            createController();
+
+            expect(scope.hasPrivilege('manageAppointmentServicePrivilege')).toBe(false);
+            expect(scope.hasPrivilege('manageAppointmentServiceAvailabilityPrivilege')).toBe(true);
+
+             scope.showConfirmationPopUp = scope.hasPrivilege('manageAppointmentServicePrivilege') || scope.hasPrivilege('manageAppointmentServiceAvailabilityPrivilege');
+            expect(scope.showConfirmationPopUp).toBe(true);
+        });
+
+        it('should show popup when manageServicePrivilege is enabled', function() {
+            appointmentCommonService.hasPrivilege.and.callFake(privilege => privilege === 'manageAppointmentServicePrivilege');
+
+            createController();
+
+            expect(scope.hasPrivilege('manageAppointmentServicePrivilege')).toBe(true);
+            expect(scope.hasPrivilege('manageAppointmentServiceAvailabilityPrivilege')).toBe(false);
+
+            scope.showConfirmationPopUp = scope.hasPrivilege('manageAppointmentServicePrivilege') || scope.hasPrivilege('manageAppointmentServiceAvailabilityPrivilege');
+            expect(scope.showConfirmationPopUp).toBe(true);
+        });
+    })
 });
