@@ -86,7 +86,7 @@
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}</option>
                     </select>
                 </p>
-                <p ng-if="enableCalendarView" ng-class="{'disable-color-picker': shouldDisableColorPicker}">
+                <p ng-if="enableCalendarView" ng-class="{'disable-color-picker': !hasPrivilege(manageAppointmentServicePrivilege)}">
                     <label for="label-color">{{:: 'APPOINTMENT_SERVICE_LABEL_COLOUR_KEY' | translate}}</label>
                     <color-picker colors="colorsForAppointmentService" selected-color="service.color"></color-picker>
                 </p>
