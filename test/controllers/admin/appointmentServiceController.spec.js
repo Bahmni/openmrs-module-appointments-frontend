@@ -312,6 +312,8 @@ describe("AppointmentServiceController", function () {
         });
 
         it('should open confirmation dialog if we change the state', function () {
+            scope.showConfirmationPopUp = true; 
+
             scope.$broadcast("$stateChangeStart");
 
             let args = ngDialog.openConfirm.calls.allArgs()[0][0];
