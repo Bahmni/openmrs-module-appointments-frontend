@@ -54,4 +54,11 @@ describe('AppointmentsServiceService', function () {
         var params = { withCredentials: true, headers: headers};
         expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appointmentService/all/default', params);
     });
+
+    it("should get all appointment service attribute types", function () {
+        appointmentsServiceService.getAllAttributeTypes();
+        var headers = {Accept: 'application/json', 'Content-Type': 'application/json'};
+        var params = { withCredentials: true, headers: headers};
+        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Appointments.Constants.appointmentServiceAttributeTypesUrl, params);
+    });
 });
