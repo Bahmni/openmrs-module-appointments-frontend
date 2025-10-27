@@ -316,6 +316,114 @@ describe("AppointmentServiceController", function () {
             expect(appointmentsServiceService.save).not.toHaveBeenCalled();
             expect(messagingService.showMessage).not.toHaveBeenCalled();
         });
+
+        it('should validate required attributes before save', function () {
+            scope.attributeTypes = [
+                {
+                    uuid: 'attr-type-1',
+                    name: 'Priority',
+                    minOccurs: 1,
+                    maxOccurs: 1
+                }
+            ];
+            scope.service = {
+                name: 'Chemotherapy',
+                attributes: []
+            };
+            scope.confirmSave();
+            expect(appointmentsServiceService.save).not.toHaveBeenCalled();
+            expect(messagingService.showMessage).toHaveBeenCalledWith('error', "Attribute 'Priority' requires at least 1 occurrence(s), but only 0 provided");
+        });
+
+        it('should save when required attributes are provided', function () {
+            scope.attributeTypes = [
+                {
+                    uuid: 'attr-type-1',
+                    name: 'Priority',
+                    minOccurs: 1,
+                    maxOccurs: 1
+                }
+            ];
+            scope.service = {
+                name: 'Chemotherapy',
+                attributes: [
+                    {
+                        attributeTypeUuid: 'attr-type-1',
+                        value: 'High',
+                        voided: false
+                    }
+                ]
+            };
+            var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
+            scope.confirmSave();
+            expect(appointmentsServiceService.save).toHaveBeenCalledWith(service);
+            expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
+        });
+
+        it('should prevent save when maxOccurs is exceeded', function () {
+            scope.attributeTypes = [
+                {
+                    uuid: 'attr-type-1',
+                    name: 'Color Code',
+                    minOccurs: 0,
+                    maxOccurs: 1
+                }
+            ];
+            scope.service = {
+                name: 'Chemotherapy',
+                attributes: [
+                    {
+                        attributeTypeUuid: 'attr-type-1',
+                        value: 'Red',
+                        voided: false
+                    },
+                    {
+                        attributeTypeUuid: 'attr-type-1',
+                        value: 'Blue',
+                        voided: false
+                    }
+                ]
+            };
+            scope.confirmSave();
+            expect(appointmentsServiceService.save).not.toHaveBeenCalled();
+            expect(messagingService.showMessage).toHaveBeenCalledWith('error', "Attribute 'Color Code' allows maximum 1 occurrence(s), but 2 provided");
+        });
+
+        it('should save when no attribute types are configured', function () {
+            scope.attributeTypes = [];
+            scope.service = {
+                name: 'Chemotherapy'
+            };
+            var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
+            scope.confirmSave();
+            expect(appointmentsServiceService.save).toHaveBeenCalledWith(service);
+            expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
+        });
+
+        it('should ignore voided attributes in validation', function () {
+            scope.attributeTypes = [
+                {
+                    uuid: 'attr-type-1',
+                    name: 'Priority',
+                    minOccurs: 1,
+                    maxOccurs: 1
+                }
+            ];
+            scope.service = {
+                name: 'Chemotherapy',
+                attributes: [
+                    {
+                        uuid: 'attr-uuid-1',
+                        attributeTypeUuid: 'attr-type-1',
+                        value: 'High',
+                        voided: true
+                    }
+                ]
+            };
+            scope.confirmSave();
+            expect(appointmentsServiceService.save).not.toHaveBeenCalled();
+            expect(messagingService.showMessage).toHaveBeenCalledWith('error', "Attribute 'Priority' requires at least 1 occurrence(s), but only 0 provided");
+        });
     });
 
     describe('confirmationDialogOnStateChange', function () {

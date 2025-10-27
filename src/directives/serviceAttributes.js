@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .directive('serviceAttributes', ['messagingService', function (messagingService) {
+    .directive('serviceAttributes', [function () {
         var controller = ['$scope', function ($scope) {
             $scope.attributeValues = {};
 
@@ -62,43 +62,6 @@ angular.module('bahmni.appointments')
                 }
 
                 delete $scope.attributeValues[attributeTypeUuid];
-            };
-
-            var validateCardinality = function (attrType) {
-                var nonVoidedAttrs = _.filter($scope.service.attributes, function (attr) {
-                    return attr.attributeTypeUuid === attrType.uuid && !attr.voided;
-                });
-
-                var count = nonVoidedAttrs.length;
-                var errors = [];
-
-                if (attrType.minOccurs && count < attrType.minOccurs) {
-                    errors.push("Attribute '" + attrType.name + "' requires at least " + attrType.minOccurs + " occurrence(s), but only " + count + " provided");
-                }
-
-                if (attrType.maxOccurs && count > attrType.maxOccurs) {
-                    errors.push("Attribute '" + attrType.name + "' allows maximum " + attrType.maxOccurs + " occurrence(s), but " + count + " provided");
-                }
-
-                return errors;
-            };
-
-            $scope.validateAttributes = function () {
-                if (!$scope.attributeTypes) {
-                    return true;
-                }
-
-                var errors = [];
-                _.each($scope.attributeTypes, function (attrType) {
-                    errors = errors.concat(validateCardinality(attrType));
-                });
-
-                if (errors.length > 0) {
-                    messagingService.showMessage('error', errors.join('; '));
-                    return false;
-                }
-
-                return true;
             };
 
             $scope.isRequired = function (attributeType) {

@@ -1,13 +1,11 @@
 'use strict';
 
 describe('ServiceAttributes', function () {
-    var compile, scope, httpBackend, ngDialog, messagingService;
+    var compile, scope, httpBackend, ngDialog;
 
     beforeEach(module('bahmni.appointments', function ($provide) {
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
-        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         $provide.value('ngDialog', ngDialog);
-        $provide.value('messagingService', messagingService);
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
@@ -144,25 +142,5 @@ describe('ServiceAttributes', function () {
         var value = scope.getAttributeValue('non-existent');
 
         expect(value).toBe('');
-    });
-
-    it("should validate required attributes", function () {
-        // Priority is required (minOccurs: 1)
-        var isValid = scope.validateAttributes();
-
-        expect(isValid).toBe(false);
-        expect(messagingService.showMessage).toHaveBeenCalledWith('error', jasmine.any(String));
-    });
-
-    it("should pass validation when all required attributes are present", function () {
-        scope.service.attributes = [{
-            attributeTypeUuid: 'attr-type-2',
-            value: 'High'
-        }];
-
-        var isValid = scope.validateAttributes();
-
-        expect(isValid).toBe(true);
-        expect(messagingService.showMessage).not.toHaveBeenCalled();
     });
 });

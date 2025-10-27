@@ -20,10 +20,38 @@ angular.module('bahmni.appointments')
             $scope.manageAppointmentServiceAvailabilityPrivilege = Bahmni.Appointments.Constants.privilegeManageServiceAvailability;
             $scope.shouldDisableColorPicker = !appointmentCommonService.hasPrivilege('app:appointments:manageServices');
             
+            var validateAttributes = function () {
+                if (!$scope.attributeTypes || $scope.attributeTypes.length === 0) {
+                    return true;
+                }
+
+                var errors = [];
+                _.each($scope.attributeTypes, function (attrType) {
+                    var nonVoidedAttrs = _.filter($scope.service.attributes || [], function (attr) {
+                        return attr.attributeTypeUuid === attrType.uuid && !attr.voided;
+                    });
+                    var count = nonVoidedAttrs.length;
+                    if (attrType.minOccurs && count < attrType.minOccurs) {
+                        errors.push("Attribute '" + attrType.name + "' requires at least " + attrType.minOccurs + " occurrence(s), but only " + count + " provided");
+                    }
+                    if (attrType.maxOccurs && count > attrType.maxOccurs) {
+                        errors.push("Attribute '" + attrType.name + "' allows maximum " + attrType.maxOccurs + " occurrence(s), but " + count + " provided");
+                    }
+                });
+                if (errors.length > 0) {
+                    messagingService.showMessage('error', errors.join('; '));
+                    return false;
+                }
+                return true;
+            };
+
             var save = function () {
                 clearValuesIfDisabledAndInvalid();
                 if ($scope.createServiceForm.$invalid) {
                     messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
+                    return;
+                }
+                if (!validateAttributes()) {
                     return;
                 }
                 var service = Bahmni.Appointments.AppointmentService.createFromUIObject($scope.service);
