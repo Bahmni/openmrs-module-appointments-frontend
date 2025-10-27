@@ -1,11 +1,15 @@
 'use strict';
 
 describe('ServiceAttributes', function () {
-    var compile, scope, httpBackend, ngDialog;
+    var compile, scope, httpBackend, ngDialog, appointmentCommonService;
 
     beforeEach(module('bahmni.appointments', function ($provide) {
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
+        appointmentCommonService = jasmine.createSpyObj('appointmentCommonService', ['hasPrivilege']);
+        appointmentCommonService.hasPrivilege.and.returnValue(true);
+
         $provide.value('ngDialog', ngDialog);
+        $provide.value('appointmentCommonService', appointmentCommonService);
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
