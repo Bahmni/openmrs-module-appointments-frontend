@@ -121,10 +121,17 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            var initAttributeTypes = function () {
+                return appointmentsServiceService.getAllAttributeTypes().then(function (response) {
+                    $scope.attributeTypes = response.data;
+                });
+            };
+
             var init = function () {
                 var promises = [];
                 promises.push(initAppointmentLocations());
                 promises.push(initServices());
+                promises.push(initAttributeTypes());
                 if ($scope.enableSpecialities) {
                     promises.push(initSpecialities());
                 }

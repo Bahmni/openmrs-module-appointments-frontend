@@ -15,10 +15,14 @@ describe("AppointmentServiceController", function () {
     });
 
     beforeEach(function () {
-        appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['save', 'getAllServices']);
+        appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['save', 'getAllServices', 'getAllAttributeTypes']);
         appointmentsServiceService.save.and.returnValue(specUtil.simplePromise({}));
         appointmentServices = [{name: "Oncology", description: "Cancer treatment"}];
         appointmentsServiceService.getAllServices.and.returnValue(specUtil.simplePromise({data: appointmentServices}));
+        var attributeTypes = [
+            {uuid: 'attr-type-1', name: 'Color Code', datatype: 'org.openmrs.customdatatype.datatype.FreeTextDatatype', minOccurs: 0, maxOccurs: 1}
+        ];
+        appointmentsServiceService.getAllAttributeTypes.and.returnValue(specUtil.simplePromise({data: attributeTypes}));
         locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
         locations = [
             {display: "OPD1", uuid: 1},
@@ -114,6 +118,15 @@ describe("AppointmentServiceController", function () {
             createController();
             expect(appointmentsServiceService.getAllServices).toHaveBeenCalled();
             expect(scope.services).toBe(appointmentServices);
+        });
+
+        it('should fetch all attribute types on initialization', function () {
+            expect(scope.attributeTypes).toBeUndefined();
+            createController();
+            expect(appointmentsServiceService.getAllAttributeTypes).toHaveBeenCalled();
+            expect(scope.attributeTypes).toBeDefined();
+            expect(scope.attributeTypes.length).toBe(1);
+            expect(scope.attributeTypes[0].name).toBe('Color Code');
         });
     });
 
