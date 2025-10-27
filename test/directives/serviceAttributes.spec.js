@@ -90,7 +90,6 @@ describe('ServiceAttributes', function () {
 
         scope.removeAttribute('attr-type-1');
 
-        // The attribute should be marked as voided, not removed
         var nonVoidedAttrs = scope.service.attributes.filter(function(attr) {
             return !attr.voided;
         });
@@ -113,7 +112,6 @@ describe('ServiceAttributes', function () {
             return attr.uuid === 'attr-uuid-1';
         });
 
-        // The attribute should be marked as voided rather than removed
         expect(voidedAttr).toBeDefined();
         expect(voidedAttr.voided).toBeTruthy();
     });
@@ -125,7 +123,6 @@ describe('ServiceAttributes', function () {
             voided: false
         }];
 
-        // Re-initialize attributeValues after modifying service.attributes
         scope.attributeValues = {};
         scope.service.attributes.forEach(function (attr) {
             if (!attr.voided) {

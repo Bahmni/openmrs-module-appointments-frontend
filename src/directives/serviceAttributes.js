@@ -1,9 +1,13 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .directive('serviceAttributes', [function () {
+    .directive('serviceAttributes', ['appointmentCommonService', function (appointmentCommonService) {
         var controller = ['$scope', function ($scope) {
             $scope.attributeValues = {};
+
+            $scope.hasPrivilege = function (privilege) {
+                return appointmentCommonService.hasPrivilege(privilege);
+            };
 
             var init = function () {
                 if (!$scope.service) {
