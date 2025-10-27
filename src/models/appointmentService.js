@@ -46,7 +46,8 @@ Bahmni.Appointments.AppointmentService = (function () {
             specialityUuid: serviceDetails.specialityUuid,
             locationUuid: serviceDetails.locationUuid,
             weeklyAvailability: parse(serviceDetails.weeklyAvailability),
-            serviceTypes: serviceDetails.serviceTypes || []
+            serviceTypes: serviceDetails.serviceTypes || [],
+            attributes: serviceDetails.attributes || []
         });
         return service;
     };

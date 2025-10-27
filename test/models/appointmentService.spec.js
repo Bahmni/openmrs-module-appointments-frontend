@@ -127,4 +127,53 @@ describe('AppointmentService', function () {
          {dayOfWeek: 'TUESDAY', uuid: undefined, voided: false, maxAppointmentsLimit: 2, startTime: startTime2, endTime: endTime2},
          {dayOfWeek: 'SATURDAY', uuid: 'uuid1', voided: true, maxAppointmentsLimit: 2, startTime: startTime2, endTime: endTime2}]);
     });
+
+    it('should include attributes when creating from UI object', function () {
+        var service = {
+            name: 'Chemotherapy',
+            description: 'For cancer',
+            attributes: [
+                {
+                    attributeTypeUuid: 'attr-type-uuid-1',
+                    value: 'test value',
+                    voided: false
+                },
+                {
+                    uuid: 'existing-attr-uuid',
+                    attributeTypeUuid: 'attr-type-uuid-2',
+                    value: '123',
+                    voided: false
+                }
+            ]
+        };
+        var appointmentService = Bahmni.Appointments.AppointmentService.createFromUIObject(service);
+
+        expect(appointmentService.attributes).toBeDefined();
+        expect(appointmentService.attributes.length).toBe(2);
+        expect(appointmentService.attributes[0].attributeTypeUuid).toBe('attr-type-uuid-1');
+        expect(appointmentService.attributes[0].value).toBe('test value');
+        expect(appointmentService.attributes[1].uuid).toBe('existing-attr-uuid');
+    });
+
+    it('should handle empty attributes array', function () {
+        var service = {
+            name: 'Chemotherapy',
+            description: 'For cancer',
+            attributes: []
+        };
+        var appointmentService = Bahmni.Appointments.AppointmentService.createFromUIObject(service);
+
+        expect(appointmentService.attributes).toBeDefined();
+        expect(appointmentService.attributes.length).toBe(0);
+    });
+
+    it('should handle undefined attributes', function () {
+        var service = {
+            name: 'Chemotherapy',
+            description: 'For cancer'
+        };
+        var appointmentService = Bahmni.Appointments.AppointmentService.createFromUIObject(service);
+
+        expect(appointmentService.attributes).toEqual([]);
+    });
 });
