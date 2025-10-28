@@ -150,7 +150,7 @@ angular.module('bahmni.appointments')
             };
 
             var initAttributeTypes = function () {
-                return appointmentsServiceService.getAllAttributeTypes().then(function (response) {
+                return appointmentsServiceService.getAllNonVoidedAttributeTypes().then(function (response) {
                     $scope.attributeTypes = response.data;
                 });
             };

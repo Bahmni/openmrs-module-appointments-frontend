@@ -55,7 +55,7 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
             });
         };
 
-        var parseAttributes = function (attributes) {
+        var parseNonVoidedAttributes = function (attributes) {
             if (!attributes || !attributes.length) {
                 return [];
             }
@@ -86,7 +86,7 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
             locationUuid: serviceDetails.location ? serviceDetails.location.uuid : undefined,
             weeklyAvailability: parseAvailability(serviceDetails.weeklyAvailability) || [],
             serviceTypes: serviceDetails.serviceTypes || [],
-            attributes: parseAttributes(serviceDetails.attributes)
+            attributes: parseNonVoidedAttributes(serviceDetails.attributes)
         });
         return service;
     };
