@@ -6,7 +6,6 @@ angular.module('bahmni.appointments')
         'confirmBox',
         function ($scope, $q, spinner, $state, appointmentsServiceService, appointmentCommonService, locationService,
                   messagingService, specialityService, ngDialog, appService, appointmentServiceContext, confirmBox) {
-            $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableAppointmentRequests = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
@@ -18,7 +17,11 @@ angular.module('bahmni.appointments')
             $scope.initialAppointmentStatusOptions = ["Scheduled", "Requested"];
             $scope.manageAppointmentServicePrivilege = Bahmni.Appointments.Constants.privilegeManageServices;
             $scope.manageAppointmentServiceAvailabilityPrivilege = Bahmni.Appointments.Constants.privilegeManageServiceAvailability;
-            $scope.shouldDisableColorPicker = !appointmentCommonService.hasPrivilege('app:appointments:manageServices');
+        
+            $scope.hasPrivilege = function (privilege) {
+                return appointmentCommonService.hasPrivilege(privilege);
+            }
+            $scope.showConfirmationPopUp = $scope.hasPrivilege($scope.manageAppointmentServicePrivilege) || $scope.hasPrivilege($scope.manageAppointmentServiceAvailabilityPrivilege);
             
             var validateAttributes = function () {
                 if (!$scope.attributeTypes || $scope.attributeTypes.length === 0) {
@@ -87,10 +90,6 @@ angular.module('bahmni.appointments')
             $scope.hasServiceTypes = function () {
                 return ($scope.service.serviceTypes.length > 0);
             };
-
-            $scope.hasPrivilege = function (privilege) {
-                return appointmentCommonService.hasPrivilege(privilege);
-            }
 
             var isNew = function () {
                 return !$scope.service.uuid;
