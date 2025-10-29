@@ -1,0 +1,19 @@
+<div class="service-attributes-wrapper">
+    <div class="service-attributes-content" ng-if="attributeTypes && attributeTypes.length > 0">
+        <p ng-repeat="attributeType in attributeTypes" class="attribute-field">
+            <label for="attr-{{attributeType.uuid}}">
+                {{attributeType.name}}
+                <span class="asterick" ng-if="isRequired(attributeType)">*</span>
+            </label> 
+            <input
+                id="attr-{{attributeType.uuid}}"
+                type="{{getInputType(attributeType.datatype)}}"
+                ng-model="attributeValues[attributeType.uuid]"
+                ng-disabled="!hasPrivilege('app:appointments:manageServices')"
+                ng-change="addOrUpdateAttribute(attributeType.uuid, attributeType.name, attributeValues[attributeType.uuid])"
+                placeholder="Enter {{attributeType.name}}"
+                ng-required="isRequired(attributeType)"
+            />
+        </p>
+    </div>
+</div>

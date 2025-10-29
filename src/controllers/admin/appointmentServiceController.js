@@ -23,10 +23,38 @@ angular.module('bahmni.appointments')
             }
             $scope.showConfirmationPopUp = $scope.hasPrivilege($scope.manageAppointmentServicePrivilege) || $scope.hasPrivilege($scope.manageAppointmentServiceAvailabilityPrivilege);
             
+            var validateAttributes = function () {
+                if (!$scope.attributeTypes || $scope.attributeTypes.length === 0) {
+                    return true;
+                }
+
+                var errors = [];
+                _.each($scope.attributeTypes, function (attrType) {
+                    var nonVoidedAttrs = _.filter($scope.service.attributes || [], function (attr) {
+                        return attr.attributeTypeUuid === attrType.uuid && !attr.voided;
+                    });
+                    var count = nonVoidedAttrs.length;
+                    if (attrType.minOccurs && count < attrType.minOccurs) {
+                        errors.push("Attribute '" + attrType.name + "' requires at least " + attrType.minOccurs + " occurrence(s), but only " + count + " provided");
+                    }
+                    if (attrType.maxOccurs && count > attrType.maxOccurs) {
+                        errors.push("Attribute '" + attrType.name + "' allows maximum " + attrType.maxOccurs + " occurrence(s), but " + count + " provided");
+                    }
+                });
+                if (errors.length > 0) {
+                    messagingService.showMessage('error', errors.join('; '));
+                    return false;
+                }
+                return true;
+            };
+
             var save = function () {
                 clearValuesIfDisabledAndInvalid();
                 if ($scope.createServiceForm.$invalid) {
                     messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
+                    return;
+                }
+                if (!validateAttributes()) {
                     return;
                 }
                 var service = Bahmni.Appointments.AppointmentService.createFromUIObject($scope.service);
@@ -120,10 +148,17 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            var initAttributeTypes = function () {
+                return appointmentsServiceService.getAllNonVoidedAttributeTypes().then(function (response) {
+                    $scope.attributeTypes = response.data;
+                });
+            };
+
             var init = function () {
                 var promises = [];
                 promises.push(initAppointmentLocations());
                 promises.push(initServices());
+                promises.push(initAttributeTypes());
                 if ($scope.enableSpecialities) {
                     promises.push(initSpecialities());
                 }

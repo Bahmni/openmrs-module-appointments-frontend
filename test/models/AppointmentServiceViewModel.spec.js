@@ -92,4 +92,78 @@ describe('AppointmentServiceViewModel', function () {
         expect(availability3.days[5].isSelected).toBeTruthy();
         expect(availability3.days[5].uuid).toBe(serviceResponse.weeklyAvailability[3].uuid);
     });
+
+    it('should parse attributes from response', function () {
+        var serviceWithAttributes = angular.extend({}, serviceResponse, {
+            attributes: [
+                {
+                    uuid: 'attr-uuid-1',
+                    attributeType: 'Color Code',
+                    attributeTypeUuid: 'attr-type-uuid-1',
+                    value: '#FF5733',
+                    voided: false
+                },
+                {
+                    uuid: 'attr-uuid-2',
+                    attributeType: 'Priority',
+                    attributeTypeUuid: 'attr-type-uuid-2',
+                    value: 'High',
+                    voided: false
+                }
+            ]
+        });
+
+        var viewModel = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceWithAttributes);
+
+        expect(viewModel.attributes).toBeDefined();
+        expect(viewModel.attributes.length).toBe(2);
+        expect(viewModel.attributes[0].uuid).toBe('attr-uuid-1');
+        expect(viewModel.attributes[0].attributeTypeUuid).toBe('attr-type-uuid-1');
+        expect(viewModel.attributes[0].value).toBe('#FF5733');
+    });
+
+    it('should filter out voided attributes', function () {
+        var serviceWithAttributes = angular.extend({}, serviceResponse, {
+            attributes: [
+                {
+                    uuid: 'attr-uuid-1',
+                    attributeType: 'Color Code',
+                    attributeTypeUuid: 'attr-type-uuid-1',
+                    value: '#FF5733',
+                    voided: false
+                },
+                {
+                    uuid: 'attr-uuid-2',
+                    attributeType: 'Priority',
+                    attributeTypeUuid: 'attr-type-uuid-2',
+                    value: 'High',
+                    voided: true
+                }
+            ]
+        });
+
+        var viewModel = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceWithAttributes);
+
+        expect(viewModel.attributes).toBeDefined();
+        expect(viewModel.attributes.length).toBe(1);
+        expect(viewModel.attributes[0].uuid).toBe('attr-uuid-1');
+    });
+
+    it('should handle empty attributes', function () {
+        var serviceWithAttributes = angular.extend({}, serviceResponse, {
+            attributes: []
+        });
+
+        var viewModel = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceWithAttributes);
+
+        expect(viewModel.attributes).toBeDefined();
+        expect(viewModel.attributes.length).toBe(0);
+    });
+
+    it('should handle missing attributes', function () {
+        var viewModel = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
+
+        expect(viewModel.attributes).toBeDefined();
+        expect(viewModel.attributes).toEqual([]);
+    });
 });
