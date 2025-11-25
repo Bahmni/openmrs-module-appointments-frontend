@@ -2,99 +2,77 @@ name: Build and Publish
 on:
   push:
     branches:
-      - master
-      - 'release-*'
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - CURE-Product-Master
     paths-ignore:
       - "**.md"
-  workflow_run:
-    workflows: [Pull Translations from Transifex]
-    types: [completed]
-    branches:
-      - master
-      - 'release-*'
   workflow_dispatch:
 
 jobs:
-  build-publish-docker-helm:
-    name: Build & Publish Docker Image & Helm Chart
+  Trivy:
     runs-on: ubuntu-latest
-    env:
-      HELM_CHART_PATH: package/helm/
     steps:
-      - uses: actions/checkout@v2
-      - name: Set env.ARTIFACT_VERSION
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Trivy Scan
         run: |
-          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
-          ./setArtifactVersion.sh
-          rm setArtifactVersion.sh
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v3
+          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/trivy_scan.sh && chmod +x trivy_scan.sh
+          ./trivy_scan.sh
+          rm trivy_scan.sh
+  build-publish-docker:
+    name: Build & Publish Docker Image
+    runs-on: ubuntu-22.04
+    needs: Trivy
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v4
         with:
-          node-version: '12.22.12'
-      - name: Install dependencies
+          node-version: 18.x
+          cache: 'npm'
+      - name: Install dependencies ui
+        run:  cd ui && npm install
+      - name: Install dependencies root
         run: npm install
       - name: run test
         run: npm run test
       - name: Build
-        run: npm run build
+        run: NODE_OPTIONS="--openssl-legacy-provider" npm run build
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GAR
+        uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+          registry: us-east1-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.CURE_EMR_DEPLOYMENTS_SERVICE_ACCOUNT_KEY }}
       - name: Docker Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           file: package/docker/Dockerfile
           push: true
-          tags: bahmni/appointments:${{env.ARTIFACT_VERSION}},bahmni/appointments:latest
-      - name: Push Translations to Transifex
+          tags: |
+            us-east1-docker.pkg.dev/cure-emr-gcp/bahmni/appointments:${{ github.run_number }}
+            us-east1-docker.pkg.dev/cure-emr-gcp/bahmni/appointments:latest
+  trigger-workflow:
+    name: Trigger workflow to deploy to Docker env
+    needs:
+      - build-publish-docker
+      - Trivy
+    runs-on: ubuntu-latest
+    env:
+      EVENT_TYPE: bahmni-ipd-appointments-event
+    steps:
+      - name: Create repository_dispatch
         run: |
-          curl -o transifex.sh https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/transifex.sh
-          chmod +x transifex.sh
-          ./transifex.sh push
-          rm transifex.sh
-        env:
-          TX_TOKEN: ${{ secrets.TX_TOKEN }}
-      - name: Helm - Update Version and Image Tag
-        run: |
-          yq --inplace '.image.tag = "${{ env.ARTIFACT_VERSION }}"' $HELM_CHART_PATH/values.yaml
-          yq --inplace '.version = "${{ env.ARTIFACT_VERSION }}"' $HELM_CHART_PATH/Chart.yaml
-
-      - name: Helm Lint
-        run: helm lint $HELM_CHART_PATH
-
-      - name: Helm Package
-        run: helm package $HELM_CHART_PATH
-
-      - name: Helm - Checkout Charts Repository
-        uses: actions/checkout@v2
-        with:
-          repository: Bahmni/helm-charts
-          ref: gh-pages
-          path: helm-charts
-          persist-credentials: false
-
-      - name: Helm - Copy chart
-        run: mkdir -p helm-charts/appointments/ && cp appointments-${{ env.ARTIFACT_VERSION }}.tgz helm-charts/appointments/
-
-      - name: Helm - reIndex
-        working-directory: helm-charts/
-        run: helm repo index --merge index.yaml --url https://bahmni.github.io/helm-charts/  .
-
-      - name: Helm - Publish Chart
-        working-directory: helm-charts/
-        run: |
-          git config user.name ${{ secrets.BAHMNI_USERNAME}}
-          git config user.email ${{ secrets.BAHMNI_EMAIL}}
-          git add .
-          git commit -m "Release of bahmni-web-${{ env.ARTIFACT_VERSION }}"
-          git push 'https://${{ secrets.BAHMNI_USERNAME}}:${{ secrets.BAHMNI_PAT}}@github.com/bahmni/helm-charts.git' gh-pages
+          trigger_result=$(curl -s -o trigger_response.txt -w "%{http_code}" -X POST -H "Accept: application/vnd.github.v3+json" -H 'authorization: Bearer ${{ secrets.IPD_PAT }}' https://api.github.com/repos/${{ secrets.IPD_ORG_NAME }}/${{ secrets.IPD_REPOSITORY_NAME }}/dispatches -d '{"event_type":"'"${EVENT_TYPE}"'"}')
+          if [ $trigger_result == 204 ];then
+            echo "Trigger to $ORG_NAME/$REPOSITORY_NAME Success"
+          else
+            echo "Trigger to $ORG_NAME/$REPOSITORY_NAME Failed"
+            cat trigger_response.txt
+            exit 1
+          fi

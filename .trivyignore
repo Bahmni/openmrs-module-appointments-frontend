@@ -1,0 +1,14 @@
+# Ignoring the below vulnerabilities, to be reviewed later
+CVE-2019-10768 #angular
+CVE-2024-21490 #angular
+CVE-2024-39338 #axios
+CVE-2025-27152 #URL
+CVE-2025-7783 #form-data
+CVE-2020-8203 #lodash
+CVE-2021-23337 #lodash
+NSWG-ECO-516 #lodash
+CVE-2022-24785 #moment
+CVE-2022-31129 #moment
+CVE-2024-45296 #path-to-regexp
+CVE-2025-58754 #axios
+CVE-2024-4068 #braces
