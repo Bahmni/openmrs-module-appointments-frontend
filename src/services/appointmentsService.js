@@ -1,8 +1,28 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .service('appointmentsService', ['$http', 'appService',
-        function ($http, appService) {
+        .service('appointmentsService', ['$http', 'appService',
+            function ($http, appService) {
+                function applyPriorityMapping(appointments) {
+                    if (!appointments || !Array.isArray(appointments)) {
+                        return appointments;
+                    }
+                    var priorityOptionsList = appService.getAppDescriptor().getConfigValue('priorityOptionsList') || [];
+                    if (!priorityOptionsList || priorityOptionsList.length === 0) {
+                        return appointments;
+                    }
+                    appointments.forEach(function(appointment) {
+                        if (appointment && appointment.priority) {
+                            var priorityConfig = priorityOptionsList.find(function(priority) { 
+                                return priority.value === appointment.priority; 
+                            });
+                            if (priorityConfig && priorityConfig.label) {
+                                appointment.priority = priorityConfig.label;
+                            }
+                        }
+                    });
+                    return appointments;
+                }
             this.save = function (appointment) {
                 return $http.post(Bahmni.Appointments.Constants.createAppointmentUrl, appointment, {
                     withCredentials: true,
@@ -13,6 +33,11 @@ angular.module('bahmni.appointments')
                 return $http.post(Bahmni.Appointments.Constants.searchAppointmentUrl, appointment, {
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                }).then(function(response) {
+                    if (response.data && Array.isArray(response.data)) {
+                        applyPriorityMapping(response.data);
+                    }
+                    return response;
                 });
             };
 
@@ -37,6 +62,11 @@ angular.module('bahmni.appointments')
                     params: params,
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                }).then(function(response) {
+                    if (response.data && Array.isArray(response.data)) {
+                        applyPriorityMapping(response.data);
+                    }
+                    return response;
                 });
             };
 
