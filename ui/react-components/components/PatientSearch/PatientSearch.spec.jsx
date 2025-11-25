@@ -28,6 +28,7 @@ describe('Patient Search', () => {
         const option = getByText(targetPatient);
         fireEvent.click(option);
         expect(getPatientByLocationSpy).toHaveBeenCalled();
+
     });
 
     it('should not search for patients when less than 3 characters are entered', async () => {

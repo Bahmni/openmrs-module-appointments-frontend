@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
-import { MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH } from "../../constants";
+import { MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH,DEBOUNCE_PATIENT_SEARCH_DELAY_IN_MILLISECONDS} from "../../constants";
 import { ComboBox } from "carbon-components-react";
 import { getPatientsByLocation } from "../../api/patientApi";
 import { currentLocation } from "../../utils/CookieUtil";
@@ -16,12 +16,14 @@ export const PatientSearch = (props) => {
         value,
         isDisabled,
         minCharLengthToTriggerPatientSearch = MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH,
+        debouncePatientSearchDelayInMilliseconds,
         autoFocus
     } = props;
     const [items, setItems] = useState([]);
     const [userInput, setUserInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [cancelToken, setCancelToken] = useState(null);
+    const debouncePatientSearchDelay = debouncePatientSearchDelayInMilliseconds || DEBOUNCE_PATIENT_SEARCH_DELAY_IN_MILLISECONDS;
 
     const setDisabledItems = ( translationKey, defaultMessage) => {
         setItems([{
@@ -101,6 +103,7 @@ PatientSearch.propTypes = {
     value: PropTypes.object,
     isDisabled: PropTypes.bool,
     minCharLengthToTriggerPatientSearch: PropTypes.number,
+    debouncePatientSearchDelayInMilliseconds: PropTypes.number,
     autoFocus: PropTypes.bool
 };
 
