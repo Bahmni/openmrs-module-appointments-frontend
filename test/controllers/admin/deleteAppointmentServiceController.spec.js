@@ -11,11 +11,10 @@ describe("deleteAppointmentServiceController", function () {
         });
 
         appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['deleteAppointmentService']);
+        ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        state = jasmine.createSpyObj('$state', ['reload']);
     });
-
-    ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
-    messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
-    state = jasmine.createSpyObj('$state', ['reload']);
 
     var createController = function () {
         controller('deleteAppointmentServiceController', {
@@ -33,11 +32,7 @@ describe("deleteAppointmentServiceController", function () {
                 errorFn();
             }
         };
-        appointmentsServiceService = {
-            deleteAppointmentService: function () {
-                return mockPromise;
-            }
-        };
+        appointmentsServiceService.deleteAppointmentService.and.returnValue(mockPromise);
         var service = {name: "service name", uuid: "serviceUuid"};
         scope.ngDialogData = {service: service};
         createController();

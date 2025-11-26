@@ -4,7 +4,7 @@
     "description": "An appointment app for bahmni/openmrs.",
     "license": "AGPLv3",
     "engines": {
-        "node": ">=12 <15"
+        "node": ">=14 <19"
     },
     "scripts": {
         "build-react": "cd ui && npm run build-react",
@@ -33,21 +33,21 @@
         "html-loader": "^0.5.5",
         "html-webpack-plugin": "^3.2.0",
         "imports-loader": "^0.8.0",
-        "karma": "^1.4.0",
+        "karma": "^6.4.2",
         "jsdom": "^12.0.0",
-        "karma-coverage": "~0.2.4",
-        "karma-jasmine": "~0.2.3",
-        "karma-jsdom-launcher": "6.1.5",
-        "karma-junit-reporter": "^0.2.2",
+        "karma-coverage": "^2.2.1",
+        "karma-jasmine": "^5.1.0",
+        "karma-chrome-launcher": "^3.2.0",
+        "karma-junit-reporter": "^2.0.1",
         "karma-sourcemap-loader": "^0.3.7",
         "karma-webpack": "^4.0.2",
-        "node-sass": "^4.12.0",
-        "sass-loader": "^7.1.0",
-        "style-loader": "^0.23.1",
-        "url-loader": "^2.1.0",
-        "webpack": "^4.35.2",
-        "webpack-cli": "^3.3.5",
-        "webpack-dev-server": "^3.7.2"
+        "sass": "^1.62.1",
+        "sass-loader": "^10.4.1",
+        "style-loader": "^2.0.0",
+        "url-loader": "^4.1.1",
+        "webpack": "^4.47.0",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.3"
     },
     "dependencies": {
         "@uirouter/angularjs": "0.2.18",

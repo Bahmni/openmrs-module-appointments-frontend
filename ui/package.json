@@ -4,7 +4,7 @@
   "description": "React Appointments Frontend",
   "main": "dist/reactAngularAdaptor.js",
   "engines": {
-    "node": ">=12 <15"
+    "node": ">=14 <19"
   },
   "directories": {
     "test": "test"
@@ -71,7 +71,7 @@
     "jest-watch-typeahead": "^0.4.2",
     "matchdep": "^0.3.0",
     "mini-css-extract-plugin": "^0.8.0",
-    "node-sass": "^4.12.0",
+    "sass": "^1.62.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-flexbugs-fixes": "^4.1.0",
     "postcss-loader": "^3.0.0",
@@ -92,7 +92,7 @@
   "scripts": {
     "test-react": "TZ=UTC jest",
     "test-react-watch": "TZ=UTC jest --watch",
-    "build-react": "webpack --env=production -p",
+    "build-react": "NODE_OPTIONS=\"--openssl-legacy-provider\" webpack --env=production -p",
     "build-react-dev": "webpack --env=developemnt --watch",
     "storybook": "start-storybook"
   },
