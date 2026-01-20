@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import GridSummary, {transformAppointmentSummaryToGridData, transformAppointmentsData} from "../components/GridSummary/GridSummary.jsx";
 import DateOrWeekNavigator from "../components/DateOrWeekNavigator/DateOrWeekNavigator.jsx"
-import { IntlProvider } from "react-intl";
+import { FormattedMessage, IntlProvider } from "react-intl";
 import { getLocale } from "../utils/LocalStorageUtil";
 import translations from '../../i18n/appointments';
 import PropTypes from "prop-types";
