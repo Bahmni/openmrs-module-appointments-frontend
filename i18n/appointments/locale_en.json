@@ -3,6 +3,7 @@
   "APPOINTMENTS_ADMIN": "Admin",
   "APPOINTMENT_PROVIDER": "Provider",
   "APPOINTMENT_LOCATION": "Location",
+  "APPOINTMENT_REASON_SEARCH_MIN_CHARS_MESSAGE": "Type 3 chars to search",
   "SUMMARY": "Summary",
   "APPOINTMENT_LIST": "Appointments List",
   "AWAITING_APPOINTMENT_LIST": "Awaiting Appointments",

@@ -18,6 +18,8 @@ const Dropdown = (props) => {
     selectedValue,
     autoFocus,
     isRequired,
+    onInputChange,
+    placeHolderMessage = "Choose an option",
   } = props;
   const filterItems = data => {
     return data.item.label.toLowerCase().includes(data.inputValue.toLowerCase());
@@ -30,6 +32,13 @@ const Dropdown = (props) => {
   const handleOnChange = (selected) => {
     onChange(selected.selectedItem)
   }
+  
+  const handleInputChange = (inputValue) => {
+    if (onInputChange) {
+      onInputChange(inputValue);
+    }
+  }
+  
   const isComponentDisabled = () =>
     isUndefined(isDisabled) ? false : isDisabled;
   const title = <Title text={placeholder} isRequired={isRequired}/>;
@@ -44,12 +53,13 @@ const Dropdown = (props) => {
           ref={dropdownRef}
           items={options}
           onChange={handleOnChange}
+          onInputChange={handleInputChange}
           itemToString={(item) => (item ? item.label : '')}
           titleText={title}
           disabled={isDisabled}
           style={{ width: '250px' }}
-          shouldFilterItem={filterItems}
-          placeholder={"Choose an option"}
+          shouldFilterItem={onInputChange ? undefined : filterItems}
+          placeholder={placeHolderMessage}
           selectedItem={selectedValue}
       />
     </div>

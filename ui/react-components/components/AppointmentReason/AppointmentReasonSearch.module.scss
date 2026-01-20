@@ -1,0 +1,25 @@
+.reasonTagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  max-width: 100%;
+
+  :global(.bx--tag) {
+    max-width: 100% !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    height: auto !important;
+    min-height: 24px;
+    padding: 4px 8px;
+  }
+
+  :global(.bx--tag__label) {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: 100% !important;
+  }
+}

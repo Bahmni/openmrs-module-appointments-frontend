@@ -10,6 +10,7 @@
     "appointmentSaveUrl": "/openmrs/ws/rest/v1/appointment",
     "appointmentsSaveUrl": "/openmrs/ws/rest/v1/appointments",
     "appointmentByUuidUrl": "/openmrs/ws/rest/v1/appointment/",
+    "conceptUrl": "/openmrs/ws/rest/v1/concept",
     "recurringAppointmentFetchUrl": "/openmrs/ws/rest/v1/recurring-appointments/",
     "recurringAppointmentsSaveUrl": "/openmrs/ws/rest/v1/recurring-appointments",
     "appointmentConflictsUrl": "/openmrs/ws/rest/v1/appointments/conflicts",

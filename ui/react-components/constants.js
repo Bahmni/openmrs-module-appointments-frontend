@@ -5,6 +5,7 @@ export const MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH = 3;
 export const DEFAULT_MAX_APPOINTMENT_PROVIDERS = 1;
 export const PROVIDER_ERROR_MESSAGE_TIME_OUT_INTERVAL = 5000;
 export const SERVICE_ERROR_MESSAGE_TIME_OUT_INTERVAL = 5000;
+export const API_DEBOUNCE_DELAY_IN_MS = 200;
 export const dayRecurrenceType = "DAY";
 export const weekRecurrenceType = "WEEK";
 export const TODAY = "TODAY";
