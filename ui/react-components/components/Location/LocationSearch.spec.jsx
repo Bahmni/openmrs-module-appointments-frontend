@@ -51,5 +51,48 @@ describe('Service Search', () => {
         fireEvent.click(option);
         expect(onChangeSpy).toHaveBeenCalledTimes(1);
     });
-});
 
+    it('should call onChange with null when selected location is not valid in the locations list', async () => {
+        const onChangeSpy = jest.fn();
+        const mockLocations = [
+            { uuid: 'loc-1', name: 'OPD-1' },
+            { uuid: 'loc-2', name: 'OPD-2' }
+        ];
+        
+        getAllByTagSpy.mockResolvedValue(mockLocations);
+        
+        const invalidLocation = {
+            value: { uuid: 'invalid-uuid', name: 'Invalid Location' },
+            label: 'Invalid Location'
+        };
+        
+        renderWithReactIntl(
+            <LocationSearch onChange={onChangeSpy} value={invalidLocation}/>
+        );
+
+        await waitForElement(() => getAllByTagSpy.mock.calls.length > 0);
+        expect(onChangeSpy).toHaveBeenCalledWith(null);
+    });
+
+    it('should not call onChange when selected location is valid in the locations list', async () => {
+        const onChangeSpy = jest.fn();
+        const mockLocations = [
+            { uuid: 'loc-1', name: 'OPD-1' },
+            { uuid: 'loc-2', name: 'OPD-2' }
+        ];
+        
+        getAllByTagSpy.mockResolvedValueOnce(mockLocations);
+        
+        const validLocation = {
+            value: { uuid: 'loc-1', name: 'OPD-1' },
+            label: 'OPD-1'
+        };
+        
+        renderWithReactIntl(
+            <LocationSearch onChange={onChangeSpy} value={validLocation}/>
+        );
+
+        await waitForElement(() => getAllByTagSpy.mock.calls.length > 0);
+        expect(onChangeSpy).not.toHaveBeenCalledWith(null);
+    });
+});

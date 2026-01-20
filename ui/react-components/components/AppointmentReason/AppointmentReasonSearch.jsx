@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import {injectIntl} from "react-intl";
 import {API_DEBOUNCE_DELAY_IN_MS, MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH} from "../../constants";
 import {find} from 'lodash';
-import {reasonTagsContainer} from "./AppointmentReasonSearch.module.scss";
+import {reasonTagsContainer, fullWidthDropdown} from "./AppointmentReasonSearch.module.scss";
 import classNames from "classnames";
 import {getAppointmentReasonConceptSet} from "../../helper";
 
@@ -84,18 +84,20 @@ const AppointmentReasonSearch = (props) => {
 
     return (
         <div>
-            <Dropdown 
-                data-testid="appointment-reason-search"
-                options={dropdownOptions}
-                placeholder={placeHolder}
-                onChange={onReasonSelect}
-                isDisabled={isDisabled}
-                isRequired={isRequired}
-                isClearable={false}
-                autoFocus={autoFocus}
-                onInputChange={setSearchTerm}
-                placeHolderMessage={minCharsMessage}
-            />
+            <div className={fullWidthDropdown}>
+                <Dropdown 
+                    data-testid="appointment-reason-search"
+                    options={dropdownOptions}
+                    placeholder={placeHolder}
+                    onChange={onReasonSelect}
+                    isDisabled={isDisabled}
+                    isRequired={isRequired}
+                    isClearable={false}
+                    autoFocus={autoFocus}
+                    onInputChange={setSearchTerm}
+                    placeHolderMessage={minCharsMessage}
+                />
+            </div>
             <div className={classNames(reasonTagsContainer)}>
                 <Tags
                     onChange={onReasonRemove}

@@ -6,6 +6,10 @@
   color: $primary-color-1;
 }
 
+:global(.bx--combo-box) {
+  width: 250px;
+}
+
 .dropdownIndicator{
   color: hsl(0,0%,80%);
   font-weight: 800;

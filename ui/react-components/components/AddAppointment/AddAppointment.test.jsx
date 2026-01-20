@@ -1,7 +1,7 @@
 import React from "react";
 import AddAppointment from "./AddAppointment.jsx";
 import {renderWithReactIntl} from "../../utils/TestUtil";
-import {fireEvent, getAllByTestId, waitForElement} from "@testing-library/react";
+import {fireEvent, getAllByTestId, waitForElement, wait} from "@testing-library/react";
 import * as addAppointmentService from "./AddAppointmentService.js";
 import moment from "moment";
 import {AppContext} from "../AppContext/AppContext";
@@ -18,18 +18,23 @@ jest.mock('../../utils/LocalStorageUtil.js', () => ({
 }));
 
 jest.mock('../../api/appointmentsApi');
+jest.mock('../../api/conceptApi');
 
 const patientApi = require('../../api/patientApi');
 const serviceApi = require('../../api/serviceApi');
 const specialityApi = require('../../api/specialityApi');
 const providerApi = require('../../api/providerApi');
 const appointmentsApi = require('../../api/appointmentsApi');
+const conceptApi = require('../../api/conceptApi');
 
 let getPatientByLocationSpy;
 let getAllServicesSpy;
 let getAllSpecialitiesSpy;
 let getAllProvidersSpy;
 let getPatientSpy;
+let getConceptByUuidSpy;
+let localGetConceptByUuidSpy;
+let currentLocationSpy;
 
 const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'month'); // Get the moment object for the next month
@@ -41,12 +46,27 @@ const clickOnFirstDayOfNextMonth = (container) => {
 };
 
 describe('Add Appointment', () => {
+    const CookieUtil = require('../../utils/CookieUtil');
+
+    const reasonConfig = {
+        enableAppointmentReasons: true,
+        appointmentReasonConceptSet: 'concept-set-uuid'
+    };
+
     beforeEach(() => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
         getPatientSpy = jest.spyOn(patientApi, 'getPatient');
         getAllServicesSpy = jest.spyOn(serviceApi, 'getAllServices');
         getAllSpecialitiesSpy = jest.spyOn(specialityApi, 'getAllSpecialities');
         getAllProvidersSpy = jest.spyOn(providerApi, 'getAllProviders');
+        getConceptByUuidSpy = jest.spyOn(conceptApi, 'getConceptByUuid');
+        localGetConceptByUuidSpy = jest.spyOn(conceptApi, 'getConceptByUuid');
+        localGetConceptByUuidSpy.mockResolvedValue({
+            uuid: 'reason-uuid',
+            display: 'Follow-up Visit'
+        });
+        getPatientSpy = jest.spyOn(patientApi, 'getPatient');
+        currentLocationSpy = jest.spyOn(CookieUtil, 'currentLocation');
         jest.useFakeTimers();
     });
     afterEach(() => {
@@ -55,6 +75,11 @@ describe('Add Appointment', () => {
         getAllSpecialitiesSpy.mockRestore();
         getAllProvidersSpy.mockRestore();
         getPatientSpy.mockRestore();
+        getConceptByUuidSpy.mockRestore();
+        localGetConceptByUuidSpy.mockRestore();
+        getPatientSpy.mockRestore();
+        currentLocationSpy.mockRestore();
+        jest.clearAllMocks();
     });
 
     it('should render an editor', () => {
@@ -552,6 +577,153 @@ describe('Add Appointment', () => {
         const dateInputField = getByPlaceholderText('mm/dd/yyyy');
         expect(dateInputField.value).toBe(selectedDate.format('MM/DD/YYYY'));
 
+    });
+
+    // appointment reason test
+
+    it('should fetch appointment reason from urlParams on load', () => {
+        renderWithReactIntl(
+            <AddAppointment appConfig={reasonConfig} urlParams={{appointmentReason: 'reason-uuid'}}/>
+        );
+
+        expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid');
+    });
+
+    it('should call concept API when appointmentReason is in urlParams for recurring appointments', () => {
+        renderWithReactIntl(
+            <AddAppointment appConfig={reasonConfig} urlParams={{appointmentReason: 'reason-uuid'}}/>
+        );
+
+        expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid');
+    });
+
+    it('should not display appointment reason search when enableAppointmentReasons is false', () => {
+        const {queryByTestId} = renderWithReactIntl(
+            <AddAppointment appConfig={{enableAppointmentReasons: false}} urlParams={{appointmentReason: 'reason-uuid'}}/>
+        );
+
+        expect(queryByTestId('appointment-reason-search')).toBeNull();
+    });
+
+    it('should display appointment reason search when enableAppointmentReasons is true', () => {
+        const {getByTestId} = renderWithReactIntl(<AddAppointment appConfig={reasonConfig}/>);
+        expect(getByTestId('appointment-reason-search')).not.toBeNull();
+    });
+
+    it('should display appointment reason search for recurring appointments when enabled', () => {
+        const {getByTestId, getByText} = renderWithReactIntl(<AddAppointment appConfig={reasonConfig}/>);
+
+        const recurringSwitch = getByText('Recurring Appointment');
+        fireEvent.click(recurringSwitch);
+
+        expect(getByTestId('appointment-reason-search-recurring')).not.toBeNull();
+    });
+
+    // prepopulating field test
+
+    it('should prepopulate patient field when patient uuid is passed in urlParams', async () => {
+        jest.useRealTimers();
+
+        const mockPatient = {
+            uuid: '6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad',
+            person: {
+                display: 'Test Patient',
+                preferredName: {
+                    display: 'Test Patient'
+                }
+            },
+            identifiers: [
+                {
+                    identifier: 'GAN123456',
+                    display: 'GAN123456'
+                }
+            ],
+            display: 'Test Patient'
+        };
+
+        getPatientSpy.mockResolvedValue(mockPatient);
+        currentLocationSpy.mockReturnValue(null);
+
+        const {container, getByTestId} = renderWithReactIntl(
+            <AddAppointment urlParams={{patient: '6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad'}}/>
+        );
+
+        await wait(() => getByTestId('patient-search'));
+
+        expect(getPatientSpy).toHaveBeenCalledWith('6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad');
+
+        const patientInput = container.querySelector('.bx--text-input');
+        await wait(() => expect(patientInput.value).toContain('Test Patient'));
+    });
+
+    it('should prepopulate location field when location is available from cookie', () => {
+        const mockLocation = {
+            uuid: 'location-uuid-123',
+            name: 'OPD Room 1',
+            display: 'OPD Room 1'
+        };
+
+        currentLocationSpy.mockReturnValue(mockLocation);
+
+        const {getByTestId} = renderWithReactIntl(<AddAppointment/>);
+
+        const locationInput = getByTestId('location-search').querySelector('.bx--text-input');
+        expect(locationInput.value).toBe('OPD Room 1');
+    });
+
+    it('should not prepopulate location when cookie location is not available', () => {
+        currentLocationSpy.mockReturnValue(null);
+
+        const {getByTestId} = renderWithReactIntl(<AddAppointment/>);
+
+        const locationInput = getByTestId('location-search').querySelector('.bx--text-input');
+        expect(locationInput.value).toBe('');
+    });
+
+    it('should prepopulate both patient and location when both are available', async () => {
+        jest.useRealTimers();
+
+        const mockPatient = {
+            uuid: '6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad',
+            person: {
+                display: 'John Doe',
+                preferredName: {
+                    display: 'John Doe'
+                }
+            },
+            identifiers: [
+                {
+                    identifier: 'ABC123',
+                    display: 'ABC123'
+                }
+            ],
+            display: 'John Doe'
+        };
+
+        const mockLocation = {
+            uuid: 'location-uuid-456',
+            name: 'Emergency Room',
+            display: 'Emergency Room'
+        };
+
+        getPatientSpy.mockResolvedValue(mockPatient);
+        currentLocationSpy.mockReturnValue(mockLocation);
+
+        const {container, getByTestId} = renderWithReactIntl(
+            <AddAppointment urlParams={{patient: '6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad'}}/>
+        );
+
+        await wait(() => getByTestId('patient-search'));
+
+        const patientInput = container.querySelector('.bx--text-input');
+        await wait(() => expect(patientInput.value).toContain('John Doe'));
+
+        await wait(() => getByTestId('location-search'));
+
+        const locationInput = getByTestId('location-search').querySelector('.bx--text-input');
+
+        expect(patientInput.value).toContain('John Doe');
+        expect(locationInput.value).toBe('Emergency Room');
     });
 });
 

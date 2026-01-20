@@ -1,8 +1,11 @@
+.fullWidthDropdown {
+  :global(.bx--combo-box) {
+    width: 100%;
+  }
+}
+
 .reasonTagsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
+  padding: 2px 0 10px;
   max-width: 100%;
 
   :global(.bx--tag) {
