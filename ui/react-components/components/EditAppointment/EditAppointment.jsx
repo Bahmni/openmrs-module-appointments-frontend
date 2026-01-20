@@ -18,7 +18,14 @@ import {getAppointment} from "../../api/appointmentsApi";
 import {getPatientForDropdown} from "../../mapper/patientMapper";
 import moment from "moment";
 import 'moment-timezone';
-import {getDuration, getValidProviders, isActiveProvider, isAppointmentStatusOptionEnabled, isAppointmentPriorityOptionEnabled} from "../../helper";
+import {
+    getDuration,
+    getValidProviders,
+    isActiveProvider,
+    isAppointmentStatusOptionEnabled,
+    isAppointmentPriorityOptionEnabled,
+    isAppointmentReasonEnabled
+} from "../../helper";
 import {
     appointmentEndTimeProps,
     appointmentStartTimeProps,
@@ -66,6 +73,7 @@ import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
 import NumberInputCarbon from "../NumberInput/NumberInputCarbon.jsx";
 import Title from "../Title/Title.jsx";
 import Notification from "../Notifications/Notifications.jsx";
+import AppointmentReasonSearch from "../AppointmentReason/AppointmentReasonSearch.jsx";
 
 const EditAppointment = props => {
 
@@ -489,7 +497,8 @@ const EditAppointment = props => {
                 appointmentType: isRecurring === 'true' ? RECURRING_APPOINTMENT_TYPE :
                     appointmentResponse.appointmentKind === WALK_IN_APPOINTMENT_TYPE ? WALK_IN_APPOINTMENT_TYPE : undefined,
                 teleconsultation:appointmentResponse.appointmentKind === VIRTUAL_APPOINTMENT_TYPE,
-                priority: appointmentResponse.priority
+                priority: appointmentResponse.priority,
+                appointmentReasons: appointmentResponse.reasons,
             };
             updateAppointmentDetails(appointmentDetailsFromResponse);
             storePreviousAppointmentDatetime(appointmentDetailsFromResponse.appointmentDate, appointmentDetailsFromResponse.startTime, appointmentDetailsFromResponse.endTime);
@@ -602,6 +611,8 @@ const EditAppointment = props => {
         return <Notification showMessage={showUpdateSuccessPopup} title={"Update Successful!"} onClose={React.useContext(AppContext).onBack}/>
     }
 
+    const appointmentReasons = appointmentDetails.appointmentReasons ? appointmentDetails.appointmentReasons.map(({name, value}) => ({value, label: name})) : []
+
     return (<div className={classNames(overlay)}>
         <div data-testid="appointment-editor"
              className={classNames(appointmentEditor, editAppointment, appointmentDetails.appointmentType === RECURRING_APPOINTMENT_TYPE ? recurring : '')}>
@@ -647,6 +658,18 @@ const EditAppointment = props => {
                     </RadioButtonGroup>
                     <ErrorMessage message={errors.statusError ? errorTranslations.statusErrorMessage : undefined}/>
                 </div> }
+            {isAppointmentReasonEnabled(appConfig) && (
+                <div data-testid="appointment-reason-search">
+                    <AppointmentReasonSearch
+                        selectedReasons={appointmentReasons}
+                        onChange={() => {}}
+                        onReasonRemove={() => {}}
+                        isDisabled
+                        isRequired={false}
+                        appConfig={appConfig}
+                    />
+                </div>
+            )}
             <div>
                 <div>
                     <div data-testid="date-selector">

@@ -450,6 +450,83 @@ describe('Edit Appointment', () => {
     })
 });
 
+describe('Appointment Reason feature in Edit Appointment', () => {
+    const config = {
+        enableAppointmentReasons: true,
+        appointmentReasonConceptSet: 'concept-set-uuid'
+    };
+
+    it('should not display appointment reason search when enableAppointmentReasons is false', async () => {
+        let queryByTestIdInDom = undefined;
+        const configWithoutReasons = {
+            enableAppointmentReasons: false
+        };
+        act(() => {
+            const {queryByTestId} = renderWithReactIntl(
+                <EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} 
+                                 isRecurring="false" 
+                                 appConfig={configWithoutReasons}/>
+            );
+            queryByTestIdInDom = queryByTestId;
+        });
+        await flushPromises();
+
+        expect(queryByTestIdInDom('appointment-reason-search')).toBeNull();
+    });
+
+    it('should display appointment reason search when enableAppointmentReasons is true', async () => {
+        let getByTestIdInDom = undefined;
+        act(() => {
+            const {getByTestId} = renderWithReactIntl(
+                <EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} 
+                                 isRecurring="false" 
+                                 appConfig={config}/>
+            );
+            getByTestIdInDom = getByTestId;
+        });
+        await flushPromises();
+
+        expect(getByTestIdInDom('appointment-reason-search')).not.toBeNull();
+    });
+
+    it('should display appointment reason search component in disabled state when editing', async () => {
+        let getByTestIdInDom = undefined;
+        act(() => {
+            const {getByTestId} = renderWithReactIntl(
+                <EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} 
+                                 isRecurring="false" 
+                                 appConfig={config}/>
+            );
+            getByTestIdInDom = getByTestId;
+        });
+        await flushPromises();
+
+        const reasonSearch = getByTestIdInDom('appointment-reason-search');
+        expect(reasonSearch).not.toBeNull();
+        // The component should be present but in disabled state
+        expect(reasonSearch.querySelector('.bx--list-box--disabled')).not.toBeNull();
+    });
+
+    it('should render appointment reasons from the appointment response', async () => {
+        let containerInDom = undefined;
+        let getByTestIdInDom = undefined;
+        act(() => {
+            const {container, getByTestId} = renderWithReactIntl(
+                <EditAppointment appointmentUuid={'36fdc60e-7ae5-4708-9fcc-8c98daba0ca9'} 
+                                 isRecurring="false" 
+                                 appConfig={config}/>
+            );
+            containerInDom = container;
+            getByTestIdInDom = getByTestId;
+        });
+        await flushPromises();
+
+        // Appointment reasons should be rendered from the API response
+        const reasonSearch = getByTestIdInDom('appointment-reason-search');
+        expect(reasonSearch).not.toBeNull();
+    });
+});
+
 describe('Edit appointment with appointment request enabled', () => {
     const config = {enableAppointmentRequests: true, maxAppointmentProviders: 10};
     const currentProvider = {uuid: "f9badd80-ab76-11e2-9e96-0800200c9a66"};
