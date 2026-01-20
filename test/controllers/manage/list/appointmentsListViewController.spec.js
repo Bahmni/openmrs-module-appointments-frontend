@@ -720,6 +720,7 @@ describe('AppointmentsListViewController', function () {
             {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', class: true, enable: true},
             {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
             {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_REASON', sortInfo: 'reasons', class: true, enable: true},
             {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
             {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
             {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
@@ -1005,6 +1006,33 @@ describe('AppointmentsListViewController', function () {
         var display = scope.display(jsonObject);
         var jsonString = 'array:[1,\t2,\t3],\tLocation:Registration';
         expect(display).toEqual(jsonString);
+    });
+
+    it('should return comma separated appointment reason names', function () {
+        createController();
+        var appointment = {
+            reasons: [
+                {name: 'Follow-up'},
+                {name: 'Checkup'},
+                {name: 'Consultation'}
+            ]
+        };
+        var reasons = scope.getAppointmentReasons(appointment);
+        expect(reasons).toEqual('Follow-up, Checkup, Consultation');
+    });
+
+    it('should return empty string when appointment has no reasons', function () {
+        createController();
+        var appointment = {};
+        var reasons = scope.getAppointmentReasons(appointment);
+        expect(reasons).toEqual('');
+    });
+
+    it('should return empty string when appointment reasons is empty array', function () {
+        createController();
+        var appointment = {reasons: []};
+        var reasons = scope.getAppointmentReasons(appointment);
+        expect(reasons).toEqual('');
     });
 
     describe('isAllowedAction', function () {
@@ -1581,6 +1609,7 @@ describe('AppointmentsListViewController', function () {
         {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', class: true, enable: true},
         {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
         {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: true},
+        {heading: 'APPOINTMENT_REASON', sortInfo: 'reasons', class: true, enable: true},
         {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
         {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: false},
         {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},

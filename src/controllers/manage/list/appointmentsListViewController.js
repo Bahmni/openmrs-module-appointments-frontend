@@ -7,6 +7,7 @@ angular.module('bahmni.appointments')
                   appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, appointmentCommonService, $interval) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+            $scope.enableAppointmentReasons = appService.getAppDescriptor().getConfigValue('enableAppointmentReasons');
             $scope.priorityOptionsList = appService.getAppDescriptor().getConfigValue('priorityOptionsList') || [];
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
@@ -52,6 +53,7 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', class: true, enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
+                {heading: 'APPOINTMENT_REASON', sortInfo: 'reasons', class: true, enable: $scope.enableAppointmentReasons},
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: $scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
@@ -186,6 +188,15 @@ angular.module('bahmni.appointments')
                 } else {
                     return '';
                 }
+            };
+
+            $scope.getAppointmentReasons = function (appointment) {
+                if (appointment.reasons && appointment.reasons.length > 0) {
+                    return appointment.reasons.map(function (r) { 
+                        return r.name; 
+                    }).join(', ');
+                }
+                return '';
             };
 
             var setFilteredAppointmentsInPatientSearch = function (appointments) {
