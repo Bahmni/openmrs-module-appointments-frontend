@@ -208,4 +208,70 @@ describe('AppointmentReasonSearch', () => {
             label: 'Headache'
         });
     });
+
+    it('should not call onChange when user clicks cross button to clear selection', async () => {
+        const onChangeSpy = jest.fn();
+        const appConfig = { appointmentReasonConceptSet: 'test-concept-set' };
+        
+        const {container, getByText} = renderWithReactIntl(
+            <AppointmentReasonSearch onChange={onChangeSpy} onReasonRemove={jest.fn()} appConfig={appConfig} />
+        );
+
+        const inputBox = container.querySelector('input[type="text"]');
+        
+        act(() => {
+            fireEvent.change(inputBox, { target: { value: 'Head' } });
+            jest.runAllTimers();
+        });
+
+        await wait(() => {
+            expect(searchConceptsSpy).toHaveBeenCalled();
+        });
+
+        await wait(() => {
+            const option = container.querySelector('.bx--list-box__menu-item');
+            return option !== null;
+        });
+
+        const headacheOption = getByText('Headache');
+        fireEvent.click(headacheOption);
+
+        expect(onChangeSpy).toHaveBeenCalledTimes(1);
+        onChangeSpy.mockClear();
+
+        const clearButton = container.querySelector('.bx--list-box__selection');
+        
+        if (clearButton) {
+            fireEvent.click(clearButton);
+            expect(onChangeSpy).not.toHaveBeenCalled();
+        }
+    });
+
+    it('should not call onChange when selected option does not exist in dropdownOptions', async () => {
+        const onChangeSpy = jest.fn();
+        const appConfig = { appointmentReasonConceptSet: 'test-concept-set' };
+        
+        searchConceptsSpy.mockResolvedValue([
+            { uuid: 'reason-1-uuid', display: 'Fever' }
+        ]);
+
+        const {container} = renderWithReactIntl(
+            <AppointmentReasonSearch onChange={onChangeSpy} onReasonRemove={jest.fn()} appConfig={appConfig} />
+        );
+
+        const inputBox = container.querySelector('input[type="text"]');
+        
+        act(() => {
+            fireEvent.change(inputBox, { target: { value: 'Fev' } });
+            jest.runAllTimers();
+        });
+
+        await wait(() => {
+            expect(searchConceptsSpy).toHaveBeenCalled();
+        });
+        expect(onChangeSpy).not.toHaveBeenCalledWith({
+            value: 'nonexistent-uuid',
+            label: 'Nonexistent'
+        });
+    });
 });
