@@ -387,6 +387,7 @@ describe('Add Appointment', () => {
     //TODO Not able to do because onChange of time picket is not getting called. Need to fix that
 
     it('should display location based on service', async () => {
+        currentLocationSpy.mockReturnValue(null);
         getAllServicesSpy.mockResolvedValue([{"name" : "Physiotherapy OPD", "uuid" : "serviceUuid", "location" : {"name": "Hospital", uuid: "locationUuid"}}]);
         const {container, getByText, getByTestId} = renderWithReactIntl(<AddAppointment/>);
 
@@ -401,6 +402,79 @@ describe('Add Appointment', () => {
 
         expect(inputBoxService.value).toEqual(targetService);
         expect(inputBoxLocation.value).toEqual("Hospital");
+    });
+
+    it('should preserve prepopulated location when selecting service without location', async () => {
+        const mockLocation = {
+            uuid: 'location-uuid-123',
+            name: 'MHAC-1',
+            display: 'MHAC-1'
+        };
+
+        currentLocationSpy.mockReturnValue(mockLocation);
+        getAllServicesSpy.mockResolvedValue([
+            {"name": "General Medicine OPD", "uuid": "serviceUuid1", "location": {}},
+            {"name": "ENT Consultation", "uuid": "serviceUuid2", "location": {}}
+        ]);
+
+        const {container, getByTestId} = renderWithReactIntl(<AddAppointment/>);
+
+        const inputBoxLocation = getByTestId('location-search').querySelector('.bx--text-input');
+        expect(inputBoxLocation.value).toBe('MHAC-1');
+
+        const inputBoxService = getByTestId('service-search').querySelector('.bx--text-input');
+        fireEvent.change(inputBoxService, {target: {value: "Gen"}});
+        let serviceDropDownOption;
+        await waitForElement(() => (serviceDropDownOption = container.querySelector('.bx--list-box__menu-item__option')));
+        fireEvent.click(serviceDropDownOption);
+
+        expect(inputBoxLocation.value).toBe('MHAC-1');
+    });
+
+    it('should preserve prepopulated location when selecting service with different location', async () => {
+        const mockLocation = {
+            uuid: 'location-uuid-123',
+            name: 'MHAC-1',
+            display: 'MHAC-1'
+        };
+
+        currentLocationSpy.mockReturnValue(mockLocation);
+        getAllServicesSpy.mockResolvedValue([
+            {"name": "UK Health Assessment", "uuid": "serviceUuid1", "location": {"name": "MHAC-2", "uuid": "location-uuid-456"}}
+        ]);
+
+        const {container, getByTestId} = renderWithReactIntl(<AddAppointment/>);
+
+        const inputBoxLocation = getByTestId('location-search').querySelector('.bx--text-input');
+        expect(inputBoxLocation.value).toBe('MHAC-1');
+
+        const inputBoxService = getByTestId('service-search').querySelector('.bx--text-input');
+        fireEvent.change(inputBoxService, {target: {value: "UK"}});
+        let serviceDropDownOption;
+        await waitForElement(() => (serviceDropDownOption = container.querySelector('.bx--list-box__menu-item__option')));
+        fireEvent.click(serviceDropDownOption);
+
+        expect(inputBoxLocation.value).toBe('MHAC-1');
+    });
+
+    it('should set location from service when no location is prepopulated', async () => {
+        currentLocationSpy.mockReturnValue(null);
+        getAllServicesSpy.mockResolvedValue([
+            {"name": "Physiotherapy OPD", "uuid": "serviceUuid", "location": {"name": "Hospital", "uuid": "locationUuid"}}
+        ]);
+
+        const {container, getByTestId} = renderWithReactIntl(<AddAppointment/>);
+
+        const inputBoxLocation = getByTestId('location-search').querySelector('.bx--text-input');
+        expect(inputBoxLocation.value).toBe('');
+
+        const inputBoxService = getByTestId('service-search').querySelector('.bx--text-input');
+        fireEvent.change(inputBoxService, {target: {value: "Phy"}});
+        let serviceDropDownOption;
+        await waitForElement(() => (serviceDropDownOption = container.querySelector('.bx--list-box__menu-item__option')));
+        fireEvent.click(serviceDropDownOption);
+
+        expect(inputBoxLocation.value).toBe('Hospital');
     });
 
     it('should clear service service type and location when speciality is changed', async () => {
