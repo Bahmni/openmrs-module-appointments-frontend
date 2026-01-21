@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 import classNames from "classnames";
-import {commonFields, tableWrapper} from "./AppointmentEditorCommonFieldsWrapper.module.scss";
+import {commonFields, tableWrapper, noSpeciality} from "./AppointmentEditorCommonFieldsWrapper.module.scss";
 import PatientSearch from "../PatientSearch/PatientSearch.jsx";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.jsx";
 import ServiceSearch from "../Service/ServiceSearch.jsx";
@@ -100,7 +100,7 @@ const AppointmentEditorCommonFieldsWrapper = props => {
                         </td>
                         <td/>
                     </tr>}
-                    <tr>
+                    <tr className={!isSpecialitiesEnabled(appConfig) ? classNames(noSpeciality) : ''}>
                         <td>
                             {isSpecialitiesEnabled(appConfig) ?
                                 <div data-testid="speciality-search">

@@ -8,4 +8,13 @@
     vertical-align: baseline;
     width: 50%;
   }
+  .noSpeciality{
+    display: flex;
+    td:first-child{
+      display: none;
+    }
+    td:last-child{
+      width: 100%;
+    }
+  }
 }
