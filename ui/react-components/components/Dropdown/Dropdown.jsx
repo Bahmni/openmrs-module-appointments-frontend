@@ -75,4 +75,6 @@ Dropdown.propTypes = {
   isDisabled: PropTypes.bool,
   isRequired: PropTypes.bool,
   autoFocus: PropTypes.bool,
+  onInputChange: PropTypes.func,
+  placeHolderMessage: PropTypes.string,
 };

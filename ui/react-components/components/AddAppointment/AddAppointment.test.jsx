@@ -431,7 +431,7 @@ describe('Add Appointment', () => {
         expect(inputBoxLocation.value).toBe('MHAC-1');
     });
 
-    it('should preserve prepopulated location when selecting service with different location', async () => {
+    it('should override prepopulated location when selecting service with different location', async () => {
         const mockLocation = {
             uuid: 'location-uuid-123',
             name: 'MHAC-1',
@@ -454,7 +454,7 @@ describe('Add Appointment', () => {
         await waitForElement(() => (serviceDropDownOption = container.querySelector('.bx--list-box__menu-item__option')));
         fireEvent.click(serviceDropDownOption);
 
-        expect(inputBoxLocation.value).toBe('MHAC-1');
+        expect(inputBoxLocation.value).toBe('MHAC-2');
     });
 
     it('should set location from service when no location is prepopulated', async () => {
