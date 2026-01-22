@@ -671,6 +671,71 @@ describe('Add Appointment', () => {
         expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid');
     });
 
+    it('should fetch multiple appointment reasons from comma-separated urlParams', async () => {
+        const mockConcept1 = { uuid: 'reason-uuid-1', display: 'Follow-up Visit' };
+        const mockConcept2 = { uuid: 'reason-uuid-2', display: 'Consultation' };
+        
+        localGetConceptByUuidSpy
+            .mockResolvedValueOnce(mockConcept1)
+            .mockResolvedValueOnce(mockConcept2);
+        
+        renderWithReactIntl(
+            <AddAppointment 
+                appConfig={reasonConfig} 
+                urlParams={{appointmentReason: 'reason-uuid-1,reason-uuid-2'}}
+            />
+        );
+        
+        await wait(() => {
+            expect(localGetConceptByUuidSpy).toHaveBeenCalledTimes(2);
+            expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid-1');
+            expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid-2');
+        });
+    });
+
+    it('should fetch multiple appointment reasons from array urlParams', async () => {
+        const mockConcept1 = { uuid: 'reason-uuid-1', display: 'Follow-up Visit' };
+        const mockConcept2 = { uuid: 'reason-uuid-2', display: 'Consultation' };
+        
+        localGetConceptByUuidSpy
+            .mockResolvedValueOnce(mockConcept1)
+            .mockResolvedValueOnce(mockConcept2);
+        
+        renderWithReactIntl(
+            <AddAppointment 
+                appConfig={reasonConfig} 
+                urlParams={{appointmentReason: ['reason-uuid-1', 'reason-uuid-2']}}
+            />
+        );
+        
+        await wait(() => {
+            expect(localGetConceptByUuidSpy).toHaveBeenCalledTimes(2);
+            expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid-1');
+            expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid-2');
+        });
+    });
+
+    it('should handle comma-separated appointment reasons with whitespace', async () => {
+        const mockConcept1 = { uuid: 'reason-uuid-1', display: 'Follow-up Visit' };
+        const mockConcept2 = { uuid: 'reason-uuid-2', display: 'Consultation' };
+        
+        localGetConceptByUuidSpy
+            .mockResolvedValueOnce(mockConcept1)
+            .mockResolvedValueOnce(mockConcept2);
+        
+        renderWithReactIntl(
+            <AddAppointment 
+                appConfig={reasonConfig} 
+                urlParams={{appointmentReason: 'reason-uuid-1 , reason-uuid-2'}}
+            />
+        );
+        
+        await wait(() => {
+            expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid-1');
+            expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid-2');
+        });
+    });
+
     it('should not display appointment reason search when enableAppointmentReasons is false', () => {
         const {queryByTestId} = renderWithReactIntl(
             <AddAppointment appConfig={{enableAppointmentReasons: false}} urlParams={{appointmentReason: 'reason-uuid'}}/>

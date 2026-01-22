@@ -225,16 +225,22 @@ const AddAppointment = props => {
         return updateAppointmentDetails({patient: patientForDropdown});
     }
 
-    async function populateAppointmentReasonDetails(conceptUuid) {
+    async function populateAppointmentReasonDetails(conceptUuids) {
         try {
-            const concept = await getConceptByUuid(conceptUuid);
-            const reasonForDropdown = {
+            const uuidList = Array.isArray(conceptUuids) ?  conceptUuids : conceptUuids.split(',');
+            const conceptUuidList = uuidList.map(uuid => uuid.trim());
+
+            const conceptPromises = conceptUuidList.map(uuid => getConceptByUuid(uuid));
+            const concepts = await Promise.all(conceptPromises);
+            
+            const reasonsForDropdown = concepts.map(concept => ({
                 value: concept.uuid,
                 label: concept.display
-            };
-            return updateAppointmentDetails({appointmentReasons: [reasonForDropdown]});
+            }));
+            
+            return updateAppointmentDetails({appointmentReasons: reasonsForDropdown});
         } catch (error) {
-            console.error('Error fetching appointment reason:', error);
+            console.error('Error fetching appointment reasons:', error);
         }
     }
 
