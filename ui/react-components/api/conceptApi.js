@@ -20,3 +20,16 @@ export const searchConcepts = async (appointmentReasonConceptSet, searchTerm) =>
         throw error;
     }
 };
+
+export const getConceptUuidByName = async (conceptName) => {
+    try {
+        const response = await axios.get(
+            `${conceptUrl}?s=byFullySpecifiedName&name=${encodeURIComponent(conceptName)}&v=custom:(uuid)`
+        );
+
+        return response.data.results[0].uuid;
+    } catch (error) {
+        console.error('Error fetching concept UUID by name:', error);
+        throw error;
+    }
+};

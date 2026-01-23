@@ -5,14 +5,18 @@ import React from "react";
 import {renderWithReactIntl} from '../../utils/TestUtil';
 import {act} from 'react-dom/test-utils';
 import * as helper from '../../helper';
+import * as conceptApi from '../../api/conceptApi';
 
-jest.mock('../../api/conceptApi');
 jest.mock('../../utils/CookieUtil');
-
-const conceptApi = require('../../api/conceptApi');
+jest.mock('../../api/conceptApi', () => ({
+    getConceptByUuid: jest.fn(),
+    getConceptUuidByName: jest.fn(),
+    searchConcepts: jest.fn()
+}));
 
 describe('AppointmentReasonSearch', () => {
     let searchConceptsSpy;
+    let getConceptUuidByNameSpy;
 
     beforeEach(() => {
         jest.useFakeTimers();
@@ -22,10 +26,13 @@ describe('AppointmentReasonSearch', () => {
             { uuid: 'reason-2-uuid', display: 'Headache' },
             { uuid: 'reason-3-uuid', display: 'Cough' }
         ]);
+        getConceptUuidByNameSpy = jest.spyOn(conceptApi, 'getConceptUuidByName');
+        getConceptUuidByNameSpy.mockResolvedValue('resolved-concept-uuid');
         jest.spyOn(helper, 'getAppointmentReasonConceptSet').mockReturnValue('appointment-reason-concept-set-uuid');
     });
 
     afterEach(() => {
+        jest.clearAllMocks();
         jest.restoreAllMocks();
         jest.useRealTimers();
     });
@@ -86,6 +93,10 @@ describe('AppointmentReasonSearch', () => {
             <AppointmentReasonSearch onChange={jest.fn()} onReasonRemove={jest.fn()} appConfig={appConfig} />
         );
 
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalled();
+        });
+
         const inputBox = container.querySelector('input[type="text"]');
         
         act(() => {
@@ -94,7 +105,7 @@ describe('AppointmentReasonSearch', () => {
         });
 
         await wait(() => {
-            expect(searchConceptsSpy).toHaveBeenCalledWith('appointment-reason-concept-set-uuid', 'Fev');
+            expect(searchConceptsSpy).toHaveBeenCalledWith('resolved-concept-uuid', 'Fev');
         });
     });
 
@@ -103,6 +114,10 @@ describe('AppointmentReasonSearch', () => {
         const {container} = renderWithReactIntl(
             <AppointmentReasonSearch onChange={jest.fn()} onReasonRemove={jest.fn()} appConfig={appConfig} />
         );
+
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalled();
+        });
 
         const inputBox = container.querySelector('input[type="text"]');
         
@@ -129,6 +144,10 @@ describe('AppointmentReasonSearch', () => {
             />
         );
 
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalled();
+        });
+
         const inputBox = container.querySelector('input[type="text"]');
         
         act(() => {
@@ -149,6 +168,10 @@ describe('AppointmentReasonSearch', () => {
         const {container} = renderWithReactIntl(
             <AppointmentReasonSearch onChange={jest.fn()} onReasonRemove={jest.fn()} appConfig={appConfig} />
         );
+
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalled();
+        });
 
         const inputBox = container.querySelector('input[type="text"]');
         
@@ -184,6 +207,10 @@ describe('AppointmentReasonSearch', () => {
             <AppointmentReasonSearch onChange={onChangeSpy} onReasonRemove={jest.fn()} appConfig={appConfig} />
         );
 
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalled();
+        });
+
         const inputBox = container.querySelector('input[type="text"]');
         
         act(() => {
@@ -216,6 +243,10 @@ describe('AppointmentReasonSearch', () => {
         const {container, getByText} = renderWithReactIntl(
             <AppointmentReasonSearch onChange={onChangeSpy} onReasonRemove={jest.fn()} appConfig={appConfig} />
         );
+
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalled();
+        });
 
         const inputBox = container.querySelector('input[type="text"]');
         
@@ -259,6 +290,10 @@ describe('AppointmentReasonSearch', () => {
             <AppointmentReasonSearch onChange={onChangeSpy} onReasonRemove={jest.fn()} appConfig={appConfig} />
         );
 
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalled();
+        });
+
         const inputBox = container.querySelector('input[type="text"]');
         
         act(() => {
@@ -273,5 +308,99 @@ describe('AppointmentReasonSearch', () => {
             value: 'nonexistent-uuid',
             label: 'Nonexistent'
         });
+    });
+
+    it('should call getConceptUuidByName when component mounts with appConfig', async () => {
+        const appConfig = { appointmentReasonConceptSet: 'All Orderables' };
+        jest.spyOn(helper, 'getAppointmentReasonConceptSet').mockReturnValue('All Orderables');
+        
+        renderWithReactIntl(
+            <AppointmentReasonSearch 
+                onChange={jest.fn()} 
+                onReasonRemove={jest.fn()} 
+                appConfig={appConfig} 
+            />
+        );
+
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalledWith('All Orderables');
+        });
+    });
+
+    it('should use resolved UUID when calling searchConcepts', async () => {
+        const appConfig = { appointmentReasonConceptSet: 'All Orderables' };
+        getConceptUuidByNameSpy.mockResolvedValue('resolved-concept-uuid');
+        
+        const {container} = renderWithReactIntl(
+            <AppointmentReasonSearch 
+                onChange={jest.fn()} 
+                onReasonRemove={jest.fn()} 
+                appConfig={appConfig} 
+            />
+        );
+
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalled();
+        });
+
+        const inputBox = container.querySelector('input[type="text"]');
+        
+        act(() => {
+            fireEvent.change(inputBox, { target: { value: 'Fev' } });
+            jest.runAllTimers();
+        });
+
+        await wait(() => {
+            expect(searchConceptsSpy).toHaveBeenCalledWith('resolved-concept-uuid', 'Fev');
+        });
+    });
+
+    it('should handle error when getConceptUuidByName fails', async () => {
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+        getConceptUuidByNameSpy.mockRejectedValue(new Error('Concept set not found'));
+        
+        const appConfig = { appointmentReasonConceptSet: 'Invalid Concept' };
+        
+        renderWithReactIntl(
+            <AppointmentReasonSearch 
+                onChange={jest.fn()} 
+                onReasonRemove={jest.fn()} 
+                appConfig={appConfig} 
+            />
+        );
+
+        await wait(() => {
+            expect(consoleErrorSpy).toHaveBeenCalledWith(
+                'Error resolving concept set UUID:', 
+                expect.any(Error)
+            );
+        });
+
+        consoleErrorSpy.mockRestore();
+    });
+
+    it('should not search for concepts if UUID resolution failed', async () => {
+        getConceptUuidByNameSpy.mockRejectedValue(new Error('API Error'));
+        
+        const appConfig = { appointmentReasonConceptSet: 'test-concept-set' };
+        const {container} = renderWithReactIntl(
+            <AppointmentReasonSearch 
+                onChange={jest.fn()} 
+                onReasonRemove={jest.fn()} 
+                appConfig={appConfig} 
+            />
+        );
+
+        await wait(() => {
+            expect(getConceptUuidByNameSpy).toHaveBeenCalled();
+        });
+        const inputBox = container.querySelector('input[type="text"]');
+        
+        act(() => {
+            fireEvent.change(inputBox, { target: { value: 'Fev' } });
+            jest.runAllTimers();
+        });
+
+        expect(searchConceptsSpy).not.toHaveBeenCalled();
     });
 });

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {searchConcepts} from "../../api/conceptApi";
+import {searchConcepts, getConceptUuidByName} from "../../api/conceptApi";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import Tags from "../Tags/Tags.jsx";
 import PropTypes from "prop-types";
@@ -34,10 +34,27 @@ const AppointmentReasonSearch = (props) => {
     
     const [dropdownOptions, setDropdownOptions] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [conceptSetUuid, setConceptSetUuid] = useState(null);
+
+    useEffect(() => {
+        const resolveConceptSetUuid = async () => {
+            const appointmentReasonConceptSet = getAppointmentReasonConceptSet(appConfig);
+            
+            try {
+                const uuid = await getConceptUuidByName(appointmentReasonConceptSet);
+                setConceptSetUuid(uuid);
+            } catch (error) {
+                setDropdownOptions([]);
+                console.error('Error resolving concept set UUID:', error);
+            }
+        };
+        
+        resolveConceptSetUuid().then();
+    }, [appConfig]);
 
     useEffect(() => {
         const delayTimer = setTimeout(() => {
-            if (searchTerm.length >= MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH) {
+            if (conceptSetUuid && searchTerm.length >= MINIMUM_CHAR_LENGTH_FOR_PATIENT_SEARCH) {
                 loadConcepts(searchTerm).then();
             } else {
                 setDropdownOptions([]);
@@ -45,12 +62,11 @@ const AppointmentReasonSearch = (props) => {
         }, API_DEBOUNCE_DELAY_IN_MS);
 
         return () => clearTimeout(delayTimer);
-    }, [searchTerm]);
+    }, [searchTerm, conceptSetUuid]);
 
     const loadConcepts = async (term) => {
         try {
-            const appointmentReasonConceptSet = getAppointmentReasonConceptSet(appConfig);
-            const results = await searchConcepts(appointmentReasonConceptSet, term);
+            const results = await searchConcepts(conceptSetUuid, term);
             const options = createDropdownOptions(results);
             const filteredOptions = options.filter(option =>
                 !selectedReasons.find(selected => selected.value === option.value)
