@@ -39,6 +39,10 @@ const AppointmentReasonSearch = (props) => {
     useEffect(() => {
         const resolveConceptSetUuid = async () => {
             const appointmentReasonConceptSet = getAppointmentReasonConceptSet(appConfig);
+            if(!appointmentReasonConceptSet) {
+                console.error('Error: appointment reason conceptSet is not configured.');
+                return;
+            }
             
             try {
                 const uuid = await getConceptUuidByName(appointmentReasonConceptSet);

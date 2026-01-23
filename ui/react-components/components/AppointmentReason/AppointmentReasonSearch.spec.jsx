@@ -403,4 +403,28 @@ describe('AppointmentReasonSearch', () => {
 
         expect(searchConceptsSpy).not.toHaveBeenCalled();
     });
+
+    it('should log error and return early when appointmentReasonConceptSet is not configured', async () => {
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+        jest.spyOn(helper, 'getAppointmentReasonConceptSet').mockReturnValue(null);
+        
+        const appConfig = { appointmentReasonConceptSet: null };
+        
+        renderWithReactIntl(
+            <AppointmentReasonSearch 
+                onChange={jest.fn()} 
+                onReasonRemove={jest.fn()} 
+                appConfig={appConfig} 
+            />
+        );
+
+        await wait(() => {
+            expect(consoleErrorSpy).toHaveBeenCalledWith(
+                'Error: appointment reason conceptSet is not configured.'
+            );
+        });
+
+        expect(getConceptUuidByNameSpy).not.toHaveBeenCalled();
+        consoleErrorSpy.mockRestore();
+    });
 });
