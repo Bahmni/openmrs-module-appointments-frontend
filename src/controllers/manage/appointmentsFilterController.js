@@ -262,6 +262,7 @@ angular.module('bahmni.appointments')
                     if (prefilledPatient) {
                         payload.patientUuids = [prefilledPatient];
                     }
+                    console.log("prefilledPatient");
                     spinner.forPromise(appointmentsService.search(payload).then(function (response) {
                         $rootScope.appointmentsData = response.data;
                         $rootScope.$broadcast("awaitingFilterResponse", response);
