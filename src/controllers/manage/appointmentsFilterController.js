@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsFilterController', ['$scope', '$state', '$rootScope', '$q', '$translate', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService', 'appService', 'locationService', 'appointmentsService',
-        function ($scope, $state, $rootScope, $q, $translate, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService, appService, locationService, appointmentsService) {
+    .controller('AppointmentsFilterController', ['$scope', '$state', '$rootScope', '$q', '$translate', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService', 'appService', 'locationService', 'appointmentsService', '$location',
+        function ($scope, $state, $rootScope, $q, $translate, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService, appService, locationService, appointmentsService, $location) {
             var init = function () {
                 $scope.isSpecialityEnabled = appService.getAppDescriptor().getConfigValue('enableSpecialities');
                 $scope.isServiceTypeEnabled = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
@@ -259,6 +259,11 @@ angular.module('bahmni.appointments')
                 const AWAITING_APPOINTMENTS_TAB_NAME = "awaitingappointments";
                 if($state.current.tabName === AWAITING_APPOINTMENTS_TAB_NAME) {
                     let payload = $state.params.filterParams;
+                    payload.withoutDates = true;
+                    const prefilledPatient = $location.search()['patient'];
+                    if (prefilledPatient) {
+                        payload.patientUuids = [prefilledPatient];
+                    }
                     if ($scope.disableDatesForWaitListAppointment) {
                         payload.withoutDates = true;
                     } else {
