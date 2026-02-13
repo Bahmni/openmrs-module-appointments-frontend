@@ -23,3 +23,5 @@ CVE-2024-21490 #angular: Inefficient Regular Expression Complexity https://avd.a
 CVE-2024-45296 #path-to-regexp: Backtracking regular expressions cause ReDoS https://avd.aquasec.com/nvd/cve-2024-45296 
 CVE-2025-27152 #axios: SSRF vulnerability - Not applicable: only internal configured endpoints used, no user-controlled URLs 
 CVE-2025-58754
+NSWG-ECO-328 #jquery: Cross-Site Scripting (XSS) 
+CVE-2017-18214 #moment: nodejs-moment: Regular expression denial of servic
