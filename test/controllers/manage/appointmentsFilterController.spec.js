@@ -816,6 +816,7 @@ describe('AppointmentsFilterController', function () {
             providerUuids: [],
             locationUuids: [],
             statusList: [],
+            withoutDates: true,
             status: "WaitList"
         });
     });
