@@ -25,3 +25,5 @@ CVE-2025-27152 #axios: SSRF vulnerability - Not applicable: only internal config
 CVE-2025-58754
 CVE-2026-25639 #axios: Axios affected by Denial of Service via __proto__ Key in mergeConfig. https://avd.aquasec.com/nvd/cve-2026-25639
 CVE-2024-39338
+CVE-2024-4068
+CVE-2025-7783

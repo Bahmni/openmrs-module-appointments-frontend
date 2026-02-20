@@ -157,8 +157,6 @@
     ]
   },
   "resolutions": {
-    "@ibm/telemetry-js": "1.1.0",
-    "form-data": "4.0.4",
-    "braces": "3.0.3"
+    "@ibm/telemetry-js": "1.1.0"
   }
 }
