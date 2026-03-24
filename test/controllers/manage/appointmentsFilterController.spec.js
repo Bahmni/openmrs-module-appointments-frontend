@@ -820,4 +820,16 @@ describe('AppointmentsFilterController', function () {
             status: "WaitList"
         });
     });
+
+    it("should call applyFilter only once when selectedProviders and selectedLocations both change in the same digest cycle", function() {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers, locations]));
+        createController();
+        spyOn(scope, 'applyFilter').and.callThrough();
+
+        scope.selectedProviders = [];
+        scope.selectedLocations = [];
+        scope.$digest();
+
+        expect(scope.applyFilter).toHaveBeenCalledTimes(1);
+    });
 });

@@ -26,19 +26,7 @@ angular.module('bahmni.appointments')
 
                 var params = {v: "custom:(display,person,uuid,retired,attributes:(attributeType:(display),value,voided))"};
 
-                $scope.$watch("selectedProviders", function (selectedProviders) {
-                    if (!_.isUndefined($scope.selectedSpecialities)) {
-                        $scope.applyFilter();
-                    }
-                });
-
-                $scope.$watch("selectedLocations", function (selectedLocations) {
-                    if (!_.isUndefined($scope.selectedSpecialities)) {
-                        $scope.applyFilter();
-                    }
-                });
-
-                $scope.$watch("selectedStatusList", function (selectedStatusList) {
+                $scope.$watchGroup(["selectedProviders", "selectedLocations", "selectedStatusList"], function () {
                     if (!_.isUndefined($scope.selectedSpecialities)) {
                         $scope.applyFilter();
                     }
