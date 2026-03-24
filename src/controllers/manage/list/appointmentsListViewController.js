@@ -106,7 +106,7 @@ angular.module('bahmni.appointments')
                     .then((response) => updateAppointments(response));
                 }
                 else
-                return appointmentsService.search( prefilledPatient ? { patientUuid: prefilledPatient } : APPOINTMENT_STATUS_WAITLIST)
+                return appointmentsService.search( prefilledPatient ? { patientUuids: [prefilledPatient] } : APPOINTMENT_STATUS_WAITLIST)
                 .then((response) => updateAppointments(response))
                 .catch((error) => messagingService.showMessage('error', 'APPOINTMENT_SEARCH_TIME_ERROR'));
             };
