@@ -42,7 +42,10 @@ specUtil.simplePromise = function(data) {
         };
         this.success = function(callback){
             return new SimplePromise(callback(data));
-        }
+        };
+        this.catch = function(callback) {
+            return new SimplePromise(data);
+        };
     };
     return new SimplePromise(data);
 }
