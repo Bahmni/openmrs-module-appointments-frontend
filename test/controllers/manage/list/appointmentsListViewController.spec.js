@@ -101,6 +101,18 @@ describe('AppointmentsListViewController', function () {
         expect(spinner.forPromise).not.toHaveBeenCalled();
     });
 
+    it('should call appointmentsService.search with patientUuids as array when patient is prefilled via query param', function () {
+        inject(function ($location) {
+            $location.search('patient', 'test-patient-uuid');
+        });
+        appointmentsService.search = jasmine.createSpy('search').and.returnValue(specUtil.simplePromise({data: []}));
+        $state.current = {tabName: 'awaitingappointments'};
+        $state.params = {doFetchAppointmentsData: true, filterParams: {}};
+        createController();
+        scope.getAppointmentsForDate(new Date());
+        expect(appointmentsService.search).toHaveBeenCalledWith({patientUuids: ['test-patient-uuid']});
+    });
+
     it('should not fetch appointments when doFetchAppointmentsData is set to false', function () {
         $state.params = {doFetchAppointmentsData: false};
         createController();
