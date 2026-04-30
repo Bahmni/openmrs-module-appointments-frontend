@@ -82,14 +82,14 @@ class AppointmentSummaryContainer extends Component {
                     <DateOrWeekNavigator isWeek={true} weekStart={1} />
                     { fullSummary? (
                         <div>
-                            <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={specialitiesTitle} noAppointmentsMessage={noAppointmentsMessageSpecialities}/>
+                            <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={specialitiesTitle} filterType={'Specialities'} noAppointmentsMessage={noAppointmentsMessageSpecialities}/>
                             <hr/>
-                            <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={providersTitle} noAppointmentsMessage={noAppointmentsMessageProviders}/>
+                            <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={providersTitle} filterType={'Providers'} noAppointmentsMessage={noAppointmentsMessageProviders}/>
                             <hr/>
                             <GridSummary gridData={sortBy(data, row => row.rowLabel.toLowerCase())}
-                                         weekStartDate={startDate} onClick={goToListView} gridName={servicesTitle} noAppointmentsMessage={noAppointmentsMessageServices}/>
+                                         weekStartDate={startDate} onClick={goToListView} gridName={servicesTitle} filterType={'Services'} noAppointmentsMessage={noAppointmentsMessageServices}/>
                             <hr/>
-                            <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={locationsTitle} noAppointmentsMessage={noAppointmentsMessageLocations}/>
+                            <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={locationsTitle} filterType={'Locations'} noAppointmentsMessage={noAppointmentsMessageLocations}/>
                             <br/>
                         </div>) : (
                         <GridSummary gridData={ data } weekStartDate={startDate} onClick={goToListView}/>

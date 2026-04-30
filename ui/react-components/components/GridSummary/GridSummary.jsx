@@ -106,7 +106,7 @@ const loadMessage = (message, gridName) => {
   </div>
 }
 const GridSummary = props => {
-  const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick, gridName, noAppointmentsMessage } = props;
+  const { gridData=[], weekStartDate = moment().startOf("isoweek"), onClick, gridName, noAppointmentsMessage, filterType } = props;
   let week = []
   const { fullSummary, isLoading } = React.useContext(AppContext)
   const intl = useIntl();
@@ -157,7 +157,7 @@ const GridSummary = props => {
                       weekDay.missedCount += a.missedCount;
                       return (
                           <td key={row.rowLabel+index+weekDay.date} className={classNames({[currentDateColumn]:currentDate})}>
-                            <a onClick={() => onClick(weekDay.date, a.uuid, gridName)}>{a.count}</a>
+                            <a onClick={() => onClick(weekDay.date, a.uuid, filterType || gridName)}>{a.count}</a>
                             <span className={missedCount}>
                           {a.missedCount > 0
                               ? " (" + a.missedCount + " missed)"
