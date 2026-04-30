@@ -6,6 +6,7 @@ import translations from '../../i18n/appointments';
 import PropTypes from "prop-types";
 import {AppContext} from "../components/AppContext/AppContext";
 import {getAppConfig, getMessages} from "../components/AppContext/AppService";
+import {getFromGlobalProperty} from "../api/configApi";
 import EditAppointment from "../components/EditAppointment/EditAppointment.jsx";
 import moment from "moment";
 import CancelConfirmationWrapper from "../components/CancelConfirmation/CancelConfirmationWrapper.jsx";
