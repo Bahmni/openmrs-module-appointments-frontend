@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsHeaderController', ['$scope', '$state', 'appService',
-        function ($scope, $state, appService) {
+    .controller('AppointmentsHeaderController', ['$scope', '$state', 'appService', '$rootScope',
+        function ($scope, $state, appService, $rootScope) {
             var setBackLinks = function () {
-                var backLinks = [{label: "Home", url: Bahmni.Appointments.Constants.homeUrl, accessKey: "h", icon: "fa-home"}];
+                var backLinks = [{label: "Home", url: $rootScope.homeURL || Bahmni.Appointments.Constants.homeUrl, accessKey: "h", icon: "fa-home", id: "homeBackLink"}];
 
                 // TODO:permissions for admin
                 backLinks.push({text: "APPOINTMENTS_MANAGE", state: "home.manage", accessKey: "M"});
