@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('bahmni.appointments').factory('initialization',
-    ['authenticator', 'appService', 'spinner', 'configurations', '$q', '$rootScope', 'openMRSHelperService', 'openMRSAuthService',
-        function (authenticator, appService, spinner, configurations, $q, $rootScope, openMRSHelperService, openMRSAuthService) {
+    ['authenticator', 'appService', 'spinner', 'configurations', '$q', '$http', 'openMRSHelperService', 'openMRSAuthService',
+        function (authenticator, appService, spinner, configurations, $q, $http, openMRSHelperService, openMRSAuthService) {
             return function () {
-                $rootScope.homeURL = localStorage.getItem('homeURL') || Bahmni.Appointments.Constants.homeUrl;
                 var loadConfigPromise = function () {
                     return configurations.load([]);
                 };
                 var initApp = function () {
                     return appService.initApp('appointments', {'app': true, 'extension': true});
                 };
+
                 var ensureLogin = function () {
                     return openMRSHelperService.isRunningOnOpenMRS().then(
                         (isRunningOnOpenMRS) => {
