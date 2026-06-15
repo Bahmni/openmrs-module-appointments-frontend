@@ -153,7 +153,7 @@ describe('AppointmentsWeekCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true, enableAppointmentNumber : undefined },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -164,7 +164,7 @@ describe('AppointmentsWeekCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true, enableAppointmentNumber : undefined },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
