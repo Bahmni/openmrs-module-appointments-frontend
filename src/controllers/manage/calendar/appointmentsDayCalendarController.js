@@ -22,7 +22,7 @@ angular.module('bahmni.appointments')
                             appointments: event.appointments,
                             checkinAppointment: checkinAppointment,
                             enableCreateAppointment: isSelectable(),
-                            enableAppointmentNumber: appService.getAppDescriptor().getConfigValue('enableAppointmentNumber')
+                            enableAppointmentNumber: appService.getAppDescriptor().getConfigValue(Bahmni.Appointments.Constants.appointmentNumberConfigKey)
                         },
                         className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                     });
@@ -94,7 +94,7 @@ angular.module('bahmni.appointments')
                             scope: {
                                 appointments: [response.data],
                                 enableCreateAppointment: isSelectable(),
-                                enableAppointmentNumber: appService.getAppDescriptor().getConfigValue('enableAppointmentNumber')
+                                enableAppointmentNumber: appService.getAppDescriptor().getConfigValue(Bahmni.Appointments.Constants.appointmentNumberConfigKey)
                             },
                             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                         });

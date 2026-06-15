@@ -17,7 +17,7 @@ angular.module('bahmni.appointments')
             $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
             $scope.isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
             $scope.disableDatesForWaitListAppointment = appService.getAppDescriptor().getConfigValue('disableDatesForWaitListAppointment');
-            $scope.enableAppointmentNumber = appService.getAppDescriptor().getConfigValue('enableAppointmentNumber');
+            $scope.enableAppointmentNumber = appService.getAppDescriptor().getConfigValue(Bahmni.Appointments.Constants.appointmentNumberConfigKey);
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;

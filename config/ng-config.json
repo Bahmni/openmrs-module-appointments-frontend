@@ -146,7 +146,8 @@
         "CANCELLED": "CANCELLED",
         "AWAITING": "AWAITING"
       },
-      "appointmentsV2Url" : "/appointments/#/home/manage/appointments"
+      "appointmentsV2Url" : "/appointments/#/home/manage/appointments",
+      "appointmentNumberConfigKey": "enableAppointmentNumber"
     }
   }
 }

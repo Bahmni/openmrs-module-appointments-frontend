@@ -20,7 +20,7 @@ angular.module('bahmni.appointments')
                             appointments: event.appointments,
                             checkinAppointment: checkinAppointment,
                             enableCreateAppointment: true,
-                            enableAppointmentNumber: appService.getAppDescriptor().getConfigValue('enableAppointmentNumber')
+                            enableAppointmentNumber: appService.getAppDescriptor().getConfigValue(Bahmni.Appointments.Constants.appointmentNumberConfigKey)
                         },
                         className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                     });
