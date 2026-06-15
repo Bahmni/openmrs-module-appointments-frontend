@@ -46,6 +46,7 @@
                 <td class="table-mid-width" ng-show="::!enableColumnsForAppointments">{{::appointment.priority}}</td>
                 <td class="table-mid-width" ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td class="table-mid-width">{{::appointment.service.name}}</td>
+                <td class="table-mid-width" ng-show="::enableAppointmentNumber">{{::appointment.appointmentNumber}}</td>
                 <td class="table-mid-width" ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td class="table-mid-width" ng-show="::enableAppointmentReasons">{{getAppointmentReasons(appointment)}}</td>
                 <td>{{translateAppointmentStatus(appointment.status)}}</td>
@@ -54,7 +55,6 @@
                 <td class="table-mid-width" ng-show="!disableDatesForWaitListAppointment && getCurrentTabName() === 'awaitingappointments'">{{appointment.startDateTime | bahmniDateTime}} - {{appointment.endDateTime | bahmniDateTime}} </td>
                 <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
                 <td>{{::appointment.comments}}</td>
-                <td class="table-mid-width">{{::appointment.appointmentNumber}}</td>
             </tr>
             </tbody>
         </table>
