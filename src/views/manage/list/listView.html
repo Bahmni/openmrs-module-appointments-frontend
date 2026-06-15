@@ -54,6 +54,7 @@
                 <td class="table-mid-width" ng-show="!disableDatesForWaitListAppointment && getCurrentTabName() === 'awaitingappointments'">{{appointment.startDateTime | bahmniDateTime}} - {{appointment.endDateTime | bahmniDateTime}} </td>
                 <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
                 <td>{{::appointment.comments}}</td>
+                <td class="table-mid-width">{{::appointment.appointmentNumber}}</td>
             </tr>
             </tbody>
         </table>

@@ -155,5 +155,6 @@
   "PROVIDER_RESPONSE_ACCEPT_SUCCESS_MESSAGE": "Invitación de cita aceptada con éxito.",
   "APPOINTMENT_ACCEPT_CONFIRM_MESSAGE": "¿Estás seguro de que quieres aceptar la invitación a la cita?",
   "JOIN_TELE_CONSULTATION":"Unirse Teleconsulta",
-  "COPY_LINK": "copiar enlace de teleconsulta"
+  "COPY_LINK": "copiar enlace de teleconsulta",
+  "APPOINTMENT_NUMBER": "Número de cita"
 }

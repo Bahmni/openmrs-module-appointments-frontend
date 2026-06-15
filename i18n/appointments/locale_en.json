@@ -273,5 +273,6 @@
   "TELECONSULTATION_APPOINTMENT_BOOKING_MESSAGE": "A teleconsultation appointment for #patientName, #patientId on #dateTime for #service is booked at #clinicName. Please click on the link #meetingLink on #dateTime to join the consultation. For any queries call us on #helpDeskNumber.",
   "PROVIDERS": "Providers",
   "LOCATIONS": "Locations",
-  "SPECIALITIES": "Specialities"
+  "SPECIALITIES": "Specialities",
+  "APPOINTMENT_NUMBER": "Appointment Number"
 }

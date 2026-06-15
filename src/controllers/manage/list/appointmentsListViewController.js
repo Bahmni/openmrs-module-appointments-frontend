@@ -59,7 +59,8 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY', sortInfo: 'startDateTime', class: true, enable: (!$scope.disableDatesForWaitListAppointment && $scope.getCurrentTabName() === 'awaitingappointments')},
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
-                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true},
+                {heading: 'APPOINTMENT_NUMBER', sortInfo: 'appointmentNumber', class: true, enable: true}];
             }
 
             var init = function () {
