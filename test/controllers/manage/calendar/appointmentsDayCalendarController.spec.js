@@ -172,7 +172,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true, enableAppointmentNumber : undefined },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -183,7 +183,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true, enableAppointmentNumber : undefined },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -194,7 +194,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : false },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : false, enableAppointmentNumber : undefined },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -211,7 +211,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: [{}]};
 
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope: {appointments: [data], enableCreateAppointment: true},
+            scope: {appointments: [data], enableCreateAppointment: true, enableAppointmentNumber : undefined},
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -233,5 +233,79 @@ describe('AppointmentsDayCalendarController', function () {
         expect(scope.uiConfig.calendar.resources).toEqual(scope.appointments.resources);
         expect(scope.eventSources).toEqual([scope.appointments.events]);
 
-    })
+    });
+
+    describe('enableAppointmentNumber feature', function () {
+        it('should pass enableAppointmentNumber as true when config is true', function () {
+            appDescriptor.getConfigValue.and.callFake(function (key) {
+                if (key === Bahmni.Appointments.Constants.appointmentNumberConfigKey) {
+                    return true;
+                }
+                return undefined;
+            });
+            createController();
+            scope.date = moment().toDate();
+            var event = {appointments: []};
+            scope.alertOnEventClick(event);
+            
+            expect(calendarViewPopUp).toHaveBeenCalledWith({
+                scope : { 
+                    appointments : event.appointments, 
+                    checkinAppointment : jasmine.any(Function), 
+                    enableCreateAppointment : true, 
+                    enableAppointmentNumber : true 
+                },
+                className: "ngdialog-theme-default delete-program-popup app-dialog-container"
+            });
+        });
+
+        it('should pass enableAppointmentNumber as false when config is false', function () {
+            appDescriptor.getConfigValue.and.callFake(function (key) {
+                if (key === Bahmni.Appointments.Constants.appointmentNumberConfigKey) {
+                    return false;
+                }
+                return undefined;
+            });
+            createController();
+            scope.date = moment().toDate();
+            var event = {appointments: []};
+            scope.alertOnEventClick(event);
+            
+            expect(calendarViewPopUp).toHaveBeenCalledWith({
+                scope : { 
+                    appointments : event.appointments, 
+                    checkinAppointment : jasmine.any(Function), 
+                    enableCreateAppointment : true, 
+                    enableAppointmentNumber : false 
+                },
+                className: "ngdialog-theme-default delete-program-popup app-dialog-container"
+            });
+        });
+
+        it('should pass enableAppointmentNumber from config when opening popup via URL', function () {
+            appDescriptor.getConfigValue.and.callFake(function (key) {
+                if (key === Bahmni.Appointments.Constants.appointmentNumberConfigKey) {
+                    return true;
+                }
+                return undefined;
+            });
+            $location.search.and.returnValue({appointment: "appointment-uuid"});
+            const data = {
+                uuid: "appointment-uuid",
+                patient: {}
+            };
+            appointmentsService.getAppointmentByUuid.and.returnValue(specUtil.simplePromise({data: data}));
+            createController();
+            scope.date = moment().toDate();
+
+            expect(calendarViewPopUp).toHaveBeenCalledWith({
+                scope: {
+                    appointments: [data], 
+                    enableCreateAppointment: true, 
+                    enableAppointmentNumber : true
+                },
+                className: "ngdialog-theme-default delete-program-popup app-dialog-container"
+            });
+        });
+    });
 });

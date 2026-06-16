@@ -153,7 +153,7 @@ describe('AppointmentsWeekCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true, enableAppointmentNumber : undefined },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -164,7 +164,7 @@ describe('AppointmentsWeekCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true, enableAppointmentNumber : undefined },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -178,5 +178,71 @@ describe('AppointmentsWeekCalendarController', function () {
         scope.$digest();
         expect(scope.eventSources).toEqual([scope.appointments.events]);
 
-    })
+    });
+
+    describe('enableAppointmentNumber feature', function () {
+        it('should pass enableAppointmentNumber as true when config is true', function () {
+            appDescriptor.getConfigValue.and.callFake(function (key) {
+                if (key === Bahmni.Appointments.Constants.appointmentNumberConfigKey) {
+                    return true;
+                }
+                return undefined;
+            });
+            createController();
+            scope.date = moment().toDate();
+            var event = {appointments: []};
+            scope.alertOnEventClick(event);
+            
+            expect(calendarViewPopUp).toHaveBeenCalledWith({
+                scope : { 
+                    appointments : event.appointments, 
+                    checkinAppointment : jasmine.any(Function), 
+                    enableCreateAppointment : true, 
+                    enableAppointmentNumber : true 
+                },
+                className: "ngdialog-theme-default delete-program-popup app-dialog-container"
+            });
+        });
+
+        it('should pass enableAppointmentNumber as false when config is false', function () {
+            appDescriptor.getConfigValue.and.callFake(function (key) {
+                if (key === Bahmni.Appointments.Constants.appointmentNumberConfigKey) {
+                    return false;
+                }
+                return undefined;
+            });
+            createController();
+            scope.date = moment().toDate();
+            var event = {appointments: []};
+            scope.alertOnEventClick(event);
+            
+            expect(calendarViewPopUp).toHaveBeenCalledWith({
+                scope : { 
+                    appointments : event.appointments, 
+                    checkinAppointment : jasmine.any(Function), 
+                    enableCreateAppointment : true, 
+                    enableAppointmentNumber : false 
+                },
+                className: "ngdialog-theme-default delete-program-popup app-dialog-container"
+            });
+        });
+
+        it('should pass enableAppointmentNumber as undefined when config is not set', function () {
+            appDescriptor.getConfigValue.and.returnValue(undefined);
+            createController();
+            scope.date = moment().toDate();
+            var event = {appointments: []};
+            scope.alertOnEventClick(event);
+            
+            expect(calendarViewPopUp).toHaveBeenCalledWith({
+                scope : { 
+                    appointments : event.appointments, 
+                    checkinAppointment : jasmine.any(Function), 
+                    enableCreateAppointment : true, 
+                    enableAppointmentNumber : undefined 
+                },
+                className: "ngdialog-theme-default delete-program-popup app-dialog-container"
+            });
+        });
+    });
 });

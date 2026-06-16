@@ -719,6 +719,7 @@ describe('AppointmentsListViewController', function () {
             {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'priority', class: true, enable: false},
             {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', class: true, enable: true},
             {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_NUMBER', sortInfo: 'appointmentNumber', class: true, enable: true},
             {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: true},
             {heading: 'APPOINTMENT_REASON', sortInfo: 'reasons', class: true, enable: true},
             {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
@@ -1608,6 +1609,7 @@ describe('AppointmentsListViewController', function () {
         {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'priority', class: true, enable: true},
         {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', class: true, enable: true},
         {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
+        {heading: 'APPOINTMENT_NUMBER', sortInfo: 'appointmentNumber', class: true, enable: true},
         {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: true},
         {heading: 'APPOINTMENT_REASON', sortInfo: 'reasons', class: true, enable: true},
         {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
@@ -1618,6 +1620,97 @@ describe('AppointmentsListViewController', function () {
         {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             createController();
             expect(scope.tableInfo).toEqual(tableInfo);
+    });
+
+    describe('enableAppointmentNumber feature', function () {
+        it('should initialize enableAppointmentNumber from config', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === Bahmni.Appointments.Constants.appointmentNumberConfigKey) {
+                    return true;
+                }
+                return value === 'enableSpecialities' || value === 'enableServiceTypes';
+            });
+            createController();
+            
+            expect(scope.enableAppointmentNumber).toBe(true);
+        });
+
+        it('should set APPOINTMENT_NUMBER column as enabled when enableAppointmentNumber is true', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === Bahmni.Appointments.Constants.appointmentNumberConfigKey) {
+                    return true;
+                }
+                return value === 'enableSpecialities' || value === 'enableServiceTypes';
+            });
+            createController();
+            
+            var appointmentNumberColumn = scope.tableInfo.find(function (col) {
+                return col.heading === 'APPOINTMENT_NUMBER';
+            });
+            
+            expect(appointmentNumberColumn).toBeDefined();
+            expect(appointmentNumberColumn.enable).toBe(true);
+        });
+
+        it('should set APPOINTMENT_NUMBER column as disabled when enableAppointmentNumber is false', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === Bahmni.Appointments.Constants.appointmentNumberConfigKey) {
+                    return false;
+                }
+                return value === 'enableSpecialities' || value === 'enableServiceTypes';
+            });
+            createController();
+            
+            var appointmentNumberColumn = scope.tableInfo.find(function (col) {
+                return col.heading === 'APPOINTMENT_NUMBER';
+            });
+            
+            expect(appointmentNumberColumn).toBeDefined();
+            expect(appointmentNumberColumn.enable).toBe(false);
+        });
+
+        it('should set APPOINTMENT_NUMBER column as disabled when enableAppointmentNumber is undefined', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === Bahmni.Appointments.Constants.appointmentNumberConfigKey) {
+                    return undefined;
+                }
+                if (value === 'enableSpecialities' || value === 'enableServiceTypes') {
+                    return true;
+                }
+                return undefined;
+            });
+            createController();
+            
+            var appointmentNumberColumn = scope.tableInfo.find(function (col) {
+                return col.heading === 'APPOINTMENT_NUMBER';
+            });
+            
+            expect(appointmentNumberColumn).toBeDefined();
+            expect(appointmentNumberColumn.enable).toBeUndefined();
+        });
+
+        it('should include APPOINTMENT_NUMBER column in correct position in table info', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'enableAppointmentNumber') {
+                    return true;
+                }
+                return value === 'enableSpecialities' || value === 'enableServiceTypes';
+            });
+            createController();
+            
+            var appointmentServiceIndex = scope.tableInfo.findIndex(function (col) {
+                return col.heading === 'APPOINTMENT_SERVICE';
+            });
+            var appointmentNumberIndex = scope.tableInfo.findIndex(function (col) {
+                return col.heading === 'APPOINTMENT_NUMBER';
+            });
+            var serviceTypeIndex = scope.tableInfo.findIndex(function (col) {
+                return col.heading === 'APPOINTMENT_SERVICE_TYPE_FULL';
+            });
+            
+            expect(appointmentNumberIndex).toBe(appointmentServiceIndex + 1);
+            expect(serviceTypeIndex).toBe(appointmentNumberIndex + 1);
+        });
     });
 
 });

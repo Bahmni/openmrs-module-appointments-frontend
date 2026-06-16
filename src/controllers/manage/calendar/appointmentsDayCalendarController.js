@@ -21,7 +21,8 @@ angular.module('bahmni.appointments')
                         scope: {
                             appointments: event.appointments,
                             checkinAppointment: checkinAppointment,
-                            enableCreateAppointment: isSelectable()
+                            enableCreateAppointment: isSelectable(),
+                            enableAppointmentNumber: appService.getAppDescriptor().getConfigValue(Bahmni.Appointments.Constants.appointmentNumberConfigKey)
                         },
                         className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                     });
@@ -90,7 +91,11 @@ angular.module('bahmni.appointments')
                     let uuid = $location.search()["appointment"];
                     appointmentsService.getAppointmentByUuid(uuid).then(function (response) {
                         calendarViewPopUp({
-                            scope: {appointments: [response.data],enableCreateAppointment: isSelectable()},
+                            scope: {
+                                appointments: [response.data],
+                                enableCreateAppointment: isSelectable(),
+                                enableAppointmentNumber: appService.getAppDescriptor().getConfigValue(Bahmni.Appointments.Constants.appointmentNumberConfigKey)
+                            },
                             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                         });
                     })

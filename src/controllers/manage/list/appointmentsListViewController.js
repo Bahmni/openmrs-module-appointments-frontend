@@ -17,6 +17,7 @@ angular.module('bahmni.appointments')
             $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
             $scope.isAppointmentRequestEnabled = appService.getAppDescriptor().getConfigValue('enableAppointmentRequests');
             $scope.disableDatesForWaitListAppointment = appService.getAppDescriptor().getConfigValue('disableDatesForWaitListAppointment');
+            $scope.enableAppointmentNumber = appService.getAppDescriptor().getConfigValue(Bahmni.Appointments.Constants.appointmentNumberConfigKey);
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
@@ -52,6 +53,7 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'priority', class: true, enable: !$scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', class: true, enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_NUMBER', sortInfo: 'appointmentNumber', class: true, enable: $scope.enableAppointmentNumber},
                 {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
                 {heading: 'APPOINTMENT_REASON', sortInfo: 'reasons', class: true, enable: $scope.enableAppointmentReasons},
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
