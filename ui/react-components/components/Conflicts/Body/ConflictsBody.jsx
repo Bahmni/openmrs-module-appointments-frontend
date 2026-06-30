@@ -28,6 +28,7 @@ const ConflictsBody = props => {
     const {service, conflicts, isRecurring} = props;
     const serviceUnavailableConflicts = conflicts.SERVICE_UNAVAILABLE;
     const patientDoubleBookingConflicts = conflicts.PATIENT_DOUBLE_BOOKING;
+    const unavailabilityConflicts = conflicts.UNAVAILABILITY;
     const OVERLAPPING_CONFLICTS_CONTENT = "Overlapping conflicts content";
     const SERVICE_UNAVAILABLE_CONTENT = "No-Service Date conflicts content";
     const intl = useIntl();
@@ -40,8 +41,8 @@ const ConflictsBody = props => {
             tabHeads.push(createTab(patientDoubleBookingConflicts, overlappingConflictsLabel, OVERLAPPING_CONFLICTS_CONTENT));
             conflictsWarningHeader = intl.formatMessage({id: 'OVERLAPPING_CONFLICTS_WARNING_HEADER', defaultMessage: 'You have an overlapping conflict'});
         }
-        if (serviceUnavailableConflicts) {
-            tabHeads.push(createTab(serviceUnavailableConflicts, serviceConflictsLabel, SERVICE_UNAVAILABLE_CONTENT));
+        if (serviceUnavailableConflicts || unavailabilityConflicts) {
+            tabHeads.push(createTab(serviceUnavailableConflicts || unavailabilityConflicts, serviceConflictsLabel, SERVICE_UNAVAILABLE_CONTENT));
             conflictsWarningHeader = intl.formatMessage({id: 'NO_SERVICE_DATE_CONFLICTS_WARNING_HEADER', defaultMessage: 'You have a no-service date conflict'});
         }
         if (patientDoubleBookingConflicts && serviceUnavailableConflicts) {

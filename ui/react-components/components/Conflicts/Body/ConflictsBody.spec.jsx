@@ -51,6 +51,25 @@ describe('Conflicts Body', () => {
         expect(container.querySelector('strong').innerHTML).toContain('Dressing');
     });
 
+    it('should render unavailability conflict tab', () => {
+        const conflicts = {UNAVAILABILITY: [{service: {name: "Dressing"}, uuid: "uuid"}]};
+
+        const {getByText} = renderWithReactIntl(<ConflictsBody conflicts={conflicts} service={service}/>, messages);
+
+        expect(getByText("Service unavailability")).not.toBeNull();
+    });
+
+    it('should render only one tab when both service unavailable and unavailability conflicts exist', () => {
+        const conflicts = {
+            SERVICE_UNAVAILABLE: [{service: {name: "Dressing"}, uuid: "uuid1"}],
+            UNAVAILABILITY: [{service: {name: "Dressing"}, uuid: "uuid2"}]
+        };
+
+        const {getAllByTestId} = renderWithReactIntl(<ConflictsBody conflicts={conflicts} service={service}/>, messages);
+
+        expect(getAllByTestId("conflict-tab").length).toBe(1);
+    });
+
     it('should render service conflicts content', () => {
         const conflicts = {
             SERVICE_UNAVAILABLE: [{service: {name: "Orthopedic"}, startDateTime: 1575561600000},
