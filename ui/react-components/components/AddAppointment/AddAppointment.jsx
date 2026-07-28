@@ -60,6 +60,7 @@ import {mapOpenMRSPatient} from "../../mapper/patientMapper";
 import DatePickerCarbon from "../DatePickerCarbon/DatePickerCarbon.jsx";
 import AppointmentReasonSearch from "../AppointmentReason/AppointmentReasonSearch.jsx";
 import {getConceptByUuid} from "../../api/conceptApi";
+import {getService} from "../../api/serviceApi";
 import {Close24} from '@carbon/icons-react';
 import {ContentSwitcher, Switch, RadioButtonGroup, RadioButton} from 'carbon-components-react';
 import '../../carbon-conflict-fixes.scss';
@@ -72,6 +73,8 @@ import NumberInput from "../NumberInput/NumberInputCarbon.jsx";
 import Title from "../Title/Title.jsx";
 import Notification from "../Notifications/Notifications.jsx";
 import {currentLocation} from "../../utils/CookieUtil";
+import {getAllByTag} from "../../api/locationApi";
+import {locationTagName} from "../../config";
 
 const AddAppointment = props => {
 
@@ -206,14 +209,19 @@ const AddAppointment = props => {
             populateAppointmentReasonDetails(urlParams.appointmentReason).then();
         }
 
-        const userLocation = currentLocation();
-        if (userLocation && !appointmentDetails.location) {
-            updateAppointmentDetails({
-                location: {
-                    value: userLocation,
-                    label: userLocation.name
+        if (urlParams && urlParams.service) {
+            const serviceUuid = Array.isArray(urlParams.service) ? urlParams.service[0] : urlParams.service;
+            populateServiceDetails(serviceUuid).then(service => {
+                if (service && !isEmpty(service.location)) {
+                    updateAppointmentDetails({
+                        location: {value: service.location, label: service.location.name}
+                    });
+                } else if (!appointmentDetails.location) {
+                    populateLocationDetails().then();
                 }
             });
+        } else if (!appointmentDetails.location) {
+            populateLocationDetails().then();
         }
 
         setAppointmentTouched("ready");
@@ -241,6 +249,33 @@ const AddAppointment = props => {
             return updateAppointmentDetails({appointmentReasons: reasonsForDropdown});
         } catch (error) {
             console.error('Error fetching appointment reasons:', error);
+        }
+    }
+
+    async function populateServiceDetails(serviceUuid) {
+        const service = await getService(serviceUuid);
+        if (service && service.uuid) {
+            updateAppointmentDetails({service: {value: service, label: service.name}});
+            return service;
+        }
+    }
+
+    async function populateLocationDetails() {
+        const userLocation = currentLocation();
+        if (!userLocation) {
+            return;
+        }
+        if (userLocation.name) {
+            return updateAppointmentDetails({
+                location: {value: userLocation, label: userLocation.name}
+            });
+        }
+        const locations = await getAllByTag(locationTagName);
+        const matchedLocation = Array.isArray(locations) && locations.find(location => location.uuid === userLocation.uuid);
+        if (matchedLocation) {
+            return updateAppointmentDetails({
+                location: {value: matchedLocation, label: matchedLocation.name}
+            });
         }
     }
 
