@@ -19,6 +19,7 @@ jest.mock('../../utils/LocalStorageUtil.js', () => ({
 
 jest.mock('../../api/appointmentsApi');
 jest.mock('../../api/conceptApi');
+jest.mock('../../api/locationApi');
 
 const patientApi = require('../../api/patientApi');
 const serviceApi = require('../../api/serviceApi');
@@ -26,15 +27,18 @@ const specialityApi = require('../../api/specialityApi');
 const providerApi = require('../../api/providerApi');
 const appointmentsApi = require('../../api/appointmentsApi');
 const conceptApi = require('../../api/conceptApi');
+const locationApi = require('../../api/locationApi');
 
 let getPatientByLocationSpy;
 let getAllServicesSpy;
+let getServiceSpy;
 let getAllSpecialitiesSpy;
 let getAllProvidersSpy;
 let getPatientSpy;
 let getConceptByUuidSpy;
 let localGetConceptByUuidSpy;
 let currentLocationSpy;
+let getAllByTagSpy;
 
 const clickOnFirstDayOfNextMonth = (container) => {
     const nextMonth = moment().add(1, 'month'); // Get the moment object for the next month
@@ -57,6 +61,7 @@ describe('Add Appointment', () => {
         getPatientByLocationSpy = jest.spyOn(patientApi, 'getPatientsByLocation');
         getPatientSpy = jest.spyOn(patientApi, 'getPatient');
         getAllServicesSpy = jest.spyOn(serviceApi, 'getAllServices');
+        getServiceSpy = jest.spyOn(serviceApi, 'getService');
         getAllSpecialitiesSpy = jest.spyOn(specialityApi, 'getAllSpecialities');
         getAllProvidersSpy = jest.spyOn(providerApi, 'getAllProviders');
         getConceptByUuidSpy = jest.spyOn(conceptApi, 'getConceptByUuid');
@@ -67,11 +72,14 @@ describe('Add Appointment', () => {
         });
         getPatientSpy = jest.spyOn(patientApi, 'getPatient');
         currentLocationSpy = jest.spyOn(CookieUtil, 'currentLocation');
+        getAllByTagSpy = jest.spyOn(locationApi, 'getAllByTag');
+        getAllByTagSpy.mockResolvedValue([]);
         jest.useFakeTimers();
     });
     afterEach(() => {
         getPatientByLocationSpy.mockRestore();
         getAllServicesSpy.mockRestore();
+        getServiceSpy.mockRestore();
         getAllSpecialitiesSpy.mockRestore();
         getAllProvidersSpy.mockRestore();
         getPatientSpy.mockRestore();
@@ -79,6 +87,7 @@ describe('Add Appointment', () => {
         localGetConceptByUuidSpy.mockRestore();
         getPatientSpy.mockRestore();
         currentLocationSpy.mockRestore();
+        getAllByTagSpy.mockRestore();
         jest.clearAllMocks();
     });
 
@@ -819,6 +828,32 @@ describe('Add Appointment', () => {
         expect(locationInput.value).toBe('');
     });
 
+    it('should recover location name via getAllByTag when cookie location has no name', async () => {
+        jest.useRealTimers();
+        currentLocationSpy.mockReturnValue({uuid: 'location-uuid-789'});
+        getAllByTagSpy.mockResolvedValue([{uuid: 'location-uuid-789', name: 'Recovered Location'}]);
+
+        const {getByTestId} = renderWithReactIntl(<AddAppointment/>);
+
+        await wait(() => expect(getAllByTagSpy).toHaveBeenCalled());
+
+        const locationInput = getByTestId('location-search').querySelector('.bx--text-input');
+        await wait(() => expect(locationInput.value).toEqual('Recovered Location'));
+    });
+
+    it('should leave location field empty without crashing when cookie location has no name and no match is found', async () => {
+        jest.useRealTimers();
+        currentLocationSpy.mockReturnValue({uuid: 'no-such-location-uuid'});
+        getAllByTagSpy.mockResolvedValue([{uuid: 'location-uuid-789', name: 'Recovered Location'}]);
+
+        const {getByTestId} = renderWithReactIntl(<AddAppointment/>);
+
+        await wait(() => expect(getAllByTagSpy).toHaveBeenCalled());
+
+        const locationInput = getByTestId('location-search').querySelector('.bx--text-input');
+        expect(locationInput.value).toBe('');
+    });
+
     it('should prepopulate both patient and location when both are available', async () => {
         jest.useRealTimers();
 
@@ -863,6 +898,130 @@ describe('Add Appointment', () => {
 
         expect(patientInput.value).toContain('John Doe');
         expect(locationInput.value).toBe('Emergency Room');
+    });
+
+    it('should prepopulate service field when service uuid is passed in urlParams', async () => {
+        jest.useRealTimers();
+        currentLocationSpy.mockReturnValue(null);
+
+        const {getByTestId} = renderWithReactIntl(
+            <AddAppointment urlParams={{service: '74d43c99-fee1-4097-904a-e2292711b27f'}}/>
+        );
+
+        await wait(() => expect(getServiceSpy).toHaveBeenCalledWith('74d43c99-fee1-4097-904a-e2292711b27f'));
+
+        const serviceInput = getByTestId('service-search').querySelector('.bx--text-input');
+        await wait(() => expect(serviceInput.value).toEqual('Dressing'));
+    });
+
+    it('should use the first uuid when multiple service uuids are passed in urlParams as an array', async () => {
+        jest.useRealTimers();
+        currentLocationSpy.mockReturnValue(null);
+
+        const {getByTestId} = renderWithReactIntl(
+            <AddAppointment urlParams={{service: ['74d43c99-fee1-4097-904a-e2292711b27f', 'some-other-uuid']}}/>
+        );
+
+        await wait(() => expect(getServiceSpy).toHaveBeenCalledWith('74d43c99-fee1-4097-904a-e2292711b27f'));
+        expect(getServiceSpy).not.toHaveBeenCalledWith('some-other-uuid');
+
+        const serviceInput = getByTestId('service-search').querySelector('.bx--text-input');
+        await wait(() => expect(serviceInput.value).toEqual('Dressing'));
+    });
+
+    it('should not call getService when service uuid is absent from urlParams', () => {
+        currentLocationSpy.mockReturnValue(null);
+
+        const {getByTestId} = renderWithReactIntl(<AddAppointment/>);
+
+        const serviceInput = getByTestId('service-search').querySelector('.bx--text-input');
+        expect(serviceInput.value).toBe('');
+        expect(getServiceSpy).not.toHaveBeenCalled();
+    });
+
+    it('should leave service field empty without crashing when getService finds no matching service', async () => {
+        jest.useRealTimers();
+        currentLocationSpy.mockReturnValue(null);
+
+        const {getByTestId} = renderWithReactIntl(
+            <AddAppointment urlParams={{service: 'non-existent-uuid'}}/>
+        );
+
+        await wait(() => expect(getServiceSpy).toHaveBeenCalledWith('non-existent-uuid'));
+
+        const serviceInput = getByTestId('service-search').querySelector('.bx--text-input');
+        expect(serviceInput.value).toBe('');
+    });
+
+    it('should prefer location derived from service over cookie-based location', async () => {
+        jest.useRealTimers();
+        currentLocationSpy.mockReturnValue({uuid: 'location-uuid-123', name: 'OPD Room 1'});
+
+        const {getByTestId} = renderWithReactIntl(
+            <AddAppointment urlParams={{service: '74d43c99-fee1-4097-904a-e2292711b27f'}}/>
+        );
+
+        await wait(() => expect(getServiceSpy).toHaveBeenCalledWith('74d43c99-fee1-4097-904a-e2292711b27f'));
+
+        const locationInput = getByTestId('location-search').querySelector('.bx--text-input');
+        await wait(() => expect(locationInput.value).toEqual('OPD'));
+    });
+
+    it('should fall back to cookie-based location when the resolved service has no location', async () => {
+        jest.useRealTimers();
+        getServiceSpy.mockResolvedValueOnce({uuid: 'service-without-location-uuid', name: 'Service Without Location'});
+        currentLocationSpy.mockReturnValue({uuid: 'location-uuid-123', name: 'OPD Room 1'});
+
+        const {getByTestId} = renderWithReactIntl(
+            <AddAppointment urlParams={{service: 'service-without-location-uuid'}}/>
+        );
+
+        await wait(() => expect(getServiceSpy).toHaveBeenCalledWith('service-without-location-uuid'));
+
+        const locationInput = getByTestId('location-search').querySelector('.bx--text-input');
+        await wait(() => expect(locationInput.value).toEqual('OPD Room 1'));
+    });
+
+    it('should prepopulate patient, appointment reason and service together from urlParams', async () => {
+        jest.useRealTimers();
+        currentLocationSpy.mockReturnValue(null);
+
+        const mockPatient = {
+            uuid: '6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad',
+            person: {
+                display: 'Test Patient',
+                preferredName: {
+                    display: 'Test Patient'
+                }
+            },
+            identifiers: [
+                {
+                    identifier: 'GAN123456',
+                    display: 'GAN123456'
+                }
+            ],
+            display: 'Test Patient'
+        };
+        getPatientSpy.mockResolvedValue(mockPatient);
+
+        const {container, getByTestId} = renderWithReactIntl(
+            <AddAppointment
+                appConfig={reasonConfig}
+                urlParams={{
+                    patient: '6bb24e7e-5c04-4561-9e7a-2d2bbf8074ad',
+                    appointmentReason: 'reason-uuid',
+                    service: '74d43c99-fee1-4097-904a-e2292711b27f'
+                }}
+            />
+        );
+
+        const patientInput = container.querySelector('.bx--text-input');
+        await wait(() => expect(patientInput.value).toContain('Test Patient'));
+
+        const serviceInput = getByTestId('service-search').querySelector('.bx--text-input');
+        await wait(() => expect(serviceInput.value).toEqual('Dressing'));
+
+        expect(localGetConceptByUuidSpy).toHaveBeenCalledWith('reason-uuid');
     });
 });
 
