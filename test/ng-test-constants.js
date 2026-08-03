@@ -139,5 +139,6 @@ window.Bahmni.Appointments.Constants = {
     "TENTATIVE": "TENTATIVE",
     "CANCELLED": "CANCELLED",
     "AWAITING": "AWAITING"
-  }
+  },
+  "appointmentNumberConfigKey": "enableAppointmentNumber"
 };
