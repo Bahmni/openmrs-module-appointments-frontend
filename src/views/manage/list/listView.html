@@ -29,10 +29,14 @@
                     <span ng-hide="shouldShowAppointmentsListPatientLink">{{::appointment.patient.identifier}}</span>
                 </td>
                 <td class="table-mid-width" ng-show="::!enableColumnsForAppointments">{{::appointment.dateCreated | bahmniDate}}</td>
+                <td class="table-mid-width">{{::appointment.patient.HIVProgramID}}</td>
+                <td class="table-mid-width">{{::appointment.patient.FileNumber}}</td>
                 <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
-                <td ng-show="::enableColumnsForAppointments">{{::appointment.startDateTime | bahmniDate}} {{::info}}</td>
+                <td class="table-mid-width">{{::appointment.patient.age}}</td>
+                <td class="table-mid-width">{{::appointment.patient.gender}}</td>
+                <!-- <td ng-show="::enableColumnsForAppointments">{{::appointment.startDateTime | bahmniDate}} {{::info}}</td>
                 <td ng-show="::enableColumnsForAppointments">{{::appointment.startDateTime | bahmniTime}}</td>
-                <td ng-show="::enableColumnsForAppointments">{{::appointment.endDateTime | bahmniTime}}</td>
+                <td ng-show="::enableColumnsForAppointments">{{::appointment.endDateTime | bahmniTime}}</td> -->
                 <td class="table-mid-width">
                     <ul>
                         <li ng-repeat="appProvider in appointment.providers">

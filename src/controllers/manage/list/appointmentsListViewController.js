@@ -45,10 +45,19 @@ angular.module('bahmni.appointments')
             var updateTableHeader = function (){
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATION_DATE', sortInfo: 'dateCreated', class: true, enable: !$scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_PATIENT_HIV_PROGRAM_ID', sortInfo: 'patient.HIVProgramID', class: true, enable: true},
+                {heading: 'APPOINTMENT_PATIENT_FILE_NUMBER', sortInfo: 'patient.FileNumber', class: true, enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: $scope.enableColumnsForAppointments},
-                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: $scope.enableColumnsForAppointments},
-                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: $scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_PATIENT_AGE', sortInfo: 'patient.age', class: true, enable: true},
+                {heading: 'APPOINTMENT_PATIENT_GENDER', sortInfo: 'patient.gender', class: true, enable: true},
+
+                // The following columns are negated because they are not needed in the current implementation.
+                // If you want to include them, you can uncomment the code.
+                            
+                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: !$scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: !$scope.enableColumnsForAppointments},
+                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: !$scope.enableColumnsForAppointments},
+                
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_CATEGORY', sortInfo: 'priority', class: true, enable: !$scope.enableColumnsForAppointments},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', class: true, enable: $scope.enableSpecialities},
@@ -86,6 +95,19 @@ angular.module('bahmni.appointments')
 
             var updateAppointments = function (response){
                 $scope.appointments = response.data;
+                    if ($scope.appointments && $scope.appointments.length > 0) {
+                    var firstAppointment = $scope.appointments[0];
+                    console.log('First appointment:', firstAppointment);
+                    console.log('Patient object:', firstAppointment.patient);
+                    console.log('All patient fields:', Object.keys(firstAppointment.patient || {}));
+                    console.log('Possible file number fields:', {
+                        fileNumber: firstAppointment.patient ? firstAppointment.patient.fileNumber : undefined,
+                        medicalRecordNumber: firstAppointment.patient ? firstAppointment.patient.medicalRecordNumber : undefined,
+                        mrn: firstAppointment.patient ? firstAppointment.patient.mrn : undefined,
+                        externalId: firstAppointment.patient ? firstAppointment.patient.externalId : undefined,
+                        uhid: firstAppointment.patient ? firstAppointment.patient.uhid : undefined
+                    });
+                }
                 $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                 if($scope.getCurrentTabName() === AWAITING_APPOINTMENTS_TAB_NAME){
                     modifyAppointmentPriorities();
