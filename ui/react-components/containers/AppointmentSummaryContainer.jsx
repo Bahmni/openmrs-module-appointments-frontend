@@ -82,10 +82,15 @@ class AppointmentSummaryContainer extends Component {
                     <DateOrWeekNavigator isWeek={true} weekStart={1} />
                     { fullSummary? (
                         <div>
-                            <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={specialitiesTitle} noAppointmentsMessage={noAppointmentsMessageSpecialities}/>
+                            {/*
+                             The code below is commented out because the specialities and providers summaries are not needed
+                             in the current implementation. If you want to include them, you can uncomment the code.
+                            */}
+                            
+                            {/* <GridSummary gridData={specialityData} weekStartDate={startDate} onClick={goToListView} gridName={specialitiesTitle} noAppointmentsMessage={noAppointmentsMessageSpecialities}/>
                             <hr/>
                             <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={providersTitle} noAppointmentsMessage={noAppointmentsMessageProviders}/>
-                            <hr/>
+                            <hr/> */}
                             <GridSummary gridData={sortBy(data, row => row.rowLabel.toLowerCase())}
                                          weekStartDate={startDate} onClick={goToListView} gridName={servicesTitle} noAppointmentsMessage={noAppointmentsMessageServices}/>
                             <hr/>
