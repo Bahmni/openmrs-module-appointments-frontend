@@ -91,11 +91,12 @@ class AppointmentSummaryContainer extends Component {
                             <hr/>
                             <GridSummary gridData={providersData} weekStartDate={startDate} onClick={goToListView} gridName={providersTitle} noAppointmentsMessage={noAppointmentsMessageProviders}/>
                             <hr/> */}
+                            <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={locationsTitle} noAppointmentsMessage={noAppointmentsMessageLocations}/>
+                            <br/>
                             <GridSummary gridData={sortBy(data, row => row.rowLabel.toLowerCase())}
                                          weekStartDate={startDate} onClick={goToListView} gridName={servicesTitle} noAppointmentsMessage={noAppointmentsMessageServices}/>
                             <hr/>
-                            <GridSummary gridData={locationData} weekStartDate={startDate} onClick={goToListView} gridName={locationsTitle} noAppointmentsMessage={noAppointmentsMessageLocations}/>
-                            <br/>
+
                         </div>) : (
                         <GridSummary gridData={ data } weekStartDate={startDate} onClick={goToListView}/>
                     )
