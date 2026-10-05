@@ -1,5 +1,8 @@
+import moment from "moment";
 import{
-    isValidDate
+    isValidDate,
+    isStartTimeBeforeEndTime,
+    applyDateToTime
 } from "./DateUtil";
 
 describe('DateUtil', () =>{
@@ -77,3 +80,49 @@ describe('DateUtil', () =>{
     })
 })
 
+describe('isStartTimeBeforeEndTime', () => {
+    it('should return true when either start or end time is not provided', () => {
+        expect(isStartTimeBeforeEndTime(undefined, moment('2020-02-12T11:00:00'))).toBe(true);
+        expect(isStartTimeBeforeEndTime(moment('2020-02-12T11:00:00'), undefined)).toBe(true);
+        expect(isStartTimeBeforeEndTime(undefined, undefined)).toBe(true);
+    })
+
+    it('should return true when start time is before end time on the same date', () => {
+        expect(isStartTimeBeforeEndTime(moment('2020-02-12T11:00:00'), moment('2020-02-12T13:00:00'))).toBe(true);
+    })
+
+    it('should return false when start time is after end time on the same date', () => {
+        expect(isStartTimeBeforeEndTime(moment('2020-02-12T13:00:00'), moment('2020-02-12T11:00:00'))).toBe(false);
+    })
+
+    it('should return false when start time equals end time', () => {
+        expect(isStartTimeBeforeEndTime(moment('2020-02-12T11:00:00'), moment('2020-02-12T11:00:00'))).toBe(false);
+    })
+})
+
+describe('applyDateToTime', () => {
+    it('should put the given date on the time and keep the time of day', () => {
+        const result = applyDateToTime(new Date(2020, 1, 20), moment('2020-02-12T13:30:00'));
+        expect(result.format('YYYY-MM-DD HH:mm:ss')).toBe('2020-02-20 13:30:00');
+    })
+
+    it('should make an end time typed with todays date comparable with a start time on the appointment date', () => {
+        const appointmentDate = new Date(2020, 1, 20);
+        const startTime = moment('2020-02-20T11:00:00');
+        const endTime = applyDateToTime(appointmentDate, moment('2020-02-12T13:00:00'));
+        expect(isStartTimeBeforeEndTime(startTime, endTime)).toBe(true);
+    })
+
+    it('should still report end before start when the times are out of order', () => {
+        const appointmentDate = new Date(2020, 1, 20);
+        const startTime = moment('2020-02-20T11:00:00');
+        const endTime = applyDateToTime(appointmentDate, moment('2020-02-12T10:00:00'));
+        expect(isStartTimeBeforeEndTime(startTime, endTime)).toBe(false);
+    })
+
+    it('should return the time unchanged when date or time is missing', () => {
+        const time = moment('2020-02-12T13:30:00');
+        expect(applyDateToTime(null, time)).toBe(time);
+        expect(applyDateToTime(new Date(2020, 1, 20), null)).toBe(null);
+    })
+})
