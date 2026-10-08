@@ -58,7 +58,7 @@ import {
     saveAppointment,
     updateRecurring
 } from "../../services/AppointmentsService/AppointmentsService";
-import {getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
+import {applyDateToTime, applyDateToTimes, getDateTime, isStartTimeBeforeEndTime} from "../../utils/DateUtil";
 import UpdateSuccessModal from "../SuccessModal/UpdateSuccessModal.jsx";
 import UpdateConfirmationModal from "../UpdateConfirmationModal/UpdateConfirmationModal.jsx";
 import {getComponentsDisableStatus} from "./ComponentsDisableStatus";
@@ -677,7 +677,10 @@ const EditAppointment = props => {
                             onChange={date => {
                                 if(date.length > 0) {
                                     const selectedDate = moment(date[0]).toDate();
-                                    updateAppointmentDetails({appointmentDate: selectedDate});
+                                    const {startTime, endTime, startTimeBeforeEndTimeError} =
+                                        applyDateToTimes(selectedDate, appointmentDetails.startTime, appointmentDetails.endTime);
+                                    updateAppointmentDetails({appointmentDate: selectedDate, startTime, endTime});
+                                    updateErrorIndicators({startTimeBeforeEndTimeError});
                                 }
                                 else {
                                     updateAppointmentDetails({appointmentDate: null});
@@ -700,8 +703,9 @@ const EditAppointment = props => {
                                                   updateErrorIndicators({startTimeError: true});
                                               }
                                               else{
-                                                  updateAppointmentDetails({startTime: time});
-                                                  endTimeBasedOnService(time, appointmentDetails.service && appointmentDetails.service.value,
+                                                  const startTime = applyDateToTime(appointmentDetails.appointmentDate, time);
+                                                  updateAppointmentDetails({startTime});
+                                                  endTimeBasedOnService(startTime, appointmentDetails.service && appointmentDetails.service.value,
                                                       appointmentDetails.serviceType && appointmentDetails.serviceType.value);
                                                   updateErrorIndicators({startTimeError: !time});
                                               }
@@ -718,8 +722,10 @@ const EditAppointment = props => {
                                                   updateErrorIndicators({endTimeError: true});
                                               }
                                               else{
-                                                  updateAppointmentDetails({endTime: time});updateErrorIndicators({
-                                                      startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, time),
+                                                  const endTime = applyDateToTime(appointmentDetails.appointmentDate, time);
+                                                  updateAppointmentDetails({endTime});
+                                                  updateErrorIndicators({
+                                                      startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(appointmentDetails.startTime, endTime),
                                                       endTimeError: !time
                                                   });
                                               }

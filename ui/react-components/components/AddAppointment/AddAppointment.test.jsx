@@ -320,6 +320,64 @@ describe('Add Appointment', () => {
         expect(saveAppointmentSpy).not.toHaveBeenCalled();
     });
 
+    describe('start and end time on a date other than today', () => {
+        const END_BEFORE_START_ERROR = "End time shouldn't be before start time";
+        const appointmentDate = moment().add(2, 'month').startOf('month');
+        const appointmentParams = {
+            startDateTime: appointmentDate.clone().hour(9).valueOf(),
+            endDateTime: appointmentDate.clone().hour(9).minute(30).valueOf()
+        };
+
+        const appConfig = {prioritiesForDateless: []};
+
+        const typeTime = (input, value) => {
+            fireEvent.change(input, {target: {value}});
+            fireEvent.blur(input);
+        };
+
+        it('should not show the end time error when only the end time of an appointment on a future date is edited', () => {
+            const {container, queryByText} = renderWithReactIntl(<AddAppointment appConfig={appConfig} appointmentParams={appointmentParams}/>);
+            const [startTimeInput, endTimeInput] = container.querySelectorAll('.bx--time-picker__input-field');
+            expect(startTimeInput.value).toBe('9:00');
+
+            typeTime(endTimeInput, '11:00');
+
+            expect(endTimeInput.value).toBe('11:00');
+            expect(queryByText(END_BEFORE_START_ERROR)).toBeNull();
+        });
+
+        it('should still show the end time error when the end time is really before the start time', () => {
+            const {container, queryByText} = renderWithReactIntl(<AddAppointment appConfig={appConfig} appointmentParams={appointmentParams}/>);
+            const endTimeInput = container.querySelectorAll('.bx--time-picker__input-field')[1];
+
+            typeTime(endTimeInput, '8:00');
+
+            expect(queryByText(END_BEFORE_START_ERROR)).not.toBeNull();
+        });
+
+        it('should not show the end time error after the appointment date is changed with valid times', () => {
+            const {container, queryByText} = renderWithReactIntl(<AddAppointment appConfig={appConfig} appointmentParams={appointmentParams}/>);
+            const endTimeInput = container.querySelectorAll('.bx--time-picker__input-field')[1];
+            typeTime(endTimeInput, '11:00');
+
+            const newDate = clickOnFirstDayOfNextMonth(container);
+
+            expect(container.querySelector('.bx--date-picker__input').value).toBe(newDate.format('MM/DD/YYYY'));
+            expect(queryByText(END_BEFORE_START_ERROR)).toBeNull();
+        });
+
+        it('should keep showing the end time error after the appointment date is changed when the times are out of order', () => {
+            const {container, queryByText} = renderWithReactIntl(<AddAppointment appConfig={appConfig} appointmentParams={appointmentParams}/>);
+            const endTimeInput = container.querySelectorAll('.bx--time-picker__input-field')[1];
+            typeTime(endTimeInput, '8:00');
+            expect(queryByText(END_BEFORE_START_ERROR)).not.toBeNull();
+
+            clickOnFirstDayOfNextMonth(container);
+
+            expect(queryByText(END_BEFORE_START_ERROR)).not.toBeNull();
+        });
+    });
+
     it('should display all week days on click of recurring checkbox', async () => {
         const config = {
             "startOfWeek": "Tuesday",

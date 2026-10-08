@@ -12,6 +12,30 @@ export const isStartTimeBeforeEndTime = (startDateTime, endDateTime) => {
     return (!startDateTime || !endDateTime) || moment(startDateTime).isBefore(moment(endDateTime));
 };
 
+// The time picker builds its value from the typed time only, so it carries today's date.
+// Put the selected appointment date on it so start and end times share the same date.
+export const applyDateToTime = (date, time) => {
+    if (!date || !time || !moment(time).isValid()) return time;
+    const selectedDate = moment(date);
+    return moment(time).set({
+        year: selectedDate.year(),
+        month: selectedDate.month(),
+        date: selectedDate.date()
+    });
+};
+
+// Re-dates both start and end time onto the given date and recomputes whether the
+// start time is still before the end time, so callers can update state in one place.
+export const applyDateToTimes = (date, startTime, endTime) => {
+    const newStartTime = applyDateToTime(date, startTime);
+    const newEndTime = applyDateToTime(date, endTime);
+    return {
+        startTime: newStartTime,
+        endTime: newEndTime,
+        startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(newStartTime, newEndTime)
+    };
+};
+
 export const isValidDate= (dateValue) =>{
     let selectedDate = dateValue;
 
