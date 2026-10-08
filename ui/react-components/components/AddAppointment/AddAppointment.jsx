@@ -22,7 +22,7 @@ import {
     saveRecurring
 } from "../../services/AppointmentsService/AppointmentsService";
 import Label from '../Label/Label.jsx';
-import {applyDateToTime, getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
+import {applyDateToTime, applyDateToTimes, getDateTime, isStartTimeBeforeEndTime} from '../../utils/DateUtil.js'
 import TimeSelector from "../TimeSelector/TimeSelector.jsx";
 import AppointmentNotes from "../AppointmentNotes/AppointmentNotes.jsx";
 import AppointmentType from "../AppointmentType/AppointmentType.jsx";
@@ -692,14 +692,16 @@ const AddAppointment = props => {
                                 onChange={date => {
                                     if(date.length > 0) {
                                         const selectedDate = moment(date[0]).toDate();
+                                        const {startTime, endTime, startTimeBeforeEndTimeError} =
+                                            applyDateToTimes(selectedDate, appointmentDetails.startTime, appointmentDetails.endTime);
                                         updateAppointmentDetails({
                                             recurringStartDate: selectedDate,
                                             selectedRecurringStartDate: selectedDate,
-                                            startTime: applyDateToTime(selectedDate, appointmentDetails.startTime),
-                                            endTime: applyDateToTime(selectedDate, appointmentDetails.endTime)
+                                            startTime,
+                                            endTime
                                         });
                                         !moment(date[0]).isBefore(appointmentDetails.recurringEndDate) && updateAppointmentDetails({recurringEndDate: undefined});
-                                        updateErrorIndicators({startDateError: !selectedDate});
+                                        updateErrorIndicators({startDateError: !selectedDate, startTimeBeforeEndTimeError});
                                     } else {
                                         updateAppointmentDetails({recurringStartDate: null, selectedRecurringStartDate: null});
                                     }
@@ -900,11 +902,10 @@ const AddAppointment = props => {
                                 onChange={date => {
                                     if(date.length > 0) {
                                         const selectedDate = moment(date[0]).toDate();
-                                        updateAppointmentDetails({
-                                            appointmentDate: selectedDate,
-                                            startTime: applyDateToTime(selectedDate, appointmentDetails.startTime),
-                                            endTime: applyDateToTime(selectedDate, appointmentDetails.endTime)
-                                        });
+                                        const {startTime, endTime, startTimeBeforeEndTimeError} =
+                                            applyDateToTimes(selectedDate, appointmentDetails.startTime, appointmentDetails.endTime);
+                                        updateAppointmentDetails({appointmentDate: selectedDate, startTime, endTime});
+                                        updateErrorIndicators({startTimeBeforeEndTimeError});
                                     } else {
                                         updateAppointmentDetails({appointmentDate: null});
                                     }

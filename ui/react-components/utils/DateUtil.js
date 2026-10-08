@@ -24,6 +24,18 @@ export const applyDateToTime = (date, time) => {
     });
 };
 
+// Re-dates both start and end time onto the given date and recomputes whether the
+// start time is still before the end time, so callers can update state in one place.
+export const applyDateToTimes = (date, startTime, endTime) => {
+    const newStartTime = applyDateToTime(date, startTime);
+    const newEndTime = applyDateToTime(date, endTime);
+    return {
+        startTime: newStartTime,
+        endTime: newEndTime,
+        startTimeBeforeEndTimeError: !isStartTimeBeforeEndTime(newStartTime, newEndTime)
+    };
+};
+
 export const isValidDate= (dateValue) =>{
     let selectedDate = dateValue;
 
