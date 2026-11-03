@@ -253,7 +253,7 @@ const EditAppointment = props => {
             serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.value &&
                 appointmentDetails.serviceType.value.uuid,
             startDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
-            endDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
+            endDateTime: getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime, appointmentDetails.startTime),
             providers: getValidProviders(appointmentDetails.providers),
             locationUuid: appointmentDetails.location && appointmentDetails.location.value && appointmentDetails.location.value.uuid,
             appointmentKind: requestAppointmentType(),

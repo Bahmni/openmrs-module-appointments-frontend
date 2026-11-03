@@ -366,6 +366,23 @@ describe('Add Appointment', () => {
             expect(queryByText(END_BEFORE_START_ERROR)).toBeNull();
         });
 
+        it('should not show the end time error when an 11 PM appointment ends at 12 AM', () => {
+            const lateAppointmentParams = {
+                startDateTime: appointmentDate.clone().hour(23).valueOf(),
+                endDateTime: appointmentDate.clone().hour(23).minute(30).valueOf()
+            };
+            const {container, queryByText} = renderWithReactIntl(<AddAppointment appConfig={appConfig} appointmentParams={lateAppointmentParams}/>);
+            const endTimeInput = container.querySelectorAll('.bx--time-picker__input-field')[1];
+
+            typeTime(endTimeInput, '12:00');
+            const endPeriodSelect = container.querySelectorAll('.bx--time-picker__select select')[1];
+            fireEvent.change(endPeriodSelect, {target: {value: 'AM'}});
+
+            expect(endTimeInput.value).toBe('12:00');
+            expect(endPeriodSelect.value).toBe('AM');
+            expect(queryByText(END_BEFORE_START_ERROR)).toBeNull();
+        });
+
         it('should keep showing the end time error after the appointment date is changed when the times are out of order', () => {
             const {container, queryByText} = renderWithReactIntl(<AddAppointment appConfig={appConfig} appointmentParams={appointmentParams}/>);
             const endTimeInput = container.querySelectorAll('.bx--time-picker__input-field')[1];

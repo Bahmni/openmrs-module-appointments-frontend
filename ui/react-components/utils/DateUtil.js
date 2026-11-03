@@ -2,14 +2,24 @@ import moment from "moment";
 import _ from 'lodash'
 import {getLocale} from "./LocalStorageUtil";
 
-export const getDateTime = (appointmentDate, appointmentTime) => {
+const toDateTime = (date, time) =>
+    parseDateToUTC(getDateWithoutTime(date) + ' ' + moment(time, ["hh:mm a"]).format("HH:mm"));
+
+const adjustMidnightEndTime = (startDateTime, endDateTime) => {
+    const end = moment(endDateTime);
+    const endsAtMidnight = end.format("HH:mm") === "00:00";
+    const crossesMidnight = endsAtMidnight && moment(startDateTime).isAfter(end);
+    return crossesMidnight ? end.add(1, 'day') : end;
+};
+
+export const getDateTime = (appointmentDate, appointmentTime, startTime) => {
     if (!appointmentDate && !appointmentTime) return appointmentDate;
-    const formattedTime = moment(appointmentTime, ["hh:mm a"]).format("HH:mm");
-    return parseDateToUTC(getDateWithoutTime(appointmentDate) + ' ' + formattedTime);
+    const dateTime = toDateTime(appointmentDate, appointmentTime);
+    return startTime ? adjustMidnightEndTime(toDateTime(appointmentDate, startTime), dateTime).toDate() : dateTime;
 };
 
 export const isStartTimeBeforeEndTime = (startDateTime, endDateTime) => {
-    return (!startDateTime || !endDateTime) || moment(startDateTime).isBefore(moment(endDateTime));
+    return (!startDateTime || !endDateTime) || moment(startDateTime).isBefore(adjustMidnightEndTime(startDateTime, endDateTime));
 };
 
 // The time picker builds its value from the typed time only, so it carries today's date.
