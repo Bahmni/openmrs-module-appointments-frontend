@@ -337,8 +337,8 @@ const AddAppointment = props => {
                 ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.startTime)
                 : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.startTime),
             endDateTime: isRecurringAppointment()
-                ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.endTime)
-                : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime),
+                ? getDateTime(appointmentDetails.recurringStartDate, appointmentDetails.endTime, appointmentDetails.startTime)
+                : getDateTime(appointmentDetails.appointmentDate, appointmentDetails.endTime, appointmentDetails.startTime),
             providers: appointmentDetails.providers,
             locationUuid: appointmentDetails.location && appointmentDetails.location.value.uuid,
             appointmentKind: requestAppointmentType(),

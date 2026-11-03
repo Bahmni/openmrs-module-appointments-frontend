@@ -2,6 +2,7 @@ import moment from "moment";
 import{
     isValidDate,
     isStartTimeBeforeEndTime,
+    getDateTime,
     applyDateToTime,
     applyDateToTimes
 } from "./DateUtil";
@@ -98,6 +99,27 @@ describe('isStartTimeBeforeEndTime', () => {
 
     it('should return false when start time equals end time', () => {
         expect(isStartTimeBeforeEndTime(moment('2020-02-12T11:00:00'), moment('2020-02-12T11:00:00'))).toBe(false);
+    })
+
+    it('should return true when end time is 12 AM and start time is 11 PM on the same date', () => {
+        expect(isStartTimeBeforeEndTime(moment('2020-02-12T23:00:00'), moment('2020-02-12T00:00:00'))).toBe(true);
+    })
+
+    it('should return false when both start and end time are 12 AM', () => {
+        expect(isStartTimeBeforeEndTime(moment('2020-02-12T00:00:00'), moment('2020-02-12T00:00:00'))).toBe(false);
+    })
+})
+
+describe('getDateTime', () => {
+    const date = moment('2020-02-12T10:00:00');
+    const format = dateTime => moment(dateTime).format('YYYY-MM-DD HH:mm');
+
+    it('should return the selected date with the given time', () => {
+        expect(format(getDateTime(date, moment('2020-02-12T13:00:00'), moment('2020-02-12T11:00:00')))).toBe('2020-02-12 13:00');
+    })
+
+    it('should move an end time of 12 AM to the next day when start time is 11 PM', () => {
+        expect(format(getDateTime(date, moment('2020-02-12T00:00:00'), moment('2020-02-12T23:00:00')))).toBe('2020-02-13 00:00');
     })
 })
 
