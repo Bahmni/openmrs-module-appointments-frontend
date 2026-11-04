@@ -22,12 +22,28 @@ const AppointmentTimePicker = (props) => {
         setPeriod(timeStamp[1])
     }, [defaultTime])
     const handleChange = e => {
-        const selectedTime = moment(e.target.value + period, "h:mm A")
+        const parsedTime = moment(e.target.value + " " + period, "h:mm A");
+        // Preserve the date from defaultTime, only update hours and minutes
+        const baseDate = defaultTime ? moment(defaultTime) : moment();
+        const selectedTime = baseDate.clone().set({
+            hour: parsedTime.hour(),
+            minute: parsedTime.minute(),
+            second: 0,
+            millisecond: 0
+        });
         setTime(e.target.value)
         onChange(selectedTime)
     }
     const handlePeriod = e => {
-        const selectedTime = moment(time + e.target.value + period, "h:mm A")
+        const parsedTime = moment(time + " " + e.target.value, "h:mm A");
+        // Preserve the date from defaultTime, only update hours and minutes
+        const baseDate = defaultTime ? moment(defaultTime) : moment();
+        const selectedTime = baseDate.clone().set({
+            hour: parsedTime.hour(),
+            minute: parsedTime.minute(),
+            second: 0,
+            millisecond: 0
+        });
         setPeriod(e.target.value)
         onChange(selectedTime)
     }
